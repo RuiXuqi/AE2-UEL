@@ -40,39 +40,39 @@ import net.minecraft.util.text.translation.I18n;
 public enum AEColor
 {
 
-	WHITE( "gui.appliedenergistics2.White", EnumDyeColor.WHITE, 0xBEBEBE, 0xDBDBDB, 0xFAFAFA ),
+	WHITE( "gui.appliedenergistics2.White", EnumDyeColor.WHITE, 0xB4B4B4, 0xE0E0E0, 0xF9F9F9 ),
 
-	ORANGE( "gui.appliedenergistics2.Orange", EnumDyeColor.ORANGE, 0xF99739, 0xFAAE44, 0xF4DEC3 ),
+	ORANGE( "gui.appliedenergistics2.Orange", EnumDyeColor.ORANGE, 0xD9782F, 0xECA23C, 0xF2BA49 ),
 
-	MAGENTA( "gui.appliedenergistics2.Magenta", EnumDyeColor.MAGENTA, 0x821E82, 0xB82AB8, 0xC598C8 ),
+	MAGENTA( "gui.appliedenergistics2.Magenta", EnumDyeColor.MAGENTA, 0xC15189, 0xD5719C, 0xE69EBF ),
 
-	LIGHT_BLUE( "gui.appliedenergistics2.LightBlue", EnumDyeColor.LIGHT_BLUE, 0x628DCB, 0x82ACE7, 0xD8F6FF ),
+	LIGHT_BLUE( "gui.appliedenergistics2.LightBlue", EnumDyeColor.LIGHT_BLUE, 0x69B9FF, 0x70D2FF, 0x80F7FF ),
 
-	YELLOW( "gui.appliedenergistics2.Yellow", EnumDyeColor.YELLOW, 0xFFF7AA, 0xF8FF4A, 0xFFFFE8 ),
+	YELLOW( "gui.appliedenergistics2.Yellow", EnumDyeColor.YELLOW, 0xFFCF40, 0xFFE359, 0xF4FF80 ),
 
-	LIME( "gui.appliedenergistics2.Lime", EnumDyeColor.LIME, 0x7CFF4A, 0xBBFF51, 0xE7F7D7 ),
+	LIME( "gui.appliedenergistics2.Lime", EnumDyeColor.LIME, 0x4EC04E, 0x70E259, 0xB3F86D ),
 
-	PINK( "gui.appliedenergistics2.Pink", EnumDyeColor.PINK, 0xDC8DB5, 0xF8B5D7, 0xF7DEEB ),
+	PINK( "gui.appliedenergistics2.Pink", EnumDyeColor.PINK, 0xD86EAA, 0xFF99BB, 0xFBCAD5 ),
 
-	GRAY( "gui.appliedenergistics2.Gray", EnumDyeColor.GRAY, 0x7C7C7C, 0xA0A0A0, 0xC9C9C9 ),
+	GRAY( "gui.appliedenergistics2.Gray", EnumDyeColor.GRAY, 0x4F4F4F, 0x6C6B6C, 0x949294 ),
 
-	LIGHT_GRAY( "gui.appliedenergistics2.LightGray", EnumDyeColor.SILVER, 0x9D9D9D, 0xCDCDCD, 0xEFEFEF ),
+	LIGHT_GRAY( "gui.appliedenergistics2.LightGray", EnumDyeColor.SILVER, 0x7E7E7E, 0xA09FA0, 0xC4C4C4 ),
 
-	CYAN( "gui.appliedenergistics2.Cyan", EnumDyeColor.CYAN, 0x2F9BA5, 0x51AAC6, 0xAEDDF4 ),
+	CYAN( "gui.appliedenergistics2.Cyan", EnumDyeColor.CYAN, 0x22B0AE, 0x2FCCB7, 0x65E8C9 ),
 
-	PURPLE( "gui.appliedenergistics2.Purple", EnumDyeColor.PURPLE, 0x8230B2, 0xA453CE, 0xC7A3CC ),
+	PURPLE( "gui.appliedenergistics2.Purple", EnumDyeColor.PURPLE, 0x6E5CB8, 0x915DCD, 0xB06FDD ),
 
-	BLUE( "gui.appliedenergistics2.Blue", EnumDyeColor.BLUE, 0x2D29A0, 0x514AFF, 0xDDE6FF ),
+	BLUE( "gui.appliedenergistics2.Blue", EnumDyeColor.BLUE, 0x337FF0, 0x3894FF, 0x40C1FF ),
 
-	BROWN( "gui.appliedenergistics2.Brown", EnumDyeColor.BROWN, 0x724E35, 0xB7967F, 0xE0D2C8 ),
+	BROWN( "gui.appliedenergistics2.Brown", EnumDyeColor.BROWN, 0x6E4A12, 0x7E5C16, 0x8E6E1A ),
 
-	GREEN( "gui.appliedenergistics2.Green", EnumDyeColor.GREEN, 0x45A021, 0x60E32E, 0xE3F2E3 ),
+	GREEN( "gui.appliedenergistics2.Green", EnumDyeColor.GREEN, 0x079B6B, 0x17B86D, 0x32D850 ),
 
-	RED( "gui.appliedenergistics2.Red", EnumDyeColor.RED, 0xA50029, 0xFF003C, 0xFFE6ED ),
+	RED( "gui.appliedenergistics2.Red", EnumDyeColor.RED, 0xAA212B, 0xD73E42, 0xF07665 ),
 
-	BLACK( "gui.appliedenergistics2.Black", EnumDyeColor.BLACK, 0x2B2B2B, 0x565656, 0x848484 ),
+	BLACK( "gui.appliedenergistics2.Black", EnumDyeColor.BLACK, 0x131313, 0x272727, 0x3B3B3B ),
 
-	TRANSPARENT( "gui.appliedenergistics2.Fluix", null, 0x1B2344, 0x895CA8, 0xD7BBEC );
+	TRANSPARENT( "gui.appliedenergistics2.Fluix", null, 0x5A479E, 0x915DCD, 0xE2A3E3 );
 
 	public static final List<AEColor> VALID_COLORS = Arrays.asList( WHITE, ORANGE, MAGENTA, LIGHT_BLUE, YELLOW, LIME, PINK, GRAY, LIGHT_GRAY, CYAN, PURPLE,
 			BLUE, BROWN, GREEN, RED, BLACK );
