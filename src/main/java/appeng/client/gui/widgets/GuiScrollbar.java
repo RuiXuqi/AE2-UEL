@@ -34,7 +34,7 @@ public class GuiScrollbar implements IScrollSource {
     private int currentScroll = 0;
 
     public void draw(final AEBaseGui g) {
-        g.bindTexture("appliedenergistics2", "textures/guis/sprites/big_scroller.png");
+        g.bindTexture("appliedenergistics2", "guis/sprites/big_scroller.png");
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 
         if (this.getRange() == 0) {

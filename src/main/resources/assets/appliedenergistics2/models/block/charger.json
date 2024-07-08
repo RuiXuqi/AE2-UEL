@@ -3,8 +3,8 @@
   "parent": "block/orientable",
   "texture_size": [64, 64],
   "textures": {
-    "particle": "appliedenergistics2:/blocks/charger",
-    "base": "appliedenergistics2:/blocks/charger"
+    "particle": "appliedenergistics2:blocks/charger",
+    "base": "appliedenergistics2:blocks/charger"
   },
   "elements": [
     {
