@@ -2,6 +2,9 @@
     "variants": {
         "normal": {
             "model": "appliedenergistics2:builtin/quartz_glass"
+        },
+        "inventory": {
+            "model": "appliedenergistics2:quartz_glass_item"
         }
     }
 }

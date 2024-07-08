@@ -18,7 +18,6 @@
 
 package appeng.block.networking;
 
-
 import appeng.block.AEBaseTileBlock;
 import appeng.helpers.AEGlassMaterial;
 import appeng.util.Platform;
@@ -32,10 +31,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-
 public class BlockEnergyCell extends AEBaseTileBlock {
 
-    public static final PropertyInteger ENERGY_STORAGE = PropertyInteger.create("fullness", 0, 7);
+    public static final int MAX_FULLNESS = 4;
+    public static final PropertyInteger ENERGY_STORAGE = PropertyInteger.create("fullness", 0, MAX_FULLNESS);
 
     @Override
     public int getMetaFromState(final IBlockState state) {
@@ -44,7 +43,7 @@ public class BlockEnergyCell extends AEBaseTileBlock {
 
     @Override
     public IBlockState getStateFromMeta(final int meta) {
-        return this.getDefaultState().withProperty(ENERGY_STORAGE, Math.min(7, Math.max(0, meta)));
+        return this.getDefaultState().withProperty(ENERGY_STORAGE, Math.min(MAX_FULLNESS, Math.max(0, meta)));
     }
 
     public BlockEnergyCell() {
@@ -70,7 +69,7 @@ public class BlockEnergyCell extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{ENERGY_STORAGE};
+        return new IProperty[] { ENERGY_STORAGE };
     }
 
 }

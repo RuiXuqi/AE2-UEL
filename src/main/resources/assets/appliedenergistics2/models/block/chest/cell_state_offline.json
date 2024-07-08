@@ -1,15 +1,20 @@
 {
-  "textures": {
-    "state": "appliedenergistics2:blocks/chest/cell_state_offline"
-  },
-  "elements": [
-    {
-      "from": [5, 4, 0],
-      "to": [11, 6, 1],
-      "faces": {
-        "north": { "uv": [5, 10, 11, 12], "texture": "#state" },
-        "up": { "uv": [5, 9, 11, 10], "texture": "#state" }
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "appliedenergistics2:blocks/drive/drive_cell_states",
+		"cell": "appliedenergistics2:blocks/drive/drive_cell_states"
+	},
+	"elements": [
+		{
+			"name": "Cell Backdrop",
+			"from": [5, 4, 0],
+			"to": [11, 6, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 2], "texture": "#cell", "cullface": "north"},
+				"up": {"uv": [6, 0, 0, 2], "texture": "#cell", "cullface": "north"}
+			}
+		}
+	]
 }

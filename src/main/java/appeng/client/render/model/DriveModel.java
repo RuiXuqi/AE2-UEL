@@ -18,7 +18,6 @@
 
 package appeng.client.render.model;
 
-
 import appeng.block.storage.DriveSlotState;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -37,18 +36,21 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Function;
 
-
 public class DriveModel implements IModel {
 
-    private static final ResourceLocation MODEL_BASE = new ResourceLocation("appliedenergistics2:block/drive_base");
+    private static final ResourceLocation MODEL_BASE = new ResourceLocation(
+            "appliedenergistics2:block/drive/drive_base");
 
-    private static final Map<DriveSlotState, ResourceLocation> MODELS_CELLS = ImmutableMap.<DriveSlotState, ResourceLocation>builder()
-            .put(DriveSlotState.EMPTY, new ResourceLocation("appliedenergistics2:block/drive_cell_empty"))
-            .put(DriveSlotState.OFFLINE, new ResourceLocation("appliedenergistics2:block/drive_cell_off"))
-            .put(DriveSlotState.ONLINE, new ResourceLocation("appliedenergistics2:block/drive_cell_on"))
-            .put(DriveSlotState.TYPES_FULL, new ResourceLocation("appliedenergistics2:block/drive_cell_types_full"))
-            .put(DriveSlotState.FULL, new ResourceLocation("appliedenergistics2:block/drive_cell_full"))
-            .put(DriveSlotState.NO_CONTENTS, new ResourceLocation("appliedenergistics2:block/drive_cell_no_contents"))
+    private static final Map<DriveSlotState, ResourceLocation> MODELS_CELLS = ImmutableMap
+            .<DriveSlotState, ResourceLocation>builder()
+            .put(DriveSlotState.EMPTY, new ResourceLocation("appliedenergistics2:block/drive/drive_cell_empty"))
+            .put(DriveSlotState.OFFLINE, new ResourceLocation("appliedenergistics2:block/drive/drive_cell_offline"))
+            .put(DriveSlotState.ONLINE, new ResourceLocation("appliedenergistics2:block/drive/drive_cell_online"))
+            .put(DriveSlotState.TYPES_FULL,
+                    new ResourceLocation("appliedenergistics2:block/drive/drive_cell_types_full"))
+            .put(DriveSlotState.FULL, new ResourceLocation("appliedenergistics2:block/drive/drive_cell_full"))
+            .put(DriveSlotState.NO_CONTENTS,
+                    new ResourceLocation("appliedenergistics2:block/drive/drive_cell_no_contents"))
             .build();
 
     @Override
@@ -62,7 +64,8 @@ public class DriveModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         EnumMap<DriveSlotState, IBakedModel> cellModels = new EnumMap<>(DriveSlotState.class);
 
         // Load the base model and the model for each cell state.

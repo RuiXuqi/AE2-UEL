@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "appliedenergistics2:blocks/drive/drive_cell_states",
+		"cell": "appliedenergistics2:blocks/drive/drive_cell_states"
+	},
+	"elements": [
+		{
+			"name": "Cell Backdrop",
+			"from": [9, 13, 1],
+			"to": [15, 15, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 6, 2], "texture": "#cell", "cullface": "north"},
+				"up": {"uv": [6, 0, 0, 2], "texture": "#cell", "cullface": "north"},
+				"down": {"uv": [6, 0, 0, 2], "texture": "#cell", "cullface": "north"}
+			}
+		}
+	]
+}
