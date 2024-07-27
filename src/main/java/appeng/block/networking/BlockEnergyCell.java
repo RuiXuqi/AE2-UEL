@@ -18,6 +18,7 @@
 
 package appeng.block.networking;
 
+
 import appeng.block.AEBaseTileBlock;
 import appeng.helpers.AEGlassMaterial;
 import appeng.util.Platform;
@@ -30,6 +31,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 
 public class BlockEnergyCell extends AEBaseTileBlock {
 
@@ -68,7 +70,7 @@ public class BlockEnergyCell extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[] { ENERGY_STORAGE };
+        return new IProperty[]{ENERGY_STORAGE};
     }
 
 }
