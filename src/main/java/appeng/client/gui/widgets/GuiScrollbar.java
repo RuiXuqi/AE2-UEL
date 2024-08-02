@@ -26,7 +26,7 @@ public class GuiScrollbar implements IScrollSource {
     private int displayX = 0;
     private int displayY = 0;
     private int width = 12;
-    private int height = 15;
+    private int height = 16;
     private int pageSize = 1;
 
     private int maxScroll = 0;
