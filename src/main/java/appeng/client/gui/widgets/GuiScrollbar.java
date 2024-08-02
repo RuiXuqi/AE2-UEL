@@ -38,7 +38,7 @@ public class GuiScrollbar implements IScrollSource {
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 
         if (this.getRange() == 0) {
-            g.drawTexturedModalRect(this.displayX, this.displayY, this.width, 0, this.width, 15);
+            g.drawTexturedModalRect(this.displayX, this.displayY, this.width, 0, this.width, 14);
         } else {
             final int offset = (this.currentScroll - this.minScroll) * (this.height - 15) / this.getRange();
             g.drawTexturedModalRect(this.displayX, offset + this.displayY, 0, 0, this.width, 15);
