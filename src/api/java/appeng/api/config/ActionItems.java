@@ -28,7 +28,9 @@ public enum ActionItems
 {
 	WRENCH,
 	CLOSE,
+	S_CLOSE,
 	STASH,
+	S_STASH,
 	ENCODE,
 	SUBSTITUTION,
 	MULTIPLY_BY_TWO,
