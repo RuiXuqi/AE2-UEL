@@ -10,32 +10,50 @@
         "down": {
           "texture": "#lights",
           "uv": [0, 0, 16, 16],
-          "unlit": true
+          "uvlightmap": {
+            "sky": 0.007,
+            "block": 0.007
+          }
         },
         "east": {
           "texture": "#lights",
           "uv": [0, 0, 16, 16],
-          "unlit": true
+          "uvlightmap": {
+            "sky": 0.007,
+            "block": 0.007
+          }
         },
         "north": {
           "texture": "#lights",
           "uv": [0, 0, 16, 16],
-          "unlit": true
+          "uvlightmap": {
+            "sky": 0.007,
+            "block": 0.007
+          }
         },
         "south": {
           "texture": "#lights",
           "uv": [0, 0, 16, 16],
-          "unlit": true
+          "uvlightmap": {
+            "sky": 0.007,
+            "block": 0.007
+          }
         },
         "up": {
           "texture": "#lights",
           "uv": [0, 0, 16, 16],
-          "unlit": true
+          "uvlightmap": {
+            "sky": 0.007,
+            "block": 0.007
+          }
         },
         "west": {
           "texture": "#lights",
           "uv": [0, 0, 16, 16],
-          "unlit": true
+          "uvlightmap": {
+            "sky": 0.007,
+            "block": 0.007
+          }
         }
       },
       "from": [0, 0, 0],
