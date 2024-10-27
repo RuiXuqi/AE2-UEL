@@ -3,7 +3,7 @@
     "ctm_version": 1,
     "type":"CTM",
     "textures":[
-        "appliedenergistics2:blocks/cut_quartz_block_ctm"
+        "appliedenergistics2:blocks/chiseled_quartz_block_side_ctmv"
     ]
   }
 }
