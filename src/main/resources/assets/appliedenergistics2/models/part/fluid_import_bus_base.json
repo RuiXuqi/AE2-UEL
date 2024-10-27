@@ -1,5 +1,5 @@
 {
-    "parent": "appliedenergistics2:part/import_bus",
+    "parent": "appliedenergistics2:part/import_bus_base",
     "textures": {
         "front": "appliedenergistics2:parts/fluid_import_bus"
     }

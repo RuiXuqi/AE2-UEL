@@ -22,7 +22,7 @@
 		{
 			"name": "Cell Light",
 			"from": [9, 13, 1],
-			"to": [15, 15, 2],
+			"to": [15, 15, 3],
 			"shade": false,
 			"faces": {
 				"north": {"uv": [0, 0, 6, 2], "texture": "#emissive", "uvlightmap": {"sky": 0.007, "block": 0.007}},
