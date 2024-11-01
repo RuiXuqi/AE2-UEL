@@ -1,7 +1,7 @@
 {
   "ctm":{
     "ctm_version": 1,
-    "type":"CTM",
+    "type":"pillar",
     "textures":[
         "appliedenergistics2:blocks/quartz_pillar_side_ctmv"
     ]
