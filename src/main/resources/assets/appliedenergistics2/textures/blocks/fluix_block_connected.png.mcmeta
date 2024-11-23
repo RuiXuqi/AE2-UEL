@@ -1,0 +1,16 @@
+{
+  "animation": {
+    "interpolate": true,
+    "frames": [
+      {"index": 0, "time": 32},
+      {"index": 1, "time": 4}
+    ]
+  },
+  "ctm":{
+    "ctm_version": 1,
+    "type":"CTM",
+    "textures":[
+        "appliedenergistics2:blocks/fluix_block_connected_ctm"
+    ]
+  }
+}

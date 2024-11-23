@@ -3,7 +3,7 @@
     "ctm_version": 1,
     "type":"CTM",
     "textures":[
-        "appliedenergistics2:blocks/quartz_block_ctm"
+        "appliedenergistics2:blocks/smooth_sky_stone_block_connected_ctm"
     ]
   }
 }
