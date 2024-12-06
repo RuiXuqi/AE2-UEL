@@ -1,7 +1,7 @@
 {
     "variants": {
         "normal": {
-            "model": "appliedenergistics2:chiseled_quartz_block_connected"
+            "model": "appliedenergistics2:chiseled_quartz_block"
         }
     }
 }
