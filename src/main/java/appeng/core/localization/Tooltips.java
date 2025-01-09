@@ -169,35 +169,35 @@ public final class Tooltips {
     public static ITextComponent energyStorageComponent(double energy, double max) {
         return Tooltips.of(
                 Tooltips.of(GuiText.StoredEnergy.getLocal()),
-                Tooltips.of(": ").setStyle(NORMAL_TOOLTIP_TEXT),
+                Tooltips.of(": "),
                 Tooltips.ofNumber(energy, max),
-                Tooltips.of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                Tooltips.of(" "),
                 Tooltips.of(PowerUnits.AE),
-                Tooltips.of(" (").setStyle(NORMAL_TOOLTIP_TEXT),
+                Tooltips.of(" ("),
                 Tooltips.ofPercent(energy / max),
-                Tooltips.of(")")).setStyle(NORMAL_TOOLTIP_TEXT);
+                Tooltips.of(")"));
     }
 
     public static ITextComponent bytesUsed(long bytes, long max) {
         return of(
                 Tooltips.of(
                         ofUnformattedNumberWithRatioColor(bytes, (double) bytes / max, false),
-                        of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                        of(" "),
                         of(GuiText.Of),
-                        of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                        of(" "),
                         ofUnformattedNumber(max),
-                        of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                        of(" "),
                         of(GuiText.BytesUsed)));
     }
 
     public static ITextComponent typesUsed(long types, long max) {
         return Tooltips.of(
                 ofUnformattedNumberWithRatioColor(types, (double) types / max, false),
-                of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                of(" "),
                 of(GuiText.Of),
-                of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                of(" "),
                 ofUnformattedNumber(max),
-                of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
+                of(" "),
                 of(GuiText.Types));
     }
 }
