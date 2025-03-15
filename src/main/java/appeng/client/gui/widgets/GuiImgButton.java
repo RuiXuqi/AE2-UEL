@@ -347,7 +347,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
         this.fillVar = fillVar;
     }
 
-    private static final class EnumPair {
+    public static final class EnumPair {
 
         final Enum setting;
         final Enum value;

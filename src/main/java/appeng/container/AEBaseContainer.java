@@ -399,9 +399,17 @@ public abstract class AEBaseContainer extends Container {
                                     return ItemStack.EMPTY; // don't insert duplicate encoded patterns to interfaces
                                 }
 
-                                int maxSize = Math.min(tis.getMaxStackSize(), d.getSlotStackLimit());
+                                final int maxSize;
+                                if (d instanceof SlotOversized slotOversized) {
+                                    maxSize = slotOversized.getSlotStackLimit();
+                                } else {
+                                    maxSize = Math.min(tis.getMaxStackSize(), d.getSlotStackLimit());
+                                }
 
                                 int placeAble = maxSize - t.getCount();
+                                if (placeAble <= 0) {
+                                    continue;
+                                }
 
                                 if (tis.getCount() < placeAble) {
                                     placeAble = tis.getCount();
