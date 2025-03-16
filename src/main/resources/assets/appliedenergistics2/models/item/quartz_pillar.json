@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "appliedenergistics2:blocks/cut_quartz_block",
+    "side": "appliedenergistics2:blocks/quartz_pillar_side"
+  }
+}

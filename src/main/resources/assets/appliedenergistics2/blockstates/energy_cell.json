@@ -10,9 +10,18 @@
             "model": "appliedenergistics2:energy_cell/energy_cell_2"
         },
         "fullness=3": {
-            "model": "appliedenergistics2:energy_cell/energy_cell_3"
+            "model": "appliedenergistics2:energy_cell/energy_cell_2"
         },
         "fullness=4": {
+            "model": "appliedenergistics2:energy_cell/energy_cell_3"
+        },
+        "fullness=5": {
+            "model": "appliedenergistics2:energy_cell/energy_cell_3"
+        },
+        "fullness=6": {
+            "model": "appliedenergistics2:energy_cell/energy_cell_4"
+        },
+        "fullness=7": {
             "model": "appliedenergistics2:energy_cell/energy_cell_4"
         }
     }

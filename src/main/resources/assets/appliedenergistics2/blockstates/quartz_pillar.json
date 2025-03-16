@@ -1,6 +1,12 @@
 {
     "variants": {
-        "normal": {
+        "axis=x": {
+            "model": "appliedenergistics2:quartz_pillar"
+        },
+        "axis=y": {
+            "model": "appliedenergistics2:quartz_pillar"
+        },
+        "axis=z": {
             "model": "appliedenergistics2:quartz_pillar"
         }
     }

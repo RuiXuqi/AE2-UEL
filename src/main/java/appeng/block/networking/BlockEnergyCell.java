@@ -35,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockEnergyCell extends AEBaseTileBlock {
 
-    public static final PropertyInteger ENERGY_STORAGE = PropertyInteger.create("fullness", 0, 4);
+    public static final PropertyInteger ENERGY_STORAGE = PropertyInteger.create("fullness", 0, 7);
 
     @Override
     public int getMetaFromState(final IBlockState state) {
@@ -44,7 +44,7 @@ public class BlockEnergyCell extends AEBaseTileBlock {
 
     @Override
     public IBlockState getStateFromMeta(final int meta) {
-        return this.getDefaultState().withProperty(ENERGY_STORAGE, Math.min(4, Math.max(0, meta)));
+        return this.getDefaultState().withProperty(ENERGY_STORAGE, Math.min(7, Math.max(0, meta)));
     }
 
     public BlockEnergyCell() {
