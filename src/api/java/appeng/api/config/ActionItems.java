@@ -26,7 +26,7 @@ package appeng.api.config;
 
 public enum ActionItems
 {
-	WRENCH,
+	COG,
 	CLOSE,
 	S_CLOSE,
 	STASH,
