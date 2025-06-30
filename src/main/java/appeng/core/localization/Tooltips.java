@@ -173,9 +173,9 @@ public final class Tooltips {
                 Tooltips.ofNumber(energy, max),
                 Tooltips.of(" "),
                 Tooltips.of(PowerUnits.AE),
-                Tooltips.of(" ("),
+                Tooltips.of(" (").setStyle(NORMAL_TOOLTIP_TEXT),
                 Tooltips.ofPercent(energy / max),
-                Tooltips.of(")"));
+                Tooltips.of(")").setStyle(NORMAL_TOOLTIP_TEXT));
     }
 
     public static ITextComponent bytesUsed(long bytes, long max) {
