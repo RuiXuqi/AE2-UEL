@@ -250,38 +250,29 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         final int unusedSpace = this.height - this.ySize;
         this.guiTop = (int) Math.floor(unusedSpace / (unusedSpace < 0 ? 3.8f : 2.0f));
 
-        int offset = this.guiTop + 8 + jeiOffset;
+        offset = this.guiTop + 8 + jeiOffset;
 
         {
             if (this.customSortOrder) {
-                this.buttonList
-                        .add(this.SortByBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY)));
-                offset += 20;
+                this.SortByBox = newImgButtonToList(Settings.SORT_BY,
+                        this.configSrc.getSetting(Settings.SORT_BY));
             }
         }
 
         if (this.viewCell || this instanceof GuiWirelessTerm) {
-            this.buttonList
-                    .add(this.ViewBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.VIEW_MODE, this.configSrc.getSetting(Settings.VIEW_MODE)));
-            offset += 20;
+            this.ViewBox = newImgButtonToList(Settings.VIEW_MODE,
+                    this.configSrc.getSetting(Settings.VIEW_MODE));
         }
 
-        this.buttonList.add(this.SortDirBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_DIRECTION, this.configSrc
-                .getSetting(Settings.SORT_DIRECTION)));
-        offset += 20;
+        this.SortDirBox = newImgButtonToList(Settings.SORT_DIRECTION,
+                this.configSrc.getSetting(Settings.SORT_DIRECTION));
 
-        this.buttonList.add(
-                this.searchBoxSettings = new GuiImgButton(this.guiLeft - 18, offset, Settings.SEARCH_MODE, AEConfig.instance()
-                        .getConfigManager()
-                        .getSetting(
-                                Settings.SEARCH_MODE)));
-
-        offset += 20;
+        this.searchBoxSettings = newImgButtonToList(Settings.SEARCH_MODE,
+                AEConfig.instance().getConfigManager().getSetting(Settings.SEARCH_MODE));
 
         if (!(this instanceof GuiMEPortableCell) || this instanceof GuiWirelessTerm) {
-            this.buttonList.add(this.terminalStyleBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.TERMINAL_STYLE, AEConfig.instance()
-                    .getConfigManager()
-                    .getSetting(Settings.TERMINAL_STYLE)));
+            this.terminalStyleBox = newImgButtonToList(Settings.TERMINAL_STYLE,
+                    AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE));
         }
 
         this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX), this.guiTop + 4, 90, 12);

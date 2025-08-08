@@ -38,6 +38,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
     private static Map<EnumPair, ButtonAppearance> appearances;
     private final Enum buttonSetting;
     private boolean halfSize = false;
+    private boolean haveBackGround = true;
     private String fillVar;
     private Enum currentValue;
 
@@ -107,10 +108,7 @@ public class GuiImgButton extends GuiButton implements ITooltip {
             this.registerApp(66, Settings.ACTIONS, ActionItems.COG, ButtonToolTips.PartitionStorage, ButtonToolTips.PartitionStorageHint);
             this.registerApp(6, Settings.ACTIONS, ActionItems.CLOSE, ButtonToolTips.Clear, ButtonToolTips.ClearSettings);
             this.registerApp(6, Settings.ACTIONS, ActionItems.STASH, ButtonToolTips.Stash, ButtonToolTips.StashDesc);
-            this.registerApp(77, Settings.ACTIONS, ActionItems.S_CLOSE, ButtonToolTips.Clear, ButtonToolTips.ClearSettings);
-            this.registerApp(77, Settings.ACTIONS, ActionItems.S_STASH, ButtonToolTips.Stash, ButtonToolTips.StashDesc);
 
-            this.registerApp(6 + 4 * 16, Settings.ACTIONS, ActionItems.MULTIPLY_BY_TWO, ButtonToolTips.MultiplyByTwo, ButtonToolTips.MultiplyByTwoDesc);
             this.registerApp(7 + 4 * 16, Settings.ACTIONS, ActionItems.MULTIPLY_BY_THREE, ButtonToolTips.MultiplyByThree, ButtonToolTips.MultiplyByThreeDesc);
             this.registerApp(8 + 4 * 16, Settings.ACTIONS, ActionItems.INCREASE_BY_ONE, ButtonToolTips.IncreaseByOne, ButtonToolTips.IncreaseByOneDesc);
             this.registerApp(9 + 4 * 16, Settings.ACTIONS, ActionItems.DIVIDE_BY_TWO, ButtonToolTips.DivideByTwo, ButtonToolTips.DivideByTwoDesc);
@@ -163,11 +161,30 @@ public class GuiImgButton extends GuiButton implements ITooltip {
             this.registerApp(16 * 15 + 1, Settings.SCHEDULING_MODE, SchedulingMode.ROUNDROBIN, ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeRoundRobin);
             this.registerApp(16 * 15 + 2, Settings.SCHEDULING_MODE, SchedulingMode.RANDOM, ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeRandom);
 
-            this.registerApp(10, Settings.UNLOCK,LockCraftingMode.NONE,ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingModeNone);
-            this.registerApp(7, Settings.UNLOCK,LockCraftingMode.LOCK_UNTIL_RESULT,ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingUntilResultReturned);
+            this.registerApp(10, Settings.UNLOCK, LockCraftingMode.NONE,ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingModeNone);
+            this.registerApp(7, Settings.UNLOCK, LockCraftingMode.LOCK_UNTIL_RESULT,ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingUntilResultReturned);
             this.registerApp(0, Settings.UNLOCK, LockCraftingMode.LOCK_WHILE_LOW, ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingWhileRedstoneLow);
             this.registerApp(1, Settings.UNLOCK, LockCraftingMode.LOCK_WHILE_HIGH, ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingWhileRedstoneHigh);
             this.registerApp(2, Settings.UNLOCK, LockCraftingMode.LOCK_UNTIL_PULSE, ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingUntilRedstonePulse);
+
+            // 8x buttons, index start from (224, 192), vertical
+            // MUST setHaveBackGround(false) before using
+            // 4 in 16x16 like
+            // 0, 1
+            // 2, 3
+            // 4, 5
+            // 6, 7
+            this.registerApp(2, Settings.ACTIONS, ActionItems.S_CLOSE, ButtonToolTips.Clear, ButtonToolTips.ClearSettings);
+            this.registerApp(2, Settings.ACTIONS, ActionItems.S_STASH, ButtonToolTips.Stash, ButtonToolTips.StashDesc);
+            this.registerApp(4, Settings.ACTIONS, ItemSubstitution.S_ENABLED, ButtonToolTips.Substitutions, ButtonToolTips.SubstitutionsDescEnabled);
+            this.registerApp(5, Settings.ACTIONS, ItemSubstitution.S_DISABLED, ButtonToolTips.Substitutions, ButtonToolTips.SubstitutionsDescDisabled);
+            this.registerApp(8, Settings.ACTIONS, ActionItems.S_MULTIPLY_BY_TWO, ButtonToolTips.MultiplyByTwo, ButtonToolTips.MultiplyByTwoDesc);
+            this.registerApp(9, Settings.ACTIONS, ActionItems.S_MULTIPLY_BY_THREE, ButtonToolTips.MultiplyByThree, ButtonToolTips.MultiplyByThreeDesc);
+            this.registerApp(10, Settings.ACTIONS, ActionItems.S_DIVIDE_BY_TWO, ButtonToolTips.DivideByTwo, ButtonToolTips.DivideByTwoDesc);
+            this.registerApp(11, Settings.ACTIONS, ActionItems.S_DIVIDE_BY_THREE, ButtonToolTips.DivideByThree, ButtonToolTips.DivideByThreeDesc);
+            this.registerApp(12, Settings.ACTIONS, ActionItems.S_INCREASE_BY_ONE, ButtonToolTips.IncreaseByOne, ButtonToolTips.IncreaseByOneDesc);
+            this.registerApp(13, Settings.ACTIONS, ActionItems.S_DECREASE_BY_ONE, ButtonToolTips.DecreaseByOne, ButtonToolTips.DecreaseByOneDesc);
+            this.registerApp(14, Settings.ACTIONS, ActionItems.S_MAX_COUNT, ButtonToolTips.MaxCount, ButtonToolTips.MaxCountDesc);
         }
     }
 
@@ -193,10 +210,6 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                 this.width = 8;
                 this.height = 8;
 
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(this.x, this.y, 0.0F);
-                GlStateManager.scale(0.5f, 0.5f, 0.5f);
-
                 if (this.enabled) {
                     GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
                 } else {
@@ -206,14 +219,28 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                 par1Minecraft.renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
                 this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
 
-                final int uv_y = (int) Math.floor(iconIndex / 16);
-                final int uv_x = iconIndex - uv_y * 16;
+                if (this.haveBackGround) {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(this.x, this.y, 0.0F);
+                    GlStateManager.scale(0.5f, 0.5f, 0.5f);
 
-                this.drawTexturedModalRect(0, 0, 256 - 16, 256 - 16, 16, 16);
-                this.drawTexturedModalRect(0, 0, uv_x * 16, uv_y * 16, 16, 16);
-                this.mouseDragged(par1Minecraft, par2, par3);
+                    final int uv_y = (int) Math.floor(iconIndex / 16);
+                    final int uv_x = iconIndex - uv_y * 16;
 
-                GlStateManager.popMatrix();
+                    // Button background
+                    this.drawTexturedModalRect(0, 0, 256 - 16, 256 - 16, 16, 16);
+                    // Button icon
+                    this.drawTexturedModalRect(0, 0, uv_x * 16, uv_y * 16, 16, 16);
+                    this.mouseDragged(par1Minecraft, par2, par3);
+
+                    GlStateManager.popMatrix();
+                } else {
+                    final int uv_x = iconIndex % 2;
+                    final int uv_y = iconIndex / 2;
+
+                    this.drawTexturedModalRect(this.x, this.y, 224 + uv_x * 8, 192 + uv_y * 8, 8, 8);
+                    this.mouseDragged(par1Minecraft, par2, par3);
+                }
             } else {
                 if (this.enabled) {
                     GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -227,8 +254,18 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                 final int uv_y = (int) Math.floor(iconIndex / 16);
                 final int uv_x = iconIndex - uv_y * 16;
 
-                this.drawTexturedModalRect(this.x, this.y, 256 - 16, 256 - 16, 16, 16);
-                this.drawTexturedModalRect(this.x, this.y, uv_x * 16, uv_y * 16, 16, 16);
+                if (!hovered) {
+                    // Button background
+                    this.drawTexturedModalRect(this.x - 1, this.y - 1, 176, 128, 18, 20);
+                    // Button icon
+                    this.drawTexturedModalRect(this.x, this.y, uv_x * 16, uv_y * 16, 16, 16);
+                } else {
+                    // Button background
+                    this.drawTexturedModalRect(this.x - 1, this.y, 208, 128, 18, 20);
+                    // Button icon
+                    this.drawTexturedModalRect(this.x, this.y + 1, uv_x * 16, uv_y * 16, 16, 16);
+                }
+
                 this.mouseDragged(par1Minecraft, par2, par3);
             }
         }
@@ -337,6 +374,14 @@ public class GuiImgButton extends GuiButton implements ITooltip {
 
     public void setHalfSize(final boolean halfSize) {
         this.halfSize = halfSize;
+    }
+
+    public boolean isHaveBackGround() {
+        return this.haveBackGround;
+    }
+
+    public void setHaveBackGround(final boolean haveBackGround) {
+        this.haveBackGround = haveBackGround;
     }
 
     public String getFillVar() {

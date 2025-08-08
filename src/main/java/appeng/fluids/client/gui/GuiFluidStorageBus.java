@@ -91,7 +91,7 @@ public class GuiFluidStorageBus extends GuiUpgradeable {
         this.storageFilter = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY);
         this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 88, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
 
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender));
+        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender));
 
         this.buttonList.add(this.storageFilter);
         this.buttonList.add(this.fuzzyMode);

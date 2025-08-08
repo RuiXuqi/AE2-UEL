@@ -22,6 +22,7 @@ package appeng.client.gui;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.gui.widgets.GuiCustomSlot;
+import appeng.client.gui.widgets.GuiImgButton;
 import appeng.client.gui.widgets.GuiScrollbar;
 import appeng.client.gui.widgets.ITooltip;
 import appeng.client.me.InternalSlotME;
@@ -102,6 +103,11 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     private Object bookmarkedIngredient;
     private boolean isDraggingJeiGhostItem;
     private boolean haltDragging = false;
+    protected int offset; // Y offset of the vertical button
+    // Vertical space between buttons
+    private static final int VERTICAL_SPACING = 6;
+    // The margin between the right side of the buttons and the GUI
+    private static final int MARGIN = 2;
 
     public void setJeiGhostItem(boolean jeiGhostItem) {
         isJeiGhostItem = jeiGhostItem;
@@ -153,6 +159,15 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         for (final InternalSlotME me : this.meSlots) {
             slots.add(new SlotME(me));
         }
+
+        offset = this.guiTop + 8;
+    }
+
+    protected GuiImgButton newImgButtonToList(final Enum idx, final Enum val) {
+        GuiImgButton button = new GuiImgButton(this.guiLeft - 16 - MARGIN, offset, idx, val);
+        this.buttonList.add(button);
+        this.offset += 16 + VERTICAL_SPACING;
+        return button;
     }
 
     private List<Slot> getInventorySlots() {
