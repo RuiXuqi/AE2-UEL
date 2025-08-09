@@ -26,7 +26,6 @@ package appeng.client.gui.implementations;
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.definitions.IParts;
-import appeng.api.features.IWirelessTermHandler;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.gui.widgets.GuiScrollbar;
@@ -34,7 +33,6 @@ import appeng.client.gui.widgets.GuiTabButton;
 import appeng.container.implementations.ContainerCraftingStatus;
 import appeng.container.implementations.CraftingCPUStatus;
 import appeng.core.AELog;
-import appeng.core.features.registries.WirelessRegistry;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.GuiBridge;
 import appeng.core.sync.network.NetworkHandler;
@@ -129,10 +127,9 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
     public void initGui() {
         super.initGui();
 
-        this.selectCPU = new GuiButton(0, this.guiLeft + 8, this.guiTop + this.ySize - 25, 150, 20, GuiText.CraftingCPU
+        this.selectCPU = newTextButtonToList(0, this.guiLeft + 8, this.guiTop + this.ySize - 25, 150, 20, GuiText.CraftingCPU
                 .getLocal() + ": " + GuiText.NoCraftingCPUs);
         selectCPU.enabled = false;
-        this.buttonList.add(this.selectCPU);
 
         this.cpuScrollbar = new GuiScrollbar();
         this.cpuScrollbar.setLeft(-16);

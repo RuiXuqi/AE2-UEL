@@ -34,14 +34,14 @@ public class GuiScrollbar implements IScrollSource {
     private int currentScroll = 0;
 
     public void draw(final AEBaseGui g) {
-        g.bindTexture("appliedenergistics2", "guis/sprites/big_scroller.png");
+        g.bindTexture("appliedenergistics2", "guis/sprites.png");
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 
         if (this.getRange() == 0) {
-            g.drawTexturedModalRect(this.displayX, this.displayY, this.width, 0, this.width, 14);
+            g.drawTexturedModalRect(this.displayX, this.displayY, 232 + this.width, 0, this.width, 14);
         } else {
             final int offset = (this.currentScroll - this.minScroll) * (this.height - 15) / this.getRange();
-            g.drawTexturedModalRect(this.displayX, offset + this.displayY, 0, 0, this.width, 15);
+            g.drawTexturedModalRect(this.displayX, offset + this.displayY, 232, 0, this.width, 15);
         }
     }
 

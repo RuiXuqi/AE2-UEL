@@ -67,22 +67,22 @@ public class GuiPriority extends AEBaseGui {
         final int c = AEConfig.instance().priorityByStacksAmounts(2);
         final int d = AEConfig.instance().priorityByStacksAmounts(3);
 
-        this.buttonList.add(this.plus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 32, 22, 20, "+" + a));
-        this.buttonList.add(this.plus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 32, 28, 20, "+" + b));
-        this.buttonList.add(this.plus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 32, 32, 20, "+" + c));
-        this.buttonList.add(this.plus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 32, 38, 20, "+" + d));
+        this.plus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 32, 22, 20, "+" + a);
+        this.plus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 32, 28, 20, "+" + b);
+        this.plus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 32, 32, 20, "+" + c);
+        this.plus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 32, 38, 20, "+" + d);
 
-        this.buttonList.add(this.minus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 69, 22, 20, "-" + a));
-        this.buttonList.add(this.minus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 69, 28, 20, "-" + b));
-        this.buttonList.add(this.minus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 69, 32, 20, "-" + c));
-        this.buttonList.add(this.minus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 69, 38, 20, "-" + d));
+        this.minus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 69, 22, 20, "-" + a);
+        this.minus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 69, 28, 20, "-" + b);
+        this.minus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 69, 32, 20, "-" + c);
+        this.minus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 69, 38, 20, "-" + d);
 
         final ContainerPriority con = ((ContainerPriority) this.inventorySlots);
         final ItemStack myIcon = con.getPriorityHost().getItemStackRepresentation();
         this.OriginalGui = con.getPriorityHost().getGuiBridge();
 
         if (this.OriginalGui != null && !myIcon.isEmpty()) {
-            this.buttonList.add(this.originalGuiBtn = new GuiTabButton(this.guiLeft + 154, this.guiTop, myIcon, myIcon.getDisplayName(), this.itemRender));
+            this.originalGuiBtn = newTabButtonToList(myIcon, myIcon.getDisplayName(), this.itemRender);
         }
 
         this.priority = new GuiNumberBox(this.fontRenderer, this.guiLeft + 62, this.guiTop + 57, 59, this.fontRenderer.FONT_HEIGHT, Long.class);

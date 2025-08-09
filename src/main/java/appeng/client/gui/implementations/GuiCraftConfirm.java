@@ -20,7 +20,6 @@ package appeng.client.gui.implementations;
 
 
 import appeng.api.AEApi;
-import appeng.api.features.IWirelessTermHandler;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
@@ -114,20 +113,16 @@ public class GuiCraftConfirm extends AEBaseGui {
     public void initGui() {
         super.initGui();
 
-        this.start = new GuiButton(0, this.guiLeft + 162, this.guiTop + this.ySize - 25, 50, 20, GuiText.Start.getLocal());
+        this.start = newTextButtonToList(0, this.guiLeft + 162, this.guiTop + this.ySize - 25, 50, 20, GuiText.Start.getLocal());
         this.start.enabled = false;
-        this.buttonList.add(this.start);
 
-        this.selectCPU = new GuiButton(0, this.guiLeft + (219 - 180) / 2, this.guiTop + this.ySize - 68, 180, 20, GuiText.CraftingCPU
+        this.selectCPU = newTextButtonToList(0, this.guiLeft + (219 - 180) / 2, this.guiTop + this.ySize - 68, 180, 20, GuiText.CraftingCPU
                 .getLocal() + ": " + GuiText.Automatic);
         this.selectCPU.enabled = false;
-        this.buttonList.add(this.selectCPU);
 
         if (this.OriginalGui != null) {
-            this.cancel = new GuiButton(0, this.guiLeft + 6, this.guiTop + this.ySize - 25, 50, 20, GuiText.Cancel.getLocal());
+            this.cancel = newTextButtonToList(0, this.guiLeft + 6, this.guiTop + this.ySize - 25, 50, 20, GuiText.Cancel.getLocal());
         }
-
-        this.buttonList.add(this.cancel);
     }
 
     @Override

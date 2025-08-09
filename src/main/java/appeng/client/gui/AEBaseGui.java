@@ -21,10 +21,7 @@ package appeng.client.gui;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.client.gui.widgets.GuiCustomSlot;
-import appeng.client.gui.widgets.GuiImgButton;
-import appeng.client.gui.widgets.GuiScrollbar;
-import appeng.client.gui.widgets.ITooltip;
+import appeng.client.gui.widgets.*;
 import appeng.client.me.InternalSlotME;
 import appeng.client.me.SlotDisconnected;
 import appeng.client.me.SlotME;
@@ -52,10 +49,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -163,10 +157,41 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         offset = this.guiTop + 8;
     }
 
+    protected GuiTextButton newTextButtonToList(int id, int x, int y, int widthIn, int heightIn, String text) {
+        GuiTextButton button = new GuiTextButton(id, x, y, widthIn, heightIn, text);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    protected GuiTextButton newTextButtonToList(int id, int x, int y, String text) {
+        GuiTextButton button = new GuiTextButton(id, x, y, text);
+        this.buttonList.add(button);
+        return button;
+    }
+
     protected GuiImgButton newImgButtonToList(final Enum idx, final Enum val) {
         GuiImgButton button = new GuiImgButton(this.guiLeft - 16 - MARGIN, offset, idx, val);
         this.buttonList.add(button);
         this.offset += 16 + VERTICAL_SPACING;
+        return button;
+    }
+
+    protected GuiToggleButton newToggleButtonToList(final int on, final int off, final String displayName, final String displayHint) {
+        GuiToggleButton button = new GuiToggleButton(this.guiLeft - 16 - MARGIN, offset, on, off, displayName, displayHint);
+        this.buttonList.add(button);
+        this.offset += 16 + VERTICAL_SPACING;
+        return button;
+    }
+
+    protected GuiTabButton newTabButtonToList(final int ico, final String message, final RenderItem ir) {
+        GuiTabButton button = new GuiTabButton(this.guiLeft + 154, this.guiTop, ico, message, ir);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    protected GuiTabButton newTabButtonToList(final ItemStack ico, final String message, final RenderItem ir) {
+        GuiTabButton button = new GuiTabButton(this.guiLeft + 154, this.guiTop, ico, message, ir);
+        this.buttonList.add(button);
         return button;
     }
 

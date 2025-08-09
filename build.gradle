@@ -530,6 +530,11 @@ dependencies {
         implementation 'mezz.jei:jei_1.12.2:4.16.1.302'
         //noinspection DependencyNotationArgument
         implementation rfg.deobf('curse.maven:top-245211:2667280') // TOP 1.4.28
+
+        runtimeOnly 'curse.maven:bilingualname-417557:6528166'
+        runtimeOnly 'curse.maven:forceasciifont-352339:2831187'
+        runtimeOnly 'curse.maven:just-enough-characters-250702:4692184'
+        runtimeOnly 'curse.maven:tipthescales-282313:2689835'
     }
 }
 
