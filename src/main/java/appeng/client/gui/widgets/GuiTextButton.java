@@ -37,15 +37,15 @@ public class GuiTextButton extends GuiButton {
             if (!this.enabled) {
                 this.drawTexturedModalRect(this.x, this.y + 2, 0, 40 + 2, this.width / 2, this.height - 2);
                 this.drawTexturedModalRect(this.x + this.width / 2, this.y + 2, 200 - this.width / 2, 40 + 2, this.width / 2, this.height - 1);
-                renderButtonText(mc, pFont, 2, 4276052, -1);
+                renderButtonText(mc, pFont, 2, 0x413f54, -1);
             } else if (this.hovered) {
                 this.drawTexturedModalRect(this.x, this.y + 1, 0, 20 + 1, this.width / 2, this.height - 1);
                 this.drawTexturedModalRect(this.x + this.width / 2, this.y + 1, 200 - this.width / 2, 20 + 1, this.width / 2, this.height - 1);
-                renderButtonText(mc, pFont, 2, 5338263, 0);
+                renderButtonText(mc, pFont, 2, 0x517497, 0);
             } else {
                 this.drawTexturedModalRect(this.x, this.y, 0, 0, this.width / 2, this.height);
                 this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 0, this.width / 2, this.height);
-                renderButtonText(mc, pFont, 2, 15921906, 1);
+                renderButtonText(mc, pFont, 2, 0xf2f2f2, 1);
             }
         }
     }

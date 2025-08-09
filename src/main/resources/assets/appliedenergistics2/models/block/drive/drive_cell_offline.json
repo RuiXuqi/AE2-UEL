@@ -12,9 +12,9 @@
 			"to": [15, 15, 3],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 6, 2], "texture": "#cell", "cullface": "north"},
-				"up": {"uv": [6, 0, 0, 2], "texture": "#cell", "cullface": "north"},
-				"down": {"uv": [6, 0, 0, 2], "texture": "#cell", "cullface": "north"}
+				"north": {"uv": [0, 0, 6, 2], "texture": "#cell"},
+				"up": {"uv": [6, 0, 0, 2], "texture": "#cell"},
+				"down": {"uv": [6, 0, 0, 2], "texture": "#cell"}
 			}
 		}
 	]
