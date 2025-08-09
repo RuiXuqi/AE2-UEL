@@ -99,9 +99,9 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     private boolean haltDragging = false;
     protected int offset; // Y offset of the vertical button
     // Vertical space between buttons
-    private static final int VERTICAL_SPACING = 6;
+    protected static final int VERTICAL_SPACING = 6;
     // The margin between the right side of the buttons and the GUI
-    private static final int MARGIN = 2;
+    protected static final int MARGIN = 2;
 
     public void setJeiGhostItem(boolean jeiGhostItem) {
         isJeiGhostItem = jeiGhostItem;
@@ -157,42 +157,70 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         offset = this.guiTop + 8;
     }
 
+    /** Creates a new GuiTextButton and adds it to the buttonList. Returns the button. */
     protected GuiTextButton newTextButtonToList(int id, int x, int y, int widthIn, int heightIn, String text) {
         GuiTextButton button = new GuiTextButton(id, x, y, widthIn, heightIn, text);
         this.buttonList.add(button);
         return button;
     }
 
+    /** Creates a new GuiTextButton and adds it to the buttonList. Returns the button. */
     protected GuiTextButton newTextButtonToList(int id, int x, int y, String text) {
         GuiTextButton button = new GuiTextButton(id, x, y, text);
         this.buttonList.add(button);
         return button;
     }
 
+    /** Creates a new GuiImgButton and adds it to the buttonList. Returns the button. */
+    protected GuiImgButton newImgButtonToList(final int x, final int y, final Enum idx, final Enum val) {
+        GuiImgButton button = new GuiImgButton(x, y, idx, val);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiImgButton and adds it to the buttonList. Returns the button. The button is in the left row. */
     protected GuiImgButton newImgButtonToList(final Enum idx, final Enum val) {
-        GuiImgButton button = new GuiImgButton(this.guiLeft - 16 - MARGIN, offset, idx, val);
-        this.buttonList.add(button);
+        GuiImgButton button = newImgButtonToList(this.guiLeft - 16 - MARGIN, offset, idx, val);
         this.offset += 16 + VERTICAL_SPACING;
         return button;
     }
 
+    /** Creates a new GuiToggleButton and adds it to the buttonList. Returns the button. */
+    protected GuiToggleButton newToggleButtonToList(final int x, final int y, final int on, final int off, final String displayName, final String displayHint) {
+        GuiToggleButton button = new GuiToggleButton(x, y, on, off, displayName, displayHint);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiToggleButton and adds it to the buttonList. Returns the button. The button is in the left row. */
     protected GuiToggleButton newToggleButtonToList(final int on, final int off, final String displayName, final String displayHint) {
-        GuiToggleButton button = new GuiToggleButton(this.guiLeft - 16 - MARGIN, offset, on, off, displayName, displayHint);
-        this.buttonList.add(button);
+        GuiToggleButton button = newToggleButtonToList(this.guiLeft - 16 - MARGIN, offset, on, off, displayName, displayHint);
         this.offset += 16 + VERTICAL_SPACING;
         return button;
     }
 
-    protected GuiTabButton newTabButtonToList(final int ico, final String message, final RenderItem ir) {
-        GuiTabButton button = new GuiTabButton(this.guiLeft + 154, this.guiTop, ico, message, ir);
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. */
+    protected GuiTabButton newTabButtonToList(final int x, final int y, final int ico, final String message, final RenderItem ir) {
+        GuiTabButton button = new GuiTabButton(x, y, ico, message, ir);
         this.buttonList.add(button);
         return button;
     }
 
-    protected GuiTabButton newTabButtonToList(final ItemStack ico, final String message, final RenderItem ir) {
-        GuiTabButton button = new GuiTabButton(this.guiLeft + 154, this.guiTop, ico, message, ir);
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. The button is in the upright corner of the GUI. */
+    protected GuiTabButton newTabButtonToList(final int ico, final String message, final RenderItem ir) {
+        return newTabButtonToList(this.guiLeft + 154, this.guiTop, ico, message, ir);
+    }
+
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. */
+    protected GuiTabButton newTabButtonToList(final int x, final int y, final ItemStack ico, final String message, final RenderItem ir) {
+        GuiTabButton button = new GuiTabButton(x, y, ico, message, ir);
         this.buttonList.add(button);
         return button;
+    }
+
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. The button is in the upright corner of the GUI. */
+    protected GuiTabButton newTabButtonToList(final ItemStack ico, final String message, final RenderItem ir) {
+        return newTabButtonToList(this.guiLeft + 154, this.guiTop, ico, message, ir);
     }
 
     private List<Slot> getInventorySlots() {

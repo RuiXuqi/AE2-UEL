@@ -141,9 +141,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
             if (lineObj instanceof ClientDCInternalInv) {
                 final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = newImgButtonToList(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
-                this.buttonList.add(guiButton);
                 int extraLines = numUpgradesMap.get(inv);
 
                 for (int row = 0; row < 1 + extraLines && linesDraw < LINES_ON_PAGE; ++row) {

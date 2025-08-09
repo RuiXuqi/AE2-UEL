@@ -52,7 +52,7 @@ public class GuiFluidFormationPlane extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender));
+        this.priority = newTabButtonToList(5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender);
     }
 
     @Override

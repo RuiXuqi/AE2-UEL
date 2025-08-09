@@ -65,11 +65,9 @@ public class GuiCondenser extends AEBaseGui {
 
         this.pb = new GuiProgressBar(this.cvc, "guis/condenser.png", 120 + this.guiLeft, 25 + this.guiTop, 178, 25, 6, 18, Direction.VERTICAL, GuiText.StoredEnergy
                 .getLocal());
-
-        this.mode = new GuiImgButton(128 + this.guiLeft, 52 + this.guiTop, Settings.CONDENSER_OUTPUT, this.cvc.getOutput());
-
         this.buttonList.add(this.pb);
-        this.buttonList.add(this.mode);
+
+        this.mode = newImgButtonToList(128 + this.guiLeft, 52 + this.guiTop, Settings.CONDENSER_OUTPUT, this.cvc.getOutput());
     }
 
     @Override

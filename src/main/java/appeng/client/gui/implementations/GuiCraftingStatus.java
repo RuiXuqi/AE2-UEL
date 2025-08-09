@@ -138,8 +138,7 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
         this.cpuScrollbar.setHeight(137);
 
         if (!this.myIcon.isEmpty()) {
-            this.buttonList.add(
-                    this.originalGuiBtn = new GuiTabButton(this.guiLeft + 213, this.guiTop - 4, this.myIcon, this.myIcon.getDisplayName(), this.itemRender));
+            this.originalGuiBtn = newTabButtonToList(this.guiLeft + 213, this.guiTop - 4, this.myIcon, this.myIcon.getDisplayName(), this.itemRender);
             this.originalGuiBtn.setHideEdge(13);
         }
     }

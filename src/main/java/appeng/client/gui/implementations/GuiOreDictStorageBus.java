@@ -53,10 +53,10 @@ public class GuiOreDictStorageBus extends GuiUpgradeable {
         this.searchFieldInputs.setFocused(false);
         this.searchFieldInputs.setValidator(str -> ORE_DICTIONARY_FILTER.matcher(str).matches());
 
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender));
-        this.buttonList.add(this.partition = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.ACTIONS, ActionItems.COG));
-        this.buttonList.add(this.rwMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.ACCESS, AccessRestriction.READ_WRITE));
-        this.buttonList.add(this.storageFilter = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY));
+        this.priority = newTabButtonToList(5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender);
+        this.partition = newImgButtonToList(Settings.ACTIONS, ActionItems.COG);
+        this.rwMode = newImgButtonToList(Settings.ACCESS, AccessRestriction.READ_WRITE);
+        this.storageFilter = newImgButtonToList(Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY);
 
         try {
             NetworkHandler.instance().sendToServer(new PacketValueConfig("OreDictStorageBus.getRegex", "1"));

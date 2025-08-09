@@ -57,24 +57,22 @@ public class GuiFluidLevelEmitter extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL);
+        this.redstoneMode = newImgButtonToList(Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL);
 
         final int a = AEConfig.instance().levelByMillyBuckets(0);
         final int b = AEConfig.instance().levelByMillyBuckets(1);
         final int c = AEConfig.instance().levelByMillyBuckets(2);
         final int d = AEConfig.instance().levelByMillyBuckets(3);
 
-        this.buttonList.add(this.plus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 17, 22, 20, "+" + a));
-        this.buttonList.add(this.plus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 17, 28, 20, "+" + b));
-        this.buttonList.add(this.plus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 17, 32, 20, "+" + c));
-        this.buttonList.add(this.plus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 17, 38, 20, "+" + d));
+        this.plus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 17, 22, 20, "+" + a);
+        this.plus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 17, 28, 20, "+" + b);
+        this.plus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 17, 32, 20, "+" + c);
+        this.plus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 17, 38, 20, "+" + d);
 
-        this.buttonList.add(this.minus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 59, 22, 20, "-" + a));
-        this.buttonList.add(this.minus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 59, 28, 20, "-" + b));
-        this.buttonList.add(this.minus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 59, 32, 20, "-" + c));
-        this.buttonList.add(this.minus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 59, 38, 20, "-" + d));
-
-        this.buttonList.add(this.redstoneMode);
+        this.minus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 59, 22, 20, "-" + a);
+        this.minus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 59, 28, 20, "-" + b);
+        this.minus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 59, 32, 20, "-" + c);
+        this.minus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 59, 38, 20, "-" + d);
     }
 
     @Override

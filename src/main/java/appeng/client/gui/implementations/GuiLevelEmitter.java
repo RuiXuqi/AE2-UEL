@@ -72,30 +72,25 @@ public class GuiLevelEmitter extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.levelMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.LEVEL_TYPE, LevelType.ITEM_LEVEL);
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL);
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
-        this.craftingMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.CRAFT_VIA_REDSTONE, YesNo.NO);
+        this.levelMode = newImgButtonToList(Settings.LEVEL_TYPE, LevelType.ITEM_LEVEL);
+        this.redstoneMode = newImgButtonToList(Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL);
+        this.fuzzyMode = newImgButtonToList(Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.craftingMode = newImgButtonToList(Settings.CRAFT_VIA_REDSTONE, YesNo.NO);
 
         final int a = AEConfig.instance().levelByStackAmounts(0);
         final int b = AEConfig.instance().levelByStackAmounts(1);
         final int c = AEConfig.instance().levelByStackAmounts(2);
         final int d = AEConfig.instance().levelByStackAmounts(3);
 
-        this.buttonList.add(this.plus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 17, 22, 20, "+" + a));
-        this.buttonList.add(this.plus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 17, 28, 20, "+" + b));
-        this.buttonList.add(this.plus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 17, 32, 20, "+" + c));
-        this.buttonList.add(this.plus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 17, 38, 20, "+" + d));
+        this.plus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 17, 22, 20, "+" + a);
+        this.plus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 17, 28, 20, "+" + b);
+        this.plus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 17, 32, 20, "+" + c);
+        this.plus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 17, 38, 20, "+" + d);
 
-        this.buttonList.add(this.minus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 59, 22, 20, "-" + a));
-        this.buttonList.add(this.minus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 59, 28, 20, "-" + b));
-        this.buttonList.add(this.minus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 59, 32, 20, "-" + c));
-        this.buttonList.add(this.minus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 59, 38, 20, "-" + d));
-
-        this.buttonList.add(this.levelMode);
-        this.buttonList.add(this.redstoneMode);
-        this.buttonList.add(this.fuzzyMode);
-        this.buttonList.add(this.craftingMode);
+        this.minus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 59, 22, 20, "-" + a);
+        this.minus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 59, 28, 20, "-" + b);
+        this.minus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 59, 32, 20, "-" + c);
+        this.minus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 59, 38, 20, "-" + d);
     }
 
     @Override

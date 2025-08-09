@@ -67,7 +67,7 @@ public class GuiCraftingTerm extends GuiMEMonitorable {
     @Override
     public void initGui() {
         super.initGui();
-        this.buttonList.add(this.clearBtn = new GuiImgButton(this.guiLeft + 92, this.guiTop + this.ySize - 156, Settings.ACTIONS, ActionItems.S_STASH));
+        this.clearBtn = newImgButtonToList(this.guiLeft + 92, this.guiTop + this.ySize - 156, Settings.ACTIONS, ActionItems.S_STASH);
         this.clearBtn.setHalfSize(true);
         this.clearBtn.setHaveBackGround(false);
     }

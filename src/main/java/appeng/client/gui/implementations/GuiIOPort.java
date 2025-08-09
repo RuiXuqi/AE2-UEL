@@ -50,13 +50,9 @@ public class GuiIOPort extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
-        this.fullMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.FULLNESS_MODE, FullnessMode.EMPTY);
-        this.operationMode = new GuiImgButton(this.guiLeft + 80, this.guiTop + 17, Settings.OPERATION_MODE, OperationMode.EMPTY);
-
-        this.buttonList.add(this.operationMode);
-        this.buttonList.add(this.redstoneMode);
-        this.buttonList.add(this.fullMode);
+        this.fullMode = newImgButtonToList(Settings.FULLNESS_MODE, FullnessMode.EMPTY);
+        this.redstoneMode = newImgButtonToList(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
+        this.operationMode = newImgButtonToList(this.guiLeft + 80, this.guiTop + 17, Settings.OPERATION_MODE, OperationMode.EMPTY);
     }
 
     @Override

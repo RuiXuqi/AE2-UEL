@@ -193,14 +193,15 @@ public class GuiInterfaceTerminal extends AEBaseGui {
         searchFieldNames.x = guiLeft + 32 + 99;
         searchFieldNames.y = guiTop + 38;
 
-        terminalStyleBox.x = guiLeft - 18;
+        // Mysterious buttons
+        terminalStyleBox.x = guiLeft - 16 - MARGIN;
         terminalStyleBox.y = guiTop + 8 + jeiButtonPadding;
-        guiButtonBrokenRecipes.x = guiLeft - 18;
-        guiButtonBrokenRecipes.y = terminalStyleBox.y + 20;
-        guiButtonHideFull.x = guiLeft - 18;
-        guiButtonHideFull.y = guiButtonBrokenRecipes.y + 20;
-        guiButtonAssemblersOnly.x = guiLeft - 18;
-        guiButtonAssemblersOnly.y = guiButtonHideFull.y + 20;
+        guiButtonBrokenRecipes.x = guiLeft - 16 - MARGIN;
+        guiButtonBrokenRecipes.y = terminalStyleBox.y + 16 + VERTICAL_SPACING;
+        guiButtonHideFull.x = guiLeft - 16 - MARGIN;
+        guiButtonHideFull.y = guiButtonBrokenRecipes.y + 16 + VERTICAL_SPACING;
+        guiButtonAssemblersOnly.x = guiLeft - 16 - MARGIN;
+        guiButtonAssemblersOnly.y = guiButtonHideFull.y + 16 + VERTICAL_SPACING;
 
         this.setScrollBar();
         this.repositionSlots();
@@ -286,9 +287,8 @@ public class GuiInterfaceTerminal extends AEBaseGui {
             final Object lineObj = this.lines.get(currentScroll + x);
             if (lineObj instanceof ClientDCInternalInv inv) {
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset + 1, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = newImgButtonToList(guiLeft + 4, guiTop + offset + 1, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
-                this.buttonList.add(guiButton);
 
                 final int extraLines = numUpgradesMap.get(inv);
                 for (int row = 0; row < 1 + extraLines && linesDraw < rows; ++row) {

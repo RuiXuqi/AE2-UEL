@@ -101,15 +101,10 @@ public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
     }
 
     protected void addButtons() {
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
-        this.craftMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.CRAFT_ONLY, YesNo.NO);
-        this.schedulingMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.SCHEDULING_MODE, SchedulingMode.DEFAULT);
-
-        this.buttonList.add(this.craftMode);
-        this.buttonList.add(this.redstoneMode);
-        this.buttonList.add(this.fuzzyMode);
-        this.buttonList.add(this.schedulingMode);
+        this.redstoneMode = newImgButtonToList(Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
+        this.fuzzyMode = newImgButtonToList(Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.craftMode = newImgButtonToList(Settings.CRAFT_ONLY, YesNo.NO);
+        this.schedulingMode = newImgButtonToList(Settings.SCHEDULING_MODE, SchedulingMode.DEFAULT);
     }
 
     @Override

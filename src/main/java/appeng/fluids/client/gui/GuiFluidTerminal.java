@@ -107,13 +107,9 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
         this.searchField.setSelectionColor(0xFF99FF99);
         this.searchField.setVisible(true);
 
-        int offset = this.guiTop;
-
-        this.buttonList.add(this.sortByBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY)));
-        offset += 20;
-
-        this.buttonList.add(this.sortDirBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_DIRECTION, this.configSrc
-                .getSetting(Settings.SORT_DIRECTION)));
+        offset = this.guiTop + 8;
+        this.sortByBox = newImgButtonToList(Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY));
+        this.sortDirBox = newImgButtonToList(Settings.SORT_DIRECTION, this.configSrc.getSetting(Settings.SORT_DIRECTION));
 
         for (int y = 0; y < this.rows; y++) {
             for (int x = 0; x < this.perRow; x++) {

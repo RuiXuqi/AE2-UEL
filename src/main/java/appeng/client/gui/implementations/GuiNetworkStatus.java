@@ -85,8 +85,7 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
     public void initGui() {
         super.initGui();
 
-        this.units = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.POWER_UNITS, AEConfig.instance().selectedPowerUnit());
-        this.buttonList.add(this.units);
+        this.units = newImgButtonToList(Settings.POWER_UNITS, AEConfig.instance().selectedPowerUnit());
     }
 
     @Override

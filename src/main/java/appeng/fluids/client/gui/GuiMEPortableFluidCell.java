@@ -101,7 +101,7 @@ public class GuiMEPortableFluidCell extends AEBaseMEGui implements ISortSource, 
         this.searchField.setSelectionColor(0xFF99FF99);
         this.searchField.setVisible(true);
 
-        offset = this.guiTop;
+        offset = this.guiTop + 8;
 
         this.sortByBox = newImgButtonToList(Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY));
         this.sortDirBox = newImgButtonToList(Settings.SORT_DIRECTION, this.configSrc.getSetting(Settings.SORT_DIRECTION));

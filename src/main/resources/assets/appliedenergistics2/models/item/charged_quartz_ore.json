@@ -1,0 +1,71 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "block": "blocks/stone",
+    "quartz": "appliedenergistics2:blocks/charged_quartz_ore_light_0",
+    "particle": "appliedenergistics2:blocks/charged_quartz_ore"
+  },
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#block",
+          "cullface": "down"
+        },
+        "east": {
+          "texture": "#block",
+          "cullface": "east"
+        },
+        "north": {
+          "texture": "#block",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#block",
+          "cullface": "south"
+        },
+        "up": {
+          "texture": "#block",
+          "cullface": "up"
+        },
+        "west": {
+          "texture": "#block",
+          "cullface": "west"
+        }
+      },
+      "from": [0, 0, 0],
+      "to": [16, 16, 16]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#quartz",
+          "cullface": "down"
+        },
+        "east": {
+          "texture": "#quartz",
+          "cullface": "east"
+        },
+        "north": {
+          "texture": "#quartz",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#quartz",
+          "cullface": "south"
+        },
+        "up": {
+          "texture": "#quartz",
+          "cullface": "up"
+        },
+        "west": {
+          "texture": "#quartz",
+          "cullface": "west"
+        }
+      },
+      "from": [0, 0, 0],
+      "shade": true,
+      "to": [16, 16, 16]
+    }
+  ]
+}

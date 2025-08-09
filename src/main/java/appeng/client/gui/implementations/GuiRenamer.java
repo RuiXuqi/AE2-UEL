@@ -34,7 +34,7 @@ public class GuiRenamer extends AEBaseGui {
 
         this.textField.setFocused(true);
 
-        this.buttonList.add(this.confirmButton = new GuiButton(0, this.guiLeft + 238, this.guiTop + 33, 12, 12, "↵"));
+        this.confirmButton = newTextButtonToList(0, this.guiLeft + 238, this.guiTop + 33, 12, 12, "↵");
 
         ((ContainerRenamer) this.inventorySlots).setTextField(this.textField);
     }

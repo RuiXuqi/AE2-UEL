@@ -150,9 +150,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
             if (lineObj instanceof ClientDCInternalFluidInv) {
                 final ClientDCInternalFluidInv inv = (ClientDCInternalFluidInv) lineObj;
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = newImgButtonToList(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
-                this.buttonList.add(guiButton);
                 int extraLines = numUpgradesMap.get(inv);
 
                 for (int row = 0; row < 1 + extraLines && linesDraw < LINES_ON_PAGE; ++row) {
