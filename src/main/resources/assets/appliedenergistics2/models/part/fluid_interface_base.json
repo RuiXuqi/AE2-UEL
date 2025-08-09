@@ -1,6 +1,7 @@
 {
     "parent": "appliedenergistics2:part/interface_base",
     "textures": {
+        "particle": "appliedenergistics2:parts/fluid_interface_back",
         "back": "appliedenergistics2:parts/fluid_interface_back",
         "front": "appliedenergistics2:parts/fluid_interface"
     }
