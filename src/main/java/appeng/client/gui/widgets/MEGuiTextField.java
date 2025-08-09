@@ -19,12 +19,15 @@
 package appeng.client.gui.widgets;
 
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 
@@ -128,13 +131,14 @@ public class MEGuiTextField extends GuiTextField {
 
     @Override
     public void drawTextBox() {
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/sprites.png"));
         if (this.getVisible()) {
-            if (this.isFocused()) {
-                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1, this.y + this.height + PADDING - 1,
-                        0xFF606060);
+            if (isFocused()) {
+                this.drawTexturedModalRect(this._xPos, this._yPos, 0, 72, this._width / 2, this._height);
+                this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 72, this._width / 2, this._height);
             } else {
-                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1, this.y + this.height + PADDING - 1,
-                        0xFFA8A8A8);
+                this.drawTexturedModalRect(this._xPos, this._yPos, 0, 60, this._width / 2, this._height);
+                this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 60, this._width / 2, this._height);
             }
             super.drawTextBox();
         }

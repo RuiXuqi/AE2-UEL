@@ -232,6 +232,20 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         super.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
 
+
+//        // Added a custom slot highlight effect - RID
+//        if (this.hoveredSlot != null) {
+//            drawHorizontalLine(guiLeft + this.hoveredSlot.xPos, guiLeft + this.hoveredSlot.xPos + 16,
+//                    guiTop + this.hoveredSlot.yPos - 1, 0xdaffff);
+//            drawHorizontalLine(guiLeft + this.hoveredSlot.xPos - 1, guiLeft + this.hoveredSlot.xPos + 16,
+//                    guiTop + this.hoveredSlot.yPos + 16, 0xdaffff);
+//            drawVerticalLine(guiLeft + this.hoveredSlot.xPos - 1, guiTop + this.hoveredSlot.yPos - 2,
+//                    guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+//            drawVerticalLine(guiLeft + this.hoveredSlot.xPos + 16, guiTop + this.hoveredSlot.yPos - 2,
+//                    guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+//            //renderSlotHighlight(guiGraphics, guiLeft + this.hoveredSlot.xPos, guiTop + this.hoveredSlot.yPos, 0, 0x669cd3ff);
+//        }
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(this.guiLeft, this.guiTop, 0.0F);
         GlStateManager.enableDepth();
@@ -404,7 +418,7 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                     if (aeSlot.isSlotEnabled()) {
                         this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1, optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
                     } else {
-                        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.4F);
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.2F);
                         GlStateManager.enableBlend();
                         this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1, optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
                         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
