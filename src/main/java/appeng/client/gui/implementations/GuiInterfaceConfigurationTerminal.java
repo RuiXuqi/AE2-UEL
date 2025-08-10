@@ -108,7 +108,6 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
         this.getScrollBar().setTop(31);
 
         this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX), this.guiTop + 17, 65, 12);
-        this.searchFieldInputs.setEnableBackgroundDrawing(false);
         this.searchFieldInputs.setMaxStringLength(25);
         this.searchFieldInputs.setTextColor(0xFFFFFF);
         this.searchFieldInputs.setVisible(true);

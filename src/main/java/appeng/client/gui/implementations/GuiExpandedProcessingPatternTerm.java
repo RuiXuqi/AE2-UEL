@@ -133,12 +133,13 @@ public class GuiExpandedProcessingPatternTerm extends GuiMEMonitorable implement
         this.substitutionsDisabledBtn.setHalfSize(true);
         this.substitutionsDisabledBtn.setHaveBackGround(false);
 
-        this.clearBtn = newImgButtonToList(this.guiLeft + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.CLOSE);
+        this.clearBtn = newImgButtonToList(this.guiLeft + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.S_CLOSE);
         this.clearBtn.setHalfSize(true);
+        this.clearBtn.setHaveBackGround(false);
 
         this.x3Btn = newImgButtonToList(this.guiLeft + 131, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.S_MULTIPLY_BY_THREE);
         this.x3Btn.setHalfSize(true);
-        this.x2Btn.setHaveBackGround(false);
+        this.x3Btn.setHaveBackGround(false);
 
         this.x2Btn = newImgButtonToList(this.guiLeft + 131, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.S_MULTIPLY_BY_TWO);
         this.x2Btn.setHalfSize(true);

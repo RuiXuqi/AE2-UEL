@@ -101,7 +101,6 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
         this.guiTop = (this.height - this.ySize) / 2;
 
         this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX), this.guiTop + 4, 90, 12);
-        this.searchField.setEnableBackgroundDrawing(false);
         this.searchField.setMaxStringLength(25);
         this.searchField.setTextColor(0xFFFFFF);
         this.searchField.setSelectionColor(0xFF99FF99);

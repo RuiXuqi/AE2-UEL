@@ -21,7 +21,6 @@ package appeng.client.gui.widgets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -133,13 +132,17 @@ public class MEGuiTextField extends GuiTextField {
     public void drawTextBox() {
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/sprites.png"));
         if (this.getVisible()) {
-            if (isFocused()) {
+            if (!this.isEnabled){
                 this.drawTexturedModalRect(this._xPos, this._yPos, 0, 72, this._width / 2, this._height);
                 this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 72, this._width / 2, this._height);
+            } else if (this.isFocused()) {
+                this.drawTexturedModalRect(this._xPos, this._yPos, 0, 84, this._width / 2, this._height);
+                this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 84, this._width / 2, this._height);
             } else {
                 this.drawTexturedModalRect(this._xPos, this._yPos, 0, 60, this._width / 2, this._height);
                 this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 60, this._width / 2, this._height);
             }
+            this.setEnableBackgroundDrawing(false);
             super.drawTextBox();
         }
     }
