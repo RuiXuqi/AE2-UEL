@@ -46,7 +46,7 @@ public class MEGuiTextField extends GuiTextField {
     private final int _width;
     private final int _height;
     private final int _fontPad;
-    private int selectionColor = 0xFF000080;
+    private int selectionColor = 0xFF00FF00;
     private int enabledColor = 0xFCFCFC;
     private int disabledColor = 0xA0A0A0;
 

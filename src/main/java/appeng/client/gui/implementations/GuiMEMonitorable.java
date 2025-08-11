@@ -86,7 +86,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     private int reservedSpace = 0;
     private boolean customSortOrder = true;
     private int rows = 0;
-    private int standardSize;
     private GuiImgButton ViewBox;
     private GuiImgButton SortByBox;
     private GuiImgButton SortDirBox;
@@ -97,7 +96,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     private int currentMouseY = 0;
     private boolean delayedUpdate;
 
-    protected int jeiOffset = Platform.isModLoaded("jei") ? 24 : 0;
+    // To make JEI look nicer. Otherwise, the buttons will make JEI in a strange place.
+    protected final int jeiOffset = Platform.isJEIEnabled() ? 24 : 0;
+    // So mysterious, so magic.
+    private static final int MAGIC_HEIGHT_NUMBER = 114 + 1;
 
     public GuiMEMonitorable(final InventoryPlayer inventoryPlayer, final ITerminalHost te) {
         this(inventoryPlayer, te, new ContainerMEMonitorable(inventoryPlayer, te));
@@ -117,8 +119,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         if (te instanceof IViewCellStorage) {
             this.xSize += 33;
         }
-
-        this.standardSize = this.xSize;
 
         this.configSrc = ((IConfigurableObject) this.inventorySlots).getConfigManager();
         (this.monitorableContainer = (ContainerMEMonitorable) this.inventorySlots).setGui(this);
@@ -208,10 +208,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
 
-        final int magicNumber = 114 + 1; // So mysterious, so magic.
-        int maxScreenRows = (int) Math.floor((double) (this.height - magicNumber - this.reservedSpace) / 18);
+        final int jeiSearchOffset = Platform.isJEICenterSearchBarEnabled() ? 40 : 0;
+        final int maxScreenRows = (int) Math.floor((double) (this.height - MAGIC_HEIGHT_NUMBER - this.reservedSpace - jeiSearchOffset) / 18);
 
-        Enum<?> terminalStyle = AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE);
+        final Enum<?> terminalStyle = AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE);
 
         if (terminalStyle == TerminalStyle.FULL) {
             this.rows = maxScreenRows;
@@ -225,13 +225,8 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
             this.rows = maxScreenRows;
         }
 
-        if (this.rows > this.getMaxRows()) {
-            this.rows = this.getMaxRows();
-        }
-
-        if (this.rows < this.getMinRows()) {
-            this.rows = this.getMinRows();
-        }
+        this.rows = Math.min(this.rows, this.getMaxRows());
+        this.rows = Math.max(this.rows, this.getMinRows());
 
         this.getMeSlots().clear();
         for (int y = 0; y < this.rows; y++) {
@@ -240,23 +235,17 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
             }
         }
 
-        if (AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE) != TerminalStyle.FULL) {
-            this.xSize = this.standardSize + ((this.perRow - 9) * 18);
-        } else {
-            this.xSize = this.standardSize;
-        }
-
         super.initGui();
         // full size : 204
         // extra slots : 72
         // slot 18
 
-        this.ySize = magicNumber + this.rows * 18 + this.reservedSpace;
+        this.ySize = MAGIC_HEIGHT_NUMBER + this.rows * 18 + this.reservedSpace;
         // this.guiTop = top;
         final int unusedSpace = this.height - this.ySize;
         this.guiTop = (int) Math.floor(unusedSpace / (unusedSpace < 0 ? 3.8f : 2.0f));
 
-        offset = this.guiTop + 8 + jeiOffset;
+        offset = this.guiTop + 8 + this.jeiOffset;
 
         {
             if (this.customSortOrder) {
@@ -338,7 +327,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     public List<Rectangle> getJEIExclusionArea() {
         List<Rectangle> exclusionArea = new ArrayList<>();
 
-        int yOffset = guiTop + 8 + jeiOffset;
+        int yOffset = guiTop + 8 + this.jeiOffset;
 
         int visibleButtons = (int) this.buttonList.stream().filter(v -> v.enabled && v.x < guiLeft).count();
         Rectangle sortDir = new Rectangle(guiLeft - 18, yOffset, 20, visibleButtons * 20 + visibleButtons - 2);
@@ -389,7 +378,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, x_width, 18);
 
         if (this.viewCell || (this instanceof GuiSecurityStation)) {
-            this.drawTexturedModalRect(offsetX + x_width, offsetY + jeiOffset, x_width, 0, 46, 128);
+            this.drawTexturedModalRect(offsetX + x_width, offsetY + this.jeiOffset, x_width, 0, 46, 128);
         }
 
         for (int x = 0; x < this.rows; x++) {
@@ -554,11 +543,13 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         this.customSortOrder = customSortOrder;
     }
 
+    @Deprecated
     public int getStandardSize() {
-        return this.standardSize;
+        return this.xSize;
     }
 
+    @Deprecated
     void setStandardSize(final int standardSize) {
-        this.standardSize = standardSize;
+        this.xSize = standardSize;
     }
 }
