@@ -148,8 +148,9 @@ public class AE2ELTransformer implements IClassTransformer {
                             ListIterator<AbstractInsnNode> nodeListIterator = mn.instructions.iterator();
                             while (nodeListIterator.hasNext()) {
                                 AbstractInsnNode node = nodeListIterator.next();
-                                if (node instanceof MethodInsnNode methodNode
+                                if (node instanceof MethodInsnNode
                                         && node.getOpcode() == Opcodes.INVOKESPECIAL) {
+                                    MethodInsnNode methodNode = (MethodInsnNode) node;
                                     if (targetClassName2.equals(methodNode.owner)) {
                                         methodNode.owner = nodeData.superName;
                                     }

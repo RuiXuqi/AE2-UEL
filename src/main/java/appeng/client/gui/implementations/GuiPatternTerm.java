@@ -263,12 +263,13 @@ public class GuiPatternTerm extends GuiMEMonitorable implements IJEIGhostIngredi
 
     @Override
     public List<Target<?>> getPhantomTargets(Object ingredient) {
-        if (!(ingredient instanceof ItemStack itemStack)) {
+        if (!(ingredient instanceof ItemStack)) {
             return Collections.emptyList();
         }
         List<Target<?>> targets = new ArrayList<>();
         for (Slot slot : this.inventorySlots.inventorySlots) {
             if (slot instanceof SlotFake) {
+                ItemStack itemStack = (ItemStack) ingredient;
                 Target<Object> target = new Target<Object>() {
                     @Override
                     public Rectangle getArea() {

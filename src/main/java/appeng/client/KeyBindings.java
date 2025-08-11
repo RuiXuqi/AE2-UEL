@@ -20,11 +20,13 @@ public enum KeyBindings {
     WIT(new KeyBinding("key.open_wireless_interface_terminal.desc", KeyConflictContext.UNIVERSAL, KeyModifier.SHIFT,
             Keyboard.KEY_I, KEY_CATEGORY));
 
-    private final KeyBinding keyBinding;
+    private KeyBinding keyBinding;
 
     KeyBindings(KeyBinding keyBinding) {
         this.keyBinding = keyBinding;
     }
+
+    ;
 
     public KeyBinding getKeyBinding() {
         return keyBinding;

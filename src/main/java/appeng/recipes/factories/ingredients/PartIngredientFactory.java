@@ -41,11 +41,13 @@ public class PartIngredientFactory implements IIngredientFactory {
         final String partName = json.get("part").getAsString();
         final Object result = Api.INSTANCE.registries().recipes().resolveItem(AppEng.MOD_ID, partName);
 
-        if (result instanceof ResolverResultSet resolverResultSet) {
+        if (result instanceof ResolverResultSet) {
+            final ResolverResultSet resolverResultSet = (ResolverResultSet) result;
 
             return net.minecraft.item.crafting.Ingredient
                     .fromStacks(resolverResultSet.results.toArray(new ItemStack[resolverResultSet.results.size()]));
-        } else if (result instanceof ResolverResult resolverResult) {
+        } else if (result instanceof ResolverResult) {
+            final ResolverResult resolverResult = (ResolverResult) result;
 
             final Item item = Item.getByNameOrId(AppEng.MOD_ID + ":" + resolverResult.itemName);
             final ItemStack itemStack = new ItemStack(item, 1, resolverResult.damageValue, resolverResult.compound);

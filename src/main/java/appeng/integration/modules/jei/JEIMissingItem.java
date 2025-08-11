@@ -62,7 +62,8 @@ public class JEIMissingItem implements IRecipeTransferError {
                 if (i.isInput() && !i.getAllIngredients().isEmpty()) {
                     List<?> allIngredients = i.getAllIngredients();
                     for (Object allIngredient : allIngredients) {
-                        if (allIngredient instanceof ItemStack stack) {
+                        if (allIngredient instanceof ItemStack) {
+                            ItemStack stack = (ItemStack) allIngredient;
                             if (!stack.isEmpty()) {
                                 IAEItemStack search = AEItemStack.fromItemStack(stack);
                                 if (stack.getItem().isDamageable() || Platform.isGTDamageableItem(stack.getItem())) {
@@ -117,7 +118,7 @@ public class JEIMissingItem implements IRecipeTransferError {
             int recipeY) {
         Container c = minecraft.player.openContainer;
         if (c instanceof ContainerMEMonitorable container) {
-            IItemList<IAEItemStack> ir = container.items;
+            IItemList<IAEItemStack> ir = ((ContainerMEMonitorable) c).items;
             boolean found = false;
             boolean foundAny = false;
             boolean craftable = false;

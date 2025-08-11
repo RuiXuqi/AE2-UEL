@@ -374,7 +374,8 @@ public abstract class AEBaseBlock extends Block {
     }
 
     protected IOrientable getOrientable(final IBlockAccess w, final BlockPos pos) {
-        if (this instanceof IOrientableBlock orientable) {
+        if (this instanceof IOrientableBlock) {
+            IOrientableBlock orientable = (IOrientableBlock) this;
             return orientable.getOrientable(w, pos);
         }
         return null;

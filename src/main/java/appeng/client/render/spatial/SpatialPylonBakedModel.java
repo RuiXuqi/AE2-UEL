@@ -136,9 +136,11 @@ class SpatialPylonBakedModel implements IBakedModel {
     }
 
     private int getFlags(IBlockState state) {
-        if (!(state instanceof IExtendedBlockState extState)) {
+        if (!(state instanceof IExtendedBlockState)) {
             return 0;
         }
+
+        IExtendedBlockState extState = (IExtendedBlockState) state;
 
         return extState.getValue(BlockSpatialPylon.STATE);
     }

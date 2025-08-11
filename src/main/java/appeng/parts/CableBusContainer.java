@@ -116,7 +116,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
             return true;
         }
 
-        if (is.getItem() instanceof IPartItem bi) {
+        if (is.getItem() instanceof IPartItem) {
+            final IPartItem bi = (IPartItem) is.getItem();
 
             is = is.copy();
             is.setCount(1);
@@ -154,7 +155,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
     public AEPartLocation addPart(ItemStack is, final AEPartLocation side, final @Nullable EntityPlayer player,
             final @Nullable EnumHand hand) {
         if (this.canAddPart(is, side)) {
-            if (is.getItem() instanceof IPartItem bi) {
+            if (is.getItem() instanceof IPartItem) {
+                final IPartItem bi = (IPartItem) is.getItem();
 
                 is = is.copy();
                 is.setCount(1);
@@ -968,7 +970,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
                 final BlockPos adjacentPos = this.getTile().getPos().offset(facing);
                 final TileEntity adjacentTe = this.getTile().getWorld().getTileEntity(adjacentPos);
 
-                if (adjacentTe instanceof IGridHost gridHost) {
+                if (adjacentTe instanceof IGridHost) {
+                    final IGridHost gridHost = (IGridHost) adjacentTe;
                     final AECableType adjacentType = gridHost
                             .getCableConnectionType(AEPartLocation.fromFacing(facing.getOpposite()));
 
@@ -1009,8 +1012,9 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
 
             part.getBoxes(bch);
 
-            if (part instanceof IGridHost gridHost) {
+            if (part instanceof IGridHost) {
                 // Some attachments want a thicker cable than glass, account for that
+                final IGridHost gridHost = (IGridHost) part;
                 final AECableType desiredType = gridHost.getCableConnectionType(AEPartLocation.INTERNAL);
 
                 if (renderState.getCoreType() == CableCoreType.GLASS

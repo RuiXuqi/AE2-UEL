@@ -47,7 +47,8 @@ public final class PowerStateWailaDataProvider extends BasePartWailaDataProvider
     @Override
     public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
             final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
-        if (part instanceof IPowerChannelState state) {
+        if (part instanceof IPowerChannelState) {
+            final IPowerChannelState state = (IPowerChannelState) part;
 
             currentToolTip.add(this.getToolTip(state.isActive(), state.isPowered()));
         }

@@ -193,7 +193,8 @@ class BlockDefinitionBuilder implements IBlockBuilder {
         }
 
         if (Platform.isClient()) {
-            if (block instanceof AEBaseTileBlock tileBlock) {
+            if (block instanceof AEBaseTileBlock) {
+                AEBaseTileBlock tileBlock = (AEBaseTileBlock) block;
                 this.blockRendering.apply(this.factory, block, tileBlock.getTileEntityClass());
             } else {
                 this.blockRendering.apply(this.factory, block, null);

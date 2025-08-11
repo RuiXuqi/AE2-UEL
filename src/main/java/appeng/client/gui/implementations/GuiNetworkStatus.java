@@ -220,10 +220,11 @@ public class GuiNetworkStatus extends AEBaseGui implements ISortSource {
     protected void renderToolTip(final ItemStack stack, final int x, final int y) {
         final Slot s = this.getSlot(x, y);
 
-        if (s instanceof SlotME theSlotField && stack != null) {
+        if (s instanceof SlotME && stack != null) {
             IAEItemStack myStack = null;
 
             try {
+                final SlotME theSlotField = (SlotME) s;
                 myStack = theSlotField.getAEStack();
             } catch (final Throwable ignore) {
             }

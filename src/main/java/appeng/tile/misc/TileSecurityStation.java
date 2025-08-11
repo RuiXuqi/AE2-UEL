@@ -281,7 +281,8 @@ public class TileSecurityStation extends AENetworkTile implements ITerminalHost,
         for (final IAEItemStack ais : this.inventory.getStoredItems()) {
             final ItemStack is = ais.createItemStack();
             final Item i = is.getItem();
-            if (i instanceof IBiometricCard bc) {
+            if (i instanceof IBiometricCard) {
+                final IBiometricCard bc = (IBiometricCard) i;
                 bc.registerPermissions(new PlayerSecurityWrapper(playerPerms), pr, is);
             }
         }

@@ -50,16 +50,19 @@ public final class StorageMonitorWailaDataProvider extends BasePartWailaDataProv
     @Override
     public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
             final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
-        if (part instanceof IPartStorageMonitor monitor) {
+        if (part instanceof IPartStorageMonitor) {
+            final IPartStorageMonitor monitor = (IPartStorageMonitor) part;
 
             final IAEStack<?> displayed = monitor.getDisplayed();
             final boolean isLocked = monitor.isLocked();
 
             // TODO: generalize
-            if (displayed instanceof IAEItemStack ais) {
+            if (displayed instanceof IAEItemStack) {
+                final IAEItemStack ais = (IAEItemStack) displayed;
                 currentToolTip
                         .add(WailaText.Showing.getLocal() + ": " + ais.asItemStackRepresentation().getDisplayName());
-            } else if (displayed instanceof IAEFluidStack ais) {
+            } else if (displayed instanceof IAEFluidStack) {
+                final IAEFluidStack ais = (IAEFluidStack) displayed;
                 currentToolTip.add(
                         WailaText.Showing.getLocal() + ": " + ais.getFluid().getLocalizedName(ais.getFluidStack()));
             }

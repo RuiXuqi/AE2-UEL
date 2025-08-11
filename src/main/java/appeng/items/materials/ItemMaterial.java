@@ -118,7 +118,8 @@ public final class ItemMaterial extends AEBaseItem implements IStorageComponent,
 
                 final int limit = j.getValue();
 
-                if (j.getKey().getItem() instanceof IItemGroup ig) {
+                if (j.getKey().getItem() instanceof IItemGroup) {
+                    final IItemGroup ig = (IItemGroup) j.getKey().getItem();
                     final String str = ig.getUnlocalizedGroupName(u.getSupported().keySet(), j.getKey());
                     if (str != null) {
                         name = Platform.gui_localize(str) + (limit > 1 ? " (" + limit + ')' : "");
@@ -247,7 +248,8 @@ public final class ItemMaterial extends AEBaseItem implements IStorageComponent,
             }
 
             if (upgrades != null && !player.getHeldItem(hand).isEmpty()
-                    && player.getHeldItem(hand).getItem() instanceof IUpgradeModule um) {
+                    && player.getHeldItem(hand).getItem() instanceof IUpgradeModule) {
+                final IUpgradeModule um = (IUpgradeModule) player.getHeldItem(hand).getItem();
                 final Upgrades u = um.getType(player.getHeldItem(hand));
 
                 if (u != null) {

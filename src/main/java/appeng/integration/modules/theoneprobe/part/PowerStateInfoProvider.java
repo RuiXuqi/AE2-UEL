@@ -35,7 +35,8 @@ public class PowerStateInfoProvider implements IPartProbInfoProvider {
     @Override
     public void addProbeInfo(IPart part, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
             IBlockState blockState, IProbeHitData data) {
-        if (part instanceof IPowerChannelState state) {
+        if (part instanceof IPowerChannelState) {
+            final IPowerChannelState state = (IPowerChannelState) part;
             final String tooltip = this.getToolTip(state.isActive(), state.isPowered());
 
             probeInfo.text(tooltip);

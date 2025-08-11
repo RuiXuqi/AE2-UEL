@@ -74,7 +74,8 @@ public class GridStorageCache implements IStorageGrid {
 
     @Override
     public void removeNode(final IGridNode node, final IGridHost machine) {
-        if (machine instanceof ICellContainer cc) {
+        if (machine instanceof ICellContainer) {
+            final ICellContainer cc = (ICellContainer) machine;
             final CellChangeTracker tracker = new CellChangeTracker();
 
             this.removeCellProvider(cc, tracker);
@@ -96,7 +97,8 @@ public class GridStorageCache implements IStorageGrid {
 
     @Override
     public void addNode(final IGridNode node, final IGridHost machine) {
-        if (machine instanceof ICellContainer cc) {
+        if (machine instanceof ICellContainer) {
+            final ICellContainer cc = (ICellContainer) machine;
             this.inactiveCellProviders.add(cc);
 
             cellUpdate(null);
@@ -109,7 +111,8 @@ public class GridStorageCache implements IStorageGrid {
             }
         }
 
-        if (machine instanceof IStackWatcherHost swh) {
+        if (machine instanceof IStackWatcherHost) {
+            final IStackWatcherHost swh = (IStackWatcherHost) machine;
             final ItemWatcher iw = new ItemWatcher(this, swh);
             this.watchers.put(node, iw);
             swh.updateWatcher(iw);

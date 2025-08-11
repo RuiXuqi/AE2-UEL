@@ -81,7 +81,8 @@ public class PartRecipeFactory implements IRecipeFactory {
     private static ItemStack getPart(JsonObject resultObject) {
         String ingredient = JsonUtils.getString(resultObject, "part");
         Object result = AEApi.instance().registries().recipes().resolveItem(AppEng.MOD_ID, ingredient);
-        if (result instanceof ResolverResult resolverResult) {
+        if (result instanceof ResolverResult) {
+            ResolverResult resolverResult = (ResolverResult) result;
 
             Item item = Item.getByNameOrId(AppEng.MOD_ID + ":" + resolverResult.itemName);
 

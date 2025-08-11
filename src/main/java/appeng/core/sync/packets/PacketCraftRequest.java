@@ -67,9 +67,11 @@ public class PacketCraftRequest extends AppEngPacket {
 
     @Override
     public void serverPacketData(final INetworkInfo manager, final AppEngPacket packet, final EntityPlayer player) {
-        if (player.openContainer instanceof ContainerCraftAmount cca) {
+        if (player.openContainer instanceof ContainerCraftAmount) {
+            final ContainerCraftAmount cca = (ContainerCraftAmount) player.openContainer;
             final Object target = cca.getTarget();
-            if (target instanceof IActionHost ah) {
+            if (target instanceof IActionHost) {
+                final IActionHost ah = (IActionHost) target;
                 final IGridNode gn = ah.getActionableNode();
                 if (gn == null) {
                     return;
@@ -95,13 +97,15 @@ public class PacketCraftRequest extends AppEngPacket {
                             Platform.openGUI(player, te, cca.getOpenContext().getSide(),
                                     GuiBridge.GUI_CRAFTING_CONFIRM);
                         } else {
-                            if (ah instanceof IInventorySlotAware i) {
+                            if (ah instanceof IInventorySlotAware) {
+                                IInventorySlotAware i = ((IInventorySlotAware) ah);
                                 Platform.openGUI(player, i.getInventorySlot(), GuiBridge.GUI_CRAFTING_CONFIRM,
                                         i.isBaubleSlot());
                             }
                         }
 
-                        if (player.openContainer instanceof ContainerCraftConfirm ccc) {
+                        if (player.openContainer instanceof ContainerCraftConfirm) {
+                            final ContainerCraftConfirm ccc = (ContainerCraftConfirm) player.openContainer;
                             ccc.setAutoStart(this.heldShift);
                             ccc.setJob(futureJob);
                             cca.detectAndSendChanges();

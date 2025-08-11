@@ -135,7 +135,8 @@ class MemoryCardBakedModel implements IBakedModel {
             public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
                     EntityLivingBase entity) {
                 try {
-                    if (stack.getItem() instanceof IMemoryCard memoryCard) {
+                    if (stack.getItem() instanceof IMemoryCard) {
+                        final IMemoryCard memoryCard = (IMemoryCard) stack.getItem();
                         final AEColor[] colors = memoryCard.getColorCode(stack);
 
                         return MemoryCardBakedModel.this.modelCache.get(new CacheKey(colors),

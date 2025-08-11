@@ -304,10 +304,11 @@ public class CableBusBakedModel implements IBakedModel {
     }
 
     private static CableBusRenderState getRenderingState(IBlockState state) {
-        if (state == null || !(state instanceof IExtendedBlockState extendedBlockState)) {
+        if (state == null || !(state instanceof IExtendedBlockState)) {
             return null;
         }
 
+        IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
         return extendedBlockState.getValue(BlockCableBus.RENDER_STATE_PROPERTY);
     }
 

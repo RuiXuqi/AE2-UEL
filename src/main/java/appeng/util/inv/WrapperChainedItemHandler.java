@@ -19,7 +19,6 @@
 package appeng.util.inv;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
@@ -82,7 +81,9 @@ public class WrapperChainedItemHandler implements IItemHandlerModifiable {
         if (this.itemHandler.length > 1) {
             ArrayList<IItemHandler> newOrder = new ArrayList<>();
             newOrder.add(this.itemHandler[this.itemHandler.length - 1]);
-            newOrder.addAll(Arrays.asList(this.itemHandler).subList(0, this.itemHandler.length - 1));
+            for (int i = 0; i < this.itemHandler.length - 1; ++i) {
+                newOrder.add(this.itemHandler[i]);
+            }
             this.setItemHandlers(newOrder.toArray(new IItemHandler[this.itemHandler.length]));
         }
     }

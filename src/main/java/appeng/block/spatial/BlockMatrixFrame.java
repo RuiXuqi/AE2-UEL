@@ -57,7 +57,7 @@ public class BlockMatrixFrame extends AEBaseBlock implements ICustomCollision {
     @Override
     public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
             final Entity thePlayer, final boolean b) {
-        return List.of();// AxisAlignedBB.getBoundingBox( 0.25, 0, 0.25, 0.75, 0.5, 0.75 )
+        return Arrays.asList(new AxisAlignedBB[] {});// AxisAlignedBB.getBoundingBox( 0.25, 0, 0.25, 0.75, 0.5, 0.75 )
         // } );
     }
 

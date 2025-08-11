@@ -470,7 +470,8 @@ public class EnergyGridCache implements IEnergyGrid {
         this.drainPerTick -= gridNode.getPreviousDraw();
 
         // power storage.
-        if (machine instanceof IAEPowerStorage ps) {
+        if (machine instanceof IAEPowerStorage) {
+            final IAEPowerStorage ps = (IAEPowerStorage) machine;
             if (ps.isAEPublicPowerStorage()) {
                 if (ps.getPowerFlow() != AccessRestriction.WRITE) {
                     this.globalMaxPower -= ps.getAEMaxPower();
@@ -529,7 +530,8 @@ public class EnergyGridCache implements IEnergyGrid {
         this.drainPerTick += gridNode.getPreviousDraw();
 
         // power storage
-        if (machine instanceof IAEPowerStorage ps) {
+        if (machine instanceof IAEPowerStorage) {
+            final IAEPowerStorage ps = (IAEPowerStorage) machine;
             if (ps.isAEPublicPowerStorage()) {
                 final double max = ps.getAEMaxPower();
                 final double current = ps.getAECurrentPower();
@@ -549,7 +551,8 @@ public class EnergyGridCache implements IEnergyGrid {
             }
         }
 
-        if (machine instanceof IEnergyWatcherHost swh) {
+        if (machine instanceof IEnergyWatcherHost) {
+            final IEnergyWatcherHost swh = (IEnergyWatcherHost) machine;
             final EnergyWatcher iw = new EnergyWatcher(this, swh);
 
             this.watchers.put(node, iw);

@@ -62,7 +62,8 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
     FluidHandlerAdapter(IFluidHandler fluidHandler, IGridProxyable proxy) {
         this.fluidHandler = fluidHandler;
         this.proxyable = proxy;
-        if (this.proxyable instanceof PartFluidStorageBus partFluidStorageBus) {
+        if (this.proxyable instanceof PartFluidStorageBus) {
+            PartFluidStorageBus partFluidStorageBus = (PartFluidStorageBus) this.proxyable;
             this.mode = ((StorageFilter) partFluidStorageBus.getConfigManager().getSetting(Settings.STORAGE_FILTER));
             this.access = ((AccessRestriction) partFluidStorageBus.getConfigManager().getSetting(Settings.ACCESS));
         }

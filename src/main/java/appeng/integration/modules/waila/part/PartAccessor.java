@@ -48,9 +48,10 @@ public final class PartAccessor {
      * @return maybe the looked at {@link IPart}
      */
     public Optional<IPart> getMaybePart(final TileEntity te, final RayTraceResult mop) {
-        if (te instanceof IPartHost host) {
+        if (te instanceof IPartHost) {
             BlockPos pos = mop.getBlockPos();
             final Vec3d position = mop.hitVec.add(-pos.getX(), -pos.getY(), -pos.getZ());
+            final IPartHost host = (IPartHost) te;
             final SelectedPart sp = host.selectPart(position);
 
             if (sp.part != null) {

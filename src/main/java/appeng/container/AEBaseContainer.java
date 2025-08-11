@@ -274,7 +274,8 @@ public abstract class AEBaseContainer extends Container {
 
     @Override
     protected Slot addSlotToContainer(final Slot newSlot) {
-        if (newSlot instanceof AppEngSlot s) {
+        if (newSlot instanceof AppEngSlot) {
+            final AppEngSlot s = (AppEngSlot) newSlot;
             s.setContainer(this);
             return super.addSlotToContainer(newSlot);
         } else {

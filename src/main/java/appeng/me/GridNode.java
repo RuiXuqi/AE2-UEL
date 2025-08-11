@@ -97,7 +97,7 @@ public class GridNode implements IGridNode, IPathItem {
 
     @Nonnull
     private final Object owner;
-    private final MutableClassToInstanceMap<IGridNodeService> services = null;
+    private MutableClassToInstanceMap<IGridNodeService> services = null;
 
     public GridNode(final IGridBlock what) {
         this.gridProxy = what;
@@ -177,8 +177,9 @@ public class GridNode implements IGridNode, IPathItem {
 
         this.visitorIterationNumber = tracker;
 
-        if (g instanceof IGridConnectionVisitor gcv) {
+        if (g instanceof IGridConnectionVisitor) {
             final Deque<IGridConnection> nextConn = new ArrayDeque<>();
+            final IGridConnectionVisitor gcv = (IGridConnectionVisitor) g;
 
             while (!nextRun.isEmpty()) {
                 while (!nextConn.isEmpty()) {
@@ -461,7 +462,11 @@ public class GridNode implements IGridNode, IPathItem {
             return false;
         }
 
-        return from.getColor().matches(this.getColor());
+        if (!from.getColor().matches(this.getColor())) {
+            return false;
+        }
+
+        return true;
     }
 
     private boolean isValidDirection(final AEPartLocation dir) {

@@ -179,7 +179,8 @@ public class ApiStorage implements IStorageHelper {
             if (input instanceof FluidStack) {
                 return AEFluidStack.fromFluidStack((FluidStack) input);
             }
-            if (input instanceof ItemStack is) {
+            if (input instanceof ItemStack) {
+                final ItemStack is = (ItemStack) input;
                 if (is.getItem() instanceof FluidDummyItem) {
                     return AEFluidStack.fromFluidStack(((FluidDummyItem) is.getItem()).getFluidStack(is));
                 } else {

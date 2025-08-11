@@ -108,7 +108,8 @@ public class FacadePart implements IFacadePart, IBoxProvider {
         final Item maybeFacade = this.facade.getItem();
 
         // AE Facade
-        if (maybeFacade instanceof IFacadeItem facade) {
+        if (maybeFacade instanceof IFacadeItem) {
+            final IFacadeItem facade = (IFacadeItem) maybeFacade;
 
             return facade.getTextureItem(this.facade);
         }
@@ -121,7 +122,8 @@ public class FacadePart implements IFacadePart, IBoxProvider {
         final Item maybeFacade = this.facade.getItem();
 
         // AE Facade
-        if (maybeFacade instanceof IFacadeItem facade) {
+        if (maybeFacade instanceof IFacadeItem) {
+            final IFacadeItem facade = (IFacadeItem) maybeFacade;
 
             return facade.getTextureBlockState(this.facade);
         }

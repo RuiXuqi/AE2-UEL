@@ -312,8 +312,9 @@ public class TileMolecularAssembler extends AENetworkInvTile
         if (data.hasKey("myPlan")) {
             final ItemStack myPat = stackFromNBT(data.getCompoundTag("myPlan"));
 
-            if (!myPat.isEmpty() && myPat.getItem() instanceof ItemEncodedPattern iep) {
+            if (!myPat.isEmpty() && myPat.getItem() instanceof ItemEncodedPattern) {
                 final World w = this.getWorld();
+                final ItemEncodedPattern iep = (ItemEncodedPattern) myPat.getItem();
                 final ICraftingPatternDetails ph = iep.getPatternForItem(myPat, w);
                 if (ph != null && ph.isCraftable()) {
                     this.forcePlan = true;
@@ -337,9 +338,10 @@ public class TileMolecularAssembler extends AENetworkInvTile
 
         final ItemStack is = this.patternInv.getStackInSlot(0);
 
-        if (!is.isEmpty() && is.getItem() instanceof ItemEncodedPattern iep) {
+        if (!is.isEmpty() && is.getItem() instanceof ItemEncodedPattern) {
             if (!ItemStack.areItemsEqual(is, this.myPattern)) {
                 final World w = this.getWorld();
+                final ItemEncodedPattern iep = (ItemEncodedPattern) is.getItem();
                 final ICraftingPatternDetails ph = iep.getPatternForItem(is, w);
 
                 if (ph != null && ph.isCraftable()) {
@@ -577,8 +579,9 @@ public class TileMolecularAssembler extends AENetworkInvTile
         }
 
         Object capability = neighbors.get(d);
-        if (capability instanceof IStorageMonitorable inventory) {
+        if (capability instanceof IStorageMonitorable) {
             // Prioritize a handler to directly link to another ME network
+            IStorageMonitorable inventory = (IStorageMonitorable) capability;
             IAEItemStack toInsert = AEItemStack.fromItemStack(output);
             IMEMonitor<IAEItemStack> inv = inventory
                     .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
@@ -595,7 +598,8 @@ public class TileMolecularAssembler extends AENetworkInvTile
                 this.saveChanges();
                 return remainder.createItemStack();
             }
-        } else if (capability instanceof InventoryAdaptor adaptor) {
+        } else if (capability instanceof InventoryAdaptor) {
+            InventoryAdaptor adaptor = (InventoryAdaptor) capability;
 
             final int size = output.getCount();
             output = adaptor.addItems(output);

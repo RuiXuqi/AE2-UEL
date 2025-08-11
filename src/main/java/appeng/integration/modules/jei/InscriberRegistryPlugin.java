@@ -40,11 +40,12 @@ class InscriberRegistryPlugin implements IRecipeRegistryPlugin {
 
     @Override
     public <V> List<String> getRecipeCategoryUids(IFocus<V> focus) {
-        if (!(focus.getValue() instanceof ItemStack input)) {
+        if (!(focus.getValue() instanceof ItemStack)) {
             return Collections.emptyList();
         }
 
         if (focus.getMode() == IFocus.Mode.INPUT) {
+            ItemStack input = (ItemStack) focus.getValue();
             for (ItemStack validInput : this.inscriber.getInputs()) {
 
             }

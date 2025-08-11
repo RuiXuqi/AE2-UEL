@@ -30,7 +30,7 @@ public class ToolClass {
 
     public static Class<?> getGTToolClass() {
         if (GTToolClass == null) {
-            System.out.print("TToolClass == null");
+            System.out.printf("TToolClass == null");
         }
         return GTToolClass;
     }

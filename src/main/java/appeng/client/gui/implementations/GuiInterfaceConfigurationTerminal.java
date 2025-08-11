@@ -141,7 +141,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
         int linesDraw = 0;
         for (int x = 0; x < LINES_ON_PAGE && linesDraw < LINES_ON_PAGE && currentScroll + x < this.lines.size(); x++) {
             final Object lineObj = this.lines.get(currentScroll + x);
-            if (lineObj instanceof ClientDCInternalInv inv) {
+            if (lineObj instanceof ClientDCInternalInv) {
+                final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
                 GuiButton guiButton = newImgButtonToList(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
@@ -160,7 +161,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
                     linesDraw++;
                     offset += 18;
                 }
-            } else if (lineObj instanceof String name) {
+            } else if (lineObj instanceof String) {
+                String name = (String) lineObj;
                 final int rows = this.byName.get(name).size();
                 if (rows > 1) {
                     name = name + " (" + rows + ')';
@@ -477,12 +479,13 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
 
     @Override
     public List<IGhostIngredientHandler.Target<?>> getPhantomTargets(Object ingredient) {
-        if (!(ingredient instanceof ItemStack itemStack)) {
+        if (!(ingredient instanceof ItemStack)) {
             return Collections.emptyList();
         }
         List<IGhostIngredientHandler.Target<?>> targets = new ArrayList<>();
         for (Slot slot : this.inventorySlots.inventorySlots) {
             if (slot instanceof SlotDisconnected) {
+                ItemStack itemStack = (ItemStack) ingredient;
                 IGhostIngredientHandler.Target<Object> target = new IGhostIngredientHandler.Target<Object>() {
                     @Override
                     public Rectangle getArea() {

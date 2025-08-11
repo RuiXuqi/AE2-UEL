@@ -76,10 +76,11 @@ class QnbFormedBakedModel implements IBakedModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         // Get the correct base model
-        if (!(state instanceof IExtendedBlockState extendedBlockState)) {
+        if (!(state instanceof IExtendedBlockState)) {
             return this.baseModel.getQuads(state, side, rand);
         }
 
+        IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
         QnbFormedState formedState = extendedBlockState.getValue(BlockQuantumBase.FORMED_STATE);
 
         return this.getQuads(formedState, state, side, rand);

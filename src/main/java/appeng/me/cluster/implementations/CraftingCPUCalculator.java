@@ -49,7 +49,11 @@ public class CraftingCPUCalculator extends MBCalculator<TileCraftingTile, Crafti
             return false;
         }
 
-        return max.getZ() - min.getZ() <= 16;
+        if (max.getZ() - min.getZ() > 16) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

@@ -167,7 +167,8 @@ public class CraftingGridCache
 
     @Override
     public void addNode(final IGridNode gridNode, final IGridHost machine) {
-        if (machine instanceof ICraftingWatcherHost watcherHost) {
+        if (machine instanceof ICraftingWatcherHost) {
+            final ICraftingWatcherHost watcherHost = (ICraftingWatcherHost) machine;
             final CraftingWatcher watcher = new CraftingWatcher(this, watcherHost);
             this.craftingWatchers.put(gridNode, watcher);
             watcherHost.updateWatcher(watcher);
@@ -302,7 +303,7 @@ public class CraftingGridCache
                 .filter(TileCraftingStorageTile.class::isAssignableFrom).toArray()) {
             for (final IGridNode cst : this.grid.getMachines((Class<? extends IGridHost>) cls)) {
                 final TileCraftingStorageTile tile = (TileCraftingStorageTile) cst.getMachine();
-                final CraftingCPUCluster cluster = tile.getCluster();
+                final CraftingCPUCluster cluster = (CraftingCPUCluster) tile.getCluster();
                 if (cluster != null) {
                     this.craftingCPUClusters.add(cluster);
 

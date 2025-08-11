@@ -54,7 +54,8 @@ public class DriveBakedModel implements IBakedModel {
 
         List<BakedQuad> result = new ArrayList<>(this.bakedBase.getQuads(state, side, rand));
 
-        if (side == null && state instanceof IExtendedBlockState extState) {
+        if (side == null && state instanceof IExtendedBlockState) {
+            IExtendedBlockState extState = (IExtendedBlockState) state;
 
             if (!extState.getUnlistedNames().contains(BlockDrive.SLOTS_STATE)) {
                 return result;

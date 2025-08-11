@@ -64,7 +64,8 @@ class ItemHandlerAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAE
     ItemHandlerAdapter(IItemHandler itemHandler, IGridProxyable proxy) {
         this.itemHandler = itemHandler;
         this.proxyable = proxy;
-        if (this.proxyable instanceof PartStorageBus partStorageBus) {
+        if (this.proxyable instanceof PartStorageBus) {
+            PartStorageBus partStorageBus = (PartStorageBus) this.proxyable;
             this.mode = ((StorageFilter) partStorageBus.getConfigManager().getSetting(Settings.STORAGE_FILTER));
             this.access = ((AccessRestriction) partStorageBus.getConfigManager().getSetting(Settings.ACCESS));
         }

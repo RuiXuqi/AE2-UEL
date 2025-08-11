@@ -321,13 +321,15 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
             }
         }
 
-        if (this instanceof IPriorityHost pHost) {
+        if (this instanceof IPriorityHost) {
+            final IPriorityHost pHost = (IPriorityHost) this;
             pHost.setPriority(compound.getInteger("priority"));
         }
 
         if (this instanceof ISegmentedInventory) {
             final IItemHandler inv = ((ISegmentedInventory) this).getInventoryByName("config");
-            if (inv instanceof AppEngInternalAEInventory target) {
+            if (inv instanceof AppEngInternalAEInventory) {
+                final AppEngInternalAEInventory target = (AppEngInternalAEInventory) inv;
                 final AppEngInternalAEInventory tmp = new AppEngInternalAEInventory(null, target.getSlots());
                 tmp.readFromNBT(compound, "config");
                 for (int x = 0; x < tmp.getSlots(); x++) {
@@ -338,7 +340,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
 
         if (this instanceof IConfigurableFluidInventory) {
             final IFluidHandler tank = ((IConfigurableFluidInventory) this).getFluidInventoryByName("config");
-            if (tank instanceof AEFluidInventory target) {
+            if (tank instanceof AEFluidInventory) {
+                final AEFluidInventory target = (AEFluidInventory) tank;
                 final AEFluidInventory tmp = new AEFluidInventory(null, target.getSlots());
                 tmp.readFromNBT(compound, "config");
                 for (int x = 0; x < tmp.getSlots(); x++) {
@@ -385,7 +388,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
             }
         }
 
-        if (this instanceof IPriorityHost pHost) {
+        if (this instanceof IPriorityHost) {
+            final IPriorityHost pHost = (IPriorityHost) this;
             output.setInteger("priority", pHost.getPriority());
         }
 

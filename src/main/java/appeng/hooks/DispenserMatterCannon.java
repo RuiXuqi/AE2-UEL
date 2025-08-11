@@ -37,7 +37,7 @@ public final class DispenserMatterCannon extends BehaviorDefaultDispenseItem {
     @Override
     protected ItemStack dispenseStack(final IBlockSource dispenser, ItemStack dispensedItem) {
         final Item i = dispensedItem.getItem();
-        if (i instanceof ToolMatterCannon tm) {
+        if (i instanceof ToolMatterCannon) {
             final EnumFacing enumfacing = dispenser.getBlockState().getValue(BlockDispenser.FACING);
             AEPartLocation dir = AEPartLocation.INTERNAL;
             for (final AEPartLocation d : AEPartLocation.SIDE_LOCATIONS) {
@@ -46,6 +46,8 @@ public final class DispenserMatterCannon extends BehaviorDefaultDispenseItem {
                     dir = d;
                 }
             }
+
+            final ToolMatterCannon tm = (ToolMatterCannon) i;
 
             final World w = dispenser.getWorld();
             if (w instanceof WorldServer) {

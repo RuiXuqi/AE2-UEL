@@ -38,16 +38,19 @@ public class StorageMonitorInfoProvider implements IPartProbInfoProvider {
     @Override
     public void addProbeInfo(IPart part, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
             IBlockState blockState, IProbeHitData data) {
-        if (part instanceof IPartStorageMonitor monitor) {
+        if (part instanceof IPartStorageMonitor) {
+            final IPartStorageMonitor monitor = (IPartStorageMonitor) part;
 
             final IAEStack<?> displayed = monitor.getDisplayed();
             final boolean isLocked = monitor.isLocked();
 
             // TODO: generalize
-            if (displayed instanceof IAEItemStack ais) {
+            if (displayed instanceof IAEItemStack) {
+                final IAEItemStack ais = (IAEItemStack) displayed;
                 probeInfo.text(
                         TheOneProbeText.SHOWING.getLocal() + ": " + ais.asItemStackRepresentation().getDisplayName());
-            } else if (displayed instanceof IAEFluidStack ais) {
+            } else if (displayed instanceof IAEFluidStack) {
+                final IAEFluidStack ais = (IAEFluidStack) displayed;
                 probeInfo.text(TheOneProbeText.SHOWING.getLocal() + ": "
                         + ais.getFluid().getLocalizedName(ais.getFluidStack()));
             }

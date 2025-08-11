@@ -30,8 +30,8 @@ import appeng.util.InventoryAdaptor;
 
 public final class BasicItemStorageCell extends AbstractStorageCell<IAEItemStack> {
 
-    private final int perType;
-    private final double idleDrain;
+    protected final int perType;
+    protected final double idleDrain;
 
     public BasicItemStorageCell(final MaterialType whichCell, final int kilobytes) {
         super(whichCell, kilobytes);

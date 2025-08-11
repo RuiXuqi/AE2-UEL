@@ -229,7 +229,6 @@ public class MultiCraftingTracker {
         for (final Future<ICraftingJob> job : this.jobs) {
             if (job != null) {
                 hasStuff = true;
-                break;
             }
         }
 

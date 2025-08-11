@@ -69,7 +69,7 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
     }
 
     @Nonnull
-    public ItemStackSrc createPart(final PartType mat) {
+    public final ItemStackSrc createPart(final PartType mat) {
         Preconditions.checkNotNull(mat);
 
         return this.createPart(mat, 0);
