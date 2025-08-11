@@ -232,19 +232,30 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         super.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
 
+        // Necessary to fix hoveredSlot.
+        for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1){
+            Slot slot = this.inventorySlots.inventorySlots.get(i1);
+            if (this.isMouseOverSlotTrue(slot, mouseX, mouseY) && slot.isEnabled()) {
+                super.hoveredSlot = slot;
 
-//        // Added a custom slot highlight effect - RID
-//        if (this.hoveredSlot != null) {
-//            drawHorizontalLine(guiLeft + this.hoveredSlot.xPos, guiLeft + this.hoveredSlot.xPos + 16,
-//                    guiTop + this.hoveredSlot.yPos - 1, 0xdaffff);
-//            drawHorizontalLine(guiLeft + this.hoveredSlot.xPos - 1, guiLeft + this.hoveredSlot.xPos + 16,
-//                    guiTop + this.hoveredSlot.yPos + 16, 0xdaffff);
-//            drawVerticalLine(guiLeft + this.hoveredSlot.xPos - 1, guiTop + this.hoveredSlot.yPos - 2,
-//                    guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
-//            drawVerticalLine(guiLeft + this.hoveredSlot.xPos + 16, guiTop + this.hoveredSlot.yPos - 2,
-//                    guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
-//            //renderSlotHighlight(guiGraphics, guiLeft + this.hoveredSlot.xPos, guiTop + this.hoveredSlot.yPos, 0, 0x669cd3ff);
-//        }
+                // Added a custom slot highlight effect - RID
+                GlStateManager.disableLighting();
+                GlStateManager.disableDepth();
+                GlStateManager.colorMask(true, true, true, false);
+                this.drawHorizontalLine(guiLeft + this.hoveredSlot.xPos, guiLeft + this.hoveredSlot.xPos + 16,
+                        guiTop + this.hoveredSlot.yPos - 1, 0xFFdaffff);
+                this.drawHorizontalLine(guiLeft + this.hoveredSlot.xPos - 1, guiLeft + this.hoveredSlot.xPos + 16,
+                        guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+                this.drawVerticalLine(guiLeft + this.hoveredSlot.xPos - 1, guiTop + this.hoveredSlot.yPos - 2,
+                        guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+                this.drawVerticalLine(guiLeft + this.hoveredSlot.xPos + 16, guiTop + this.hoveredSlot.yPos - 2,
+                        guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+                this.drawGradientRect(guiLeft + this.hoveredSlot.xPos, guiTop + this.hoveredSlot.yPos, guiLeft + this.hoveredSlot.xPos + 16, guiTop + this.hoveredSlot.yPos + 16, 0x669cd3ff, 0x669cd3ff);
+                GlStateManager.colorMask(true, true, true, true);
+                GlStateManager.enableLighting();
+                GlStateManager.enableDepth();
+            }
+        }
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(this.guiLeft, this.guiTop, 0.0F);
@@ -1190,5 +1201,44 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
            return true;
        }
        return false;
+    }
+
+    /**
+     * Always return false to disable vanilla highlight.
+     * DO NOT USE IT. Use isMouseOverSlotTrue instead.
+     * Yes, very hacky.
+     */
+    @Deprecated
+    @Override
+    public boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
+        return false;
+    }
+
+    /**
+     * Returns whether the mouse is over the given slot.
+     * The true version.
+     */
+    public boolean isMouseOverSlotTrue(Slot slotIn, int mouseX, int mouseY)
+    {
+        return this.isPointInRegion(slotIn.xPos, slotIn.yPos, 16, 16, mouseX, mouseY);
+    }
+
+    /**
+     * Returns the slot at the given coordinates or null if there is none.
+     * To fix the problem caused by false return.
+     */
+    @Override
+    protected Slot getSlotAtPosition(int x, int y) {
+        for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i)
+        {
+            Slot slot = this.inventorySlots.inventorySlots.get(i);
+
+            if (super.isMouseOverSlot(slot, x, y) && slot.isEnabled())
+            {
+                return slot;
+            }
+        }
+
+        return null;
     }
 }
