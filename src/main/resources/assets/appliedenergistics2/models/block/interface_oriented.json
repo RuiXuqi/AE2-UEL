@@ -3,7 +3,7 @@
     "textures": {
         "particle": "appliedenergistics2:blocks/interface",
         "down": "appliedenergistics2:blocks/interface_alternate",
-        "up": "appliedenergistics2:blocks/interface",
+        "up": "appliedenergistics2:blocks/interface_alternate_front",
         "north": "appliedenergistics2:blocks/interface_alternate_arrow",
         "south": "appliedenergistics2:blocks/interface_alternate_arrow",
         "east": "appliedenergistics2:blocks/interface_alternate_arrow",

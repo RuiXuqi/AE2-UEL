@@ -18,12 +18,6 @@
 
 package appeng.client.gui.implementations;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Mouse;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.*;
 import appeng.client.gui.widgets.GuiImgButton;
@@ -36,6 +30,12 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.parts.automation.PartLevelEmitter;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
+
 
 public class GuiLevelEmitter extends GuiUpgradeable {
 
@@ -61,11 +61,8 @@ public class GuiLevelEmitter extends GuiUpgradeable {
     public void initGui() {
         super.initGui();
 
-        this.level = new GuiNumberBox(this.fontRenderer, this.guiLeft + 24, this.guiTop + 43, 79,
-                this.fontRenderer.FONT_HEIGHT, Long.class);
-        this.level.setEnableBackgroundDrawing(false);
+        this.level = new GuiNumberBox(this.fontRenderer, this.guiLeft + 23, this.guiTop + 42, 90, 12, Long.class);
         this.level.setMaxStringLength(16);
-        this.level.setTextColor(0xFFFFFF);
         this.level.setVisible(true);
         this.level.setFocused(true);
         ((ContainerLevelEmitter) this.inventorySlots).setTextField(this.level);
@@ -73,34 +70,25 @@ public class GuiLevelEmitter extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.levelMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.LEVEL_TYPE,
-                LevelType.ITEM_LEVEL);
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_EMITTER,
-                RedstoneMode.LOW_SIGNAL);
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.FUZZY_MODE,
-                FuzzyMode.IGNORE_ALL);
-        this.craftingMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.CRAFT_VIA_REDSTONE,
-                YesNo.NO);
+        this.levelMode = newImgButtonToList(Settings.LEVEL_TYPE, LevelType.ITEM_LEVEL);
+        this.redstoneMode = newImgButtonToList(Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL);
+        this.fuzzyMode = newImgButtonToList(Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.craftingMode = newImgButtonToList(Settings.CRAFT_VIA_REDSTONE, YesNo.NO);
 
         final int a = AEConfig.instance().levelByStackAmounts(0);
         final int b = AEConfig.instance().levelByStackAmounts(1);
         final int c = AEConfig.instance().levelByStackAmounts(2);
         final int d = AEConfig.instance().levelByStackAmounts(3);
 
-        this.buttonList.add(this.plus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 17, 22, 20, "+" + a));
-        this.buttonList.add(this.plus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 17, 28, 20, "+" + b));
-        this.buttonList.add(this.plus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 17, 32, 20, "+" + c));
-        this.buttonList.add(this.plus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 17, 38, 20, "+" + d));
+        this.plus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 17, 22, 20, "+" + a);
+        this.plus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 17, 28, 20, "+" + b);
+        this.plus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 17, 32, 20, "+" + c);
+        this.plus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 17, 38, 20, "+" + d);
 
-        this.buttonList.add(this.minus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 59, 22, 20, "-" + a));
-        this.buttonList.add(this.minus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 59, 28, 20, "-" + b));
-        this.buttonList.add(this.minus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 59, 32, 20, "-" + c));
-        this.buttonList.add(this.minus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 59, 38, 20, "-" + d));
-
-        this.buttonList.add(this.levelMode);
-        this.buttonList.add(this.redstoneMode);
-        this.buttonList.add(this.fuzzyMode);
-        this.buttonList.add(this.craftingMode);
+        this.minus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 59, 22, 20, "-" + a);
+        this.minus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 59, 28, 20, "-" + b);
+        this.minus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 59, 32, 20, "-" + c);
+        this.minus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 59, 38, 20, "-" + d);
     }
 
     @Override
@@ -144,6 +132,17 @@ public class GuiLevelEmitter extends GuiUpgradeable {
     }
 
     @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        final int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        final int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        final int i = Mouse.getEventDWheel();
+        if (i != 0 && level.isMouseIn(x, y)) {
+            addQty(i > 0 ? 1 : -1);
+        }
+    }
+
+    @Override
     protected String getBackground() {
         return "guis/lvlemitter.png";
     }
@@ -168,8 +167,7 @@ public class GuiLevelEmitter extends GuiUpgradeable {
         }
 
         final boolean isPlus = btn == this.plus1 || btn == this.plus10 || btn == this.plus100 || btn == this.plus1000;
-        final boolean isMinus = btn == this.minus1 || btn == this.minus10 || btn == this.minus100
-                || btn == this.minus1000;
+        final boolean isMinus = btn == this.minus1 || btn == this.minus10 || btn == this.minus100 || btn == this.minus1000;
 
         if (isPlus || isMinus) {
             this.addQty(this.getQty(btn));
@@ -214,8 +212,7 @@ public class GuiLevelEmitter extends GuiUpgradeable {
     @Override
     protected void keyTyped(final char character, final int key) throws IOException {
         if (!this.checkHotbarKeys(key)) {
-            if ((key == 211 || key == 205 || key == 203 || key == 14 || Character.isDigit(character))
-                    && this.level.textboxKeyTyped(character, key)) {
+            if ((key == 211 || key == 205 || key == 203 || key == 14 || Character.isDigit(character)) && this.level.textboxKeyTyped(character, key)) {
                 try {
                     String Out = this.level.getText();
 

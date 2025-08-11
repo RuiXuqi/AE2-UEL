@@ -1,16 +1,13 @@
 {
     "variants": {
         "axis=x": {
-            "model": "appliedenergistics2:quartz_pillar",
-            "x": 90,
-            "y": 90
+            "model": "appliedenergistics2:quartz_pillar"
         },
         "axis=y": {
             "model": "appliedenergistics2:quartz_pillar"
         },
         "axis=z": {
-            "model": "appliedenergistics2:quartz_pillar",
-            "x": 90
+            "model": "appliedenergistics2:quartz_pillar"
         }
     }
 }

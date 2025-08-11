@@ -23,6 +23,7 @@
 
 package appeng.api.config;
 
+
 public enum ItemSubstitution {
-    ENABLED, DISABLED;
+	ENABLED, DISABLED, S_ENABLED, S_DISABLED;
 }

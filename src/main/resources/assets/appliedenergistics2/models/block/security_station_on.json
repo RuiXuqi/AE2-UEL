@@ -4,7 +4,7 @@
     "textures": {
         "particle": "appliedenergistics2:blocks/security_station_side",
         "side": "appliedenergistics2:blocks/security_station_side",
-        "bottom": "appliedenergistics2:blocks/security_station_bottom",
+        "bottom": "appliedenergistics2:blocks/generics/bottom",
         "top": "appliedenergistics2:blocks/security_station_top",
         "lightsBright": "appliedenergistics2:blocks/security_station_light_bright",
         "lightsMedium": "appliedenergistics2:blocks/security_station_light_medium",

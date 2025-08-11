@@ -174,13 +174,13 @@ public final class Tooltips {
     public static ITextComponent energyStorageComponent(double energy, double max) {
         return Tooltips.of(
                 Tooltips.of(GuiText.StoredEnergy.getLocal()),
-                Tooltips.of(": "),
+                Tooltips.of(": ").setStyle(NORMAL_TOOLTIP_TEXT),
                 Tooltips.ofNumber(energy, max),
-                Tooltips.of(" "),
+                Tooltips.of(" ").setStyle(NORMAL_TOOLTIP_TEXT),
                 Tooltips.of(PowerUnits.AE),
-                Tooltips.of(" ("),
+                Tooltips.of(" (").setStyle(NORMAL_TOOLTIP_TEXT),
                 Tooltips.ofPercent(energy / max),
-                Tooltips.of(")"));
+                Tooltips.of(")").setStyle(NORMAL_TOOLTIP_TEXT));
     }
 
     public static ITextComponent bytesUsed(long bytes, long max) {

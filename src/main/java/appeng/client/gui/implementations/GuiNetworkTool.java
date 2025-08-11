@@ -18,10 +18,6 @@
 
 package appeng.client.gui.implementations;
 
-import java.io.IOException;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.implementations.guiobjects.INetworkTool;
 import appeng.client.gui.AEBaseGui;
@@ -31,6 +27,11 @@ import appeng.core.AELog;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import java.io.IOException;
+
 
 public class GuiNetworkTool extends AEBaseGui {
 
@@ -58,11 +59,8 @@ public class GuiNetworkTool extends AEBaseGui {
     public void initGui() {
         super.initGui();
 
-        this.tFacades = new GuiToggleButton(this.guiLeft - 18, this.guiTop + 8, 23, 22,
-                GuiText.TransparentFacades.getLocal(), GuiText.TransparentFacadesHint
-                        .getLocal());
-
-        this.buttonList.add(this.tFacades);
+        this.tFacades = newToggleButtonToList(23, 22, GuiText.TransparentFacades.getLocal(), GuiText.TransparentFacadesHint
+                .getLocal());
     }
 
     @Override

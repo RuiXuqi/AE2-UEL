@@ -119,9 +119,7 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
         this.getScrollBar().setHeight(106);
         this.getScrollBar().setTop(31);
 
-        this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX),
-                this.guiTop + 17, 65, 12);
-        this.searchFieldInputs.setEnableBackgroundDrawing(false);
+        this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX), this.guiTop + 17, 65, 12);
         this.searchFieldInputs.setMaxStringLength(25);
         this.searchFieldInputs.setTextColor(0xFFFFFF);
         this.searchFieldInputs.setVisible(true);
@@ -155,10 +153,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
             if (lineObj instanceof ClientDCInternalFluidInv) {
                 final ClientDCInternalFluidInv inv = (ClientDCInternalFluidInv) lineObj;
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS,
-                        ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = newImgButtonToList(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
-                this.buttonList.add(guiButton);
                 int extraLines = numUpgradesMap.get(inv);
 
                 for (int row = 0; row < 1 + extraLines && linesDraw < LINES_ON_PAGE; ++row) {

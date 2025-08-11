@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import appeng.client.gui.widgets.*;
 import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -42,10 +43,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -66,9 +64,6 @@ import yalter.mousetweaks.api.IMTModGuiContainer2;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.client.gui.widgets.GuiCustomSlot;
-import appeng.client.gui.widgets.GuiScrollbar;
-import appeng.client.gui.widgets.ITooltip;
 import appeng.client.me.InternalSlotME;
 import appeng.client.me.SlotDisconnected;
 import appeng.client.me.SlotME;
@@ -105,6 +100,11 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     private Object bookmarkedIngredient;
     private boolean isDraggingJeiGhostItem;
     private boolean haltDragging = false;
+    protected int offset; // Y offset of the vertical button
+    // Vertical space between buttons
+    protected static final int VERTICAL_SPACING = 6;
+    // The margin between the right side of the buttons and the GUI
+    protected static final int MARGIN = 2;
 
     public void setJeiGhostItem(boolean jeiGhostItem) {
         isJeiGhostItem = jeiGhostItem;
@@ -156,6 +156,74 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         for (final InternalSlotME me : this.meSlots) {
             slots.add(new SlotME(me));
         }
+
+        offset = this.guiTop + 8;
+    }
+
+    /** Creates a new GuiTextButton and adds it to the buttonList. Returns the button. */
+    protected GuiTextButton newTextButtonToList(int id, int x, int y, int widthIn, int heightIn, String text) {
+        GuiTextButton button = new GuiTextButton(id, x, y, widthIn, heightIn, text);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiTextButton and adds it to the buttonList. Returns the button. */
+    protected GuiTextButton newTextButtonToList(int id, int x, int y, String text) {
+        GuiTextButton button = new GuiTextButton(id, x, y, text);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiImgButton and adds it to the buttonList. Returns the button. */
+    protected GuiImgButton newImgButtonToList(final int x, final int y, final Enum idx, final Enum val) {
+        GuiImgButton button = new GuiImgButton(x, y, idx, val);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiImgButton and adds it to the buttonList. Returns the button. The button is in the left row. */
+    protected GuiImgButton newImgButtonToList(final Enum idx, final Enum val) {
+        GuiImgButton button = newImgButtonToList(this.guiLeft - 16 - MARGIN, offset, idx, val);
+        this.offset += 16 + VERTICAL_SPACING;
+        return button;
+    }
+
+    /** Creates a new GuiToggleButton and adds it to the buttonList. Returns the button. */
+    protected GuiToggleButton newToggleButtonToList(final int x, final int y, final int on, final int off, final String displayName, final String displayHint) {
+        GuiToggleButton button = new GuiToggleButton(x, y, on, off, displayName, displayHint);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiToggleButton and adds it to the buttonList. Returns the button. The button is in the left row. */
+    protected GuiToggleButton newToggleButtonToList(final int on, final int off, final String displayName, final String displayHint) {
+        GuiToggleButton button = newToggleButtonToList(this.guiLeft - 16 - MARGIN, offset, on, off, displayName, displayHint);
+        this.offset += 16 + VERTICAL_SPACING;
+        return button;
+    }
+
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. */
+    protected GuiTabButton newTabButtonToList(final int x, final int y, final int ico, final String message, final RenderItem ir) {
+        GuiTabButton button = new GuiTabButton(x, y, ico, message, ir);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. The button is in the upright corner of the GUI. */
+    protected GuiTabButton newTabButtonToList(final int ico, final String message, final RenderItem ir) {
+        return newTabButtonToList(this.guiLeft + 154, this.guiTop, ico, message, ir);
+    }
+
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. */
+    protected GuiTabButton newTabButtonToList(final int x, final int y, final ItemStack ico, final String message, final RenderItem ir) {
+        GuiTabButton button = new GuiTabButton(x, y, ico, message, ir);
+        this.buttonList.add(button);
+        return button;
+    }
+
+    /** Creates a new GuiTabButton and adds it to the buttonList. Returns the button. The button is in the upright corner of the GUI. */
+    protected GuiTabButton newTabButtonToList(final ItemStack ico, final String message, final RenderItem ir) {
+        return newTabButtonToList(this.guiLeft + 154, this.guiTop, ico, message, ir);
     }
 
     private List<Slot> getInventorySlots() {
@@ -166,6 +234,20 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     public void drawScreen(final int mouseX, final int mouseY, final float partialTicks) {
         super.drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+
+//        // Added a custom slot highlight effect - RID
+//        if (this.hoveredSlot != null) {
+//            drawHorizontalLine(guiLeft + this.hoveredSlot.xPos, guiLeft + this.hoveredSlot.xPos + 16,
+//                    guiTop + this.hoveredSlot.yPos - 1, 0xdaffff);
+//            drawHorizontalLine(guiLeft + this.hoveredSlot.xPos - 1, guiLeft + this.hoveredSlot.xPos + 16,
+//                    guiTop + this.hoveredSlot.yPos + 16, 0xdaffff);
+//            drawVerticalLine(guiLeft + this.hoveredSlot.xPos - 1, guiTop + this.hoveredSlot.yPos - 2,
+//                    guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+//            drawVerticalLine(guiLeft + this.hoveredSlot.xPos + 16, guiTop + this.hoveredSlot.yPos - 2,
+//                    guiTop + this.hoveredSlot.yPos + 16, 0xFFdaffff);
+//            //renderSlotHighlight(guiGraphics, guiLeft + this.hoveredSlot.xPos, guiTop + this.hoveredSlot.yPos, 0, 0x669cd3ff);
+//        }
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(this.guiLeft, this.guiTop, 0.0F);
@@ -342,7 +424,7 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                         this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1,
                                 optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
                     } else {
-                        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.4F);
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.2F);
                         GlStateManager.enableBlend();
                         this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1,
                                 optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);

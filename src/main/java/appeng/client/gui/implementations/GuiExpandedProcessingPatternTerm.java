@@ -124,67 +124,51 @@ public class GuiExpandedProcessingPatternTerm extends GuiMEMonitorable implement
     public void initGui() {
         super.initGui();
 
-        this.tabCraftButton = new GuiTabButton(this.guiLeft + 173, this.guiTop + this.ySize - 177,
-                new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.getLocal(), this.itemRender);
-        this.buttonList.add(this.tabCraftButton);
+        this.tabCraftButton = newTabButtonToList(this.guiLeft + 173, this.guiTop + this.ySize - 177, new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.getLocal(), this.itemRender);
 
-        this.tabProcessButton = new GuiTabButton(this.guiLeft + 173, this.guiTop + this.ySize - 177,
-                new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.getLocal(), this.itemRender);
-        this.buttonList.add(this.tabProcessButton);
+        this.tabProcessButton = newTabButtonToList(this.guiLeft + 173, this.guiTop + this.ySize - 177, new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.getLocal(), this.itemRender);
 
-        this.substitutionsEnabledBtn = new GuiImgButton(this.guiLeft + 84, this.guiTop + this.ySize - 163,
-                Settings.ACTIONS, ItemSubstitution.ENABLED);
+        this.substitutionsEnabledBtn = newImgButtonToList(this.guiLeft + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.S_ENABLED);
         this.substitutionsEnabledBtn.setHalfSize(true);
-        this.buttonList.add(this.substitutionsEnabledBtn);
+        this.substitutionsEnabledBtn.setHaveBackGround(false);
 
-        this.substitutionsDisabledBtn = new GuiImgButton(this.guiLeft + 84, this.guiTop + this.ySize - 163,
-                Settings.ACTIONS, ItemSubstitution.DISABLED);
+        this.substitutionsDisabledBtn = newImgButtonToList(this.guiLeft + 84, this.guiTop + this.ySize - 163, Settings.ACTIONS, ItemSubstitution.S_DISABLED);
         this.substitutionsDisabledBtn.setHalfSize(true);
-        this.buttonList.add(this.substitutionsDisabledBtn);
+        this.substitutionsDisabledBtn.setHaveBackGround(false);
 
-        this.clearBtn = new GuiImgButton(this.guiLeft + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS,
-                ActionItems.CLOSE);
+        this.clearBtn = newImgButtonToList(this.guiLeft + 74, this.guiTop + this.ySize - 163, Settings.ACTIONS, ActionItems.S_CLOSE);
         this.clearBtn.setHalfSize(true);
-        this.buttonList.add(this.clearBtn);
+        this.clearBtn.setHaveBackGround(false);
 
-        this.x3Btn = new GuiImgButton(this.guiLeft + 131, this.guiTop + this.ySize - 158, Settings.ACTIONS,
-                ActionItems.MULTIPLY_BY_THREE);
+        this.x3Btn = newImgButtonToList(this.guiLeft + 131, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.S_MULTIPLY_BY_THREE);
         this.x3Btn.setHalfSize(true);
-        this.buttonList.add(this.x3Btn);
+        this.x3Btn.setHaveBackGround(false);
 
-        this.x2Btn = new GuiImgButton(this.guiLeft + 131, this.guiTop + this.ySize - 148, Settings.ACTIONS,
-                ActionItems.MULTIPLY_BY_TWO);
+        this.x2Btn = newImgButtonToList(this.guiLeft + 131, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.S_MULTIPLY_BY_TWO);
         this.x2Btn.setHalfSize(true);
-        this.buttonList.add(this.x2Btn);
+        this.x2Btn.setHaveBackGround(false);
 
-        this.plusOneBtn = new GuiImgButton(this.guiLeft + 131, this.guiTop + this.ySize - 110, Settings.ACTIONS,
-                ActionItems.INCREASE_BY_ONE);
+        this.plusOneBtn = newImgButtonToList(this.guiLeft + 131, this.guiTop + this.ySize - 110, Settings.ACTIONS, ActionItems.S_INCREASE_BY_ONE);
         this.plusOneBtn.setHalfSize(true);
-        this.buttonList.add(this.plusOneBtn);
+        this.plusOneBtn.setHaveBackGround(false);
 
-        this.divThreeBtn = new GuiImgButton(this.guiLeft + 87, this.guiTop + this.ySize - 158, Settings.ACTIONS,
-                ActionItems.DIVIDE_BY_THREE);
+        this.divThreeBtn = newImgButtonToList(this.guiLeft + 87, this.guiTop + this.ySize - 158, Settings.ACTIONS, ActionItems.S_DIVIDE_BY_THREE);
         this.divThreeBtn.setHalfSize(true);
-        this.buttonList.add(this.divThreeBtn);
+        this.divThreeBtn.setHaveBackGround(false);
 
-        this.divTwoBtn = new GuiImgButton(this.guiLeft + 87, this.guiTop + this.ySize - 148, Settings.ACTIONS,
-                ActionItems.DIVIDE_BY_TWO);
+        this.divTwoBtn = newImgButtonToList(this.guiLeft + 87, this.guiTop + this.ySize - 148, Settings.ACTIONS, ActionItems.S_DIVIDE_BY_TWO);
         this.divTwoBtn.setHalfSize(true);
-        this.buttonList.add(this.divTwoBtn);
+        this.divTwoBtn.setHaveBackGround(false);
 
-        this.minusOneBtn = new GuiImgButton(this.guiLeft + 87, this.guiTop + this.ySize - 110, Settings.ACTIONS,
-                ActionItems.DECREASE_BY_ONE);
+        this.minusOneBtn = newImgButtonToList(this.guiLeft + 87, this.guiTop + this.ySize - 110, Settings.ACTIONS, ActionItems.S_DECREASE_BY_ONE);
         this.minusOneBtn.setHalfSize(true);
-        this.buttonList.add(this.minusOneBtn);
+        this.minusOneBtn.setHaveBackGround(false);
 
-        // this.maxCountBtn = new GuiImgButton( this.guiLeft + 128, this.guiTop + this.ySize - 108, Settings.ACTIONS,
-        // ActionItems.MAX_COUNT );
-        // this.maxCountBtn.setHalfSize( true );
-        // this.buttonList.add( this.maxCountBtn );
+        //this.maxCountBtn = newImgButtonToList( this.guiLeft + 128, this.guiTop + this.ySize - 108, Settings.ACTIONS, ActionItems.S_MAX_COUNT );
+        //this.maxCountBtn.setHalfSize( true );
+        //this.maxCountBtn.setHaveBackGround( false );
 
-        this.encodeBtn = new GuiImgButton(this.guiLeft + 147, this.guiTop + this.ySize - 142, Settings.ACTIONS,
-                ActionItems.ENCODE);
-        this.buttonList.add(this.encodeBtn);
+        this.encodeBtn = newImgButtonToList(this.guiLeft + 147, this.guiTop + this.ySize - 142, Settings.ACTIONS, ActionItems.ENCODE);
     }
 
     @Override

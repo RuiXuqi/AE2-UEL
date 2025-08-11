@@ -23,12 +23,17 @@
 
 package appeng.api.config;
 
-public enum TerminalStyle {
 
-    TALL,
+// The order of the button is decided here. Don't delete the line breaks.
+public enum TerminalStyle
+{
 
-    FULL,
+	SMALL,
 
-    SMALL
+	MEDIUM,
+
+	TALL,
+
+	FULL,
 
 }

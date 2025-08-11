@@ -131,10 +131,8 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
     public void initGui() {
         super.initGui();
         this.setScrollBar();
-        this.cancel = new GuiButton(0, this.guiLeft + CANCEL_LEFT_OFFSET, this.guiTop + this.ySize - CANCEL_TOP_OFFSET,
-                CANCEL_WIDTH, CANCEL_HEIGHT, GuiText.Cancel
-                        .getLocal());
-        this.buttonList.add(this.cancel);
+        this.cancel = newTextButtonToList(0, this.guiLeft + CANCEL_LEFT_OFFSET, this.guiTop + this.ySize - CANCEL_TOP_OFFSET, CANCEL_WIDTH, CANCEL_HEIGHT, GuiText.Cancel
+                .getLocal());
     }
 
     private void setScrollBar() {

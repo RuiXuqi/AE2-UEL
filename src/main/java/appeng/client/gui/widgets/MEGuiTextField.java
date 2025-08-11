@@ -20,12 +20,16 @@ package appeng.client.gui.widgets;
 
 import org.lwjgl.input.Keyboard;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
+
 
 /**
  * A modified version of the Minecraft text field. You can initialize it over the full element span. The mouse click
@@ -41,7 +45,9 @@ public class MEGuiTextField extends GuiTextField {
     private final int _width;
     private final int _height;
     private final int _fontPad;
-    private int selectionColor = 0xFF00FF00;
+    private int selectionColor = 0xFF000080;
+    private int enabledColor = 0xFCFCFC;
+    private int disabledColor = 0xA0A0A0;
 
     /**
      * Uses the values to instantiate a padded version of a text field. Pays attention to the '_' caret.
@@ -120,23 +126,34 @@ public class MEGuiTextField extends GuiTextField {
         this.setSelectionPos(this.getMaxStringLength());
     }
 
-    public void setSelectionColor(int color) {
-        this.selectionColor = color;
-    }
-
     @Override
     public void drawTextBox() {
+        Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/sprites.png"));
         if (this.getVisible()) {
-            if (this.isFocused()) {
-                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1,
-                        this.y + this.height + PADDING - 1,
-                        0xFF606060);
+            if (!this.isEnabled){
+                drawTexturedColumnRect(this._xPos, this._yPos, 0, 72, this._width, 12, 128);
+            } else if (this.isFocused()) {
+                drawTexturedColumnRect(this._xPos, this._yPos, 0, 84, this._width, 12, 128);
             } else {
-                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1,
-                        this.y + this.height + PADDING - 1,
-                        0xFFA8A8A8);
+                drawTexturedColumnRect(this._xPos, this._yPos, 0, 60, this._width, 12, 128);
             }
+            this.setEnableBackgroundDrawing(false);
+            super.setTextColor(enabledColor);
+            super.setDisabledTextColour(disabledColor);
             super.drawTextBox();
+        }
+    }
+
+    protected void drawTexturedColumnRect(int x, int y, int textureX, int textureY, int width, int textureHeight, int textureLength) {
+        if (width % 2 == 0) {
+            this.drawTexturedModalRect(x, y, textureX, textureY, width / 2, textureHeight); // Left half
+            this.drawTexturedModalRect(x + width / 2, y, textureX + textureLength - width / 2, textureY, width / 2, textureHeight); // Right half
+        } else {
+            // Very hacky
+            width += 1;
+            this.drawTexturedModalRect(x, y, textureX, textureY, width / 2, textureHeight); // Left half
+            width -= 2;
+            this.drawTexturedModalRect(x + width / 2 + 1, y, textureX + textureLength - width / 2, textureY, width / 2, textureHeight); // Right half
         }
     }
 
@@ -206,6 +223,21 @@ public class MEGuiTextField extends GuiTextField {
         tessellator.draw();
         GlStateManager.disableColorLogic();
         GlStateManager.enableTexture2D();
+    }
+
+
+    public void setSelectionColor(int color) {
+        this.selectionColor = color;
+    }
+
+    @Override
+    public void setTextColor(int color) {
+        this.enabledColor = color;
+    }
+
+    @Override
+    public void setDisabledTextColour(int color) {
+        this.disabledColor = color;
     }
 
 }

@@ -31,12 +31,11 @@ public class GuiRenamer extends AEBaseGui {
 
         this.textField = new MEGuiTextField(this.fontRenderer, this.guiLeft + 9, this.guiTop + 33, 229, 12);
 
-        this.textField.setEnableBackgroundDrawing(false);
         this.textField.setMaxStringLength(32);
 
         this.textField.setFocused(true);
 
-        this.buttonList.add(this.confirmButton = new GuiButton(0, this.guiLeft + 238, this.guiTop + 33, 12, 12, "↵"));
+        this.confirmButton = newTextButtonToList(0, this.guiLeft + 238, this.guiTop + 33, 12, 12, "↵");
 
         ((ContainerRenamer) this.inventorySlots).setTextField(this.textField);
     }

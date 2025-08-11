@@ -19,15 +19,14 @@
 package appeng.client.gui.widgets;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiTextField;
 
-public class GuiNumberBox extends GuiTextField {
+
+public class GuiNumberBox extends MEGuiTextField {
 
     private final Class type;
 
-    public GuiNumberBox(final FontRenderer fontRenderer, final int x, final int y, final int width, final int height,
-            final Class type) {
-        super(0, fontRenderer, x, y, width, height);
+    public GuiNumberBox(final FontRenderer fontRenderer, final int x, final int y, final int width, final int height, final Class type) {
+        super(fontRenderer, x, y, width, height);
         this.type = type;
     }
 

@@ -1,14 +1,5 @@
 package appeng.client.gui.implementations;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.ActionItems;
 import appeng.api.config.Settings;
@@ -26,6 +17,14 @@ import appeng.core.sync.packets.PacketSwitchGuis;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.parts.misc.PartOreDicStorageBus;
 import appeng.util.item.OreDictFilterMatcher;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
+import java.util.regex.Pattern;
+
 
 public class GuiOreDictStorageBus extends GuiUpgradeable {
     private final ContainerOreDictStorageBus container;
@@ -47,21 +46,16 @@ public class GuiOreDictStorageBus extends GuiUpgradeable {
     @Override
     protected void addButtons() {
         this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + 3, this.guiTop + 22, 170, 12);
-        this.searchFieldInputs.setEnableBackgroundDrawing(false);
         this.searchFieldInputs.setMaxStringLength(512);
         this.searchFieldInputs.setTextColor(0xFFFFFF);
         this.searchFieldInputs.setVisible(true);
         this.searchFieldInputs.setFocused(false);
         this.searchFieldInputs.setValidator(str -> ORE_DICTIONARY_FILTER.matcher(str).matches());
 
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16,
-                GuiText.Priority.getLocal(), this.itemRender));
-        this.buttonList.add(this.partition = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.ACTIONS,
-                ActionItems.WRENCH));
-        this.buttonList.add(this.rwMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.ACCESS,
-                AccessRestriction.READ_WRITE));
-        this.buttonList.add(this.storageFilter = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68,
-                Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY));
+        this.priority = newTabButtonToList(5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender);
+        this.partition = newImgButtonToList(Settings.ACTIONS, ActionItems.COG);
+        this.rwMode = newImgButtonToList(Settings.ACCESS, AccessRestriction.READ_WRITE);
+        this.storageFilter = newImgButtonToList(Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY);
 
         try {
             NetworkHandler.instance().sendToServer(new PacketValueConfig("OreDictStorageBus.getRegex", "1"));
@@ -88,8 +82,7 @@ public class GuiOreDictStorageBus extends GuiUpgradeable {
             } else if (btn == this.rwMode) {
                 NetworkHandler.instance().sendToServer(new PacketConfigButton(this.rwMode.getSetting(), backwards));
             } else if (btn == this.storageFilter) {
-                NetworkHandler.instance()
-                        .sendToServer(new PacketConfigButton(this.storageFilter.getSetting(), backwards));
+                NetworkHandler.instance().sendToServer(new PacketConfigButton(this.storageFilter.getSetting(), backwards));
             }
         } catch (final IOException e) {
             AELog.debug(e);
@@ -107,8 +100,7 @@ public class GuiOreDictStorageBus extends GuiUpgradeable {
 
         if (!searchFieldInputs.isFocused() && wasFocused) {
             searchFieldInputs.setText(OreDictFilterMatcher.validateExp(searchFieldInputs.getText()));
-            NetworkHandler.instance()
-                    .sendToServer(new PacketValueConfig("OreDictStorageBus.save", searchFieldInputs.getText()));
+            NetworkHandler.instance().sendToServer(new PacketValueConfig("OreDictStorageBus.save", searchFieldInputs.getText()));
         }
 
         super.mouseClicked(xCoord, yCoord, btn);
@@ -119,8 +111,7 @@ public class GuiOreDictStorageBus extends GuiUpgradeable {
         if (!this.checkHotbarKeys(key)) {
             if (key == Keyboard.KEY_RETURN || key == Keyboard.KEY_NUMPADENTER) {
                 searchFieldInputs.setText(OreDictFilterMatcher.validateExp(searchFieldInputs.getText()));
-                NetworkHandler.instance()
-                        .sendToServer(new PacketValueConfig("OreDictStorageBus.save", searchFieldInputs.getText()));
+                NetworkHandler.instance().sendToServer(new PacketValueConfig("OreDictStorageBus.save", searchFieldInputs.getText()));
             }
             if (!this.searchFieldInputs.textboxKeyTyped(character, key)) {
                 super.keyTyped(character, key);
@@ -131,9 +122,7 @@ public class GuiOreDictStorageBus extends GuiUpgradeable {
     @Override
     public void drawFG(int offsetX, int offsetY, int mouseX, int mouseY) {
         this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.OreDictStorageBus.getLocal()), 8, 6, 4210752);
-        this.fontRenderer.drawString(
-                this.searchFieldInputs.getText().length() + " / " + this.searchFieldInputs.getMaxStringLength(), 120,
-                36, 4210752);
+        this.fontRenderer.drawString(this.searchFieldInputs.getText().length() + " / " + this.searchFieldInputs.getMaxStringLength(), 120, 36, 4210752);
         this.fontRenderer.drawString("& = AND    " + "| = OR", 8, 36, 4210752);
         this.fontRenderer.drawString("^ = XOR    " + "! = NOT", 8, 48, 4210752);
         this.fontRenderer.drawString("() for priority    " + "* for wildcard", 8, 60, 4210752);

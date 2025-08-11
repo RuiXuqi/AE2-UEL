@@ -18,29 +18,6 @@
 
 package appeng.client.gui.implementations;
 
-import static appeng.client.render.BlockPosHighlighter.hilightBlock;
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
-
-import com.google.common.collect.HashMultimap;
-
-import org.lwjgl.input.Mouse;
-
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.Constants;
 
 import appeng.api.AEApi;
 import appeng.api.config.ActionItems;
@@ -67,6 +44,28 @@ import appeng.helpers.WirelessTerminalGuiObject;
 import appeng.parts.reporting.PartInterfaceTerminal;
 import appeng.util.BlockPosUtils;
 import appeng.util.Platform;
+import com.google.common.collect.HashMultimap;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.Constants;
+import org.lwjgl.input.Mouse;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.List;
+import java.util.*;
+
+import static appeng.client.render.BlockPosHighlighter.hilightBlock;
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
+
 
 public class GuiInterfaceTerminal extends AEBaseGui {
 
@@ -194,14 +193,15 @@ public class GuiInterfaceTerminal extends AEBaseGui {
         searchFieldNames.x = guiLeft + 32 + 99;
         searchFieldNames.y = guiTop + 38;
 
-        terminalStyleBox.x = guiLeft - 18;
+        // Mysterious buttons
+        terminalStyleBox.x = guiLeft - 16 - MARGIN;
         terminalStyleBox.y = guiTop + 8 + jeiButtonPadding;
-        guiButtonBrokenRecipes.x = guiLeft - 18;
-        guiButtonBrokenRecipes.y = terminalStyleBox.y + 20;
-        guiButtonHideFull.x = guiLeft - 18;
-        guiButtonHideFull.y = guiButtonBrokenRecipes.y + 20;
-        guiButtonAssemblersOnly.x = guiLeft - 18;
-        guiButtonAssemblersOnly.y = guiButtonHideFull.y + 20;
+        guiButtonBrokenRecipes.x = guiLeft - 16 - MARGIN;
+        guiButtonBrokenRecipes.y = terminalStyleBox.y + 16 + VERTICAL_SPACING;
+        guiButtonHideFull.x = guiLeft - 16 - MARGIN;
+        guiButtonHideFull.y = guiButtonBrokenRecipes.y + 16 + VERTICAL_SPACING;
+        guiButtonAssemblersOnly.x = guiLeft - 16 - MARGIN;
+        guiButtonAssemblersOnly.y = guiButtonHideFull.y + 16 + VERTICAL_SPACING;
 
         this.setScrollBar();
         this.repositionSlots();
@@ -269,12 +269,9 @@ public class GuiInterfaceTerminal extends AEBaseGui {
         guiButtonHashMap.clear();
         inventorySlots.inventorySlots.removeIf(slot -> slot instanceof SlotDisconnected);
 
-        guiButtonAssemblersOnly.set(
-                onlyMolecularAssemblers ? ActionItems.MOLECULAR_ASSEMBLERS_ON : ActionItems.MOLECULAR_ASSEMBLERS_OFF);
-        guiButtonHideFull.set(onlyShowWithSpace ? ActionItems.TOGGLE_SHOW_FULL_INTERFACES_OFF
-                : ActionItems.TOGGLE_SHOW_FULL_INTERFACES_ON);
-        guiButtonBrokenRecipes.set(onlyBrokenRecipes ? ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_ON
-                : ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_OFF);
+        guiButtonAssemblersOnly.set(onlyMolecularAssemblers ? ActionItems.MOLECULAR_ASSEMBLERS_ON : ActionItems.MOLECULAR_ASSEMBLERS_OFF);
+        guiButtonHideFull.set(onlyShowWithSpace ? ActionItems.TOGGLE_SHOW_FULL_INTERFACES_OFF : ActionItems.TOGGLE_SHOW_FULL_INTERFACES_ON);
+        guiButtonBrokenRecipes.set(onlyBrokenRecipes ? ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_ON : ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_OFF);
         terminalStyleBox.set(AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE));
 
         buttonList.add(guiButtonAssemblersOnly);
@@ -290,16 +287,13 @@ public class GuiInterfaceTerminal extends AEBaseGui {
             final Object lineObj = this.lines.get(currentScroll + x);
             if (lineObj instanceof ClientDCInternalInv inv) {
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset + 1, Settings.ACTIONS,
-                        ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = newImgButtonToList(guiLeft + 4, guiTop + offset + 1, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
-                this.buttonList.add(guiButton);
 
                 final int extraLines = numUpgradesMap.get(inv);
                 for (int row = 0; row < 1 + extraLines && linesDraw < rows; ++row) {
                     for (int z = 0; z < 9; z++) {
-                        this.inventorySlots.inventorySlots
-                                .add(new SlotDisconnected(inv, z + (row * 9), z * 18 + 22, 1 + offset));
+                        this.inventorySlots.inventorySlots.add(new SlotDisconnected(inv, z + (row * 9), z * 18 + 22, 1+ offset));
                     }
                     linesDraw++;
                     offset += 18;
@@ -336,19 +330,13 @@ public class GuiInterfaceTerminal extends AEBaseGui {
             int interfaceDim = dimHashMap.get(guiButtonHashMap.get(this.selectedButton));
             if (playerDim != interfaceDim) {
                 try {
-                    mc.player.sendStatusMessage(
-                            PlayerMessages.InterfaceInOtherDimParam.get(interfaceDim,
-                                    DimensionManager.getWorld(interfaceDim).provider.getDimensionType().getName()),
-                            false);
+                    mc.player.sendStatusMessage(PlayerMessages.InterfaceInOtherDimParam.get(interfaceDim, DimensionManager.getWorld(interfaceDim).provider.getDimensionType().getName()), false);
                 } catch (Exception e) {
                     mc.player.sendStatusMessage(PlayerMessages.InterfaceInOtherDim.get(), false);
                 }
             } else {
-                hilightBlock(blockPos,
-                        System.currentTimeMillis() + 500 * BlockPosUtils.getDistance(blockPos, blockPos2), playerDim);
-                mc.player.sendStatusMessage(
-                        PlayerMessages.InterfaceHighlighted.get(blockPos.getX(), blockPos.getY(), blockPos.getZ()),
-                        false);
+                hilightBlock(blockPos, System.currentTimeMillis() + 500 * BlockPosUtils.getDistance(blockPos, blockPos2), playerDim);
+                mc.player.sendStatusMessage(PlayerMessages.InterfaceHighlighted.get(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false);
             }
             mc.player.closeScreen();
         } else if (btn == guiButtonHideFull) {
@@ -454,24 +442,18 @@ public class GuiInterfaceTerminal extends AEBaseGui {
     private boolean handleTab() {
         if (searchFieldInputs.isFocused()) {
             searchFieldInputs.setFocused(false);
-            if (isShiftKeyDown())
-                searchFieldNames.setFocused(true);
-            else
-                searchFieldOutputs.setFocused(true);
+            if (isShiftKeyDown()) searchFieldNames.setFocused(true);
+            else searchFieldOutputs.setFocused(true);
             return true;
         } else if (searchFieldOutputs.isFocused()) {
             searchFieldOutputs.setFocused(false);
-            if (isShiftKeyDown())
-                searchFieldInputs.setFocused(true);
-            else
-                searchFieldNames.setFocused(true);
+            if (isShiftKeyDown()) searchFieldInputs.setFocused(true);
+            else searchFieldNames.setFocused(true);
             return true;
         } else if (searchFieldNames.isFocused()) {
             searchFieldNames.setFocused(false);
-            if (isShiftKeyDown())
-                searchFieldOutputs.setFocused(true);
-            else
-                searchFieldInputs.setFocused(true);
+            if (isShiftKeyDown()) searchFieldOutputs.setFocused(true);
+            else searchFieldInputs.setFocused(true);
             return true;
         }
         return false;
@@ -489,8 +471,7 @@ public class GuiInterfaceTerminal extends AEBaseGui {
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
                     final NBTTagCompound invData = in.getCompoundTag(key);
-                    final ClientDCInternalInv current = this.getById(id, invData.getLong("sortBy"),
-                            invData.getString("un"));
+                    final ClientDCInternalInv current = this.getById(id, invData.getLong("sortBy"), invData.getString("un"));
                     blockPosHashMap.put(current, NBTUtil.getPosFromTag(invData.getCompoundTag("pos")));
                     dimHashMap.put(current, invData.getInteger("dim"));
                     numUpgradesMap.put(current, invData.getInteger("numUpgrades"));
@@ -528,9 +509,8 @@ public class GuiInterfaceTerminal extends AEBaseGui {
         final String searchFieldOutputs = this.searchFieldOutputs.getText().toLowerCase();
         final String searchFieldNames = this.searchFieldNames.getText().toLowerCase();
 
-        final Set<Object> cachedSearch = this
-                .getCacheForSearchTerm("IN:" + searchFieldInputs + " OUT:" + searchFieldOutputs
-                        + "NAME:" + searchFieldNames + onlyShowWithSpace + onlyMolecularAssemblers + onlyBrokenRecipes);
+        final Set<Object> cachedSearch = this.getCacheForSearchTerm("IN:" + searchFieldInputs + " OUT:" + searchFieldOutputs
+                + "NAME:" + searchFieldNames + onlyShowWithSpace + onlyMolecularAssemblers + onlyBrokenRecipes);
         final boolean rebuild = cachedSearch.isEmpty();
 
         for (final ClientDCInternalInv entry : this.byId.values()) {
@@ -562,8 +542,7 @@ public class GuiInterfaceTerminal extends AEBaseGui {
                     }
 
                     if ((!searchFieldInputs.isEmpty() && itemStackMatchesSearchTerm(itemStack, searchFieldInputs, 0))
-                            || (!searchFieldOutputs.isEmpty()
-                                    && itemStackMatchesSearchTerm(itemStack, searchFieldOutputs, 1))) {
+                            || (!searchFieldOutputs.isEmpty() && itemStackMatchesSearchTerm(itemStack, searchFieldOutputs, 1))) {
                         found = true;
                         matchedStacks.add(itemStack);
                     }
@@ -585,7 +564,6 @@ public class GuiInterfaceTerminal extends AEBaseGui {
             // Exit if molecular assembler filter is on and this is not a molecular assembler
             // Forge documantation said unlocalized name shouldn't be use for logic, so we might need a better way......
             if (onlyMolecularAssemblers && !entry.getUnlocalizedName().equals(MOLECULAR_ASSEMBLER)) {
-
                 cachedSearch.remove(entry);
                 continue;
             }
@@ -594,8 +572,7 @@ public class GuiInterfaceTerminal extends AEBaseGui {
                 cachedSearch.remove(entry);
                 continue;
             }
-            // Exit if we are only showing interfaces with broken patterns and there are no broken patterns in this
-            // interface
+            // Exit if we are only showing interfaces with broken patterns and there are no broken patterns in this interface
             if (onlyBrokenRecipes && !interfaceHasBrokenRecipes) {
                 cachedSearch.remove(entry);
                 continue;
@@ -624,18 +601,14 @@ public class GuiInterfaceTerminal extends AEBaseGui {
     }
 
     private boolean recipeIsBroken(final ItemStack stack) {
-        if (stack == null)
-            return false;
-        if (stack.isEmpty())
-            return false;
+        if (stack == null) return false;
+        if (stack.isEmpty()) return false;
 
         final NBTTagCompound encodedValue = stack.getTagCompound();
-        if (encodedValue == null)
-            return true;
+        if (encodedValue == null) return true;
 
         final World w = AppEng.proxy.getWorld();
-        if (w == null)
-            return false;
+        if (w == null) return false;
 
         try {
             new PatternHelper(stack, w);
@@ -670,8 +643,7 @@ public class GuiInterfaceTerminal extends AEBaseGui {
             final ItemStack parsedItemStack = new ItemStack(tag.getCompoundTagAt(i));
             if (!parsedItemStack.isEmpty()) {
                 final String displayName = Platform
-                        .getItemDisplayName(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
-                                .createStack(parsedItemStack))
+                        .getItemDisplayName(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack))
                         .toLowerCase();
 
                 for (String term : splitTerm) {
@@ -714,16 +686,14 @@ public class GuiInterfaceTerminal extends AEBaseGui {
     }
 
     private int getMaxRows() {
-        return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE) != TerminalStyle.TALL ? 6
-                : Integer.MAX_VALUE;
+        return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE) != TerminalStyle.TALL ? 6 : Integer.MAX_VALUE;
     }
 
     private ClientDCInternalInv getById(final long id, final long sortBy, final String string) {
         ClientDCInternalInv o = this.byId.get(id);
 
         if (o == null) {
-            this.byId.put(id,
-                    o = new ClientDCInternalInv(DualityInterface.NUMBER_OF_PATTERN_SLOTS, id, sortBy, string));
+            this.byId.put(id, o = new ClientDCInternalInv(DualityInterface.NUMBER_OF_PATTERN_SLOTS, id, sortBy, string));
             this.refreshList = true;
         }
 

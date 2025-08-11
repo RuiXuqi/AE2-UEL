@@ -80,18 +80,17 @@ public class GuiCraftAmount extends AEBaseGui {
         final int c = AEConfig.instance().craftItemsByStackAmounts(2);
         final int d = AEConfig.instance().craftItemsByStackAmounts(3);
 
-        this.buttonList.add(this.plus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 26, 22, 20, "+" + a));
-        this.buttonList.add(this.plus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 26, 28, 20, "+" + b));
-        this.buttonList.add(this.plus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 26, 32, 20, "+" + c));
-        this.buttonList.add(this.plus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 26, 38, 20, "+" + d));
+        this.plus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 26, 22, 20, "+" + a);
+        this.plus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 26, 28, 20, "+" + b);
+        this.plus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 26, 32, 20, "+" + c);
+        this.plus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 26, 38, 20, "+" + d);
 
-        this.buttonList.add(this.minus1 = new GuiButton(0, this.guiLeft + 20, this.guiTop + 75, 22, 20, "-" + a));
-        this.buttonList.add(this.minus10 = new GuiButton(0, this.guiLeft + 48, this.guiTop + 75, 28, 20, "-" + b));
-        this.buttonList.add(this.minus100 = new GuiButton(0, this.guiLeft + 82, this.guiTop + 75, 32, 20, "-" + c));
-        this.buttonList.add(this.minus1000 = new GuiButton(0, this.guiLeft + 120, this.guiTop + 75, 38, 20, "-" + d));
+        this.minus1 = newTextButtonToList(0, this.guiLeft + 20, this.guiTop + 75, 22, 20, "-" + a);
+        this.minus10 = newTextButtonToList(0, this.guiLeft + 48, this.guiTop + 75, 28, 20, "-" + b);
+        this.minus100 = newTextButtonToList(0, this.guiLeft + 82, this.guiTop + 75, 32, 20, "-" + c);
+        this.minus1000 = newTextButtonToList(0, this.guiLeft + 120, this.guiTop + 75, 38, 20, "-" + d);
 
-        this.buttonList.add(
-                this.next = new GuiButton(0, this.guiLeft + 128, this.guiTop + 51, 38, 20, GuiText.Next.getLocal()));
+        this.next = newTextButtonToList(0, this.guiLeft + 128, this.guiTop + 51, 38, 20, GuiText.Next.getLocal());
 
         ItemStack myIcon = null;
         final Object target = ((AEBaseContainer) this.inventorySlots).getTarget();
@@ -125,8 +124,7 @@ public class GuiCraftAmount extends AEBaseGui {
         }
 
         if (this.originalGui != null && !myIcon.isEmpty()) {
-            this.buttonList.add(this.originalGuiBtn = new GuiTabButton(this.guiLeft + 154, this.guiTop, myIcon,
-                    myIcon.getDisplayName(), this.itemRender));
+            this.originalGuiBtn = newTabButtonToList(myIcon, myIcon.getDisplayName(), this.itemRender);
         }
 
         this.amountToCraft = new GuiTextField(0, this.fontRenderer, this.guiLeft + 62, this.guiTop + 57, 59,

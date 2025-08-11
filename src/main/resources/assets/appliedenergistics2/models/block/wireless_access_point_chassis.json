@@ -1,340 +1,102 @@
 {
-    "parent": "block/block",
-    "textures": {
-        "particle": "appliedenergistics2:blocks/wireless_access_point_inside",
-        "inside": "appliedenergistics2:blocks/wireless_access_point_inside",
-        "1": "appliedenergistics2:blocks/wireless_access_point",
-        "sides": "appliedenergistics2:parts/monitor_sides",
-        "sidesStatus": "appliedenergistics2:parts/monitor_sides_status"
-    },
-    "elements": [
-        {
-            "from": [
-                5,
-                5,
-                0
-            ],
-            "to": [
-                11,
-                11,
-                1
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#sides"
-                },
-                "south": {
-                    "texture": "#sides"
-                },
-                "east": {
-                    "texture": "#sidesStatus"
-                },
-                "west": {
-                    "texture": "#sidesStatus"
-                },
-                "up": {
-                    "texture": "#sidesStatus"
-                },
-                "down": {
-                    "texture": "#sidesStatus"
-                }
-            }
-        },
-        {
-            "from": [
-                5,
-                5,
-                1
-            ],
-            "to": [
-                11,
-                11,
-                2
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna I Up",
-            "from": [
-                6,
-                10,
-                2
-            ],
-            "to": [
-                10,
-                12,
-                4
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna I Down",
-            "from": [
-                6,
-                4,
-                2
-            ],
-            "to": [
-                10,
-                6,
-                4
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna I West",
-            "from": [
-                4,
-                6,
-                2
-            ],
-            "to": [
-                6,
-                10,
-                4
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna I East",
-            "from": [
-                10,
-                6,
-                2
-            ],
-            "to": [
-                12,
-                10,
-                4
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna II Up",
-            "from": [
-                7,
-                12,
-                3
-            ],
-            "to": [
-                9,
-                13,
-                6
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna II Down",
-            "from": [
-                7,
-                3,
-                3
-            ],
-            "to": [
-                9,
-                4,
-                6
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna II West",
-            "from": [
-                3,
-                7,
-                3
-            ],
-            "to": [
-                4,
-                9,
-                6
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        },
-        {
-            "name": "Side Antenna II East",
-            "from": [
-                12,
-                7,
-                3
-            ],
-            "to": [
-                13,
-                9,
-                6
-            ],
-            "faces": {
-                "north": {
-                    "texture": "#inside"
-                },
-                "south": {
-                    "texture": "#inside"
-                },
-                "east": {
-                    "texture": "#sides"
-                },
-                "west": {
-                    "texture": "#sides"
-                },
-                "up": {
-                    "texture": "#sides"
-                },
-                "down": {
-                    "texture": "#sides"
-                }
-            }
-        }
-    ]
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"particle": "appliedenergistics2:blocks/wireless_access_point",
+		"base": "appliedenergistics2:blocks/wireless_access_point"
+	},
+	"elements": [
+		{
+			"from": [5, 5, 0],
+			"to": [11, 11, 6],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+			"faces": {
+				"north": {"uv": [3, 0, 0, 3], "texture": "#base", "cullface": "south"},
+				"east": {"uv": [3, 6, 0, 3], "rotation": 90, "texture": "#base"},
+				"south": {"uv": [3, 6, 0, 9], "texture": "#base"},
+				"west": {"uv": [3, 6, 0, 3], "rotation": 270, "texture": "#base"},
+				"up": {"uv": [0, 6, 3, 3], "texture": "#base"},
+				"down": {"uv": [0, 6, 3, 3], "rotation": 180, "texture": "#base"}
+			}
+		},
+		{
+			"from": [4, 4, 1],
+			"to": [12, 12, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 16]},
+			"faces": {
+				"north": {"uv": [7, 0, 3, 4], "texture": "#base"},
+				"east": {"uv": [3, 5, 7, 4], "rotation": 90, "texture": "#base"},
+				"south": {"uv": [7, 5, 3, 9], "texture": "#base"},
+				"west": {"uv": [3, 4, 7, 5], "rotation": 90, "texture": "#base"},
+				"up": {"uv": [3, 5, 7, 4], "texture": "#base"},
+				"down": {"uv": [3, 4, 7, 5], "texture": "#base"}
+			}
+		},
+		{
+			"from": [4, 6, 3],
+			"to": [5, 10, 6],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [4, 8, 3]},
+			"faces": {
+				"west": {"uv": [8.5, 0, 7, 2], "texture": "#base"},
+				"up": {"uv": [8.5, 0, 7, 0.5], "rotation": 90, "texture": "#base"},
+				"down": {"uv": [7, 1.5, 8.5, 2], "rotation": 90, "texture": "#base"}
+			}
+		},
+		{
+			"from": [11, 6, 3],
+			"to": [12, 10, 6],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [12, 8, 3]},
+			"faces": {
+				"east": {"uv": [7, 2, 8.5, 0], "texture": "#base"},
+				"up": {"uv": [8.5, 2, 7, 1.5], "rotation": 90, "texture": "#base"},
+				"down": {"uv": [7, 0.5, 8.5, 0], "rotation": 90, "texture": "#base"}
+			}
+		},
+		{
+			"from": [6, 6, 6],
+			"to": [10, 10, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 16]},
+			"faces": {
+				"east": {"uv": [9, 0, 8.5, 2], "texture": "#base"},
+				"south": {"uv": [10.5, 0, 8.5, 2], "texture": "#base"},
+				"west": {"uv": [10.5, 0, 10, 2], "texture": "#base"},
+				"up": {"uv": [10.5, 0.5, 8.5, 0], "texture": "#base"},
+				"down": {"uv": [10.5, 2, 8.5, 1.5], "texture": "#base"}
+			}
+		},
+		{
+			"from": [6, 6, 8],
+			"to": [10, 10, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 16]},
+			"faces": {
+				"north": {"uv": [8.5, 2, 10.5, 4], "texture": "#base"},
+				"east": {"uv": [9, 2, 8.5, 4], "texture": "#base"},
+				"south": {"uv": [10.5, 2, 8.5, 4], "texture": "#base"},
+				"west": {"uv": [10.5, 2, 10, 4], "texture": "#base"},
+				"up": {"uv": [10.5, 2.5, 8.5, 2], "texture": "#base"},
+				"down": {"uv": [10.5, 4, 8.5, 3.5], "texture": "#base"}
+			}
+		},
+		{
+			"from": [6, 11, 3],
+			"to": [10, 12, 6],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 12, 3]},
+			"faces": {
+				"east": {"uv": [7, 1.5, 8.5, 2], "texture": "#base"},
+				"west": {"uv": [8.5, 0, 7, 0.5], "texture": "#base"},
+				"up": {"uv": [8.5, 2, 7, 0], "rotation": 90, "texture": "#base"}
+			}
+		},
+		{
+			"from": [6, 4, 3],
+			"to": [10, 5, 6],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 4, 3]},
+			"faces": {
+				"east": {"uv": [7, 0.5, 8.5, 0], "texture": "#base"},
+				"west": {"uv": [8.5, 2, 7, 1.5], "texture": "#base"},
+				"down": {"uv": [7, 0, 8.5, 2], "rotation": 90, "texture": "#base"}
+			}
+		}
+	]
 }

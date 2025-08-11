@@ -1,0 +1,9 @@
+{
+  "ctm":{
+    "ctm_version": 1,
+    "type":"pillar",
+    "textures":[
+        "appliedenergistics2:blocks/quartz_pillar_side_connected_ctmv"
+    ]
+  }
+}

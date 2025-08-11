@@ -73,7 +73,7 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
 
     private static String memoryText = "";
     protected final ItemRepo repo;
-    private final int offsetX = 9;
+    private final int offsetX = 8;
     private final int lowerTextureOffset = 0;
     private final IConfigManager configSrc;
     private final boolean viewCell;
@@ -86,7 +86,6 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     private int reservedSpace = 0;
     private boolean customSortOrder = true;
     private int rows = 0;
-    private int maxRows = Integer.MAX_VALUE;
     private int standardSize;
     private GuiImgButton ViewBox;
     private GuiImgButton SortByBox;
@@ -212,23 +211,29 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     public void initGui() {
         Keyboard.enableRepeatEvents(true);
 
-        this.maxRows = this.getMaxRows();
-        this.perRow = AEConfig.instance()
-                .getConfigManager()
-                .getSetting(
-                        Settings.TERMINAL_STYLE) != TerminalStyle.FULL ? 9
-                                : 9 + ((this.width - this.standardSize) / 18);
+        final int magicNumber = 114 + 1; // So mysterious, so magic.
+        int maxScreenRows = (int) Math.floor((double) (this.height - magicNumber - this.reservedSpace) / 18);
 
-        final int magicNumber = 114 + 1;
-        final int extraSpace = this.height - magicNumber - this.reservedSpace;
+        Enum<?> terminalStyle = AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE);
 
-        this.rows = (int) Math.floor(extraSpace / 18);
-        if (this.rows > this.maxRows) {
-            this.rows = this.maxRows;
+        if (terminalStyle == TerminalStyle.FULL) {
+            this.rows = maxScreenRows;
+        } else if (terminalStyle == TerminalStyle.TALL) {
+            this.rows = (int) Math.ceil(maxScreenRows * 0.75);
+        } else if (terminalStyle == TerminalStyle.MEDIUM) {
+            this.rows = (int) Math.ceil(maxScreenRows * 0.5);
+        } else if (terminalStyle == TerminalStyle.SMALL) {
+            this.rows = (int) Math.ceil(maxScreenRows * 0.25);
+        } else {
+            this.rows = maxScreenRows;
         }
 
-        if (this.rows < 3) {
-            this.rows = 3;
+        if (this.rows > this.getMaxRows()) {
+            this.rows = this.getMaxRows();
+        }
+
+        if (this.rows < this.getMinRows()) {
+            this.rows = this.getMinRows();
         }
 
         this.getMeSlots().clear();
@@ -255,51 +260,33 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         final int unusedSpace = this.height - this.ySize;
         this.guiTop = (int) Math.floor(unusedSpace / (unusedSpace < 0 ? 3.8f : 2.0f));
 
-        int offset = this.guiTop + 8 + jeiOffset;
+        offset = this.guiTop + 8 + jeiOffset;
 
         {
             if (this.customSortOrder) {
-                this.buttonList
-                        .add(this.SortByBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_BY,
-                                this.configSrc.getSetting(Settings.SORT_BY)));
-                offset += 20;
+                this.SortByBox = newImgButtonToList(Settings.SORT_BY,
+                        this.configSrc.getSetting(Settings.SORT_BY));
             }
         }
 
         if (this.viewCell || this instanceof GuiWirelessTerm) {
-            this.buttonList
-                    .add(this.ViewBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.VIEW_MODE,
-                            this.configSrc.getSetting(Settings.VIEW_MODE)));
-            offset += 20;
+            this.ViewBox = newImgButtonToList(Settings.VIEW_MODE,
+                    this.configSrc.getSetting(Settings.VIEW_MODE));
         }
 
-        this.buttonList.add(
-                this.SortDirBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_DIRECTION, this.configSrc
-                        .getSetting(Settings.SORT_DIRECTION)));
-        offset += 20;
+        this.SortDirBox = newImgButtonToList(Settings.SORT_DIRECTION,
+                this.configSrc.getSetting(Settings.SORT_DIRECTION));
 
-        this.buttonList.add(
-                this.searchBoxSettings = new GuiImgButton(this.guiLeft - 18, offset, Settings.SEARCH_MODE,
-                        AEConfig.instance()
-                                .getConfigManager()
-                                .getSetting(
-                                        Settings.SEARCH_MODE)));
-
-        offset += 20;
+        this.searchBoxSettings = newImgButtonToList(Settings.SEARCH_MODE,
+                AEConfig.instance().getConfigManager().getSetting(Settings.SEARCH_MODE));
 
         if (!(this instanceof GuiMEPortableCell) || this instanceof GuiWirelessTerm) {
-            this.buttonList.add(this.terminalStyleBox = new GuiImgButton(this.guiLeft - 18, offset,
-                    Settings.TERMINAL_STYLE, AEConfig.instance()
-                            .getConfigManager()
-                            .getSetting(Settings.TERMINAL_STYLE)));
+            this.terminalStyleBox = newImgButtonToList(Settings.TERMINAL_STYLE,
+                    AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE));
         }
 
-        this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX),
-                this.guiTop + 4, 90, 12);
-        this.searchField.setEnableBackgroundDrawing(false);
+        this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + 71 + this.offsetX, this.guiTop + 4, 90, 12);
         this.searchField.setMaxStringLength(25);
-        this.searchField.setTextColor(0xFFFFFF);
-        this.searchField.setSelectionColor(0xFF008000);
         this.searchField.setVisible(true);
 
         if (this.viewCell || this instanceof GuiWirelessTerm) {
@@ -456,9 +443,13 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
         return this.repo.hasPower();
     }
 
+    // For some special cases, like the Portable Cell, which only has 63 slots.
     protected int getMaxRows() {
-        return AEConfig.instance().getConfigManager().getSetting(Settings.TERMINAL_STYLE) == TerminalStyle.SMALL ? 6
-                : Integer.MAX_VALUE;
+        return Integer.MAX_VALUE;
+    }
+
+    protected int getMinRows() {
+        return 2;
     }
 
     protected void repositionSlot(final AppEngSlot s) {

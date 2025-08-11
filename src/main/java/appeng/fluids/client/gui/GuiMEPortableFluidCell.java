@@ -96,21 +96,13 @@ public class GuiMEPortableFluidCell extends AEBaseMEGui implements ISortSource, 
 
         this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX),
                 this.guiTop + 4, 90, 12);
-        this.searchField.setEnableBackgroundDrawing(false);
         this.searchField.setMaxStringLength(25);
-        this.searchField.setTextColor(0xFFFFFF);
-        this.searchField.setSelectionColor(0xFF99FF99);
         this.searchField.setVisible(true);
 
-        int offset = this.guiTop;
+        offset = this.guiTop + 8;
 
-        this.buttonList.add(this.sortByBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_BY,
-                this.configSrc.getSetting(Settings.SORT_BY)));
-        offset += 20;
-
-        this.buttonList.add(
-                this.sortDirBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_DIRECTION, this.configSrc
-                        .getSetting(Settings.SORT_DIRECTION)));
+        this.sortByBox = newImgButtonToList(Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY));
+        this.sortDirBox = newImgButtonToList(Settings.SORT_DIRECTION, this.configSrc.getSetting(Settings.SORT_DIRECTION));
 
         for (int y = 0; y < this.rows; y++) {
             for (int x = 0; x < this.perRow; x++) {

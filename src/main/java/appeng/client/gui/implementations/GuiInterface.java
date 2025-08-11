@@ -61,19 +61,10 @@ public class GuiInterface extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(),
-                this.itemRender);
-        this.buttonList.add(this.priority);
-
-        this.BlockMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.BLOCK, YesNo.NO);
-        this.buttonList.add(this.BlockMode);
-
-        this.UnlockMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 26, Settings.UNLOCK, LockCraftingMode.NONE);
-        this.buttonList.add(this.UnlockMode);
-
-        this.interfaceMode = new GuiToggleButton(this.guiLeft - 18, this.guiTop + 44, 84, 85,
-                GuiText.InterfaceTerminal.getLocal(), GuiText.InterfaceTerminalHint.getLocal());
-        this.buttonList.add(this.interfaceMode);
+        this.priority = newTabButtonToList(5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender);
+        this.BlockMode = newImgButtonToList(Settings.BLOCK, YesNo.NO);
+        this.UnlockMode = newImgButtonToList(Settings.UNLOCK, LockCraftingMode.NONE);
+        this.interfaceMode = newToggleButtonToList(84, 85, GuiText.InterfaceTerminal.getLocal(), GuiText.InterfaceTerminalHint.getLocal());
     }
 
     protected void addLabel() {

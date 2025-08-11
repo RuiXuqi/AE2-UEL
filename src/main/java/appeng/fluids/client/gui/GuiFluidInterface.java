@@ -68,9 +68,7 @@ public class GuiFluidInterface extends GuiUpgradeable implements IConfigManagerH
             this.guiSlots.add(new GuiFluidSlot(configFluids, i, i, 8 + 18 * i, 35));
         }
 
-        this.priority = new GuiTabButton(this.getGuiLeft() + 154, this.getGuiTop(), 2 + 4 * 16,
-                GuiText.Priority.getLocal(), this.itemRender);
-        this.buttonList.add(this.priority);
+        this.priority = newTabButtonToList(5 + 6 * 16, GuiText.Priority.getLocal(), this.itemRender);
     }
 
     @Override

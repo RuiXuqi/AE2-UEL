@@ -1,8 +1,9 @@
 {
-  "parent": "block/cube_bottom_top",
+  "parent": "appliedenergistics2:block/spatial_io_port",
   "textures": {
-    "bottom": "appliedenergistics2:blocks/spatial_io_port_bottom",
-    "side": "appliedenergistics2:blocks/spatial_io_port_side",
-    "top": "appliedenergistics2:blocks/spatial_io_port"
+    "particle": "appliedenergistics2:blocks/spatial_io_port_front",
+    "top": "appliedenergistics2:blocks/spatial_io_port_top",
+    "front": "appliedenergistics2:blocks/spatial_io_port_front",
+    "side": "appliedenergistics2:blocks/generics/side"
   }
 }

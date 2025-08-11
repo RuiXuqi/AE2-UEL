@@ -3,11 +3,9 @@
     "textures": {
         "particle": "appliedenergistics2:blocks/security_station_side",
         "side": "appliedenergistics2:blocks/security_station_side",
-        "bottom": "appliedenergistics2:blocks/security_station_bottom",
+        "bottom": "appliedenergistics2:blocks/generics/bottom",
         "top": "appliedenergistics2:blocks/security_station_top",
-        "lightsBright": "appliedenergistics2:blocks/security_station_light_bright",
-        "lightsMedium": "appliedenergistics2:blocks/security_station_light_medium",
-        "lightsDark": "appliedenergistics2:blocks/security_station_light_dark"
+        "lights": "appliedenergistics2:blocks/security_station_light_off"
     },
     "elements": [
         {
@@ -55,43 +53,7 @@
             ],
             "faces": {
                 "up": {
-                    "texture": "#lightsBright",
-                    "tintindex": 3
-                }
-            }
-        },
-        {
-            "from": [
-                0,
-                15,
-                0
-            ],
-            "to": [
-                16,
-                16,
-                16
-            ],
-            "faces": {
-                "up": {
-                    "texture": "#lightsMedium",
-                    "tintindex": 3
-                }
-            }
-        },
-        {
-            "from": [
-                0,
-                15,
-                0
-            ],
-            "to": [
-                16,
-                16,
-                16
-            ],
-            "faces": {
-                "up": {
-                    "texture": "#lightsDark",
+                    "texture": "#lights",
                     "tintindex": 3
                 }
             }

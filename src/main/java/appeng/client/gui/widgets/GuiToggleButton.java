@@ -67,8 +67,18 @@ public class GuiToggleButton extends GuiButton implements ITooltip {
             final int uv_y = (int) Math.floor(iconIndex / 16);
             final int uv_x = iconIndex - uv_y * 16;
 
-            this.drawTexturedModalRect(this.x, this.y, 256 - 16, 256 - 16, 16, 16);
-            this.drawTexturedModalRect(this.x, this.y, uv_x * 16, uv_y * 16, 16, 16);
+            if (!hovered) {
+                // Button background
+                this.drawTexturedModalRect(this.x - 1, this.y - 1, 176, 128, 18, 20);
+                // Button icon
+                this.drawTexturedModalRect(this.x, this.y, uv_x * 16, uv_y * 16, 16, 16);
+            } else {
+                // Button background
+                this.drawTexturedModalRect(this.x - 1, this.y, 208, 128, 18, 20);
+                // Button icon
+                this.drawTexturedModalRect(this.x, this.y + 1, uv_x * 16, uv_y * 16, 16, 16);
+            }
+
             this.mouseDragged(par1Minecraft, par2, par3);
         }
     }
