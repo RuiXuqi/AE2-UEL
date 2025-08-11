@@ -105,6 +105,8 @@ if (!getFile(targetPackageJava).exists() && !getFile(targetPackageScala).exists(
     throw new GradleException("Could not resolve \"modGroup\"! Could not find ${targetPackageJava} or ${targetPackageScala} or ${targetPackageKotlin}")
 }
 
+useSrcApiPath = false
+
 if (apiPackage) {
     final String endApiPath = modGroupPath + '/' + apiPackagePath
     if (useSrcApiPath) {
