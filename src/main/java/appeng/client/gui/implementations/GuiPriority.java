@@ -34,6 +34,7 @@ import appeng.helpers.IPriorityHost;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 
@@ -85,10 +86,8 @@ public class GuiPriority extends AEBaseGui {
             this.originalGuiBtn = newTabButtonToList(myIcon, myIcon.getDisplayName(), this.itemRender);
         }
 
-        this.priority = new GuiNumberBox(this.fontRenderer, this.guiLeft + 62, this.guiTop + 57, 59, this.fontRenderer.FONT_HEIGHT, Long.class);
-        this.priority.setEnableBackgroundDrawing(false);
+        this.priority = new GuiNumberBox(this.fontRenderer, this.guiLeft + 60, this.guiTop + 55, 61, 12, Long.class);
         this.priority.setMaxStringLength(16);
-        this.priority.setTextColor(0xFFFFFF);
         this.priority.setVisible(true);
         this.priority.setFocused(true);
         ((ContainerPriority) this.inventorySlots).setTextField(this.priority);
@@ -184,6 +183,17 @@ public class GuiPriority extends AEBaseGui {
             } else {
                 super.keyTyped(character, key);
             }
+        }
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        final int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        final int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        final int i = Mouse.getEventDWheel();
+        if (i != 0 && priority.isMouseIn(x, y)) {
+            addQty(i > 0 ? 1 : -1);
         }
     }
 

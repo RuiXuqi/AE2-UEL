@@ -61,9 +61,8 @@ public class GuiLevelEmitter extends GuiUpgradeable {
     public void initGui() {
         super.initGui();
 
-        this.level = new GuiNumberBox(this.fontRenderer, this.guiLeft + 24, this.guiTop + 43, 79, this.fontRenderer.FONT_HEIGHT, Long.class);
+        this.level = new GuiNumberBox(this.fontRenderer, this.guiLeft + 23, this.guiTop + 42, 90, 12, Long.class);
         this.level.setMaxStringLength(16);
-        this.level.setTextColor(0xFFFFFF);
         this.level.setVisible(true);
         this.level.setFocused(true);
         ((ContainerLevelEmitter) this.inventorySlots).setTextField(this.level);
@@ -130,6 +129,17 @@ public class GuiLevelEmitter extends GuiUpgradeable {
     protected void handleButtonVisibility() {
         this.craftingMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.CRAFTING) > 0);
         this.fuzzyMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.FUZZY) > 0);
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        final int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        final int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        final int i = Mouse.getEventDWheel();
+        if (i != 0 && level.isMouseIn(x, y)) {
+            addQty(i > 0 ? 1 : -1);
+        }
     }
 
     @Override

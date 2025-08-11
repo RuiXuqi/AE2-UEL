@@ -16,6 +16,7 @@ import appeng.fluids.container.ContainerFluidLevelEmitter;
 import appeng.fluids.parts.PartFluidLevelEmitter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ public class GuiFluidLevelEmitter extends GuiUpgradeable {
     public void initGui() {
         super.initGui();
 
-        this.level = new GuiNumberBox(this.fontRenderer, this.guiLeft + 24, this.guiTop + 43, 79, this.fontRenderer.FONT_HEIGHT, Long.class);
+        this.level = new GuiNumberBox(this.fontRenderer, this.guiLeft + 23, this.guiTop + 42, 90, 12, Long.class);
         this.level.setEnableBackgroundDrawing(false);
         this.level.setMaxStringLength(16);
         this.level.setTextColor(0xFFFFFF);
@@ -91,6 +92,17 @@ public class GuiFluidLevelEmitter extends GuiUpgradeable {
     @Override
     protected boolean drawUpgrades() {
         return false;
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+        final int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        final int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        final int i = Mouse.getEventDWheel();
+        if (i != 0 && level.isMouseIn(x, y)) {
+            addQty(i > 0 ? 1 : -1);
+        }
     }
 
     @Override

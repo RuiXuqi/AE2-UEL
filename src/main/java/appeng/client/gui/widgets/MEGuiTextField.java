@@ -46,7 +46,9 @@ public class MEGuiTextField extends GuiTextField {
     private final int _width;
     private final int _height;
     private final int _fontPad;
-    private int selectionColor = 0xFF00FF00;
+    private int selectionColor = 0xFF000080;
+    private int enabledColor = 0xFCFCFC;
+    private int disabledColor = 0xA0A0A0;
 
     /**
      * Uses the values to instantiate a padded version of a text field.
@@ -124,26 +126,34 @@ public class MEGuiTextField extends GuiTextField {
         this.setSelectionPos(this.getMaxStringLength());
     }
 
-    public void setSelectionColor(int color) {
-        this.selectionColor = color;
-    }
-
     @Override
     public void drawTextBox() {
         Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/sprites.png"));
         if (this.getVisible()) {
             if (!this.isEnabled){
-                this.drawTexturedModalRect(this._xPos, this._yPos, 0, 72, this._width / 2, this._height);
-                this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 72, this._width / 2, this._height);
+                drawTexturedColumnRect(this._xPos, this._yPos, 0, 72, this._width, 12, 128);
             } else if (this.isFocused()) {
-                this.drawTexturedModalRect(this._xPos, this._yPos, 0, 84, this._width / 2, this._height);
-                this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 84, this._width / 2, this._height);
+                drawTexturedColumnRect(this._xPos, this._yPos, 0, 84, this._width, 12, 128);
             } else {
-                this.drawTexturedModalRect(this._xPos, this._yPos, 0, 60, this._width / 2, this._height);
-                this.drawTexturedModalRect(this._xPos + this._width / 2, this._yPos, 128 - this._width / 2, 60, this._width / 2, this._height);
+                drawTexturedColumnRect(this._xPos, this._yPos, 0, 60, this._width, 12, 128);
             }
             this.setEnableBackgroundDrawing(false);
+            super.setTextColor(enabledColor);
+            super.setDisabledTextColour(disabledColor);
             super.drawTextBox();
+        }
+    }
+
+    protected void drawTexturedColumnRect(int x, int y, int textureX, int textureY, int width, int textureHeight, int textureLength) {
+        if (width % 2 == 0) {
+            this.drawTexturedModalRect(x, y, textureX, textureY, width / 2, textureHeight); // Left half
+            this.drawTexturedModalRect(x + width / 2, y, textureX + textureLength - width / 2, textureY, width / 2, textureHeight); // Right half
+        } else {
+            // Very hacky
+            width += 1;
+            this.drawTexturedModalRect(x, y, textureX, textureY, width / 2, textureHeight); // Left half
+            width -= 2;
+            this.drawTexturedModalRect(x + width / 2 + 1, y, textureX + textureLength - width / 2, textureY, width / 2, textureHeight); // Right half
         }
     }
 
@@ -213,6 +223,21 @@ public class MEGuiTextField extends GuiTextField {
         tessellator.draw();
         GlStateManager.disableColorLogic();
         GlStateManager.enableTexture2D();
+    }
+
+
+    public void setSelectionColor(int color) {
+        this.selectionColor = color;
+    }
+
+    @Override
+    public void setTextColor(int color) {
+        this.enabledColor = color;
+    }
+
+    @Override
+    public void setDisabledTextColour(int color) {
+        this.disabledColor = color;
     }
 
 }
