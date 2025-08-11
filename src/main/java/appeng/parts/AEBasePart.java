@@ -319,37 +319,32 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
             }
         }
 
-        if (this instanceof IPriorityHost) {
-            final IPriorityHost pHost = (IPriorityHost) this;
+        if (this instanceof IPriorityHost pHost) {
             pHost.setPriority(compound.getInteger("priority"));
         }
 
         final IItemHandler inv = this.getInventoryByName("config");
-        if (inv instanceof AppEngInternalAEInventory) {
-            final AppEngInternalAEInventory target = (AppEngInternalAEInventory) inv;
+        if (inv instanceof AppEngInternalAEInventory target) {
             final AppEngInternalAEInventory tmp = new AppEngInternalAEInventory(null, target.getSlots());
             tmp.readFromNBT(compound, "config");
             for (int x = 0; x < tmp.getSlots(); x++) {
                 target.setStackInSlot(x, tmp.getStackInSlot(x));
             }
-            if (this instanceof PartLevelEmitter) {
-                final PartLevelEmitter partLevelEmitter = (PartLevelEmitter) this;
+            if (this instanceof PartLevelEmitter partLevelEmitter) {
                 partLevelEmitter.setReportingValue(compound.getLong("reportingValue"));
             }
         }
 
         if (this instanceof IConfigurableFluidInventory) {
             final IFluidHandler tank = ((IConfigurableFluidInventory) this).getFluidInventoryByName("config");
-            if (tank instanceof AEFluidInventory) {
-                final AEFluidInventory target = (AEFluidInventory) tank;
+            if (tank instanceof AEFluidInventory target) {
                 final AEFluidInventory tmp = new AEFluidInventory(null, target.getSlots());
                 tmp.readFromNBT(compound, "config");
                 for (int x = 0; x < tmp.getSlots(); x++) {
                     target.setFluidInSlot(x, tmp.getFluidInSlot(x));
                 }
             }
-            if (this instanceof PartFluidLevelEmitter) {
-                final PartFluidLevelEmitter partFluidLevelEmitter = (PartFluidLevelEmitter) this;
+            if (this instanceof PartFluidLevelEmitter partFluidLevelEmitter) {
                 partFluidLevelEmitter.setReportingValue(compound.getLong("reportingValue"));
             }
         }
@@ -380,16 +375,14 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
             cm.writeToNBT(output);
         }
 
-        if (this instanceof IPriorityHost) {
-            final IPriorityHost pHost = (IPriorityHost) this;
+        if (this instanceof IPriorityHost pHost) {
             output.setInteger("priority", pHost.getPriority());
         }
 
         final IItemHandler inv = this.getInventoryByName("config");
         if (inv instanceof AppEngInternalAEInventory) {
             ((AppEngInternalAEInventory) inv).writeToNBT(output, "config");
-            if (this instanceof PartLevelEmitter) {
-                final PartLevelEmitter partLevelEmitter = (PartLevelEmitter) this;
+            if (this instanceof PartLevelEmitter partLevelEmitter) {
                 output.setLong("reportingValue", partLevelEmitter.getReportingValue());
             }
         }
@@ -399,8 +392,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
             if (tank instanceof AEFluidInventory) {
                 ((AEFluidInventory) tank).writeToNBT(output, "config");
             }
-            if (this instanceof PartFluidLevelEmitter) {
-                final PartFluidLevelEmitter partFluidLevelEmitter = (PartFluidLevelEmitter) this;
+            if (this instanceof PartFluidLevelEmitter partFluidLevelEmitter) {
                 output.setLong("reportingValue", partFluidLevelEmitter.getReportingValue());
             }
         }
@@ -415,8 +407,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
     private boolean useMemoryCard(final EntityPlayer player) {
         final ItemStack memCardIS = player.inventory.getCurrentItem();
 
-        if (!memCardIS.isEmpty() && this.useStandardMemoryCard() && memCardIS.getItem() instanceof IMemoryCard) {
-            final IMemoryCard memoryCard = (IMemoryCard) memCardIS.getItem();
+        if (!memCardIS.isEmpty() && this.useStandardMemoryCard() && memCardIS.getItem() instanceof IMemoryCard memoryCard) {
 
             ItemStack is = this.getItemStack(PartItemStack.NETWORK);
 

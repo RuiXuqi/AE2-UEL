@@ -105,39 +105,28 @@ public class PacketValueConfig extends AppEngPacket {
             final ItemStack is = player.getHeldItem(hand);
             final IMouseWheelItem si = (IMouseWheelItem) is.getItem();
             si.onWheel(is, this.Value.equals("WheelUp"));
-        } else if (this.Name.equals("Terminal.Cpu.Set") && c instanceof ContainerCraftingStatus) {
-            final ContainerCraftingStatus qk = (ContainerCraftingStatus) c;
+        } else if (this.Name.equals("Terminal.Cpu.Set") && c instanceof ContainerCraftingStatus qk) {
             qk.selectCPU(Integer.parseInt(this.Value));
-        } else if (this.Name.equals("Terminal.Cpu") && c instanceof ContainerCraftConfirm) {
-            final ContainerCraftConfirm qk = (ContainerCraftConfirm) c;
+        } else if (this.Name.equals("Terminal.Cpu") && c instanceof ContainerCraftConfirm qk) {
             qk.cycleCpu(this.Value.equals("Next"));
-        } else if (this.Name.equals("Terminal.Start") && c instanceof ContainerCraftConfirm) {
-            final ContainerCraftConfirm qk = (ContainerCraftConfirm) c;
+        } else if (this.Name.equals("Terminal.Start") && c instanceof ContainerCraftConfirm qk) {
             qk.startJob();
-        } else if (this.Name.equals("TileCrafting.Cancel") && c instanceof ContainerCraftingCPU) {
-            final ContainerCraftingCPU qk = (ContainerCraftingCPU) c;
+        } else if (this.Name.equals("TileCrafting.Cancel") && c instanceof ContainerCraftingCPU qk) {
             qk.cancelCrafting();
-        } else if (this.Name.equals("QuartzKnife.Name") && c instanceof ContainerQuartzKnife) {
-            final ContainerQuartzKnife qk = (ContainerQuartzKnife) c;
+        } else if (this.Name.equals("QuartzKnife.Name") && c instanceof ContainerQuartzKnife qk) {
             qk.setName(this.Value);
-        } else if (this.Name.equals("QuartzKnife.ReName") && c instanceof ContainerRenamer) {
-            final ContainerRenamer qk = (ContainerRenamer) c;
+        } else if (this.Name.equals("QuartzKnife.ReName") && c instanceof ContainerRenamer qk) {
             qk.setNewName(this.Value);
-        } else if (this.Name.equals("TileSecurityStation.ToggleOption") && c instanceof ContainerSecurityStation) {
-            final ContainerSecurityStation sc = (ContainerSecurityStation) c;
+        } else if (this.Name.equals("TileSecurityStation.ToggleOption") && c instanceof ContainerSecurityStation sc) {
             sc.toggleSetting(this.Value, player);
-        } else if (this.Name.equals("PriorityHost.Priority") && c instanceof ContainerPriority) {
-            final ContainerPriority pc = (ContainerPriority) c;
+        } else if (this.Name.equals("PriorityHost.Priority") && c instanceof ContainerPriority pc) {
             pc.setPriority(Integer.parseInt(this.Value), player);
-        } else if (this.Name.equals("LevelEmitter.Value") && c instanceof ContainerLevelEmitter) {
-            final ContainerLevelEmitter lvc = (ContainerLevelEmitter) c;
+        } else if (this.Name.equals("LevelEmitter.Value") && c instanceof ContainerLevelEmitter lvc) {
             lvc.setLevel(Long.parseLong(this.Value), player);
-        } else if (this.Name.equals("FluidLevelEmitter.Value") && c instanceof ContainerFluidLevelEmitter) {
-            final ContainerFluidLevelEmitter lvc = (ContainerFluidLevelEmitter) c;
+        } else if (this.Name.equals("FluidLevelEmitter.Value") && c instanceof ContainerFluidLevelEmitter lvc) {
             lvc.setLevel(Long.parseLong(this.Value), player);
         } else if (this.Name.startsWith("PatternTerminal.")) {
-            if (c instanceof ContainerPatternEncoder) {
-                final ContainerPatternEncoder cpt = (ContainerPatternEncoder) c;
+            if (c instanceof ContainerPatternEncoder cpt) {
                 if (this.Name.equals("PatternTerminal.CraftMode")) {
                     cpt.setCraftingMode(this.Value.equals("1"));
                 } else if (this.Name.equals("PatternTerminal.Encode")) {
@@ -194,8 +183,7 @@ public class PacketValueConfig extends AppEngPacket {
                     ((ContainerOreDictStorageBus) c).sendRegex();
                 }
             }
-        } else if (this.Name.startsWith("CellWorkbench.") && c instanceof ContainerCellWorkbench) {
-            final ContainerCellWorkbench ccw = (ContainerCellWorkbench) c;
+        } else if (this.Name.startsWith("CellWorkbench.") && c instanceof ContainerCellWorkbench ccw) {
             if (this.Name.equals("CellWorkbench.Action")) {
                 if (this.Value.equals("CopyMode")) {
                     ccw.nextWorkBenchCopyMode();

@@ -48,12 +48,11 @@ public abstract class AEBaseMEGui extends AEBaseGui {
         final int bigNumber = AEConfig.instance().useTerminalUseLargeFont() ? 999 : 9999;
         final List<String> currentToolTip = this.getItemToolTip(stack);
 
-        if (s instanceof SlotME && !stack.isEmpty()) {
+        if (s instanceof SlotME theSlotField && !stack.isEmpty()) {
 
             IAEItemStack myStack = null;
 
             try {
-                final SlotME theSlotField = (SlotME) s;
                 myStack = theSlotField.getAEStack();
             } catch (final Throwable ignore) {
             }

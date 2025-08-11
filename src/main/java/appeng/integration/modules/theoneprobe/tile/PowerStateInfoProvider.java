@@ -35,8 +35,7 @@ public class PowerStateInfoProvider implements ITileProbInfoProvider {
     @Override
     public void addProbeInfo(AEBaseTile tile, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
             IBlockState blockState, IProbeHitData data) {
-        if (tile instanceof IPowerChannelState) {
-            final IPowerChannelState state = (IPowerChannelState) tile;
+        if (tile instanceof IPowerChannelState state) {
 
             final boolean isActive = state.isActive();
             final boolean isPowered = state.isPowered();

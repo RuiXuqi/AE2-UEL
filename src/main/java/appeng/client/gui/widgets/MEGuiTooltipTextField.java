@@ -20,7 +20,7 @@ public class MEGuiTooltipTextField implements ITooltip {
     private static boolean previousKeyboardRepeatEnabled;
     private static MEGuiTooltipTextField previousKeyboardRepeatEnabledField;
     private String tooltip;
-    private int fontPad;
+    private final int fontPad;
 
     public int x;
     public int y;

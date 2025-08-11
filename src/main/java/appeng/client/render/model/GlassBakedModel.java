@@ -93,11 +93,10 @@ class GlassBakedModel implements IBakedModel {
 
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        if (!(state instanceof IExtendedBlockState) || side == null) {
+        if (!(state instanceof IExtendedBlockState extState) || side == null) {
             return Collections.emptyList();
         }
 
-        final IExtendedBlockState extState = (IExtendedBlockState) state;
         final GlassState glassState = extState.getValue(BlockQuartzGlass.GLASS_STATE);
 
         if (glassState == null) {

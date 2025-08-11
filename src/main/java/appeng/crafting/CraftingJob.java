@@ -73,7 +73,7 @@ public class CraftingJob implements Runnable, ICraftingJob {
     private boolean done = false;
     private int time;
     private int incTime;
-    private CraftingTreeNode rootNode;
+    private final CraftingTreeNode rootNode;
 
     private World wrapWorld(final World w) {
         return w;

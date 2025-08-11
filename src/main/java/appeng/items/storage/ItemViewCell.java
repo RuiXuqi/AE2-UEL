@@ -54,11 +54,10 @@ public class ItemViewCell extends AEBaseItem implements ICellWorkbenchItem {
                 continue;
             }
 
-            if ((currentViewCell.getItem() instanceof ItemViewCell)) {
+            if ((currentViewCell.getItem() instanceof ItemViewCell vc)) {
                 final IItemList<IAEItemStack> priorityList = AEApi.instance().storage()
                         .getStorageChannel(IItemStorageChannel.class).createList();
 
-                final ICellWorkbenchItem vc = (ICellWorkbenchItem) currentViewCell.getItem();
                 final IItemHandler upgrades = vc.getUpgradesInventory(currentViewCell);
                 final IItemHandler config = vc.getConfigInventory(currentViewCell);
                 final FuzzyMode fzMode = vc.getFuzzyMode(currentViewCell);

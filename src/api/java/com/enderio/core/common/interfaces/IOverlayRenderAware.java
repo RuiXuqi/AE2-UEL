@@ -6,6 +6,6 @@ import net.minecraft.item.ItemStack;
 
 public interface IOverlayRenderAware {
 
-    public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition);
+    void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition);
 
 }

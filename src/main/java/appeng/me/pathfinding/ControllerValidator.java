@@ -49,8 +49,7 @@ public class ControllerValidator implements IGridVisitor {
     @Override
     public boolean visitNode(final IGridNode n) {
         final IGridHost host = n.getMachine();
-        if (this.isValid() && host instanceof TileController) {
-            final TileController c = (TileController) host;
+        if (this.isValid() && host instanceof TileController c) {
 
             final BlockPos pos = c.getPos();
 

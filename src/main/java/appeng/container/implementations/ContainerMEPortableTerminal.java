@@ -57,8 +57,8 @@ public class ContainerMEPortableTerminal extends ContainerMEMonitorable
     public ContainerMEPortableTerminal(InventoryPlayer ip, WirelessTerminalGuiObject guiObject, boolean bindInventory) {
         super(ip, guiObject, guiObject, bindInventory);
         if (guiObject != null) {
-            final int slotIndex = ((IInventorySlotAware) guiObject).getInventorySlot();
-            if (!((IInventorySlotAware) guiObject).isBaubleSlot()) {
+            final int slotIndex = guiObject.getInventorySlot();
+            if (!guiObject.isBaubleSlot()) {
                 this.lockPlayerInventorySlot(slotIndex);
             }
             this.slot = slotIndex;

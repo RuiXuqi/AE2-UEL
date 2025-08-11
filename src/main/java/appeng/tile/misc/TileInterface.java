@@ -346,8 +346,7 @@ public class TileInterface extends AENetworkInvTile
     public void uploadSettings(SettingsFrom from, NBTTagCompound compound, EntityPlayer player) {
         super.uploadSettings(from, compound, player);
         final IItemHandler inv = this.getInventoryByName("patterns");
-        if (inv instanceof AppEngInternalInventory) {
-            final AppEngInternalInventory target = (AppEngInternalInventory) inv;
+        if (inv instanceof AppEngInternalInventory target) {
             AppEngInternalInventory tmp = new AppEngInternalInventory(null, target.getSlots());
             tmp.readFromNBT(compound, "patterns");
             PlayerMainInvWrapper playerInv = new PlayerMainInvWrapper(player.inventory);

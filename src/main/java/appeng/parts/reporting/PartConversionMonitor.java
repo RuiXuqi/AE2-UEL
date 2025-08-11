@@ -125,7 +125,7 @@ public class PartConversionMonitor extends AbstractPartMonitor {
             if (getDisplayed() instanceof IAEItemStack || getDisplayed() == null) {
                 return super.onPartActivate(player, hand, pos);
             }
-            if (((IAEFluidStack) this.getDisplayed()).equals(AEFluidStack.fromFluidStack(fluidInTank))) {
+            if (this.getDisplayed().equals(AEFluidStack.fromFluidStack(fluidInTank))) {
                 this.drainFluidContainer(player, hand);
             } else {
                 return super.onPartActivate(player, hand, pos);

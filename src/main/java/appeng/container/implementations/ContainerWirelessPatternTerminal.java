@@ -76,7 +76,7 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder
 
         if (gui != null) {
             final int slotIndex = gui.getInventorySlot();
-            if (!((IInventorySlotAware) gui).isBaubleSlot()) {
+            if (!gui.isBaubleSlot()) {
                 this.lockPlayerInventorySlot(slotIndex);
             }
             this.slot = slotIndex;
@@ -268,8 +268,7 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder
             final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.pattern && slot == 1) {
             final ItemStack is = this.pattern.getStackInSlot(1);
-            if (!is.isEmpty() && is.getItem() instanceof ICraftingPatternItem) {
-                final ICraftingPatternItem pattern = (ICraftingPatternItem) is.getItem();
+            if (!is.isEmpty() && is.getItem() instanceof ICraftingPatternItem pattern) {
                 final ICraftingPatternDetails details = pattern.getPatternForItem(is, this.getPlayerInv().player.world);
                 if (details != null) {
                     this.setCraftingMode(details.isCraftable());

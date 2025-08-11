@@ -36,8 +36,7 @@ public class PowerStorageInfoProvider implements ITileProbInfoProvider {
     @Override
     public void addProbeInfo(AEBaseTile tile, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
             IBlockState blockState, IProbeHitData data) {
-        if (tile instanceof IAEPowerStorage) {
-            final IAEPowerStorage storage = (IAEPowerStorage) tile;
+        if (tile instanceof IAEPowerStorage storage) {
             final double maxPower = storage.getAEMaxPower();
 
             if (maxPower > 0) {

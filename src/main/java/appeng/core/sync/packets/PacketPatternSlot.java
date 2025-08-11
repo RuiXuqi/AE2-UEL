@@ -100,8 +100,7 @@ public class PacketPatternSlot extends AppEngPacket {
     @Override
     public void serverPacketData(final INetworkInfo manager, final AppEngPacket packet, final EntityPlayer player) {
         final EntityPlayerMP sender = (EntityPlayerMP) player;
-        if (sender.openContainer instanceof ContainerPatternEncoder) {
-            final ContainerPatternEncoder patternEncoder = (ContainerPatternEncoder) sender.openContainer;
+        if (sender.openContainer instanceof ContainerPatternEncoder patternEncoder) {
             patternEncoder.craftOrGetItem(this);
         }
     }

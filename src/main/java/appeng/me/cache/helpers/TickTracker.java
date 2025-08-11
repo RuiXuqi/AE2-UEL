@@ -64,8 +64,7 @@ public class TickTracker implements Comparable<TickTracker> {
     }
 
     public void addEntityCrashInfo(final CrashReportCategory crashreportcategory) {
-        if (this.getGridTickable() instanceof IPart) {
-            final IPart part = (IPart) this.getGridTickable();
+        if (this.getGridTickable() instanceof IPart part) {
             part.addEntityCrashInfo(crashreportcategory);
         }
 

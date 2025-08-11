@@ -245,11 +245,9 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
                 .getModelForState(this.getDefaultState());
 
         // We cannot add the effect if we don't have the model
-        if (!(model instanceof CableBusBakedModel)) {
+        if (!(model instanceof CableBusBakedModel cableBusModel)) {
             return true;
         }
-
-        CableBusBakedModel cableBusModel = (CableBusBakedModel) model;
 
         CableBusRenderState renderState = cb.getRenderState();
 
@@ -279,11 +277,9 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
                 .getModelForState(this.getDefaultState());
 
         // We cannot add the effect if we dont have the model
-        if (!(model instanceof CableBusBakedModel)) {
+        if (!(model instanceof CableBusBakedModel cableBusModel)) {
             return true;
         }
-
-        CableBusBakedModel cableBusModel = (CableBusBakedModel) model;
 
         CableBusRenderState renderState = cb.getRenderState();
 

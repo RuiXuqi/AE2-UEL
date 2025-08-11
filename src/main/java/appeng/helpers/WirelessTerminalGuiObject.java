@@ -286,11 +286,11 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
             for (final IGridNode n : tw) {
                 TileQuantumBridge tqb = (TileQuantumBridge) n.getMachine();
                 if (tqb.getCluster() != null) {
-                    TileQuantumBridge center = ((QuantumCluster) tqb.getCluster()).getCenter();
+                    TileQuantumBridge center = tqb.getCluster().getCenter();
                     if (center != null) {
                         if (center.getInternalInventory().getStackInSlot(1).isItemEqual(
                                 AEApi.instance().definitions().materials().cardQuantumLink().maybeStack(1).get())) {
-                            myQC = (QuantumCluster) tqb.getCluster();
+                            myQC = tqb.getCluster();
                             myRange = 1;
                             return true;
                         }

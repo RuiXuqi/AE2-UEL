@@ -144,7 +144,7 @@ public final class FluidList implements IItemList<IAEFluidStack> {
 
     @Override
     public int size() {
-        return this.records.values().size();
+        return this.records.size();
     }
 
     @Override

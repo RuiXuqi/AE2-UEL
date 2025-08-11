@@ -204,13 +204,12 @@ public class GuiExpandedProcessingPatternTerm extends GuiMEMonitorable implement
 
     @Override
     public List<IGhostIngredientHandler.Target<?>> getPhantomTargets(Object ingredient) {
-        if (!(ingredient instanceof ItemStack)) {
+        if (!(ingredient instanceof ItemStack itemStack)) {
             return Collections.emptyList();
         }
         List<IGhostIngredientHandler.Target<?>> targets = new ArrayList<>();
         for (Slot slot : this.inventorySlots.inventorySlots) {
             if (slot instanceof SlotFake) {
-                ItemStack itemStack = (ItemStack) ingredient;
                 IGhostIngredientHandler.Target<Object> target = new IGhostIngredientHandler.Target<Object>() {
                     @Override
                     public Rectangle getArea() {

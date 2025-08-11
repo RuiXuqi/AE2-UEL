@@ -142,8 +142,7 @@ public class SkyCompassBakedModel implements IBakedModel {
             @Override
             public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
                     EntityLivingBase entity) {
-                if (world != null && entity instanceof EntityPlayerSP) {
-                    EntityPlayer player = (EntityPlayer) entity;
+                if (world != null && entity instanceof EntityPlayerSP player) {
 
                     float offRads = (float) (player.rotationYaw / 180.0f * (float) Math.PI + Math.PI);
 

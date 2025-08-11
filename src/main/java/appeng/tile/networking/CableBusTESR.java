@@ -30,11 +30,9 @@ public class CableBusTESR extends TileEntitySpecialRenderer<AEBaseTile> {
     public void render(AEBaseTile te, double x, double y, double z, float partialTicks, int destroyStage,
             float p_render_10_) {
 
-        if (!(te instanceof TileCableBusTESR)) {
+        if (!(te instanceof TileCableBusTESR realTe)) {
             return;
         }
-
-        TileCableBusTESR realTe = (TileCableBusTESR) te;
 
         for (EnumFacing facing : EnumFacing.values()) {
             IPart part = realTe.getPart(facing);

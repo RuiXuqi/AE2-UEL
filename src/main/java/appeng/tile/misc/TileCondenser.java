@@ -100,8 +100,7 @@ public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, 
     public double getStorage() {
         final ItemStack is = this.storageSlot.getStackInSlot(0);
         if (!is.isEmpty()) {
-            if (is.getItem() instanceof IStorageComponent) {
-                final IStorageComponent sc = (IStorageComponent) is.getItem();
+            if (is.getItem() instanceof IStorageComponent sc) {
                 if (sc.isStorageComponent(is)) {
                     return sc.getBytes(is) * BYTE_MULTIPLIER;
                 }
