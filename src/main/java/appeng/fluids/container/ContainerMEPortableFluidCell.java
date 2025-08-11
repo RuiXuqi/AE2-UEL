@@ -1,5 +1,23 @@
 package appeng.fluids.container;
 
+import java.io.IOException;
+import java.nio.BufferOverflowException;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.IItemHandler;
+
+import baubles.api.BaublesApi;
+
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -48,30 +66,16 @@ import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import baubles.api.BaublesApi;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.nio.BufferOverflowException;
-
-public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAEAppEngInventory, IConfigManagerHost, IConfigurableObject, IMEMonitorHandlerReceiver<IAEFluidStack>, IUpgradeableCellContainer, IInventorySlotAware {
+public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAEAppEngInventory, IConfigManagerHost,
+        IConfigurableObject, IMEMonitorHandlerReceiver<IAEFluidStack>, IUpgradeableCellContainer, IInventorySlotAware {
 
     protected final WirelessTerminalGuiObject wirelessTerminalGUIObject;
 
     private final IConfigManager clientCM;
     private final IMEMonitor<IAEFluidStack> monitor;
-    private final IItemList<IAEFluidStack> fluids = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+    private final IItemList<IAEFluidStack> fluids = AEApi.instance().storage()
+            .getStorageChannel(IFluidStorageChannel.class).createList();
     @GuiSync(99)
     public boolean hasPower = false;
     private final ITerminalHost terminal;
@@ -90,11 +94,13 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
         this(ip, monitorable, null, true);
     }
 
-    public ContainerMEPortableFluidCell(final InventoryPlayer ip, final IPortableCell monitorable, WirelessTerminalGuiObject iGuiItemObject) {
+    public ContainerMEPortableFluidCell(final InventoryPlayer ip, final IPortableCell monitorable,
+            WirelessTerminalGuiObject iGuiItemObject) {
         this(ip, monitorable, iGuiItemObject, true);
     }
 
-    public ContainerMEPortableFluidCell(InventoryPlayer ip, IPortableCell monitorable, WirelessTerminalGuiObject iGuiItemObject, boolean bindInventory) {
+    public ContainerMEPortableFluidCell(InventoryPlayer ip, IPortableCell monitorable,
+            WirelessTerminalGuiObject iGuiItemObject, boolean bindInventory) {
         super(ip, monitorable);
 
         this.terminal = monitorable;
@@ -107,7 +113,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
         this.clientCM.registerSetting(Settings.VIEW_MODE, ViewItems.ALL);
         if (Platform.isServer()) {
             this.serverCM = terminal.getConfigManager();
-            this.monitor = terminal.getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
+            this.monitor = terminal
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
 
             if (this.monitor != null) {
                 this.monitor.addListener(this, null);
@@ -142,7 +149,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
         if (bindInventory) {
             this.bindPlayerInventory(ip, 0, 140);
         }
-        hasPower = this.wirelessTerminalGUIObject.extractAEPower(this.getPowerMultiplier(), Actionable.SIMULATE, PowerMultiplier.CONFIG) > 0.001;
+        hasPower = this.wirelessTerminalGUIObject.extractAEPower(this.getPowerMultiplier(), Actionable.SIMULATE,
+                PowerMultiplier.CONFIG) > 0.001;
         upgrades = new StackUpgradeInventory(wirelessTerminalGUIObject.getItemStack(), this, 2);
         this.loadFromNBT();
 
@@ -156,17 +164,21 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
             if (wirelessTerminalGUIObject.isBaubleSlot()) {
                 currentItem = BaublesApi.getBaublesHandler(this.getPlayerInv().player).getStackInSlot(this.slot);
             } else {
-                currentItem = this.slot < 0 ? this.getPlayerInv().getCurrentItem() : this.getPlayerInv().getStackInSlot(this.slot);
+                currentItem = this.slot < 0 ? this.getPlayerInv().getCurrentItem()
+                        : this.getPlayerInv().getStackInSlot(this.slot);
             }
 
             if (currentItem.isEmpty()) {
                 this.setValidContainer(false);
-            } else if (!this.wirelessTerminalGUIObject.getItemStack().isEmpty() && currentItem != this.wirelessTerminalGUIObject.getItemStack()) {
+            } else if (!this.wirelessTerminalGUIObject.getItemStack().isEmpty()
+                    && currentItem != this.wirelessTerminalGUIObject.getItemStack()) {
                 if (ItemStack.areItemsEqual(this.wirelessTerminalGUIObject.getItemStack(), currentItem)) {
                     if (wirelessTerminalGUIObject.isBaubleSlot()) {
-                        BaublesApi.getBaublesHandler(this.getPlayerInv().player).setStackInSlot(this.slot, this.wirelessTerminalGUIObject.getItemStack());
+                        BaublesApi.getBaublesHandler(this.getPlayerInv().player).setStackInSlot(this.slot,
+                                this.wirelessTerminalGUIObject.getItemStack());
                     } else {
-                        this.getPlayerInv().setInventorySlotContents(this.slot, this.wirelessTerminalGUIObject.getItemStack());
+                        this.getPlayerInv().setInventorySlotContents(this.slot,
+                                this.wirelessTerminalGUIObject.getItemStack());
                     }
                 } else {
                     this.setValidContainer(false);
@@ -176,7 +188,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
             // drain 1 ae t
             this.ticks++;
             if (this.ticks > 10) {
-                double ext = this.wirelessTerminalGUIObject.extractAEPower(this.getPowerMultiplier() * this.ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                double ext = this.wirelessTerminalGUIObject.extractAEPower(this.getPowerMultiplier() * this.ticks,
+                        Actionable.MODULATE, PowerMultiplier.CONFIG);
                 if (ext < this.getPowerMultiplier() * this.ticks) {
                     if (Platform.isServer() && this.isValidContainer()) {
                         this.getPlayerInv().player.sendMessage(PlayerMessages.DeviceNotPowered.get());
@@ -195,10 +208,12 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
 
                 this.setValidContainer(false);
             } else {
-                this.setPowerMultiplier(AEConfig.instance().wireless_getDrainRate(this.wirelessTerminalGUIObject.getRange()));
+                this.setPowerMultiplier(
+                        AEConfig.instance().wireless_getDrainRate(this.wirelessTerminalGUIObject.getRange()));
             }
 
-            if (this.monitor != this.terminal.getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class))) {
+            if (this.monitor != this.terminal
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class))) {
                 this.setValidContainer(false);
             }
 
@@ -211,7 +226,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                     for (final IContainerListener crafter : this.listeners) {
                         if (crafter instanceof EntityPlayerMP) {
                             try {
-                                NetworkHandler.instance().sendTo(new PacketValueConfig(set.name(), sideLocal.name()), (EntityPlayerMP) crafter);
+                                NetworkHandler.instance().sendTo(new PacketValueConfig(set.name(), sideLocal.name()),
+                                        (EntityPlayerMP) crafter);
                             } catch (final IOException e) {
                                 AELog.debug(e);
                             }
@@ -259,7 +275,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
             return ItemStack.EMPTY;
         }
         EntityPlayerMP player = (EntityPlayerMP) p;
-        if (this.inventorySlots.get(idx) instanceof SlotPlayerInv || this.inventorySlots.get(idx) instanceof SlotPlayerHotBar) {
+        if (this.inventorySlots.get(idx) instanceof SlotPlayerInv
+                || this.inventorySlots.get(idx) instanceof SlotPlayerHotBar) {
             final AppEngSlot clickSlot = (AppEngSlot) this.inventorySlots.get(idx); // require AE SLots!
             ItemStack itemStack = clickSlot.getStack();
 
@@ -283,7 +300,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 }
 
                 // Check if we can push into the system
-                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
+                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
 
                 if (notStorable != null && notStorable.getStackSize() > 0) {
                     final int toStore = (int) (extract.amount - notStorable.getStackSize());
@@ -300,10 +318,12 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 final FluidStack drained = fh.drain(extract, true);
                 extract.amount = drained.amount;
 
-                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource());
+                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource());
 
                 if (notInserted != null && notInserted.getStackSize() > 0) {
-                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE, this.getActionSource());
+                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE,
+                            this.getActionSource());
                     if (spill != null && spill.getStackSize() > 0) {
                         fh.fill(spill.getFluidStack(), true);
                     }
@@ -351,7 +371,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 fh = FluidUtil.getFluidHandler(copiedFluidContainer);
 
                 // Check if we can pull out of the system
-                final IAEFluidStack canPull = Platform.poweredExtraction(this.getPowerSource(), this.monitor, stack.setStackSize(amountAllowed), this.getActionSource(), Actionable.SIMULATE);
+                final IAEFluidStack canPull = Platform.poweredExtraction(this.getPowerSource(), this.monitor,
+                        stack.setStackSize(amountAllowed), this.getActionSource(), Actionable.SIMULATE);
                 if (canPull == null || canPull.getStackSize() < 1) {
                     return;
                 }
@@ -363,7 +384,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 }
 
                 // Now actually pull out of the system
-                final IAEFluidStack pulled = Platform.poweredExtraction(this.getPowerSource(), this.monitor, stack.setStackSize(canFill), this.getActionSource());
+                final IAEFluidStack pulled = Platform.poweredExtraction(this.getPowerSource(), this.monitor,
+                        stack.setStackSize(canFill), this.getActionSource());
                 if (pulled == null || pulled.getStackSize() < 1) {
                     // Something went wrong
                     AELog.error("Unable to pull fluid out of the ME system even though the simulation said yes ");
@@ -374,7 +396,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 final int used = fh.fill(pulled.getFluidStack(), true);
 
                 if (used != canFill) {
-                    AELog.error("Fluid item [%s] reported a different possible amount than it actually accepted.", held.getDisplayName());
+                    AELog.error("Fluid item [%s] reported a different possible amount than it actually accepted.",
+                            held.getDisplayName());
                 }
 
                 if (held.getCount() == 1) {
@@ -402,7 +425,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 }
 
                 // Check if we can push into the system
-                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
+                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
 
                 if (notStorable != null && notStorable.getStackSize() > 0) {
                     final int toStore = (int) (extract.amount - notStorable.getStackSize());
@@ -419,10 +443,12 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
                 final FluidStack drained = fh.drain(extract, true);
                 extract.amount = drained.amount;
 
-                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource());
+                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource());
 
                 if (notInserted != null && notInserted.getStackSize() > 0) {
-                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE, this.getActionSource());
+                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE,
+                            this.getActionSource());
                     if (spill != null && spill.getStackSize() > 0) {
                         fh.fill(spill.getFluidStack(), true);
                     }
@@ -453,9 +479,9 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
         return true;
     }
 
-
     @Override
-    public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change, IActionSource actionSource) {
+    public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change,
+            IActionSource actionSource) {
         for (final IAEFluidStack is : change) {
             this.fluids.add(is);
         }
@@ -559,7 +585,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
         if (wirelessTerminalGUIObject != null) {
             for (int upgradeSlot = 0; upgradeSlot < availableUpgrades(); upgradeSlot++) {
                 this.addSlotToContainer(
-                        (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, upgradeSlot, 183, 139 + upgradeSlot * 18, this.getInventoryPlayer()))
+                        (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, upgradeSlot,
+                                183, 139 + upgradeSlot * 18, this.getInventoryPlayer()))
                                 .setNotDraggable());
             }
         }
@@ -583,7 +610,8 @@ public class ContainerMEPortableFluidCell extends AEBaseContainer implements IAE
     }
 
     @Override
-    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
+    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack,
+            ItemStack newStack) {
     }
 
     @Override

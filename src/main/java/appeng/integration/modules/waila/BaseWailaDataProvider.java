@@ -18,10 +18,8 @@
 
 package appeng.integration.modules.waila;
 
+import java.util.List;
 
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,8 +27,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
-
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 
 /**
  * Base implementation for {@link mcp.mobius.waila.api.IWailaDataProvider}
@@ -46,22 +45,26 @@ public abstract class BaseWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaHead(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         return currentToolTip;
     }
 
     @Override
-    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         return currentToolTip;
     }
 
     @Override
-    public List<String> getWailaTail(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaTail(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         return currentToolTip;
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos) {
         return tag;
     }
 }

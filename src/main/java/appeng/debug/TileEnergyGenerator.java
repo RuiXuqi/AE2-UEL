@@ -18,9 +18,12 @@
 
 package appeng.debug;
 
+import java.util.EnumSet;
 
-import appeng.tile.AEBaseTile;
+import javax.annotation.Nullable;
+
 import com.google.common.math.IntMath;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -28,14 +31,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-
+import appeng.tile.AEBaseTile;
 
 public class TileEnergyGenerator extends AEBaseTile implements ITickable, IEnergyStorage {
     /**
-     * The base energy injected each tick.
-     * Adjacent TileEnergyGenerators will increase it to pow(base, #generators).
+     * The base energy injected each tick. Adjacent TileEnergyGenerators will increase it to pow(base, #generators).
      */
     private static final int BASE_ENERGY = 8;
 

@@ -18,16 +18,14 @@
 
 package appeng.client.render.model;
 
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector4f;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.QuadGatheringTransformer;
-
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector4f;
-
 
 /**
  * Applies an arbitrary transformation matrix to the vertices of a quad.
@@ -90,7 +88,7 @@ final class MatrixVertexTransformer extends QuadGatheringTransformer {
                 vec.x += 0.5f;
                 vec.y += 0.5f;
                 vec.z += 0.5f;
-                return new float[]{
+                return new float[] {
                         vec.x,
                         vec.y,
                         vec.z
@@ -108,7 +106,7 @@ final class MatrixVertexTransformer extends QuadGatheringTransformer {
                 vecc.x += 0.5f;
                 vecc.y += 0.5f;
                 vecc.z += 0.5f;
-                return new float[]{
+                return new float[] {
                         vecc.x,
                         vecc.y,
                         vecc.z,
@@ -128,7 +126,7 @@ final class MatrixVertexTransformer extends QuadGatheringTransformer {
                 normal = new Vector4f(fs[0], fs[1], fs[2], 0);
                 this.transform.transform(normal);
                 normal.normalize();
-                return new float[]{
+                return new float[] {
                         normal.x,
                         normal.y,
                         normal.z
@@ -138,7 +136,7 @@ final class MatrixVertexTransformer extends QuadGatheringTransformer {
                 normal = new Vector4f(fs[0], fs[1], fs[2], fs[3]);
                 this.transform.transform(normal);
                 normal.normalize();
-                return new float[]{
+                return new float[] {
                         normal.x,
                         normal.y,
                         normal.z,

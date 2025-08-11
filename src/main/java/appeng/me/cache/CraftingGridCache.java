@@ -18,6 +18,22 @@
 
 package appeng.me.cache;
 
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.stream.StreamSupport;
+
+import com.google.common.collect.*;
+
+import net.minecraft.world.World;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectRBTreeSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -50,29 +66,20 @@ import appeng.me.helpers.BaseActionSource;
 import appeng.me.helpers.GenericInterestManager;
 import appeng.tile.crafting.TileCraftingStorageTile;
 import appeng.tile.crafting.TileCraftingTile;
-import com.google.common.collect.*;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectRBTreeSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
-import net.minecraft.world.World;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.stream.StreamSupport;
-
-
-public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper, ICellProvider, IMEInventoryHandler<IAEItemStack> {
+public class CraftingGridCache
+        implements ICraftingGrid, ICraftingProviderHelper, ICellProvider, IMEInventoryHandler<IAEItemStack> {
 
     private static final ExecutorService CRAFTING_POOL;
-    private static final Comparator<ICraftingPatternDetails> COMPARATOR = (firstDetail, nextDetail) -> nextDetail.getPriority() - firstDetail.getPriority();
+    private static final Comparator<ICraftingPatternDetails> COMPARATOR = (firstDetail,
+            nextDetail) -> nextDetail.getPriority() - firstDetail.getPriority();
 
     static {
-        final ThreadFactory factory = ar -> new Thread(ar, "AE Crafting Calculator");
+        final ThreadFactory factory = ar -> {
+            final Thread crafting = new Thread(ar, "AE Crafting Calculator");
+            crafting.setDaemon(true);
+            return crafting;
+        };
 
         CRAFTING_POOL = Executors.newCachedThreadPool(factory);
     }
@@ -86,7 +93,8 @@ public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper
     private final Set<IAEItemStack> emitableItems = new HashSet<>();
     private final Map<String, CraftingLinkNexus> craftingLinks = new HashMap<>();
     private final Multimap<IAEStack, CraftingWatcher> interests = HashMultimap.create();
-    private final GenericInterestManager<CraftingWatcher> interestManager = new GenericInterestManager<>(this.interests);
+    private final GenericInterestManager<CraftingWatcher> interestManager = new GenericInterestManager<>(
+            this.interests);
     private IStorageGrid storageGrid;
     private IEnergyGrid energyGrid;
     int i;
@@ -203,7 +211,8 @@ public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper
     }
 
     private void recalculateCraftingPatterns() {
-        final Object2ObjectMap<IAEItemStack, ImmutableList<ICraftingPatternDetails>> oldItems = new Object2ObjectOpenHashMap<>(this.craftableItems);
+        final Object2ObjectMap<IAEItemStack, ImmutableList<ICraftingPatternDetails>> oldItems = new Object2ObjectOpenHashMap<>(
+                this.craftableItems);
         final Set<IAEItemStack> oldEmitableItems = new HashSet<>(this.emitableItems);
 
         // erase list.
@@ -283,13 +292,15 @@ public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper
             }
         }
 
-        this.storageGrid.postCraftablesChanges(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class), craftablesChanged, new BaseActionSource());
+        this.storageGrid.postCraftablesChanges(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class),
+                craftablesChanged, new BaseActionSource());
     }
 
     private void updateCPUClusters() {
         this.craftingCPUClusters.clear();
 
-        for (Object cls: StreamSupport.stream(grid.getMachinesClasses().spliterator(), false).filter(TileCraftingStorageTile.class::isAssignableFrom).toArray()) {
+        for (Object cls : StreamSupport.stream(grid.getMachinesClasses().spliterator(), false)
+                .filter(TileCraftingStorageTile.class::isAssignableFrom).toArray()) {
             for (final IGridNode cst : this.grid.getMachines((Class<? extends IGridHost>) cls)) {
                 final TileCraftingStorageTile tile = (TileCraftingStorageTile) cst.getMachine();
                 final CraftingCPUCluster cluster = (CraftingCPUCluster) tile.getCluster();
@@ -426,7 +437,8 @@ public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper
     }
 
     @Override
-    public ImmutableCollection<ICraftingPatternDetails> getCraftingFor(final IAEItemStack whatToCraft, final ICraftingPatternDetails details, final int slotIndex, final World world) {
+    public ImmutableCollection<ICraftingPatternDetails> getCraftingFor(final IAEItemStack whatToCraft,
+            final ICraftingPatternDetails details, final int slotIndex, final World world) {
         final ImmutableList<ICraftingPatternDetails> res = this.craftableItems.get(whatToCraft);
 
         if (res == null) {
@@ -437,7 +449,8 @@ public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper
     }
 
     @Override
-    public Future<ICraftingJob> beginCraftingJob(final World world, final IGrid grid, final IActionSource actionSrc, final IAEItemStack slotItem, final ICraftingCallback cb) {
+    public Future<ICraftingJob> beginCraftingJob(final World world, final IGrid grid, final IActionSource actionSrc,
+            final IAEItemStack slotItem, final ICraftingCallback cb) {
         if (world == null || grid == null || actionSrc == null || slotItem == null) {
             throw new IllegalArgumentException("Invalid Crafting Job Request");
         }
@@ -448,7 +461,8 @@ public class CraftingGridCache implements ICraftingGrid, ICraftingProviderHelper
     }
 
     @Override
-    public ICraftingLink submitJob(final ICraftingJob job, final ICraftingRequester requestingMachine, final ICraftingCPU target, final boolean prioritizePower, final IActionSource src) {
+    public ICraftingLink submitJob(final ICraftingJob job, final ICraftingRequester requestingMachine,
+            final ICraftingCPU target, final boolean prioritizePower, final IActionSource src) {
         if (job.isSimulation()) {
             return null;
         }

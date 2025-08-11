@@ -18,6 +18,18 @@
 
 package appeng.debug;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridHost;
@@ -38,23 +50,11 @@ import appeng.me.cache.TickManagerCache;
 import appeng.parts.p2p.PartP2PTunnel;
 import appeng.tile.networking.TileController;
 import appeng.util.Platform;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class ToolDebugCard extends AEBaseItem {
     @Override
-    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
         if (Platform.isClient()) {
             return EnumActionResult.PASS;
         }
@@ -63,7 +63,7 @@ public class ToolDebugCard extends AEBaseItem {
             int grids = 0;
             int totalNodes = 0;
 
-            for (final Grid g : TickHandler.INSTANCE.getGridList()) {
+            for (final Grid g : TickHandler.instance().getGridList()) {
                 grids++;
                 totalNodes += g.getNodes().size();
             }
@@ -90,8 +90,7 @@ public class ToolDebugCard extends AEBaseItem {
                         final int maxLength = 10000;
 
                         int length = 0;
-                        outer:
-                        while (!next.isEmpty()) {
+                        outer: while (!next.isEmpty()) {
                             final Iterable<IGridNode> current = next;
                             next = new HashSet<>();
 
@@ -146,7 +145,7 @@ public class ToolDebugCard extends AEBaseItem {
                 ((IPartHost) te).markForUpdate();
                 if (center != null) {
                     final GridNode n = (GridNode) center.getGridNode();
-                    this.outputMsg(player, "Node Channels: " + n.usedChannels());
+                    this.outputMsg(player, "Node Channels: " + n.getUsedChannels());
                     for (final IGridConnection gc : n.getConnections()) {
                         final AEPartLocation fd = gc.getDirection(n);
                         if (fd != AEPartLocation.INTERNAL) {
@@ -164,7 +163,8 @@ public class ToolDebugCard extends AEBaseItem {
                     final IGridNode node = ((IGridHost) te).getGridNode(AEPartLocation.fromFacing(side));
                     if (node != null && node.getGrid() != null) {
                         final IEnergyGrid eg = node.getGrid().getCache(IEnergyGrid.class);
-                        this.outputMsg(player, "GridEnergy: " + eg.getStoredPower() + " : " + eg.getEnergyDemand(Double.MAX_VALUE));
+                        this.outputMsg(player,
+                                "GridEnergy: " + eg.getStoredPower() + " : " + eg.getEnergyDemand(Double.MAX_VALUE));
                     }
                 }
             }

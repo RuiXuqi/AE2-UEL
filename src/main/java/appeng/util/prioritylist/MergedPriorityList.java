@@ -18,12 +18,10 @@
 
 package appeng.util.prioritylist;
 
-
-import appeng.api.storage.data.IAEStack;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
+import appeng.api.storage.data.IAEStack;
 
 public final class MergedPriorityList<T extends IAEStack<T>> implements IPartitionList<T> {
 

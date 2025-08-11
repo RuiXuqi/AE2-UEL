@@ -18,11 +18,10 @@
 
 package appeng.fluids.container;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.fluids.parts.PartSharedFluidBus;
 import appeng.fluids.util.IAEFluidTank;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 /**
  * @author BrockWS

@@ -19,10 +19,10 @@
 
 package appeng.core.transformer;
 
+import java.util.ListIterator;
+
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
-
-import java.util.ListIterator;
 
 public final class ItemStackPatch {
     private ItemStackPatch() {

@@ -18,7 +18,6 @@
 
 package appeng.services.export;
 
-
 /**
  * Defines a concrete result type when using the {@link Checker#isEqual(Object)} from the {@link Checker} class.
  *

@@ -18,14 +18,14 @@
 
 package appeng.integration.modules.jei;
 
-
-import appeng.items.parts.ItemFacade;
-import mezz.jei.api.recipe.*;
-import net.minecraft.item.ItemStack;
-
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+
+import mezz.jei.api.recipe.*;
+
+import appeng.items.parts.ItemFacade;
 
 /**
  * This plugin will dynamically add facade recipes for any item that can be turned into a facade.

@@ -18,6 +18,7 @@
 
 package appeng.parts.networking;
 
+import net.minecraft.item.ItemStack;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -28,8 +29,6 @@ import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.helpers.Reflected;
 import appeng.util.Platform;
-import net.minecraft.item.ItemStack;
-
 
 public class PartCableSmart extends PartCable {
     @Reflected

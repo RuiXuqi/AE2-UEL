@@ -18,20 +18,20 @@
 
 package appeng.integration.modules.crafttweaker;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import net.minecraft.item.ItemStack;
+
+import crafttweaker.IAction;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 import appeng.api.AEApi;
 import appeng.api.features.IGrinderRecipe;
 import appeng.api.features.IGrinderRecipeBuilder;
-import crafttweaker.IAction;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
-import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
-
-import java.util.Collection;
-import java.util.Collections;
-
 
 @ZenClass("mods.appliedenergistics2.Grinder")
 public class GrinderRecipes {
@@ -39,7 +39,11 @@ public class GrinderRecipes {
     }
 
     @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient input, int turns, @stanhebben.zenscript.annotations.Optional IItemStack secondary1Output, @stanhebben.zenscript.annotations.Optional Float secondary1Chance, @stanhebben.zenscript.annotations.Optional IItemStack secondary2Output, @stanhebben.zenscript.annotations.Optional Float secondary2Chance) {
+    public static void addRecipe(IItemStack output, IIngredient input, int turns,
+            @stanhebben.zenscript.annotations.Optional IItemStack secondary1Output,
+            @stanhebben.zenscript.annotations.Optional Float secondary1Chance,
+            @stanhebben.zenscript.annotations.Optional IItemStack secondary2Output,
+            @stanhebben.zenscript.annotations.Optional Float secondary2Chance) {
         Collection<ItemStack> inStacks = CTModule.toStacks(input).orElse(Collections.emptySet());
 
         for (ItemStack inStack : inStacks) {

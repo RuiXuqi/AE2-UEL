@@ -18,9 +18,9 @@
 
 package appeng.util.item;
 
-import appeng.api.storage.data.IAEStack;
 import io.netty.buffer.ByteBuf;
 
+import appeng.api.storage.data.IAEStack;
 
 public abstract class AEStack<T extends IAEStack<T>> implements IAEStack<T> {
 

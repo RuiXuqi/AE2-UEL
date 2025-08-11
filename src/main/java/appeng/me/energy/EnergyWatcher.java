@@ -18,15 +18,13 @@
 
 package appeng.me.energy;
 
-
-import appeng.api.networking.energy.IEnergyWatcher;
-import appeng.api.networking.energy.IEnergyWatcherHost;
-import appeng.me.cache.EnergyGridCache;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import appeng.api.networking.energy.IEnergyWatcher;
+import appeng.api.networking.energy.IEnergyWatcherHost;
+import appeng.me.cache.EnergyGridCache;
 
 /**
  * Maintain my interests, and a global watch list, they should always be fully synchronized.
@@ -70,7 +68,7 @@ public class EnergyWatcher implements IEnergyWatcher {
 
     @Override
     public void reset() {
-        for (Iterator<EnergyThreshold> iterator = this.myInterests.iterator(); iterator.hasNext(); ) {
+        for (Iterator<EnergyThreshold> iterator = this.myInterests.iterator(); iterator.hasNext();) {
             final EnergyThreshold threshold = iterator.next();
 
             this.gsc.unregisterEnergyInterest(threshold);

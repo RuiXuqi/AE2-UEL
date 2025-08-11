@@ -1,11 +1,8 @@
 package appeng.hooks;
 
-import appeng.api.parts.IPartHost;
-import appeng.api.parts.PartItemStack;
-import appeng.api.parts.SelectedPart;
-import appeng.api.util.DimensionalCoord;
-import appeng.util.LookDirection;
-import appeng.util.Platform;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,8 +15,12 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import appeng.api.parts.IPartHost;
+import appeng.api.parts.PartItemStack;
+import appeng.api.parts.SelectedPart;
+import appeng.api.util.DimensionalCoord;
+import appeng.util.LookDirection;
+import appeng.util.Platform;
 
 /**
  * Wrench action, handled in event rather than item to support implementors of our wrench api
@@ -29,11 +30,13 @@ public class WrenchClickHook {
     @SubscribeEvent
     public void playerInteract(final PlayerInteractEvent event) {
         // Only handle the main hand event
-        if (event.getHand() != EnumHand.MAIN_HAND) return;
+        if (event.getHand() != EnumHand.MAIN_HAND)
+            return;
 
         if (event instanceof PlayerInteractEvent.RightClickBlock && !event.getEntityPlayer().world.isRemote) {
             EntityPlayer player = event.getEntityPlayer();
-            if (player instanceof FakePlayer) return;
+            if (player instanceof FakePlayer)
+                return;
 
             EnumHand hand = event.getHand();
             BlockPos pos = event.getPos();
@@ -52,7 +55,8 @@ public class WrenchClickHook {
                 }
 
                 final LookDirection dir = Platform.getPlayerRay(player, player.getEyeHeight());
-                final RayTraceResult mop = block.collisionRayTrace(world.getBlockState(pos), world, pos, dir.getA(), dir.getB());
+                final RayTraceResult mop = block.collisionRayTrace(world.getBlockState(pos), world, pos, dir.getA(),
+                        dir.getB());
                 if (mop != null) {
                     final SelectedPart sp = host.selectPartGlobal(mop.hitVec);
                     if (sp == null) {

@@ -18,17 +18,16 @@
 
 package appeng.block;
 
+import javax.annotation.Nonnull;
 
 import com.google.common.base.Preconditions;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-
-import javax.annotation.Nonnull;
-
 
 public abstract class AEBaseStairBlock extends BlockStairs {
 
@@ -50,7 +49,8 @@ public abstract class AEBaseStairBlock extends BlockStairs {
     }
 
     @Override
-    public boolean doesSideBlockChestOpening(@Nonnull IBlockState blockState, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+    public boolean doesSideBlockChestOpening(@Nonnull IBlockState blockState, @Nonnull IBlockAccess world,
+            @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
         return false;
     }
 

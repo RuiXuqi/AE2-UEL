@@ -1,6 +1,7 @@
 package appeng.helpers;
 
-import appeng.client.render.BlockPosHighlighter;
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -9,7 +10,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import org.lwjgl.opengl.GL11;
+
+import appeng.client.render.BlockPosHighlighter;
 
 // taken from McJty's McJtyLib
 
@@ -65,7 +67,8 @@ public class HighlighterHandler {
         GlStateManager.popMatrix();
     }
 
-    public static void renderHighLightedBlocksOutline(BufferBuilder buffer, float mx, float my, float mz, float r, float g, float b, float a) {
+    public static void renderHighLightedBlocksOutline(BufferBuilder buffer, float mx, float my, float mz, float r,
+            float g, float b, float a) {
         buffer.pos(mx, my, mz).color(r, g, b, a).endVertex();
         buffer.pos(mx + 1, my, mz).color(r, g, b, a).endVertex();
         buffer.pos(mx, my, mz).color(r, g, b, a).endVertex();

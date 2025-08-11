@@ -18,15 +18,15 @@
 
 package appeng.core.features.registries.inscriber;
 
-
-import appeng.api.features.InscriberProcessType;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+
+import appeng.api.features.InscriberProcessType;
 
 /**
  * inscribe recipes do not use up the provided optional upon craft
@@ -36,7 +36,8 @@ import java.util.List;
  * @since rv2
  */
 public class InscriberInscribeRecipe extends InscriberRecipe {
-    InscriberInscribeRecipe(@Nonnull final Collection<ItemStack> inputs, @Nonnull final ItemStack output, @Nullable final List<ItemStack> top, @Nullable final List<ItemStack> bot) {
+    InscriberInscribeRecipe(@Nonnull final Collection<ItemStack> inputs, @Nonnull final ItemStack output,
+            @Nullable final List<ItemStack> top, @Nullable final List<ItemStack> bot) {
         super(inputs, output, top, bot, InscriberProcessType.INSCRIBE);
     }
 }

@@ -18,6 +18,12 @@
 
 package appeng.client.me;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.annotation.Nonnull;
 
 import appeng.api.AEApi;
 import appeng.api.config.Settings;
@@ -34,20 +40,14 @@ import appeng.fluids.util.FluidSorters;
 import appeng.util.Platform;
 import appeng.util.prioritylist.IPartitionList;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
-
-
 /**
  * @author BrockWS
  * @version rv6 - 22/05/2018
  * @since rv6 22/05/2018
  */
 public class FluidRepo {
-    private final IItemList<IAEFluidStack> list = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+    private final IItemList<IAEFluidStack> list = AEApi.instance().storage()
+            .getStorageChannel(IFluidStorageChannel.class).createList();
     private final ArrayList<IAEFluidStack> view = new ArrayList<>();
     private final IScrollSource src;
     private final ISortSource sortSrc;
@@ -89,7 +89,8 @@ public class FluidRepo {
 
         final Enum viewMode = this.sortSrc.getSortDisplay();
         final boolean needsZeroCopy = viewMode == ViewItems.CRAFTABLE;
-        final boolean terminalSearchToolTips = AEConfig.instance().getConfigManager().getSetting(Settings.SEARCH_TOOLTIPS) != YesNo.NO;
+        final boolean terminalSearchToolTips = AEConfig.instance().getConfigManager()
+                .getSetting(Settings.SEARCH_TOOLTIPS) != YesNo.NO;
 
         boolean notDone = false;
         for (IAEFluidStack fs : this.list) {

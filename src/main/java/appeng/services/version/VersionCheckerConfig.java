@@ -18,14 +18,14 @@
 
 package appeng.services.version;
 
-
-import com.google.common.base.Preconditions;
-import net.minecraftforge.common.config.Configuration;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Date;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraftforge.common.config.Configuration;
 
 /**
  * Separate config file to handle the version checker
@@ -60,11 +60,13 @@ public final class VersionCheckerConfig {
         this.config = new Configuration(file);
 
         // initializes default values by caching
-        this.isEnabled = this.config.getBoolean("enabled", "general", true, "If true, the version checker is enabled. Acts as a master switch.");
+        this.isEnabled = this.config.getBoolean("enabled", "general", true,
+                "If true, the version checker is enabled. Acts as a master switch.");
 
         this.lastCheck = this.config.getString("lastCheck", "cache", "0",
                 "The number of milliseconds since January 1, 1970, 00:00:00 GMT of the last successful check.");
-        this.interval = this.config.getInt("interval", "cache", DEFAULT_INTERVAL_HOURS, MIN_INTERVAL_HOURS, MAX_INTERVAL_HOURS,
+        this.interval = this.config.getInt("interval", "cache", DEFAULT_INTERVAL_HOURS, MIN_INTERVAL_HOURS,
+                MAX_INTERVAL_HOURS,
                 "Waits as many hours, until it checks again.");
 
         this.level = this.config.getString("level", "channel", "Beta",

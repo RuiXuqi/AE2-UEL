@@ -18,7 +18,6 @@
 
 package appeng.services.version;
 
-
 /**
  * Processes base information to retrieve a {@link Version}
  */

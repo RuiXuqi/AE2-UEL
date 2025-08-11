@@ -18,23 +18,26 @@
 
 package appeng.tile.crafting;
 
+import java.util.*;
+
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGridHost;
 import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.AEPartLocation;
-import appeng.api.util.WorldCoord;
 import appeng.block.crafting.BlockCraftingUnit;
 import appeng.block.crafting.BlockCraftingUnit.CraftingUnitType;
-import appeng.me.cluster.IAECluster;
 import appeng.me.cluster.IAEMultiBlock;
 import appeng.me.cluster.implementations.CraftingCPUCalculator;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
@@ -42,16 +45,8 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.AENetworkProxyMultiblock;
 import appeng.tile.grid.AENetworkTile;
 import appeng.util.Platform;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 
-import java.util.*;
-
-
-public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock, IPowerChannelState {
+public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock<CraftingCPUCluster>, IPowerChannelState {
 
     private final CraftingCPUCalculator calc = new CraftingCPUCalculator(this);
     private NBTTagCompound previousState = null;
@@ -108,11 +103,11 @@ public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock, IP
     public void onReady() {
         super.onReady();
         this.getProxy().setVisualRepresentation(this.getItemFromTile(this));
-        this.updateMultiBlock();
+        this.calc.calculateMultiblock(world, pos);
     }
 
-    public void updateMultiBlock() {
-        this.calc.calculateMultiblock(this.world, this.getLocation());
+    public void updateMultiBlock(BlockPos changedPos) {
+        this.calc.updateMultiblockAfterNeighborUpdate(this.world, pos, changedPos);
     }
 
     public void updateStatus(final CraftingCPUCluster c) {
@@ -140,7 +135,8 @@ public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock, IP
 
         // The tile might try to update while being destroyed
         if (current.getBlock() instanceof BlockCraftingUnit) {
-            final IBlockState newState = current.withProperty(BlockCraftingUnit.POWERED, power).withProperty(BlockCraftingUnit.FORMED, formed);
+            final IBlockState newState = current.withProperty(BlockCraftingUnit.POWERED, power)
+                    .withProperty(BlockCraftingUnit.FORMED, formed);
 
             if (current != newState) {
                 // Not using flag 2 here (only send to clients, prevent block update) will cause infinite loops
@@ -199,7 +195,7 @@ public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock, IP
     }
 
     @Override
-    public IAECluster getCluster() {
+    public CraftingCPUCluster getCluster() {
         return this.cluster;
     }
 
@@ -235,21 +231,18 @@ public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock, IP
             this.cluster.cancel();
             final IMEInventory<IAEItemStack> inv = this.cluster.getInventory();
 
-            final LinkedList<WorldCoord> places = new LinkedList<>();
+            final LinkedList<BlockPos> places = new LinkedList<>();
 
-            final Iterator<IGridHost> i = this.cluster.getTiles();
+            final Iterator<TileCraftingTile> i = this.cluster.getTiles();
             while (i.hasNext()) {
-                final IGridHost h = i.next();
+                final TileCraftingTile h = i.next();
                 if (h == this) {
-                    places.add(new WorldCoord(this));
+                    places.add(pos);
                 } else {
-                    final TileEntity te = (TileEntity) h;
-
-                    for (final AEPartLocation d : AEPartLocation.SIDE_LOCATIONS) {
-                        final WorldCoord wc = new WorldCoord(te);
-                        wc.add(d, 1);
-                        if (this.world.isAirBlock(wc.getPos())) {
-                            places.add(wc);
+                    for (EnumFacing d : EnumFacing.values()) {
+                        BlockPos p = h.pos.offset(d);
+                        if (this.world.isAirBlock(p)) {
+                            places.add(p);
                         }
                     }
                 }
@@ -258,22 +251,25 @@ public class TileCraftingTile extends AENetworkTile implements IAEMultiBlock, IP
             Collections.shuffle(places);
 
             if (places.isEmpty()) {
-                throw new IllegalStateException(this.cluster + " does not contain any kind of blocks, which were destroyed.");
+                throw new IllegalStateException(
+                        this.cluster + " does not contain any kind of blocks, which were destroyed.");
             }
 
-            for (IAEItemStack ais : inv.getAvailableItems(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList())) {
+            for (IAEItemStack ais : inv.getAvailableItems(
+                    AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList())) {
                 ais = ais.copy();
                 ais.setStackSize(ais.getDefinition().getMaxStackSize());
                 while (true) {
-                    final IAEItemStack g = inv.extractItems(ais.copy(), Actionable.MODULATE, this.cluster.getActionSource());
+                    final IAEItemStack g = inv.extractItems(ais.copy(), Actionable.MODULATE,
+                            this.cluster.getActionSource());
                     if (g == null) {
                         break;
                     }
 
-                    final WorldCoord wc = places.poll();
-                    places.add(wc);
+                    final BlockPos pos = places.poll();
+                    places.add(pos);
 
-                    Platform.spawnDrops(this.world, wc.getPos(), Collections.singletonList(g.createItemStack()));
+                    Platform.spawnDrops(this.world, pos, Collections.singletonList(g.createItemStack()));
                 }
             }
 

@@ -18,6 +18,15 @@
 
 package appeng.core.sync.packets;
 
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.EffectType;
@@ -25,15 +34,6 @@ import appeng.core.AppEng;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.io.IOException;
-
 
 public class PacketAssemblerAnimation extends AppEngPacket {
 
@@ -75,6 +75,7 @@ public class PacketAssemblerAnimation extends AppEngPacket {
         final double d1 = 0.5d;// + ((double) (Platform.getRandomFloat() - 0.5F) * 0.26D);
         final double d2 = 0.5d;// + ((double) (Platform.getRandomFloat() - 0.5F) * 0.26D);
 
-        AppEng.proxy.spawnEffect(EffectType.Assembler, player.getEntityWorld(), this.x + d0, this.y + d1, this.z + d2, this);
+        AppEng.proxy.spawnEffect(EffectType.Assembler, player.getEntityWorld(), this.x + d0, this.y + d1, this.z + d2,
+                this);
     }
 }

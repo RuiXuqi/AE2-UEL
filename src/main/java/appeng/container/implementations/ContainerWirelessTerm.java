@@ -18,10 +18,9 @@
 
 package appeng.container.implementations;
 
-
-import appeng.helpers.WirelessTerminalGuiObject;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import appeng.helpers.WirelessTerminalGuiObject;
 
 public class ContainerWirelessTerm extends ContainerMEPortableTerminal {
 

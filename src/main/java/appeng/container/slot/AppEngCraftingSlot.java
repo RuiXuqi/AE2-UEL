@@ -18,9 +18,6 @@
 
 package appeng.container.slot;
 
-
-import appeng.util.helpers.ItemHandlerUtil;
-import appeng.util.inv.WrapperInvItemHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -29,6 +26,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
+import appeng.util.helpers.ItemHandlerUtil;
 
 public class AppEngCraftingSlot extends AppEngSlot {
 
@@ -47,7 +45,8 @@ public class AppEngCraftingSlot extends AppEngSlot {
      */
     private int amountCrafted;
 
-    public AppEngCraftingSlot(final EntityPlayer par1EntityPlayer, final IItemHandler par2IInventory, final IItemHandler par3IInventory, final int par4, final int par5, final int par6) {
+    public AppEngCraftingSlot(final EntityPlayer par1EntityPlayer, final IItemHandler par2IInventory,
+            final IItemHandler par3IInventory, final int par4, final int par5, final int par6) {
         super(par3IInventory, par4, par5, par6);
         this.thePlayer = par1EntityPlayer;
         this.craftMatrix = par2IInventory;

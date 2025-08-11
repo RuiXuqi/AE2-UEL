@@ -18,9 +18,7 @@
 
 package appeng.me.cache.helpers;
 
-
 import appeng.api.networking.IGridConnection;
-
 
 public class ConnectionWrapper {
 

@@ -18,9 +18,7 @@
 
 package appeng.integration.abstraction;
 
-
 import appeng.integration.IIntegrationModule;
-
 
 /**
  * Abstracts access to the JEI API functionality.

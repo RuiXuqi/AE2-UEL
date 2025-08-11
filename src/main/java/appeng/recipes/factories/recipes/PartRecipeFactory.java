@@ -18,14 +18,13 @@
 
 package appeng.recipes.factories.recipes;
 
+import java.util.Map;
+import java.util.Set;
 
-import appeng.api.AEApi;
-import appeng.api.recipes.ResolverResult;
-import appeng.core.AELog;
-import appeng.core.AppEng;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -39,9 +38,10 @@ import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.Map;
-import java.util.Set;
-
+import appeng.api.AEApi;
+import appeng.api.recipes.ResolverResult;
+import appeng.core.AELog;
+import appeng.core.AppEng;
 
 /**
  * @author GuntherDW
@@ -55,7 +55,10 @@ public class PartRecipeFactory implements IRecipeFactory {
         } else if (type.contains("shapeless")) {
             return shapelessFactory(context, json);
         } else {
-            throw new JsonSyntaxException("Applied Energistics 2 was given a custom recipe that it does not know how to handle!\n" + "Type should either be '" + AppEng.MOD_ID + ":shapeless' or '" + AppEng.MOD_ID + ":shaped', got '" + type + "'!");
+            throw new JsonSyntaxException(
+                    "Applied Energistics 2 was given a custom recipe that it does not know how to handle!\n"
+                            + "Type should either be '" + AppEng.MOD_ID + ":shapeless' or '" + AppEng.MOD_ID
+                            + ":shaped', got '" + type + "'!");
         }
     }
 
@@ -85,12 +88,16 @@ public class PartRecipeFactory implements IRecipeFactory {
 
             if (item == null) {
                 AELog.warn("item was null for " + resolverResult.itemName + " ( " + ingredient + " )!");
-                throw new JsonSyntaxException("Got a null item for " + resolverResult.itemName + " ( " + ingredient + " ). This should never happen!");
+                throw new JsonSyntaxException("Got a null item for " + resolverResult.itemName + " ( " + ingredient
+                        + " ). This should never happen!");
             }
 
-            return new ItemStack(item, JsonUtils.getInt(resultObject, "count", 1), resolverResult.damageValue, resolverResult.compound);
+            return new ItemStack(item, JsonUtils.getInt(resultObject, "count", 1), resolverResult.damageValue,
+                    resolverResult.compound);
         } else {
-            throw new JsonSyntaxException("Couldn't find the resulting item in AE. This means AE was provided a recipe that it shouldn't be handling.\n" + "Was looking for : '" + ingredient + "'.");
+            throw new JsonSyntaxException(
+                    "Couldn't find the resulting item in AE. This means AE was provided a recipe that it shouldn't be handling.\n"
+                            + "Was looking for : '" + ingredient + "'.");
         }
     }
 
@@ -101,7 +108,8 @@ public class PartRecipeFactory implements IRecipeFactory {
         Map<Character, Ingredient> ingMap = Maps.newHashMap();
         for (Map.Entry<String, JsonElement> entry : JsonUtils.getJsonObject(json, "key").entrySet()) {
             if (entry.getKey().length() != 1) {
-                throw new JsonSyntaxException("Invalid key entry: '" + entry.getKey() + "' is an invalid symbol (must be 1 character only).");
+                throw new JsonSyntaxException(
+                        "Invalid key entry: '" + entry.getKey() + "' is an invalid symbol (must be 1 character only).");
             }
             if (" ".equals(entry.getKey())) {
                 throw new JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.");
@@ -141,7 +149,8 @@ public class PartRecipeFactory implements IRecipeFactory {
             for (char chr : line.toCharArray()) {
                 net.minecraft.item.crafting.Ingredient ing = ingMap.get(chr);
                 if (ing == null) {
-                    throw new JsonSyntaxException("Pattern references symbol '" + chr + "' but it's not defined in the key");
+                    throw new JsonSyntaxException(
+                            "Pattern references symbol '" + chr + "' but it's not defined in the key");
                 }
                 primer.input.set(x++, ing);
                 keys.remove(chr);
@@ -152,7 +161,8 @@ public class PartRecipeFactory implements IRecipeFactory {
             throw new JsonSyntaxException("Key defines symbols that aren't used in pattern: " + keys);
         }
 
-        return new ShapedOreRecipe(group.isEmpty() ? null : new ResourceLocation(group), getResult(json, context), primer);
+        return new ShapedOreRecipe(group.isEmpty() ? null : new ResourceLocation(group), getResult(json, context),
+                primer);
     }
 
     // Copied from ShapelessOreRecipe.java, modified a bit.
@@ -168,6 +178,7 @@ public class PartRecipeFactory implements IRecipeFactory {
             throw new JsonParseException("No ingredients for shapeless recipe");
         }
 
-        return new ShapelessOreRecipe(group.isEmpty() ? null : new ResourceLocation(group), ings, getResult(json, context));
+        return new ShapelessOreRecipe(group.isEmpty() ? null : new ResourceLocation(group), ings,
+                getResult(json, context));
     }
 }

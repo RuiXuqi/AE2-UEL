@@ -18,10 +18,9 @@
 
 package appeng.client.gui.widgets;
 
-
-import appeng.client.gui.AEBaseGui;
 import net.minecraft.client.renderer.GlStateManager;
 
+import appeng.client.gui.AEBaseGui;
 
 public class GuiScrollbar implements IScrollSource {
 

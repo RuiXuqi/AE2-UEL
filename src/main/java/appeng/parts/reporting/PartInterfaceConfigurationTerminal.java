@@ -18,6 +18,11 @@
 
 package appeng.parts.reporting;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 
 import appeng.api.parts.IPartModel;
 import appeng.core.AppEng;
@@ -25,19 +30,15 @@ import appeng.core.sync.GuiBridge;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-
 
 public class PartInterfaceConfigurationTerminal extends AbstractPartDisplay {
 
     @PartModels
-    public static final ResourceLocation MODEL_OFF = new ResourceLocation(AppEng.MOD_ID, "part/interface_configuration_terminal_off");
+    public static final ResourceLocation MODEL_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/interface_configuration_terminal_off");
     @PartModels
-    public static final ResourceLocation MODEL_ON = new ResourceLocation(AppEng.MOD_ID, "part/interface_configuration_terminal_on");
+    public static final ResourceLocation MODEL_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/interface_configuration_terminal_on");
 
     public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_OFF, MODEL_STATUS_OFF);
     public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
@@ -52,7 +53,8 @@ public class PartInterfaceConfigurationTerminal extends AbstractPartDisplay {
     public boolean onPartActivate(final EntityPlayer player, final EnumHand hand, final Vec3d pos) {
         if (!super.onPartActivate(player, hand, pos)) {
             if (Platform.isServer()) {
-                Platform.openGUI(player, this.getHost().getTile(), this.getSide(), GuiBridge.GUI_INTERFACE_CONFIGURATION_TERMINAL);
+                Platform.openGUI(player, this.getHost().getTile(), this.getSide(),
+                        GuiBridge.GUI_INTERFACE_CONFIGURATION_TERMINAL);
             }
         }
         return true;

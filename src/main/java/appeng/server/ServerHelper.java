@@ -18,16 +18,11 @@
 
 package appeng.server;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
-import appeng.api.parts.CableRenderMode;
-import appeng.block.AEBaseBlock;
-import appeng.client.ActionKey;
-import appeng.client.EffectType;
-import appeng.core.CommonHelper;
-import appeng.core.sync.AppEngPacket;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.items.tools.ToolNetworkTool;
-import appeng.util.Platform;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -39,11 +34,15 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
+import appeng.api.parts.CableRenderMode;
+import appeng.block.AEBaseBlock;
+import appeng.client.ActionKey;
+import appeng.client.EffectType;
+import appeng.core.CommonHelper;
+import appeng.core.sync.AppEngPacket;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.items.tools.ToolNetworkTool;
+import appeng.util.Platform;
 
 public class ServerHelper extends CommonHelper {
 
@@ -83,7 +82,8 @@ public class ServerHelper extends CommonHelper {
     }
 
     @Override
-    public void sendToAllNearExcept(final EntityPlayer p, final double x, final double y, final double z, final double dist, final World w, final AppEngPacket packet) {
+    public void sendToAllNearExcept(final EntityPlayer p, final double x, final double y, final double z,
+            final double dist, final World w, final AppEngPacket packet) {
         if (Platform.isClient()) {
             return;
         }
@@ -104,7 +104,8 @@ public class ServerHelper extends CommonHelper {
     }
 
     @Override
-    public void spawnEffect(final EffectType type, final World world, final double posX, final double posY, final double posZ, final Object o) {
+    public void spawnEffect(final EffectType type, final World world, final double posX, final double posY,
+            final double posZ, final Object o) {
         // :P
     }
 

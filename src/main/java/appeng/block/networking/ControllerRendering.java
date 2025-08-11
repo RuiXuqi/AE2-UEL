@@ -18,11 +18,9 @@
 
 package appeng.block.networking;
 
-
 import appeng.bootstrap.BlockRenderingCustomizer;
 import appeng.bootstrap.IBlockRendering;
 import appeng.bootstrap.IItemRendering;
-
 
 public class ControllerRendering extends BlockRenderingCustomizer {
     @Override

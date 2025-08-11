@@ -18,14 +18,13 @@
 
 package appeng.items.misc;
 
-
-import appeng.api.util.AEColor;
-import appeng.core.localization.GuiText;
-import appeng.items.AEBaseItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+import appeng.api.util.AEColor;
+import appeng.core.localization.GuiText;
+import appeng.items.AEBaseItem;
 
 public class ItemPaintBall extends AEBaseItem {
 

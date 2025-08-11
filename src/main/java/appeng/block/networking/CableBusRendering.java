@@ -18,15 +18,14 @@
 
 package appeng.block.networking;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.bootstrap.BlockRenderingCustomizer;
 import appeng.bootstrap.IBlockRendering;
 import appeng.bootstrap.IItemRendering;
 import appeng.client.render.cablebus.CableBusModel;
 import appeng.core.features.registries.PartModels;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 /**
  * Customizes the rendering behavior for cable busses, which are the biggest multipart of AE2.

@@ -18,9 +18,6 @@
 
 package appeng.spatial;
 
-
-import appeng.client.render.SpatialSkyRender;
-import appeng.core.AppEng;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -34,6 +31,8 @@ import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.client.render.SpatialSkyRender;
+import appeng.core.AppEng;
 
 public class StorageWorldProvider extends WorldProvider {
 

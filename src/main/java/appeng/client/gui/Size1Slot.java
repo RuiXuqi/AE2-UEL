@@ -1,5 +1,7 @@
 package appeng.client.gui;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,13 +13,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-
 /**
- * A proxy for a slot that will always return an itemstack with size 1, if there is an item in the slot.
- * Used to prevent the default item count from rendering.
+ * A proxy for a slot that will always return an itemstack with size 1, if there is an item in the slot. Used to prevent
+ * the default item count from rendering.
  */
 class Size1Slot extends SlotItemHandler {
 

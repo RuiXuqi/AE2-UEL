@@ -18,12 +18,12 @@
 
 package appeng.helpers;
 
-
-import appeng.api.util.AEColor;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
+import appeng.api.util.AEColor;
 
 public class Splotch {
 

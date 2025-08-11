@@ -18,14 +18,14 @@
 
 package appeng.me.helpers;
 
+import java.util.Optional;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
-import com.google.common.base.Preconditions;
-import net.minecraft.entity.player.EntityPlayer;
-
-import java.util.Optional;
-
 
 public class PlayerSource implements IActionSource {
 

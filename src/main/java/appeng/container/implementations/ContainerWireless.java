@@ -18,6 +18,7 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.PowerMultiplier;
 import appeng.container.AEBaseContainer;
@@ -25,8 +26,6 @@ import appeng.container.guisync.GuiSync;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.core.AEConfig;
 import appeng.tile.networking.TileWireless;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerWireless extends AEBaseContainer {
 
@@ -41,8 +40,10 @@ public class ContainerWireless extends AEBaseContainer {
         super(ip, te, null);
         this.wirelessTerminal = te;
 
-        this.addSlotToContainer(this.boosterSlot = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.RANGE_BOOSTER, this.wirelessTerminal
-                .getInternalInventory(), 0, 80, 47, this.getInventoryPlayer()));
+        this.addSlotToContainer(this.boosterSlot = new SlotRestrictedInput(
+                SlotRestrictedInput.PlacableItemType.RANGE_BOOSTER, this.wirelessTerminal
+                        .getInternalInventory(),
+                0, 80, 47, this.getInventoryPlayer()));
 
         this.bindPlayerInventory(ip, 0, 166 - /* height of player inventory */82);
     }
@@ -52,7 +53,8 @@ public class ContainerWireless extends AEBaseContainer {
         final int boosters = this.boosterSlot.getStack().isEmpty() ? 0 : this.boosterSlot.getStack().getCount();
 
         this.setRange((long) (10 * AEConfig.instance().wireless_getMaxRange(boosters)));
-        this.setDrain((long) (100 * PowerMultiplier.CONFIG.multiply(AEConfig.instance().wireless_getPowerDrain(boosters))));
+        this.setDrain(
+                (long) (100 * PowerMultiplier.CONFIG.multiply(AEConfig.instance().wireless_getPowerDrain(boosters))));
 
         super.detectAndSendChanges();
     }

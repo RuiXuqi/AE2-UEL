@@ -18,10 +18,8 @@
 
 package appeng.core.localization;
 
-
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-
 
 public enum PlayerMessages {
     ChestCannotReadStorageCell,

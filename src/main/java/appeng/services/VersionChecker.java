@@ -18,6 +18,14 @@
 
 package appeng.services;
 
+import java.util.Date;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 import appeng.core.AEConfig;
 import appeng.core.AELog;
@@ -26,35 +34,26 @@ import appeng.services.version.*;
 import appeng.services.version.github.FormattedRelease;
 import appeng.services.version.github.ReleaseFetcher;
 import appeng.util.Platform;
-import com.google.common.base.Preconditions;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-
-import javax.annotation.Nonnull;
-import java.util.Date;
-
 
 /**
- * Tries to connect to GitHub to retrieve the most current build.
- * After comparison with the local version, several path can be chosen.
+ * Tries to connect to GitHub to retrieve the most current build. After comparison with the local version, several path
+ * can be chosen.
  * <p>
- * If the local version is invalid, somebody might have build that version themselves
- * or it is run in a developer environment, then nothing needs to be done.
+ * If the local version is invalid, somebody might have build that version themselves or it is run in a developer
+ * environment, then nothing needs to be done.
  * <p>
- * If GitHub can not be reached, then either is GitHub down
- * or the connection to GitHub disturbed, then nothing needs to be done,
- * since no comparison can be reached
+ * If GitHub can not be reached, then either is GitHub down or the connection to GitHub disturbed, then nothing needs to
+ * be done, since no comparison can be reached
  * <p>
- * If the version was just recently checked, then no need to poll again.
- * Nobody wants to bother to update several times a day.
+ * If the version was just recently checked, then no need to poll again. Nobody wants to bother to update several times
+ * a day.
  * <p>
  * Config enables to fine-tune when a version is considered newer
  * <p>
- * If the local version is newer or equal to the GitHub version,
- * then no update needs to be posted
+ * If the local version is newer or equal to the GitHub version, then no update needs to be posted
  * <p>
- * Only after all that cases, if the external version is higher than the local,
- * use Version Checker Mod and post several information needed for it to update the mod.
+ * Only after all that cases, if the external version is higher than the local, use Version Checker Mod and post several
+ * information needed for it to update the mod.
  */
 public final class VersionChecker implements Runnable {
     private static final int SEC_TO_HOUR = 3600;
@@ -117,8 +116,7 @@ public final class VersionChecker implements Runnable {
     }
 
     /**
-     * Checks if the retrieved version is newer as the current mod version.
-     * Will notify player if config is enabled.
+     * Checks if the retrieved version is newer as the current mod version. Will notify player if config is enabled.
      *
      * @param modVersion    version of mod
      * @param githubRelease release retrieved through github
@@ -152,7 +150,8 @@ public final class VersionChecker implements Runnable {
      * @param ghFormatted  retrieved github version formatted as rv2-beta-8
      * @param changelog    retrieved github changelog
      */
-    private void interactWithVersionCheckerMod(@Nonnull final String modFormatted, @Nonnull final String ghFormatted, @Nonnull final String changelog) {
+    private void interactWithVersionCheckerMod(@Nonnull final String modFormatted, @Nonnull final String ghFormatted,
+            @Nonnull final String changelog) {
         if (Platform.isModLoaded("VersionChecker")) {
             final NBTTagCompound versionInf = new NBTTagCompound();
             versionInf.setString("modDisplayName", AppEng.MOD_NAME);

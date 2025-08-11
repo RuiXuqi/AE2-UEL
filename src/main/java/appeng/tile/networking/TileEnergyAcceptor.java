@@ -18,6 +18,9 @@
 
 package appeng.tile.networking;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.energy.IEnergyGrid;
@@ -26,10 +29,6 @@ import appeng.api.util.AEPartLocation;
 import appeng.me.GridAccessException;
 import appeng.tile.grid.AENetworkPowerTile;
 import appeng.util.inv.InvOperation;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
-
 
 public class TileEnergyAcceptor extends AENetworkPowerTile {
     public TileEnergyAcceptor() {
@@ -76,7 +75,8 @@ public class TileEnergyAcceptor extends AENetworkPowerTile {
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
 
     }
 }

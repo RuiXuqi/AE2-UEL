@@ -1,21 +1,5 @@
 package appeng.recipes;
 
-
-import appeng.core.AppEng;
-import appeng.recipes.handlers.GrinderHandler;
-import appeng.recipes.handlers.InscriberHandler;
-import appeng.recipes.handlers.SmeltingHandler;
-import com.google.gson.*;
-import net.minecraft.util.JsonUtils;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.JsonContext;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +7,23 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.*;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+
+import appeng.core.AppEng;
+import appeng.recipes.handlers.GrinderHandler;
+import appeng.recipes.handlers.InscriberHandler;
+import appeng.recipes.handlers.SmeltingHandler;
 
 public class AERecipeLoader {
     private static final String AERECIPE_BASE = "/aerecipes";
@@ -40,7 +41,8 @@ public class AERecipeLoader {
     }
 
     public boolean loadProcessingRecipes() {
-        return CraftingHelper.findFiles(this.mod, "assets/" + AppEng.MOD_ID + AERECIPE_BASE, this::preprocess, this::process, true, true);
+        return CraftingHelper.findFiles(this.mod, "assets/" + AppEng.MOD_ID + AERECIPE_BASE, this::preprocess,
+                this::process, true, true);
     }
 
     private boolean preprocess(final Path root) {
@@ -60,7 +62,8 @@ public class AERecipeLoader {
         try {
             reader = Files.newBufferedReader(file);
             JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
-            if (json.has("conditions") && !CraftingHelper.processConditions(JsonUtils.getJsonArray(json, "conditions"), this.ctx)) {
+            if (json.has("conditions")
+                    && !CraftingHelper.processConditions(JsonUtils.getJsonArray(json, "conditions"), this.ctx)) {
                 return true;
             }
 

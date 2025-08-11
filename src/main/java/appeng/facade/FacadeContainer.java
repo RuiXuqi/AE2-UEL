@@ -18,6 +18,14 @@
 
 package appeng.facade;
 
+import java.io.IOException;
+import java.util.Optional;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.AEApi;
 import appeng.api.parts.IFacadeContainer;
@@ -26,14 +34,6 @@ import appeng.api.parts.IPartHost;
 import appeng.api.util.AEPartLocation;
 import appeng.items.parts.ItemFacade;
 import appeng.parts.CableBusStorage;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import java.io.IOException;
-import java.util.Optional;
-
 
 public class FacadeContainer implements IFacadeContainer {
 
@@ -148,7 +148,8 @@ public class FacadeContainer implements IFacadeContainer {
                 if (!is.isEmpty()) {
                     final Item i = is.getItem();
                     if (i instanceof IFacadeItem) {
-                        this.storage.setFacade(x, ((IFacadeItem) i).createPartFromItemStack(is, AEPartLocation.fromOrdinal(x)));
+                        this.storage.setFacade(x,
+                                ((IFacadeItem) i).createPartFromItemStack(is, AEPartLocation.fromOrdinal(x)));
                     }
                 }
             }

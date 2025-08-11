@@ -18,15 +18,13 @@
 
 package appeng.client.gui.widgets;
 
+import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
-
-import java.util.regex.Pattern;
-
 
 public class GuiToggleButton extends GuiButton implements ITooltip {
     private static final Pattern PATTERN_NEW_LINE = Pattern.compile("\\n", Pattern.LITERAL);
@@ -38,7 +36,8 @@ public class GuiToggleButton extends GuiButton implements ITooltip {
 
     private boolean isActive;
 
-    public GuiToggleButton(final int x, final int y, final int on, final int off, final String displayName, final String displayHint) {
+    public GuiToggleButton(final int x, final int y, final int on, final int off, final String displayName,
+            final String displayHint) {
         super(0, 0, 16, "");
         this.iconIdxOn = on;
         this.iconIdxOff = off;
@@ -60,8 +59,10 @@ public class GuiToggleButton extends GuiButton implements ITooltip {
             final int iconIndex = this.getIconIndex();
 
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-            par1Minecraft.renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
-            this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
+            par1Minecraft.renderEngine
+                    .bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
+            this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width
+                    && par3 < this.y + this.height;
 
             final int uv_y = (int) Math.floor(iconIndex / 16);
             final int uv_x = iconIndex - uv_y * 16;

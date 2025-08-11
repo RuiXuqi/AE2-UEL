@@ -24,13 +24,12 @@
 
 package appeng.core.api.imc;
 
+import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 import appeng.api.AEApi;
 import appeng.core.AELog;
 import appeng.core.api.IIMCProcessor;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
-
 
 public class IMCSpatial implements IIMCProcessor {
 

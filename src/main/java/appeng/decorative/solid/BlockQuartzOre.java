@@ -18,10 +18,8 @@
 
 package appeng.decorative.solid;
 
+import java.util.Random;
 
-import appeng.api.AEApi;
-import appeng.api.exceptions.MissingDefinitionException;
-import appeng.block.AEBaseBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -31,9 +29,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.Random;
-
+import appeng.api.AEApi;
+import appeng.api.exceptions.MissingDefinitionException;
+import appeng.block.AEBaseBlock;
 
 public class BlockQuartzOre extends AEBaseBlock {
     public BlockQuartzOre() {
@@ -84,7 +82,8 @@ public class BlockQuartzOre extends AEBaseBlock {
                 .materials()
                 .certusQuartzCrystal()
                 .maybeItem()
-                .orElseThrow(() -> new MissingDefinitionException("Tried to access certus quartz crystal, even though they are disabled"));
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to access certus quartz crystal, even though they are disabled"));
     }
 
     @Override
@@ -94,7 +93,8 @@ public class BlockQuartzOre extends AEBaseBlock {
                 .materials()
                 .certusQuartzCrystal()
                 .maybeStack(1)
-                .orElseThrow(() -> new MissingDefinitionException("Tried to access certus quartz crystal, even though they are disabled"))
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to access certus quartz crystal, even though they are disabled"))
                 .getItemDamage();
     }
 }

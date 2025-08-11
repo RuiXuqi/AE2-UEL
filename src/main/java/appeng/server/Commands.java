@@ -18,13 +18,12 @@
 
 package appeng.server;
 
-
 import appeng.server.subcommands.ChunkLogger;
+import appeng.server.subcommands.SetChannelMode;
 import appeng.server.subcommands.Supporters;
 
-
 public enum Commands {
-    Chunklogger(4, new ChunkLogger()), Supporters(0, new Supporters());
+    channels(4, new SetChannelMode()), Chunklogger(4, new ChunkLogger()), Supporters(0, new Supporters());
 
     public final int level;
     public final ISubCommand command;

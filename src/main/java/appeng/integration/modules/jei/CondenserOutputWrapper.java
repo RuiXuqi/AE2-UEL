@@ -18,21 +18,23 @@
 
 package appeng.integration.modules.jei;
 
+import java.util.Collections;
+import java.util.List;
 
-import appeng.api.config.CondenserOutput;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Splitter;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeWrapper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeWrapper;
 
+import appeng.api.config.CondenserOutput;
 
 class CondenserOutputWrapper implements IRecipeWrapper {
     private final ItemStack outputItem;

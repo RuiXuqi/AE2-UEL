@@ -18,11 +18,9 @@
 
 package appeng.services.version.github;
 
-
-import appeng.services.version.Version;
-
 import javax.annotation.Nonnull;
 
+import appeng.services.version.Version;
 
 /**
  * Default template when a {@link FormattedRelease} is needed.

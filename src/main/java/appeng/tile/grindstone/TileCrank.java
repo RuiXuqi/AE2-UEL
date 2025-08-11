@@ -18,12 +18,12 @@
 
 package appeng.tile.grindstone;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
-import appeng.api.implementations.tiles.ICrankable;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.AEBaseTile;
-import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -33,10 +33,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
+import appeng.api.implementations.tiles.ICrankable;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.AEBaseTile;
+import appeng.util.Platform;
 
 public class TileCrank extends AEBaseTile implements ICustomCollision, ITickable {
 
@@ -133,15 +133,18 @@ public class TileCrank extends AEBaseTile implements ICustomCollision, ITickable
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
         final double xOff = -0.15 * this.getUp().getXOffset();
         final double yOff = -0.15 * this.getUp().getYOffset();
         final double zOff = -0.15 * this.getUp().getZOffset();
-        return Collections.singletonList(new AxisAlignedBB(xOff + 0.15, yOff + 0.15, zOff + 0.15, xOff + 0.85, yOff + 0.85, zOff + 0.85));
+        return Collections.singletonList(
+                new AxisAlignedBB(xOff + 0.15, yOff + 0.15, zOff + 0.15, xOff + 0.85, yOff + 0.85, zOff + 0.85));
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         final double xOff = -0.15 * this.getUp().getXOffset();
         final double yOff = -0.15 * this.getUp().getYOffset();
         final double zOff = -0.15 * this.getUp().getZOffset();

@@ -18,6 +18,20 @@
 
 package appeng.parts.automation;
 
+import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -55,34 +69,25 @@ import appeng.parts.PartModel;
 import appeng.tile.inventory.AppEngInternalAEInventory;
 import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
 
-import java.util.Random;
-
-
-public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherHost, IStackWatcherHost, ICraftingWatcherHost, IMEMonitorHandlerReceiver<IAEItemStack>, ICraftingProvider {
+public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherHost, IStackWatcherHost,
+        ICraftingWatcherHost, IMEMonitorHandlerReceiver<IAEItemStack>, ICraftingProvider {
 
     @PartModels
-    public static final ResourceLocation MODEL_BASE_OFF = new ResourceLocation(AppEng.MOD_ID, "part/level_emitter_base_off");
+    public static final ResourceLocation MODEL_BASE_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/level_emitter_base_off");
     @PartModels
-    public static final ResourceLocation MODEL_BASE_ON = new ResourceLocation(AppEng.MOD_ID, "part/level_emitter_base_on");
+    public static final ResourceLocation MODEL_BASE_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/level_emitter_base_on");
     @PartModels
-    public static final ResourceLocation MODEL_STATUS_OFF = new ResourceLocation(AppEng.MOD_ID, "part/level_emitter_status_off");
+    public static final ResourceLocation MODEL_STATUS_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/level_emitter_status_off");
     @PartModels
-    public static final ResourceLocation MODEL_STATUS_ON = new ResourceLocation(AppEng.MOD_ID, "part/level_emitter_status_on");
+    public static final ResourceLocation MODEL_STATUS_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/level_emitter_status_on");
     @PartModels
-    public static final ResourceLocation MODEL_STATUS_HAS_CHANNEL = new ResourceLocation(AppEng.MOD_ID, "part/level_emitter_status_has_channel");
+    public static final ResourceLocation MODEL_STATUS_HAS_CHANNEL = new ResourceLocation(AppEng.MOD_ID,
+            "part/level_emitter_status_has_channel");
 
     public static final PartModel MODEL_OFF_OFF = new PartModel(MODEL_BASE_OFF, MODEL_STATUS_OFF);
     public static final PartModel MODEL_OFF_ON = new PartModel(MODEL_BASE_OFF, MODEL_STATUS_ON);
@@ -161,7 +166,8 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
             return this.prevState;
         }
 
-        final boolean flipState = this.getConfigManager().getSetting(Settings.REDSTONE_EMITTER) == RedstoneMode.LOW_SIGNAL;
+        final boolean flipState = this.getConfigManager()
+                .getSetting(Settings.REDSTONE_EMITTER) == RedstoneMode.LOW_SIGNAL;
         return flipState == (this.reportingValue >= this.lastReportedValue + 1);
     }
 
@@ -240,7 +246,9 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
                 this.updateState();
 
                 // no more item stuff..
-                this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)).removeListener(this);
+                this.getProxy().getStorage()
+                        .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
+                        .removeListener(this);
             } catch (final GridAccessException e) {
                 // :P
             }
@@ -256,14 +264,17 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
                         .addListener(this,
                                 this.getProxy().getGrid());
             } else {
-                this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)).removeListener(this);
+                this.getProxy().getStorage()
+                        .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
+                        .removeListener(this);
 
                 if (this.myWatcher != null) {
                     this.myWatcher.add(myStack);
                 }
             }
 
-            this.updateReportingValue(this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
+            this.updateReportingValue(this.getProxy().getStorage()
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
         } catch (final GridAccessException e) {
             // >.>
         }
@@ -280,11 +291,13 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
             final FuzzyMode fzMode = (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE);
 
             this.lastReportedValue = 0;
-            monitor.getStorageList().findFuzzy(myStack, fzMode).forEach(iaeItemStack -> lastReportedValue += iaeItemStack.getStackSize());
+            monitor.getStorageList().findFuzzy(myStack, fzMode)
+                    .forEach(iaeItemStack -> lastReportedValue += iaeItemStack.getStackSize());
         } else {
             this.lastReportedValue = 0;
             IAEItemStack precise = monitor.getStorageList().findPrecise(myStack);
-            if (precise != null) lastReportedValue = precise.getStackSize();
+            if (precise != null)
+                lastReportedValue = precise.getStackSize();
         }
         this.updateState();
     }
@@ -296,8 +309,11 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
     }
 
     @Override
-    public void onStackChange(final IItemList o, final IAEStack fullStack, final IAEStack diffStack, final IActionSource src, final IStorageChannel chan) {
-        if (chan == AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class) && fullStack.equals(this.config.getAEStackInSlot(0)) && this.getInstalledUpgrades(Upgrades.FUZZY) == 0) {
+    public void onStackChange(final IItemList o, final IAEStack fullStack, final IAEStack diffStack,
+            final IActionSource src, final IStorageChannel chan) {
+        if (chan == AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                && fullStack.equals(this.config.getAEStackInSlot(0))
+                && this.getInstalledUpgrades(Upgrades.FUZZY) == 0) {
             this.lastReportedValue = fullStack.getStackSize();
             this.updateState();
         }
@@ -325,14 +341,16 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
     }
 
     @Override
-    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change, final IActionSource actionSource) {
+    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change,
+            final IActionSource actionSource) {
         this.updateReportingValue((IMEMonitor<IAEItemStack>) monitor);
     }
 
     @Override
     public void onListUpdate() {
         try {
-            this.updateReportingValue(this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
+            this.updateReportingValue(this.getProxy().getStorage()
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
         } catch (final GridAccessException e) {
             // ;P
         }
@@ -367,8 +385,8 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
             final double d1 = d.yOffset * 0.45F + (r.nextFloat() - 0.5F) * 0.2D;
             final double d2 = d.zOffset * 0.45F + (r.nextFloat() - 0.5F) * 0.2D;
 
-            world.spawnParticle(EnumParticleTypes.REDSTONE, 0.5 + pos.getX() + d0, 0.5 + pos.getY() + d1, 0.5 + pos.getZ() + d2, 0.0D, 0.0D, 0.0D
-            );
+            world.spawnParticle(EnumParticleTypes.REDSTONE, 0.5 + pos.getX() + d0, 0.5 + pos.getY() + d1,
+                    0.5 + pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -391,7 +409,8 @@ public class PartLevelEmitter extends PartUpgradeable implements IEnergyWatcherH
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.config) {
             this.configureWatchers();
         }

@@ -18,10 +18,8 @@
 
 package appeng.block.networking;
 
-
 import appeng.block.AEBaseTileBlock;
 import appeng.helpers.AEGlassMaterial;
-
 
 public class BlockCreativeEnergyCell extends AEBaseTileBlock {
 

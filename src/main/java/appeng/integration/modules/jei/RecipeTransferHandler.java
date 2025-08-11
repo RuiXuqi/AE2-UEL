@@ -18,6 +18,29 @@
 
 package appeng.integration.modules.jei;
 
+import static appeng.helpers.ItemStackHelper.stackToNBT;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+
+import mezz.jei.api.gui.IGuiIngredient;
+import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.api.recipe.transfer.IRecipeTransferError;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
+import mezz.jei.transfer.RecipeTransferErrorInternal;
 
 import appeng.container.implementations.ContainerCraftingTerm;
 import appeng.container.implementations.ContainerPatternEncoder;
@@ -29,28 +52,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketJEIRecipe;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.util.Platform;
-import mezz.jei.api.gui.IGuiIngredient;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.api.recipe.transfer.IRecipeTransferError;
-import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
-import mezz.jei.transfer.RecipeTransferErrorInternal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static appeng.helpers.ItemStackHelper.stackToNBT;
-
 
 class RecipeTransferHandler<T extends Container> implements IRecipeTransferHandler<T> {
 
@@ -67,15 +68,18 @@ class RecipeTransferHandler<T extends Container> implements IRecipeTransferHandl
 
     @Nullable
     @Override
-    public IRecipeTransferError transferRecipe(@Nonnull T container, IRecipeLayout recipeLayout, @Nonnull EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
+    public IRecipeTransferError transferRecipe(@Nonnull T container, IRecipeLayout recipeLayout,
+            @Nonnull EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
         final String recipeType = recipeLayout.getRecipeCategory().getUid();
 
-        if (recipeType.equals(VanillaRecipeCategoryUid.INFORMATION) || recipeType.equals(VanillaRecipeCategoryUid.FUEL)) {
+        if (recipeType.equals(VanillaRecipeCategoryUid.INFORMATION)
+                || recipeType.equals(VanillaRecipeCategoryUid.FUEL)) {
             return RecipeTransferErrorInternal.INSTANCE;
         }
 
         if (!doTransfer) {
-            if (recipeType.equals(VanillaRecipeCategoryUid.CRAFTING) && (container instanceof ContainerCraftingTerm || container instanceof ContainerWirelessCraftingTerminal)) {
+            if (recipeType.equals(VanillaRecipeCategoryUid.CRAFTING) && (container instanceof ContainerCraftingTerm
+                    || container instanceof ContainerWirelessCraftingTerminal)) {
                 JEIMissingItem error = new JEIMissingItem(container, recipeLayout);
                 if (error.errored())
                     return error;
@@ -99,11 +103,11 @@ class RecipeTransferHandler<T extends Container> implements IRecipeTransferHandl
             }
         }
 
-        Map<Integer, ? extends IGuiIngredient<ItemStack>> ingredients = recipeLayout.getItemStacks().getGuiIngredients();
+        Map<Integer, ? extends IGuiIngredient<ItemStack>> ingredients = recipeLayout.getItemStacks()
+                .getGuiIngredients();
 
         final NBTTagCompound recipe = new NBTTagCompound();
         final NBTTagList outputs = new NBTTagList();
-
 
         int slotIndex = 0;
         for (Map.Entry<Integer, ? extends IGuiIngredient<ItemStack>> ingredientEntry : ingredients.entrySet()) {

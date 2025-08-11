@@ -18,6 +18,14 @@
 
 package appeng.parts.reporting;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.Settings;
 import appeng.api.config.SortDir;
@@ -37,15 +45,6 @@ import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.List;
-
 
 /**
  * Anything resembling an network terminal with view cells can reuse this.
@@ -58,7 +57,8 @@ import java.util.List;
  * @version rv3
  * @since rv3
  */
-public abstract class AbstractPartTerminal extends AbstractPartDisplay implements ITerminalHost, IConfigManagerHost, IViewCellStorage, IAEAppEngInventory {
+public abstract class AbstractPartTerminal extends AbstractPartDisplay
+        implements ITerminalHost, IConfigManagerHost, IViewCellStorage, IAEAppEngInventory {
 
     private final IConfigManager cm = new ConfigManager(this);
     private final AppEngInternalInventory viewCell = new AppEngInternalInventory(this, 5);
@@ -136,7 +136,8 @@ public abstract class AbstractPartTerminal extends AbstractPartDisplay implement
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         this.getHost().markForSave();
     }
 }

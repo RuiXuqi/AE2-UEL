@@ -18,6 +18,13 @@
 
 package appeng.container.implementations;
 
+import java.io.IOException;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGrid;
@@ -30,7 +37,6 @@ import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import appeng.client.gui.implementations.GuiCraftConfirm;
 import appeng.client.gui.implementations.GuiCraftingCPU;
 import appeng.container.AEBaseContainer;
 import appeng.container.guisync.GuiSync;
@@ -39,22 +45,15 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketMEInventoryUpdate;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.helpers.ICustomNameObject;
-import appeng.me.cluster.IAEMultiBlock;
 import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.tile.crafting.TileCraftingTile;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
 
-import java.io.IOException;
-import java.util.List;
+public class ContainerCraftingCPU extends AEBaseContainer
+        implements IMEMonitorHandlerReceiver<IAEItemStack>, ICustomNameObject {
 
-
-public class ContainerCraftingCPU extends AEBaseContainer implements IMEMonitorHandlerReceiver<IAEItemStack>, ICustomNameObject {
-
-    private final IItemList<IAEItemStack> list = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> list = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+            .createList();
     private IGrid network;
     private CraftingCPUCluster monitor = null;
     private String cpuName = null;
@@ -72,7 +71,7 @@ public class ContainerCraftingCPU extends AEBaseContainer implements IMEMonitorH
         }
 
         if (te instanceof TileCraftingTile) {
-            this.setCPU((ICraftingCPU) ((IAEMultiBlock) te).getCluster());
+            this.setCPU(((TileCraftingTile) te).getCluster());
         }
 
         if (this.getNetwork() == null && Platform.isServer()) {
@@ -92,7 +91,8 @@ public class ContainerCraftingCPU extends AEBaseContainer implements IMEMonitorH
         for (final Object g : this.listeners) {
             if (g instanceof EntityPlayer) {
                 try {
-                    NetworkHandler.instance().sendTo(new PacketValueConfig("CraftingStatus", "Clear"), (EntityPlayerMP) g);
+                    NetworkHandler.instance().sendTo(new PacketValueConfig("CraftingStatus", "Clear"),
+                            (EntityPlayerMP) g);
                 } catch (final IOException e) {
                     AELog.debug(e);
                 }
@@ -190,7 +190,8 @@ public class ContainerCraftingCPU extends AEBaseContainer implements IMEMonitorH
     }
 
     @Override
-    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change, final IActionSource actionSource) {
+    public void postChange(final IBaseMonitor<IAEItemStack> monitor, final Iterable<IAEItemStack> change,
+            final IActionSource actionSource) {
         for (IAEItemStack is : change) {
             is = is.copy();
             is.setStackSize(1);

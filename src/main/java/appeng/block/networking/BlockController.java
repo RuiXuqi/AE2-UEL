@@ -18,9 +18,6 @@
 
 package appeng.block.networking;
 
-
-import appeng.block.AEBaseTileBlock;
-import appeng.tile.networking.TileController;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -33,8 +30,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.tile.networking.TileController;
 
 public class BlockController extends AEBaseTileBlock {
 
@@ -49,9 +46,9 @@ public class BlockController extends AEBaseTileBlock {
     }
 
     /**
-     * Controls the rendering of the controller block (connected texture style).
-     * inside_a and inside_b are alternating patterns for a controller that is enclosed by other controllers,
-     * and since they are always offline, they do not have the usual sub-states.
+     * Controls the rendering of the controller block (connected texture style). inside_a and inside_b are alternating
+     * patterns for a controller that is enclosed by other controllers, and since they are always offline, they do not
+     * have the usual sub-states.
      */
     public enum ControllerRenderType implements IStringSerializable {
         block, column_x, column_y, column_z, inside_a, inside_b;
@@ -63,9 +60,11 @@ public class BlockController extends AEBaseTileBlock {
 
     }
 
-    public static final PropertyEnum<ControllerBlockState> CONTROLLER_STATE = PropertyEnum.create("state", ControllerBlockState.class);
+    public static final PropertyEnum<ControllerBlockState> CONTROLLER_STATE = PropertyEnum.create("state",
+            ControllerBlockState.class);
 
-    public static final PropertyEnum<ControllerRenderType> CONTROLLER_TYPE = PropertyEnum.create("type", ControllerRenderType.class);
+    public static final PropertyEnum<ControllerRenderType> CONTROLLER_TYPE = PropertyEnum.create("type",
+            ControllerRenderType.class);
 
     public BlockController() {
         super(Material.IRON);
@@ -77,7 +76,7 @@ public class BlockController extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{CONTROLLER_STATE, CONTROLLER_TYPE};
+        return new IProperty[] { CONTROLLER_STATE, CONTROLLER_TYPE };
     }
 
     @Override
@@ -87,8 +86,8 @@ public class BlockController extends AEBaseTileBlock {
 
     /**
      * This will compute the AE_BLOCK_FORWARD, AE_BLOCK_UP and CONTROLLER_TYPE block states based on adjacent
-     * controllers and the network state of this controller (offline, online, conflicted). This is used to
-     * get a rudimentary connected texture feel for the controller based on how it is placed.
+     * controllers and the network state of this controller (offline, online, conflicted). This is used to get a
+     * rudimentary connected texture feel for the controller based on how it is placed.
      */
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -101,12 +100,15 @@ public class BlockController extends AEBaseTileBlock {
         int z = pos.getZ();
 
         // Detect whether controllers are on both sides of the x, y, and z axes
-        final boolean xx = this.getTileEntity(world, x - 1, y, z) instanceof TileController && this.getTileEntity(world, x + 1, y,
-                z) instanceof TileController;
-        final boolean yy = this.getTileEntity(world, x, y - 1, z) instanceof TileController && this.getTileEntity(world, x, y + 1,
-                z) instanceof TileController;
-        final boolean zz = this.getTileEntity(world, x, y, z - 1) instanceof TileController && this.getTileEntity(world, x, y,
-                z + 1) instanceof TileController;
+        final boolean xx = this.getTileEntity(world, x - 1, y, z) instanceof TileController
+                && this.getTileEntity(world, x + 1, y,
+                        z) instanceof TileController;
+        final boolean yy = this.getTileEntity(world, x, y - 1, z) instanceof TileController
+                && this.getTileEntity(world, x, y + 1,
+                        z) instanceof TileController;
+        final boolean zz = this.getTileEntity(world, x, y, z - 1) instanceof TileController
+                && this.getTileEntity(world, x, y,
+                        z + 1) instanceof TileController;
 
         if (xx && !yy && !zz) {
             type = ControllerRenderType.column_x;

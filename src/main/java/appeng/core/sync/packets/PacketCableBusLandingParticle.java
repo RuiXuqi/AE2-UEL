@@ -1,10 +1,8 @@
 package appeng.core.sync.packets;
 
-import appeng.block.networking.BlockCableBus;
-import appeng.core.sync.AppEngPacket;
-import appeng.core.sync.network.INetworkInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -13,6 +11,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import appeng.block.networking.BlockCableBus;
+import appeng.core.sync.AppEngPacket;
+import appeng.core.sync.network.INetworkInfo;
 
 public class PacketCableBusLandingParticle extends AppEngPacket {
 

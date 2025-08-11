@@ -18,6 +18,8 @@
 
 package appeng.client.gui.implementations;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.client.gui.AEBaseGui;
 import appeng.client.gui.widgets.GuiProgressBar;
@@ -25,9 +27,6 @@ import appeng.client.gui.widgets.GuiProgressBar.Direction;
 import appeng.container.implementations.ContainerVibrationChamber;
 import appeng.core.localization.GuiText;
 import appeng.tile.misc.TileVibrationChamber;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class GuiVibrationChamber extends AEBaseGui {
 
@@ -53,7 +52,8 @@ public class GuiVibrationChamber extends AEBaseGui {
         this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.VibrationChamber.getLocal()), 8, 6, 4210752);
         this.fontRenderer.drawString(GuiText.inventory.getLocal(), 8, this.ySize - 96 + 3, 4210752);
 
-        this.pb.setFullMsg(TileVibrationChamber.POWER_PER_TICK * this.cvc.getCurrentProgress() / TileVibrationChamber.DILATION_SCALING + " AE/t");
+        this.pb.setFullMsg(TileVibrationChamber.POWER_PER_TICK * this.cvc.getCurrentProgress()
+                / TileVibrationChamber.DILATION_SCALING + " AE/t");
 
         if (this.cvc.getRemainingBurnTime() > 0) {
             final int i1 = this.cvc.getRemainingBurnTime() * 12 / 100;

@@ -18,21 +18,21 @@
 
 package appeng.integration.modules.crafttweaker;
 
+import java.util.*;
+import java.util.stream.Collectors;
 
-import appeng.integration.abstraction.ICraftTweaker;
-import appeng.util.Platform;
-import crafttweaker.CraftTweakerAPI;
-import crafttweaker.IAction;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import crafttweaker.CraftTweakerAPI;
+import crafttweaker.IAction;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
 
+import appeng.integration.abstraction.ICraftTweaker;
+import appeng.util.Platform;
 
 public class CTModule implements ICraftTweaker {
     static final List<IAction> MODIFICATIONS = new ArrayList<>();
@@ -67,7 +67,8 @@ public class CTModule implements ICraftTweaker {
             if (!is.isItemStackDamageable() && is.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                 NonNullList<ItemStack> ret = NonNullList.create();
                 is.getItem().getSubItems(CreativeTabs.SEARCH, ret);
-                return ret.stream().map(i -> new ItemStack(i.getItem(), iStack.getAmount(), i.getItemDamage())).collect(Collectors.toList());
+                return ret.stream().map(i -> new ItemStack(i.getItem(), iStack.getAmount(), i.getItemDamage()))
+                        .collect(Collectors.toList());
             } else {
                 return Collections.singletonList(is);
             }

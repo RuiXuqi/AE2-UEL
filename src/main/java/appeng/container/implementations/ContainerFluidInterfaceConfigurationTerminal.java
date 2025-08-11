@@ -18,6 +18,20 @@
 
 package appeng.container.implementations;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -37,29 +51,8 @@ import appeng.fluids.util.AEFluidInventory;
 import appeng.fluids.util.AEFluidStack;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.helpers.InventoryAction;
-import appeng.parts.misc.PartInterface;
 import appeng.parts.reporting.PartFluidInterfaceConfigurationTerminal;
-import appeng.tile.misc.TileInterface;
 import appeng.util.Platform;
-import appeng.util.helpers.ItemHandlerUtil;
-import appeng.util.inv.WrapperRangeItemHandler;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 
 public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseContainer {
 
@@ -74,7 +67,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
     private NBTTagCompound data = new NBTTagCompound();
     private IAEFluidStack clientRequestedTargetFluid;
 
-    public ContainerFluidInterfaceConfigurationTerminal(final InventoryPlayer ip, final PartFluidInterfaceConfigurationTerminal anchor) {
+    public ContainerFluidInterfaceConfigurationTerminal(final InventoryPlayer ip,
+            final PartFluidInterfaceConfigurationTerminal anchor) {
         super(ip, anchor);
 
         if (Platform.isServer()) {
@@ -106,7 +100,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
                 for (final IGridNode gn : this.grid.getMachines(TileFluidInterface.class)) {
                     if (gn.isActive()) {
                         final IFluidInterfaceHost ih = (IFluidInterfaceHost) gn.getMachine();
-                        if (ih.getDualityFluidInterface().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if (ih.getDualityFluidInterface().getConfigManager()
+                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -128,7 +123,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
                 for (final IGridNode gn : this.grid.getMachines(PartFluidInterface.class)) {
                     if (gn.isActive()) {
                         final IFluidInterfaceHost ih = (IFluidInterfaceHost) gn.getMachine();
-                        if (ih.getDualityFluidInterface().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if (ih.getDualityFluidInterface().getConfigManager()
+                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -156,7 +152,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
                 final FluidConfigTracker inv = en.getValue();
                 for (int x = 0; x < inv.server.getSlots(); x++) {
                     if ((inv.server.getFluidInSlot(x) == null && inv.client.getFluidInSlot(x) != null) ||
-                            (inv.server.getFluidInSlot(x) != null && !inv.server.getFluidInSlot(x).equals(inv.client.getFluidInSlot(x)))) {
+                            (inv.server.getFluidInSlot(x) != null
+                                    && !inv.server.getFluidInSlot(x).equals(inv.client.getFluidInSlot(x)))) {
                         this.addFluids(this.data, inv, x, 1);
                     }
                 }
@@ -165,7 +162,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
 
         if (!this.data.isEmpty()) {
             try {
-                NetworkHandler.instance().sendTo(new PacketCompressedNBT(this.data), (EntityPlayerMP) this.getPlayerInv().player);
+                NetworkHandler.instance().sendTo(new PacketCompressedNBT(this.data),
+                        (EntityPlayerMP) this.getPlayerInv().player);
             } catch (final IOException e) {
                 // :P
             }
@@ -203,7 +201,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
             if (stack == null && this.clientRequestedTargetFluid == null) {
                 return;
             }
-            if (stack != null && this.clientRequestedTargetFluid != null && stack.getFluidStack().isFluidEqual(this.clientRequestedTargetFluid.getFluidStack())) {
+            if (stack != null && this.clientRequestedTargetFluid != null
+                    && stack.getFluidStack().isFluidEqual(this.clientRequestedTargetFluid.getFluidStack())) {
                 return;
             }
             NetworkHandler.instance().sendToServer(new PacketTargetFluidStack((AEFluidStack) stack));
@@ -224,7 +223,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
                     final IFluidInterfaceHost ih = (IFluidInterfaceHost) gn.getMachine();
                     final DualityFluidInterface dual = ih.getDualityFluidInterface();
                     if (gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
-                        this.diList.put(ih, new FluidConfigTracker(dual, (AEFluidInventory) dual.getConfig(), dual.getTermName()));
+                        this.diList.put(ih,
+                                new FluidConfigTracker(dual, (AEFluidInventory) dual.getConfig(), dual.getTermName()));
                     }
                 }
 
@@ -232,7 +232,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
                     final IFluidInterfaceHost ih = (IFluidInterfaceHost) gn.getMachine();
                     final DualityFluidInterface dual = ih.getDualityFluidInterface();
                     if (gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
-                        this.diList.put(ih, new FluidConfigTracker(dual, (AEFluidInventory) dual.getConfig(), dual.getTermName()));
+                        this.diList.put(ih,
+                                new FluidConfigTracker(dual, (AEFluidInventory) dual.getConfig(), dual.getTermName()));
                     }
                 }
             }
@@ -247,7 +248,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
         }
     }
 
-    private void addFluids(final NBTTagCompound data, final FluidConfigTracker inv, final int offset, final int length) {
+    private void addFluids(final NBTTagCompound data, final FluidConfigTracker inv, final int offset,
+            final int length) {
         final String name = '=' + Long.toString(inv.which, Character.MAX_RADIX);
         final NBTTagCompound tag = data.getCompoundTag(name);
 
@@ -286,7 +288,8 @@ public final class ContainerFluidInterfaceConfigurationTerminal extends AEBaseCo
         private final BlockPos pos;
         private final int dim;
 
-        public FluidConfigTracker(final DualityFluidInterface dual, final AEFluidInventory configSlots, final String unlocalizedName) {
+        public FluidConfigTracker(final DualityFluidInterface dual, final AEFluidInventory configSlots,
+                final String unlocalizedName) {
             this.server = configSlots;
             this.client = new AEFluidInventory(null, this.server.getSlots());
             this.unlocalizedName = unlocalizedName;

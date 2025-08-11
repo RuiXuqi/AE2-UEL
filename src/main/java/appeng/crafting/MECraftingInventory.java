@@ -18,6 +18,9 @@
 
 package appeng.crafting;
 
+import java.io.IOException;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -31,10 +34,6 @@ import appeng.api.storage.data.IItemList;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketInformPlayer;
 import appeng.util.inv.ItemListIgnoreCrafting;
-import net.minecraft.entity.player.EntityPlayerMP;
-
-import java.io.IOException;
-
 
 public class MECraftingInventory implements IMEInventory<IAEItemStack> {
 
@@ -53,7 +52,8 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
     private final IItemList<IAEItemStack> missingCache;
 
     public MECraftingInventory() {
-        this.localCache = new ItemListIgnoreCrafting<>(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
+        this.localCache = new ItemListIgnoreCrafting<>(
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
         this.extractedCache = null;
         this.injectedCache = null;
         this.missingCache = null;
@@ -88,12 +88,14 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
             this.injectedCache = null;
         }
 
-        this.localCache = this.target.getAvailableItems(new ItemListIgnoreCrafting<>(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList()));
+        this.localCache = this.target.getAvailableItems(new ItemListIgnoreCrafting<>(
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList()));
 
         this.par = parent;
     }
 
-    public MECraftingInventory(final IMEMonitor<IAEItemStack> target, final IActionSource src, final boolean logExtracted, final boolean logInjections, final boolean logMissing) {
+    public MECraftingInventory(final IMEMonitor<IAEItemStack> target, final IActionSource src,
+            final boolean logExtracted, final boolean logInjections, final boolean logMissing) {
         this.target = target;
         this.logExtracted = logExtracted;
         this.logInjections = logInjections;
@@ -117,7 +119,8 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
             this.injectedCache = null;
         }
 
-        this.localCache = new ItemListIgnoreCrafting<>(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
+        this.localCache = new ItemListIgnoreCrafting<>(
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
         for (final IAEItemStack is : target.getStorageList()) {
             this.localCache.add(target.extractItems(is, Actionable.SIMULATE, src));
         }
@@ -125,7 +128,8 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
         this.par = null;
     }
 
-    public MECraftingInventory(final IMEInventory<IAEItemStack> target, final boolean logExtracted, final boolean logInjections, final boolean logMissing) {
+    public MECraftingInventory(final IMEInventory<IAEItemStack> target, final boolean logExtracted,
+            final boolean logInjections, final boolean logMissing) {
         this.target = target;
         this.logExtracted = logExtracted;
         this.logInjections = logInjections;
@@ -149,12 +153,14 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
             this.injectedCache = null;
         }
 
-        this.localCache = target.getAvailableItems(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
+        this.localCache = target.getAvailableItems(
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
         this.par = null;
     }
 
     public MECraftingInventory(final IItemList<IAEItemStack> itemList) {
-        this.localCache = new ItemListIgnoreCrafting<>(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
+        this.localCache = new ItemListIgnoreCrafting<>(
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
         this.target = null;
         this.logExtracted = false;
         this.logInjections = false;
@@ -240,8 +246,10 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
     }
 
     public boolean commit(final IActionSource src) {
-        final IItemList<IAEItemStack> added = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-        final IItemList<IAEItemStack> pulled = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+        final IItemList<IAEItemStack> added = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                .createList();
+        final IItemList<IAEItemStack> pulled = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                .createList();
         boolean failed = false;
 
         if (this.logInjections) {
@@ -273,9 +281,15 @@ public class MECraftingInventory implements IMEInventory<IAEItemStack> {
                     if (src.player().isPresent()) {
                         try {
                             if (result == null) {
-                                NetworkHandler.instance().sendTo(new PacketInformPlayer(extra, null, PacketInformPlayer.InfoType.NO_ITEMS_EXTRACTED), (EntityPlayerMP) src.player().get());
+                                NetworkHandler.instance()
+                                        .sendTo(new PacketInformPlayer(extra, null,
+                                                PacketInformPlayer.InfoType.NO_ITEMS_EXTRACTED),
+                                                (EntityPlayerMP) src.player().get());
                             } else {
-                                NetworkHandler.instance().sendTo(new PacketInformPlayer(extra, result, PacketInformPlayer.InfoType.PARTIAL_ITEM_EXTRACTION), (EntityPlayerMP) src.player().get());
+                                NetworkHandler.instance()
+                                        .sendTo(new PacketInformPlayer(extra, result,
+                                                PacketInformPlayer.InfoType.PARTIAL_ITEM_EXTRACTION),
+                                                (EntityPlayerMP) src.player().get());
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

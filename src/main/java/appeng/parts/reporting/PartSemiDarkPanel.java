@@ -18,15 +18,14 @@
 
 package appeng.parts.reporting;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.parts.IPartModel;
 import appeng.core.AppEng;
 import appeng.helpers.Reflected;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 
 public class PartSemiDarkPanel extends AbstractPartPanel {
     @PartModels
@@ -46,7 +45,9 @@ public class PartSemiDarkPanel extends AbstractPartPanel {
     protected int getBrightnessColor() {
         final int light = this.getColor().whiteVariant;
         final int dark = this.getColor().mediumVariant;
-        return (((((light >> 16) & 0xff) + ((dark >> 16) & 0xff)) / 2) << 16) | (((((light >> 8) & 0xff) + ((dark >> 8) & 0xff)) / 2) << 8) | ((((light) & 0xff) + ((dark) & 0xff)) / 2);
+        return (((((light >> 16) & 0xff) + ((dark >> 16) & 0xff)) / 2) << 16)
+                | (((((light >> 8) & 0xff) + ((dark >> 8) & 0xff)) / 2) << 8)
+                | ((((light) & 0xff) + ((dark) & 0xff)) / 2);
     }
 
     @Override

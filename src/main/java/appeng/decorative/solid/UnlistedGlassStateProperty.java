@@ -18,9 +18,7 @@
 
 package appeng.decorative.solid;
 
-
 import net.minecraftforge.common.property.IUnlistedProperty;
-
 
 /**
  * This unlisted property is used to transport the connected texture state into our model class.

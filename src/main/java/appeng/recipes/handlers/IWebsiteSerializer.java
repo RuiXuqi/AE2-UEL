@@ -18,12 +18,11 @@
 
 package appeng.recipes.handlers;
 
+import net.minecraft.item.ItemStack;
 
 import appeng.api.exceptions.MissingIngredientException;
 import appeng.api.exceptions.RegistrationException;
 import appeng.recipes.RecipeHandler;
-import net.minecraft.item.ItemStack;
-
 
 public interface IWebsiteSerializer {
 

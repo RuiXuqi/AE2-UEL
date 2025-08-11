@@ -18,11 +18,8 @@
 
 package appeng.client.render;
 
+import org.lwjgl.opengl.GL11;
 
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.util.IWideReadableNumberConverter;
-import appeng.util.ReadableNumberConverter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
@@ -32,8 +29,11 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.util.IWideReadableNumberConverter;
+import appeng.util.ReadableNumberConverter;
 
 /**
  * Helper methods for rendering TESRs.
@@ -52,8 +52,7 @@ public class TesrRenderHelper {
 
     /**
      * Rotate the current coordinate system so it is on the face of the given block side. This can be used to render on
-     * the given face as if it was
-     * a 2D canvas.
+     * the given face as if it was a 2D canvas.
      */
     public static void rotateToFace(EnumFacing face, byte spin) {
         switch (face) {
@@ -123,9 +122,11 @@ public class TesrRenderHelper {
             float r = (color >> 16 & 255) / 255.0f;
             float g = (color >> 8 & 255) / 255.0f;
             float b = (color & 255) / 255.0f;
-            TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
+            TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks()
+                    .getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
             GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA,
+                    GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             GlStateManager.disableAlpha();
             GlStateManager.disableLighting();
             Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

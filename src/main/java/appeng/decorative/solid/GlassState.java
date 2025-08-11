@@ -18,15 +18,13 @@
 
 package appeng.decorative.solid;
 
+import java.util.EnumSet;
 
 import net.minecraft.util.EnumFacing;
 
-import java.util.EnumSet;
-
-
 /**
- * Immutable (and thus thread-safe) class that encapsulates the rendering state required for a connected texture
- * glass block.
+ * Immutable (and thus thread-safe) class that encapsulates the rendering state required for a connected texture glass
+ * block.
  */
 public final class GlassState {
 

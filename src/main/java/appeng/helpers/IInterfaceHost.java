@@ -18,16 +18,15 @@
 
 package appeng.helpers;
 
+import java.util.EnumSet;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 import appeng.api.implementations.IUpgradeableHost;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingRequester;
 import appeng.api.storage.data.IAEItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-
-import java.util.EnumSet;
-
 
 public interface IInterfaceHost extends ICraftingProvider, IUpgradeableHost, ICraftingRequester {
 

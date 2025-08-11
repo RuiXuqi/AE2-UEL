@@ -18,22 +18,20 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 
-import appeng.thirdparty.codechicken.lib.model.CachedFormat;
-import appeng.thirdparty.codechicken.lib.model.ISmartVertexConsumer;
-import appeng.thirdparty.codechicken.lib.model.Quad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
-import javax.annotation.OverridingMethodsMustInvokeSuper;
-
+import appeng.thirdparty.codechicken.lib.model.CachedFormat;
+import appeng.thirdparty.codechicken.lib.model.ISmartVertexConsumer;
+import appeng.thirdparty.codechicken.lib.model.Quad;
 
 /**
- * Base class for a simple QuadTransformer.
- * Operates on BakedQuads.
- * QuadTransformers can be piped into each other at no performance penalty.
+ * Base class for a simple QuadTransformer. Operates on BakedQuads. QuadTransformers can be piped into each other at no
+ * performance penalty.
  *
  * @author covers1624
  */

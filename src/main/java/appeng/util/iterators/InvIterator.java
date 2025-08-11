@@ -18,12 +18,10 @@
 
 package appeng.util.iterators;
 
+import java.util.Iterator;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-
-import java.util.Iterator;
-
 
 public final class InvIterator implements Iterator<ItemStack> {
     private final IItemHandler inventory;

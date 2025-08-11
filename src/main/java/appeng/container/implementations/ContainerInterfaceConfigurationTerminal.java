@@ -18,6 +18,20 @@
 
 package appeng.container.implementations;
 
+import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
@@ -37,21 +51,6 @@ import appeng.tile.misc.TileInterface;
 import appeng.util.Platform;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.WrapperRangeItemHandler;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
-
 
 public final class ContainerInterfaceConfigurationTerminal extends AEBaseContainer {
 
@@ -65,7 +64,8 @@ public final class ContainerInterfaceConfigurationTerminal extends AEBaseContain
     private IGrid grid;
     private NBTTagCompound data = new NBTTagCompound();
 
-    public ContainerInterfaceConfigurationTerminal(final InventoryPlayer ip, final PartInterfaceConfigurationTerminal anchor) {
+    public ContainerInterfaceConfigurationTerminal(final InventoryPlayer ip,
+            final PartInterfaceConfigurationTerminal anchor) {
         super(ip, anchor);
 
         if (Platform.isServer()) {
@@ -97,7 +97,8 @@ public final class ContainerInterfaceConfigurationTerminal extends AEBaseContain
                 for (final IGridNode gn : this.grid.getMachines(TileInterface.class)) {
                     if (gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if (ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if (ih.getInterfaceDuality().getConfigManager()
+                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -119,7 +120,8 @@ public final class ContainerInterfaceConfigurationTerminal extends AEBaseContain
                 for (final IGridNode gn : this.grid.getMachines(PartInterface.class)) {
                     if (gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if (ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if (ih.getInterfaceDuality().getConfigManager()
+                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -155,7 +157,8 @@ public final class ContainerInterfaceConfigurationTerminal extends AEBaseContain
 
         if (!this.data.isEmpty()) {
             try {
-                NetworkHandler.instance().sendTo(new PacketCompressedNBT(this.data), (EntityPlayerMP) this.getPlayerInv().player);
+                NetworkHandler.instance().sendTo(new PacketCompressedNBT(this.data),
+                        (EntityPlayerMP) this.getPlayerInv().player);
             } catch (final IOException e) {
                 // :P
             }
@@ -199,7 +202,8 @@ public final class ContainerInterfaceConfigurationTerminal extends AEBaseContain
                     break;
                 case SPLIT_OR_PLACE_SINGLE:
                     if (hasItemInHand) {
-                        if (ItemStack.areItemsEqual(inSlot, player.inventory.getItemStack()) && ItemStack.areItemStackTagsEqual(inSlot, player.inventory.getItemStack())) {
+                        if (ItemStack.areItemsEqual(inSlot, player.inventory.getItemStack())
+                                && ItemStack.areItemStackTagsEqual(inSlot, player.inventory.getItemStack())) {
                             inSlot.grow(1);
                             ItemHandlerUtil.setStackInSlot(theSlot, 0, inSlot.copy());
                         } else {
@@ -331,7 +335,8 @@ public final class ContainerInterfaceConfigurationTerminal extends AEBaseContain
         private final BlockPos pos;
         private final int dim;
 
-        public ConfigTracker(final DualityInterface dual, final IItemHandler configSlots, final String unlocalizedName) {
+        public ConfigTracker(final DualityInterface dual, final IItemHandler configSlots,
+                final String unlocalizedName) {
             this.server = configSlots;
             this.client = new AppEngInternalInventory(null, this.server.getSlots());
             this.unlocalizedName = unlocalizedName;

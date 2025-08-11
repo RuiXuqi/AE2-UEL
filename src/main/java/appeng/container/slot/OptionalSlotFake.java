@@ -18,12 +18,10 @@
 
 package appeng.container.slot;
 
+import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-
 
 public class OptionalSlotFake extends SlotFake implements IOptionalSlot {
 
@@ -33,7 +31,8 @@ public class OptionalSlotFake extends SlotFake implements IOptionalSlot {
     private final IOptionalSlotHost host;
     private boolean renderDisabled = true;
 
-    public OptionalSlotFake(final IItemHandler inv, final IOptionalSlotHost containerBus, final int idx, final int x, final int y, final int offX, final int offY, final int groupNum) {
+    public OptionalSlotFake(final IItemHandler inv, final IOptionalSlotHost containerBus, final int idx, final int x,
+            final int y, final int offX, final int offY, final int groupNum) {
         super(inv, idx, x + offX * 18, y + offY * 18);
         this.srcX = x;
         this.srcY = y;

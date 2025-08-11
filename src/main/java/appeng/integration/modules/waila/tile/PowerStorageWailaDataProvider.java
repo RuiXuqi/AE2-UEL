@@ -18,16 +18,8 @@
 
 package appeng.integration.modules.waila.tile;
 
+import java.util.List;
 
-import appeng.api.networking.energy.IAEPowerStorage;
-import appeng.core.localization.WailaText;
-import appeng.integration.modules.waila.BaseWailaDataProvider;
-import appeng.util.Platform;
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import mcp.mobius.waila.api.ITaggedList;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,8 +27,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import mcp.mobius.waila.api.ITaggedList;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import appeng.api.networking.energy.IAEPowerStorage;
+import appeng.core.localization.WailaText;
+import appeng.integration.modules.waila.BaseWailaDataProvider;
+import appeng.util.Platform;
 
 /**
  * Power storage provider for WAILA
@@ -62,8 +62,7 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
     private final Object2LongMap<TileEntity> cache = new Object2LongOpenHashMap<>();
 
     /**
-     * Adds the current and max power to the tool tip
-     * Will ignore if the tile has an energy buffer ( &gt; 0 )
+     * Adds the current and max power to the tool tip Will ignore if the tile has an energy buffer ( &gt; 0 )
      *
      * @param itemStack      stack of power storage
      * @param currentToolTip current tool tip
@@ -72,7 +71,8 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
      * @return modified tool tip
      */
     @Override
-    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         // Removes RF tooltip on WAILA 1.5.9+
         ((ITaggedList<String, String>) currentToolTip).removeEntries("RFEnergyStorage");
 
@@ -92,7 +92,8 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
                     final String formatCurrentPower = Platform.formatPowerLong(internalCurrentPower, false);
                     final String formatMaxPower = Platform.formatPowerLong(internalMaxPower, false);
 
-                    currentToolTip.add(WailaText.Contains.getLocal() + ": " + formatCurrentPower + " / " + formatMaxPower);
+                    currentToolTip
+                            .add(WailaText.Contains.getLocal() + ": " + formatCurrentPower + " / " + formatMaxPower);
                 }
             }
         }
@@ -103,8 +104,8 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
     /**
      * Called on server to transfer information from server to client.
      * <p/>
-     * If the {@link net.minecraft.tileentity.TileEntity} is a {@link appeng.api.networking.energy.IAEPowerStorage}, it
-     * writes the power information to the {@code #tag} using the {@code #ID_CURRENT_POWER} key.
+     * If the {@link net.minecraft.tileentity.TileEntity} is a {@link IAEPowerStorage}, it writes the power information
+     * to the {@code #tag} using the {@code #ID_CURRENT_POWER} key.
      *
      * @param player player looking at the power storage
      * @param te     power storage
@@ -114,7 +115,8 @@ public final class PowerStorageWailaDataProvider extends BaseWailaDataProvider {
      * @return tag send to the client
      */
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos) {
         if (te instanceof IAEPowerStorage) {
             final IAEPowerStorage storage = (IAEPowerStorage) te;
 

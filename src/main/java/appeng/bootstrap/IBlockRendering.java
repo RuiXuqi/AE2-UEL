@@ -18,6 +18,7 @@
 
 package appeng.bootstrap;
 
+import java.util.function.BiFunction;
 
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -27,9 +28,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.function.BiFunction;
-
 
 /**
  * Allows for client-side rendering to be customized in the context of block/item registration.

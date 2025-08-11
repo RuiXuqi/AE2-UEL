@@ -1,5 +1,10 @@
 package appeng.fluids.container;
 
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.SecurityPermissions;
@@ -8,12 +13,6 @@ import appeng.container.guisync.GuiSync;
 import appeng.fluids.parts.PartFluidLevelEmitter;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.util.Platform;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 public class ContainerFluidLevelEmitter extends ContainerFluidConfigurable {
     private final PartFluidLevelEmitter lvlEmitter;
@@ -60,7 +59,8 @@ public class ContainerFluidLevelEmitter extends ContainerFluidConfigurable {
 
         if (Platform.isServer()) {
             this.EmitterValue = this.lvlEmitter.getReportingValue();
-            this.setRedStoneMode((RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_EMITTER));
+            this.setRedStoneMode(
+                    (RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_EMITTER));
         }
 
         this.standardDetectAndSendChanges();

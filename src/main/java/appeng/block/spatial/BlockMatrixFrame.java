@@ -18,9 +18,9 @@
 
 package appeng.block.spatial;
 
+import java.util.Arrays;
+import java.util.List;
 
-import appeng.block.AEBaseBlock;
-import appeng.helpers.ICustomCollision;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -35,9 +35,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
-import java.util.List;
-
+import appeng.block.AEBaseBlock;
+import appeng.helpers.ICustomCollision;
 
 public class BlockMatrixFrame extends AEBaseBlock implements ICustomCollision {
 
@@ -56,13 +55,15 @@ public class BlockMatrixFrame extends AEBaseBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
-        return Arrays.asList(new AxisAlignedBB[]{});// AxisAlignedBB.getBoundingBox( 0.25, 0, 0.25, 0.75, 0.5, 0.75 )
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
+        return Arrays.asList(new AxisAlignedBB[] {});// AxisAlignedBB.getBoundingBox( 0.25, 0, 0.25, 0.75, 0.5, 0.75 )
         // } );
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         out.add(new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
     }
 
@@ -77,7 +78,8 @@ public class BlockMatrixFrame extends AEBaseBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean canEntityDestroy(final IBlockState state, final IBlockAccess world, final BlockPos pos, final Entity entity) {
+    public boolean canEntityDestroy(final IBlockState state, final IBlockAccess world, final BlockPos pos,
+            final Entity entity) {
         return false;
     }
 }

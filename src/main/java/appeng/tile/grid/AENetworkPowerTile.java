@@ -18,6 +18,7 @@
 
 package appeng.tile.grid;
 
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
@@ -27,8 +28,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.tile.powersink.AEBasePoweredTile;
-import net.minecraft.nbt.NBTTagCompound;
-
 
 public abstract class AENetworkPowerTile extends AEBasePoweredTile implements IActionHost, IGridProxyable {
 
@@ -81,13 +80,13 @@ public abstract class AENetworkPowerTile extends AEBasePoweredTile implements IA
     @Override
     public void invalidate() {
         super.invalidate();
-        this.getProxy().invalidate();
+        this.getProxy().remove();
     }
 
     @Override
     public void onChunkUnload() {
         super.onChunkUnload();
-        this.getProxy().onChunkUnload();
+        this.getProxy().onChunkUnloaded();
     }
 
     @Override

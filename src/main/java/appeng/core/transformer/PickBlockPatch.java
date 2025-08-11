@@ -1,18 +1,20 @@
 package appeng.core.transformer;
 
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
+
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.implementations.tiles.IColorableTile;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketColorApplicatorSelectColor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 public class PickBlockPatch extends ClassVisitor {
 

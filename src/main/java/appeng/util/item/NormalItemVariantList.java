@@ -18,13 +18,14 @@
 
 package appeng.util.item;
 
-import appeng.api.config.FuzzyMode;
-import appeng.api.storage.data.IAEItemStack;
+import java.util.Collection;
+import java.util.Map;
+
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 
-import java.util.Collection;
-import java.util.Map;
+import appeng.api.config.FuzzyMode;
+import appeng.api.storage.data.IAEItemStack;
 
 /**
  * This variant list is optimized for items that cannot be damaged and thus do not support querying durability ranges

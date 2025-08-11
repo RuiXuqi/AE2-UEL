@@ -18,17 +18,17 @@
 
 package appeng.integration.modules.theoneprobe.part;
 
+import java.util.Optional;
 
-import appeng.api.parts.IPart;
-import appeng.api.parts.IPartHost;
-import appeng.api.parts.SelectedPart;
-import mcjty.theoneprobe.api.IProbeHitData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Optional;
+import mcjty.theoneprobe.api.IProbeHitData;
 
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartHost;
+import appeng.api.parts.SelectedPart;
 
 public final class PartAccessor {
 

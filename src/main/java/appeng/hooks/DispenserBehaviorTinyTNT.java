@@ -18,8 +18,6 @@
 
 package appeng.hooks;
 
-
-import appeng.entity.EntityTinyTNTPrimed;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
@@ -27,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import appeng.entity.EntityTinyTNTPrimed;
 
 public final class DispenserBehaviorTinyTNT extends BehaviorDefaultDispenseItem {
 
@@ -37,7 +36,8 @@ public final class DispenserBehaviorTinyTNT extends BehaviorDefaultDispenseItem 
         final int i = dispenser.getBlockPos().getX() + enumfacing.getXOffset();
         final int j = dispenser.getBlockPos().getY() + enumfacing.getYOffset();
         final int k = dispenser.getBlockPos().getZ() + enumfacing.getZOffset();
-        final EntityTinyTNTPrimed primedTinyTNTEntity = new EntityTinyTNTPrimed(world, i + 0.5F, j + 0.5F, k + 0.5F, null);
+        final EntityTinyTNTPrimed primedTinyTNTEntity = new EntityTinyTNTPrimed(world, i + 0.5F, j + 0.5F, k + 0.5F,
+                null);
         world.spawnEntity(primedTinyTNTEntity);
         dispensedItem.setCount(dispensedItem.getCount() - 1);
         return dispensedItem;

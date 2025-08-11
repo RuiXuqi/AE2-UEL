@@ -18,6 +18,17 @@
 
 package appeng.tile.spatial;
 
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -45,16 +56,6 @@ import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.IAEItemFilter;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-
 
 public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallable<Void> {
 
@@ -136,7 +137,7 @@ public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallabl
         if (Platform.isServer()) {
             final ItemStack cell = this.inv.getStackInSlot(0);
             if (this.isSpatialCell(cell)) {
-                TickHandler.INSTANCE.addCallable(null, this);// this needs to be cross world synced.
+                TickHandler.instance().addCallable(null, this);// this needs to be cross world synced.
             }
         }
     }
@@ -170,7 +171,8 @@ public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallabl
                             playerId = this.getProxy().getSecurity().getOwner();
                         }
 
-                        final TransitionResult tr = sc.doSpatialTransition(cell, this.world, spc.getMin(), spc.getMax(), playerId);
+                        final TransitionResult tr = sc.doSpatialTransition(cell, this.world, spc.getMin(), spc.getMax(),
+                                playerId);
                         if (tr.success) {
                             energy.extractAEPower(req, Actionable.MODULATE, PowerMultiplier.CONFIG);
                             this.inv.setStackInSlot(0, ItemStack.EMPTY);
@@ -195,8 +197,7 @@ public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallabl
     }
 
     @Override
-    protected @Nonnull
-    IItemHandler getItemHandlerForSide(@Nonnull EnumFacing side) {
+    protected @Nonnull IItemHandler getItemHandlerForSide(@Nonnull EnumFacing side) {
         return this.invExt;
     }
 
@@ -206,7 +207,8 @@ public class TileSpatialIOPort extends AENetworkInvTile implements IWorldCallabl
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
 
     }
 

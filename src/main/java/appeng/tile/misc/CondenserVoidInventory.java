@@ -18,7 +18,6 @@
 
 package appeng.tile.misc;
 
-
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
@@ -27,7 +26,6 @@ import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
-
 
 class CondenserVoidInventory<T extends IAEStack<T>> implements IMEMonitor<T> {
 

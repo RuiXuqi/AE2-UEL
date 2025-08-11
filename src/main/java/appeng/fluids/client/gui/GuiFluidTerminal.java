@@ -18,6 +18,21 @@
 
 package appeng.fluids.client.gui;
 
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Slot;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.Loader;
 
 import appeng.api.config.Settings;
 import appeng.api.storage.ITerminalHost;
@@ -42,21 +57,6 @@ import appeng.fluids.container.slots.IMEFluidSlot;
 import appeng.helpers.InventoryAction;
 import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.Loader;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
 
 /**
  * @author BrockWS
@@ -100,7 +100,8 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
 
-        this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX), this.guiTop + 4, 90, 12);
+        this.searchField = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(80, this.offsetX),
+                this.guiTop + 4, 90, 12);
         this.searchField.setEnableBackgroundDrawing(false);
         this.searchField.setMaxStringLength(25);
         this.searchField.setTextColor(0xFFFFFF);
@@ -109,15 +110,18 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
 
         int offset = this.guiTop;
 
-        this.buttonList.add(this.sortByBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_BY, this.configSrc.getSetting(Settings.SORT_BY)));
+        this.buttonList.add(this.sortByBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_BY,
+                this.configSrc.getSetting(Settings.SORT_BY)));
         offset += 20;
 
-        this.buttonList.add(this.sortDirBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_DIRECTION, this.configSrc
-                .getSetting(Settings.SORT_DIRECTION)));
+        this.buttonList.add(
+                this.sortDirBox = new GuiImgButton(this.guiLeft - 18, offset, Settings.SORT_DIRECTION, this.configSrc
+                        .getSetting(Settings.SORT_DIRECTION)));
 
         for (int y = 0; y < this.rows; y++) {
             for (int x = 0; x < this.perRow; x++) {
-                SlotFluidME slot = new SlotFluidME(new InternalFluidSlotME(this.repo, x + y * this.perRow, this.offsetX + x * 18, 18 + y * 18));
+                SlotFluidME slot = new SlotFluidME(
+                        new InternalFluidSlotME(this.repo, x + y * this.perRow, this.offsetX + x * 18, 18 + y * 18));
                 this.getMeFluidSlots().add(slot);
                 this.inventorySlots.inventorySlots.add(slot);
             }
@@ -163,7 +167,8 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
 
             if (fluidSlot.getAEFluidStack() != null && fluidSlot.shouldRenderAsFluid()) {
                 final IAEFluidStack fluidStack = fluidSlot.getAEFluidStack();
-                final String formattedAmount = NumberFormat.getNumberInstance(Locale.US).format(fluidStack.getStackSize() / 1000.0) + " B";
+                final String formattedAmount = NumberFormat.getNumberInstance(Locale.US)
+                        .format(fluidStack.getStackSize() / 1000.0) + " B";
 
                 final String modName = "" + TextFormatting.BLUE + TextFormatting.ITALIC + Loader.instance()
                         .getIndexedModList()
@@ -195,7 +200,8 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
                 final Enum next = Platform.rotateEnum(cv, backwards, iBtn.getSetting().getPossibleValues());
 
                 try {
-                    NetworkHandler.instance().sendToServer(new PacketValueConfig(iBtn.getSetting().name(), next.name()));
+                    NetworkHandler.instance()
+                            .sendToServer(new PacketValueConfig(iBtn.getSetting().name(), next.name()));
                 } catch (final IOException e) {
                     AELog.debug(e);
                 }
@@ -215,13 +221,15 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
                 if (mouseButton == 0 && meSlot.getHasStack()) {
                     this.container.setTargetStack(meSlot.getAEFluidStack());
                     AELog.debug("mouse0 GUI STACK SIZE %s", meSlot.getAEFluidStack().getStackSize());
-                    NetworkHandler.instance().sendToServer(new PacketInventoryAction(InventoryAction.FILL_ITEM, slot.slotNumber, 0));
+                    NetworkHandler.instance()
+                            .sendToServer(new PacketInventoryAction(InventoryAction.FILL_ITEM, slot.slotNumber, 0));
                 } else {
                     this.container.setTargetStack(meSlot.getAEFluidStack());
                     if (meSlot.getAEFluidStack() != null) {
                         AELog.debug("mouse1 GUI STACK SIZE %s", meSlot.getAEFluidStack().getStackSize());
                     }
-                    NetworkHandler.instance().sendToServer(new PacketInventoryAction(InventoryAction.EMPTY_ITEM, slot.slotNumber, 0));
+                    NetworkHandler.instance()
+                            .sendToServer(new PacketInventoryAction(InventoryAction.EMPTY_ITEM, slot.slotNumber, 0));
                 }
             }
             return;
@@ -271,7 +279,8 @@ public class GuiFluidTerminal extends AEBaseMEGui implements ISortSource, IConfi
 
     private void setScrollBar() {
         this.getScrollBar().setTop(18).setLeft(175).setHeight(this.rows * 18 - 2);
-        this.getScrollBar().setRange(0, (this.repo.size() + this.perRow - 1) / this.perRow - this.rows, Math.max(1, this.rows / 6));
+        this.getScrollBar().setRange(0, (this.repo.size() + this.perRow - 1) / this.perRow - this.rows,
+                Math.max(1, this.rows / 6));
     }
 
     @Override

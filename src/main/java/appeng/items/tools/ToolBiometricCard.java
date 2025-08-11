@@ -18,15 +18,11 @@
 
 package appeng.items.tools;
 
+import java.util.EnumSet;
+import java.util.List;
 
-import appeng.api.config.SecurityPermissions;
-import appeng.api.features.IPlayerRegistry;
-import appeng.api.implementations.items.IBiometricCard;
-import appeng.api.networking.security.ISecurityRegistry;
-import appeng.core.localization.GuiText;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
 import com.mojang.authlib.GameProfile;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,9 +36,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.EnumSet;
-import java.util.List;
-
+import appeng.api.config.SecurityPermissions;
+import appeng.api.features.IPlayerRegistry;
+import appeng.api.implementations.items.IBiometricCard;
+import appeng.api.networking.security.ISecurityRegistry;
+import appeng.core.localization.GuiText;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
     public ToolBiometricCard() {
@@ -61,7 +61,8 @@ public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack is, final EntityPlayer player, final EntityLivingBase target, final EnumHand hand) {
+    public boolean itemInteractionForEntity(ItemStack is, final EntityPlayer player, final EntityLivingBase target,
+            final EnumHand hand) {
         if (target instanceof EntityPlayer && !player.isSneaking()) {
             if (player.capabilities.isCreativeMode) {
                 is = player.getHeldItem(hand);
@@ -76,7 +77,8 @@ public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
     @Override
     public String getItemStackDisplayName(final ItemStack is) {
         final GameProfile username = this.getProfile(is);
-        return username != null ? super.getItemStackDisplayName(is) + " - " + username.getName() : super.getItemStackDisplayName(is);
+        return username != null ? super.getItemStackDisplayName(is) + " - " + username.getName()
+                : super.getItemStackDisplayName(is);
     }
 
     private void encode(final ItemStack is, final EntityPlayer p) {
@@ -152,7 +154,8 @@ public class ToolBiometricCard extends AEBaseItem implements IBiometricCard {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         final EnumSet<SecurityPermissions> perms = this.getPermissions(stack);
         if (perms.isEmpty()) {
             lines.add(GuiText.NoPermissions.getLocal());

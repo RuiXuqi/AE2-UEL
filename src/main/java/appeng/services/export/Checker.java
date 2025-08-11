@@ -18,9 +18,7 @@
 
 package appeng.services.export;
 
-
 import javax.annotation.Nonnull;
-
 
 /**
  * Checks against a specific type with its own check type for clear outcome.

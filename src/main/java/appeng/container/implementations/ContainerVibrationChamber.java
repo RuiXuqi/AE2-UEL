@@ -18,6 +18,7 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.guisync.GuiSync;
@@ -25,8 +26,6 @@ import appeng.container.interfaces.IProgressProvider;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.misc.TileVibrationChamber;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerVibrationChamber extends AEBaseContainer implements IProgressProvider {
     private final TileVibrationChamber vibrationChamber;
@@ -39,8 +38,9 @@ public class ContainerVibrationChamber extends AEBaseContainer implements IProgr
         super(ip, vibrationChamber, null);
         this.vibrationChamber = vibrationChamber;
 
-        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.FUEL, vibrationChamber.getInternalInventory(), 0, 80, 37, this
-                .getInventoryPlayer()));
+        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.FUEL,
+                vibrationChamber.getInternalInventory(), 0, 80, 37, this
+                        .getInventoryPlayer()));
 
         this.bindPlayerInventory(ip, 0, 166 - /* height of player inventory */82);
     }
@@ -49,7 +49,9 @@ public class ContainerVibrationChamber extends AEBaseContainer implements IProgr
     public void detectAndSendChanges() {
         if (Platform.isServer()) {
             this.remainingBurnTime = this.vibrationChamber
-                    .getMaxBurnTime() <= 0 ? 0 : (int) (100.0 * this.vibrationChamber.getBurnTime() / this.vibrationChamber.getMaxBurnTime());
+                    .getMaxBurnTime() <= 0 ? 0
+                            : (int) (100.0 * this.vibrationChamber.getBurnTime()
+                                    / this.vibrationChamber.getMaxBurnTime());
             this.burnSpeed = this.remainingBurnTime <= 0 ? 0 : this.vibrationChamber.getBurnSpeed();
 
         }

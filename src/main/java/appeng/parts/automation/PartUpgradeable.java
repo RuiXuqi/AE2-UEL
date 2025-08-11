@@ -18,6 +18,10 @@
 
 package appeng.parts.automation;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.Upgrades;
@@ -27,11 +31,6 @@ import appeng.util.ConfigManager;
 import appeng.util.IConfigManagerHost;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.List;
-
 
 public abstract class PartUpgradeable extends PartBasicState implements IAEAppEngInventory, IConfigManagerHost {
     private final IConfigManager manager;
@@ -53,7 +52,8 @@ public abstract class PartUpgradeable extends PartBasicState implements IAEAppEn
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.upgrades) {
             this.upgradesChanged();
         }

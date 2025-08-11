@@ -18,23 +18,23 @@
 
 package appeng.parts.p2p;
 
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import appeng.api.config.PowerUnits;
 import appeng.api.parts.IPartModel;
 import appeng.capabilities.Capabilities;
 import appeng.items.parts.PartModels;
 import appeng.me.GridAccessException;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.IEnergyStorage;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
-
 
 public class PartP2PFEPower extends PartP2PTunnel<PartP2PFEPower> {
     private static final P2PModels MODELS = new P2PModels("part/p2p/p2p_tunnel_fe");

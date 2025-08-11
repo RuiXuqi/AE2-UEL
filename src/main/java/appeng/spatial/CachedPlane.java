@@ -18,15 +18,10 @@
 
 package appeng.spatial;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
 
-import appeng.api.AEApi;
-import appeng.api.movable.IMovableHandler;
-import appeng.api.movable.IMovableRegistry;
-import appeng.api.util.AEPartLocation;
-import appeng.api.util.WorldCoord;
-import appeng.core.AELog;
-import appeng.core.worlddata.WorldData;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -37,11 +32,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
+import appeng.api.AEApi;
+import appeng.api.movable.IMovableHandler;
+import appeng.api.movable.IMovableRegistry;
+import appeng.api.util.AEPartLocation;
+import appeng.api.util.WorldCoord;
+import appeng.core.AELog;
+import appeng.core.worlddata.WorldData;
+import appeng.util.Platform;
 
 public class CachedPlane {
     private final int x_size;
@@ -62,7 +60,8 @@ public class CachedPlane {
     private int verticalBits;
     private final IBlockState matrixBlockState;
 
-    public CachedPlane(final World w, final int minX, final int minY, final int minZ, final int maxX, final int maxY, final int maxZ) {
+    public CachedPlane(final World w, final int minX, final int minY, final int minZ, final int maxX, final int maxY,
+            final int maxZ) {
 
         Block matrixFrameBlock = AEApi.instance().definitions().blocks().matrixFrame().maybeBlock().orElse(null);
         if (matrixFrameBlock != null) {
@@ -123,8 +122,9 @@ public class CachedPlane {
                     final TileEntity te = tx.getValue();
 
                     final BlockPos tePOS = te.getPos();
-                    if (tePOS.getX() >= minX && tePOS.getX() <= maxX && tePOS.getY() >= minY && tePOS.getY() <= maxY && tePOS.getZ() >= minZ && tePOS
-                            .getZ() <= maxZ) {
+                    if (tePOS.getX() >= minX && tePOS.getX() <= maxX && tePOS.getY() >= minY && tePOS.getY() <= maxY
+                            && tePOS.getZ() >= minZ && tePOS
+                                    .getZ() <= maxZ) {
                         if (mr.askToMove(te)) {
                             this.tiles.add(te);
                             deadTiles.add(cp);
@@ -133,7 +133,8 @@ public class CachedPlane {
                             this.myColumns[tePOS.getX() - minX][tePOS.getZ() - minZ].fillData(tePOS.getY(), details);
 
                             // don't skip air, just let the code replace it...
-                            if (details.state != null && details.state.getBlock() == Platform.AIR_BLOCK && details.state.getMaterial().isReplaceable()) {
+                            if (details.state != null && details.state.getBlock() == Platform.AIR_BLOCK
+                                    && details.state.getMaterial().isReplaceable()) {
                                 w.setBlockToAir(tePOS);
                             } else {
                                 this.myColumns[tePOS.getX() - minX][tePOS.getZ() - minZ].setSkip(tePOS.getY());
@@ -151,8 +152,9 @@ public class CachedPlane {
                 if (list != null) {
                     for (final NextTickListEntry entry : list) {
                         final BlockPos tePOS = entry.position;
-                        if (tePOS.getX() >= minX && tePOS.getX() <= maxX && tePOS.getY() >= minY && tePOS.getY() <= maxY && tePOS.getZ() >= minZ && tePOS
-                                .getZ() <= maxZ) {
+                        if (tePOS.getX() >= minX && tePOS.getX() <= maxX && tePOS.getY() >= minY && tePOS.getY() <= maxY
+                                && tePOS.getZ() >= minZ && tePOS
+                                        .getZ() <= maxZ) {
                             final NextTickListEntry newEntry = new NextTickListEntry(tePOS, entry.getBlock());
                             newEntry.scheduledTime = entry.scheduledTime - k;
                             this.ticks.add(newEntry);
@@ -218,22 +220,26 @@ public class CachedPlane {
 
             for (final TileEntity te : this.tiles) {
                 final BlockPos tePOS = te.getPos();
-                dst.addTile(tePOS.getX() - this.x_offset, tePOS.getY() - this.y_offset, tePOS.getZ() - this.z_offset, te, this, mr);
+                dst.addTile(tePOS.getX() - this.x_offset, tePOS.getY() - this.y_offset, tePOS.getZ() - this.z_offset,
+                        te, this, mr);
             }
 
             for (final TileEntity te : dst.tiles) {
                 final BlockPos tePOS = te.getPos();
-                this.addTile(tePOS.getX() - dst.x_offset, tePOS.getY() - dst.y_offset, tePOS.getZ() - dst.z_offset, te, dst, mr);
+                this.addTile(tePOS.getX() - dst.x_offset, tePOS.getY() - dst.y_offset, tePOS.getZ() - dst.z_offset, te,
+                        dst, mr);
             }
 
             for (final NextTickListEntry entry : this.ticks) {
                 final BlockPos tePOS = entry.position;
-                dst.addTick(tePOS.getX() - this.x_offset, tePOS.getY() - this.y_offset, tePOS.getZ() - this.z_offset, entry);
+                dst.addTick(tePOS.getX() - this.x_offset, tePOS.getY() - this.y_offset, tePOS.getZ() - this.z_offset,
+                        entry);
             }
 
             for (final NextTickListEntry entry : dst.ticks) {
                 final BlockPos tePOS = entry.position;
-                this.addTick(tePOS.getX() - dst.x_offset, tePOS.getY() - dst.y_offset, tePOS.getZ() - dst.z_offset, entry);
+                this.addTick(tePOS.getX() - dst.x_offset, tePOS.getY() - dst.y_offset, tePOS.getZ() - dst.z_offset,
+                        entry);
             }
 
             startTime = System.nanoTime();
@@ -254,10 +260,12 @@ public class CachedPlane {
     }
 
     private void addTick(final int x, final int y, final int z, final NextTickListEntry entry) {
-        this.world.scheduleUpdate(new BlockPos(x + this.x_offset, y + this.y_offset, z + this.z_offset), entry.getBlock(), (int) entry.scheduledTime);
+        this.world.scheduleUpdate(new BlockPos(x + this.x_offset, y + this.y_offset, z + this.z_offset),
+                entry.getBlock(), (int) entry.scheduledTime);
     }
 
-    private void addTile(final int x, final int y, final int z, final TileEntity te, final CachedPlane alternateDestination, final IMovableRegistry mr) {
+    private void addTile(final int x, final int y, final int z, final TileEntity te,
+            final CachedPlane alternateDestination, final IMovableRegistry mr) {
         try {
             final Column c = this.myColumns[x][z];
 
@@ -265,7 +273,8 @@ public class CachedPlane {
                 final IMovableHandler handler = this.getHandler(te);
 
                 try {
-                    handler.moveTile(te, this.world, new BlockPos(x + this.x_offset, y + this.y_offset, z + this.z_offset));
+                    handler.moveTile(te, this.world,
+                            new BlockPos(x + this.x_offset, y + this.y_offset, z + this.z_offset));
                 } catch (final Throwable e) {
                     AELog.debug(e);
 
@@ -279,7 +288,8 @@ public class CachedPlane {
 
                     if (c.c.isLoaded()) {
                         this.world.addTileEntity(te);
-                        this.world.notifyBlockUpdate(pos, this.world.getBlockState(pos), this.world.getBlockState(pos), z);
+                        this.world.notifyBlockUpdate(pos, this.world.getBlockState(pos), this.world.getBlockState(pos),
+                                z);
                     }
                 }
 
@@ -350,7 +360,8 @@ public class CachedPlane {
                 final int by = (ay + chunkY);
                 ExtendedBlockStorage extendedblockstorage = storage[by];
                 if (extendedblockstorage == null) {
-                    extendedblockstorage = storage[by] = new ExtendedBlockStorage(by << 4, this.c.getWorld().provider.hasSkyLight());
+                    extendedblockstorage = storage[by] = new ExtendedBlockStorage(by << 4,
+                            this.c.getWorld().provider.hasSkyLight());
                 }
             }
         }

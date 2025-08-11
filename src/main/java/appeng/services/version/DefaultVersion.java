@@ -18,14 +18,11 @@
 
 package appeng.services.version;
 
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-
 /**
- * AE prints version like rv2-beta-8
- * GitHub prints version like rv2.beta.8
+ * AE prints version like rv2-beta-8 GitHub prints version like rv2.beta.8
  */
 public final class DefaultVersion extends BaseVersion {
     /**
@@ -33,7 +30,8 @@ public final class DefaultVersion extends BaseVersion {
      * @param channel  either alpha, beta or release
      * @param build    natural number
      */
-    public DefaultVersion(@Nonnegative final int revision, @Nonnull final Channel channel, @Nonnegative final int build) {
+    public DefaultVersion(@Nonnegative final int revision, @Nonnull final Channel channel,
+            @Nonnegative final int build) {
         super(revision, channel, build);
     }
 

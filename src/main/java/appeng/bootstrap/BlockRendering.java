@@ -18,12 +18,13 @@
 
 package appeng.bootstrap;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
-import appeng.block.AEBaseTileBlock;
-import appeng.bootstrap.components.BlockColorComponent;
-import appeng.bootstrap.components.StateMapperComponent;
-import appeng.bootstrap.components.TesrComponent;
-import appeng.client.render.model.AutoRotatingModel;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -41,13 +42,11 @@ import net.minecraftforge.client.resource.VanillaResourceType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Predicate;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.bootstrap.components.BlockColorComponent;
+import appeng.bootstrap.components.StateMapperComponent;
+import appeng.bootstrap.components.TesrComponent;
+import appeng.client.render.model.AutoRotatingModel;
 
 class BlockRendering implements IBlockRendering, ISelectiveResourceReloadListener {
 
@@ -110,7 +109,8 @@ class BlockRendering implements IBlockRendering, ISelectiveResourceReloadListene
     void apply(FeatureFactory factory, Block block, Class<?> tileEntityClass) {
         if (this.tesr != null) {
             if (tileEntityClass == null) {
-                throw new IllegalStateException("Tried to register a TESR for " + block + " even though no tile entity has been specified.");
+                throw new IllegalStateException(
+                        "Tried to register a TESR for " + block + " even though no tile entity has been specified.");
             }
             factory.addBootstrapComponent(new TesrComponent(tileEntityClass, this.tesr));
         }

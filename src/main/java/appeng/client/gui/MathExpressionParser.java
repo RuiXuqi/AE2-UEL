@@ -14,7 +14,8 @@ public class MathExpressionParser {
     public static double parse(String expression) {
         double result;
 
-        if (expression == null) return Double.NaN;
+        if (expression == null)
+            return Double.NaN;
 
         expression = expression.replace(" ", "");
 
@@ -31,8 +32,7 @@ public class MathExpressionParser {
     }
 
     /**
-     * replace '-' with '~'
-     * e.g.-2+-1*(-3E-2)-(-1) -> ~2+~1*(~3E~2)-(~1)
+     * replace '-' with '~' e.g.-2+-1*(-3E-2)-(-1) -> ~2+~1*(~3E~2)-(~1)
      */
     private static String transform(String expression) {
         char[] arr = expression.toCharArray();

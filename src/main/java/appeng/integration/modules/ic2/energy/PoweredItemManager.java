@@ -18,14 +18,14 @@
 
 package appeng.integration.modules.ic2.energy;
 
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+
+import ic2.api.item.IBackupElectricItemManager;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerUnits;
 import appeng.api.implementations.items.IAEItemPowerStorage;
-import ic2.api.item.IBackupElectricItemManager;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-
 
 public class PoweredItemManager implements IBackupElectricItemManager {
 
@@ -41,14 +41,16 @@ public class PoweredItemManager implements IBackupElectricItemManager {
             toAdd = limit;
         }
 
-        final double overflow = poweredItem.injectAEPower(stack, toAdd, simulate ? Actionable.SIMULATE : Actionable.MODULATE);
+        final double overflow = poweredItem.injectAEPower(stack, toAdd,
+                simulate ? Actionable.SIMULATE : Actionable.MODULATE);
         final double addedAmount = toAdd - (int) overflow;
 
         return PowerUnits.AE.convertTo(PowerUnits.EU, addedAmount);
     }
 
     @Override
-    public double discharge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
+    public double discharge(ItemStack stack, double amount, int tier, boolean ignoreTransferLimit, boolean externally,
+            boolean simulate) {
         return 0;
     }
 

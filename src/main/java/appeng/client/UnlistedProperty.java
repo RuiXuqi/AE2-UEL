@@ -18,9 +18,7 @@
 
 package appeng.client;
 
-
 import net.minecraftforge.common.property.IUnlistedProperty;
-
 
 /**
  * A generic implementation for {@link IUnlistedProperty}.

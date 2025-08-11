@@ -18,16 +18,17 @@
 
 package appeng.util.item;
 
-import appeng.api.config.FuzzyMode;
-import appeng.api.storage.IStorageChannel;
-import appeng.api.storage.channels.IItemStorageChannel;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.core.Api;
-import appeng.integration.modules.gregtech.ToolClass;
-import appeng.util.Platform;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.primitives.Ints;
-import ic2.api.item.ICustomDamageItem;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,12 +37,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import ic2.api.item.ICustomDamageItem;
 
+import appeng.api.config.FuzzyMode;
+import appeng.api.storage.IStorageChannel;
+import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.core.Api;
+import appeng.integration.modules.gregtech.ToolClass;
+import appeng.util.Platform;
 
 public class AEItemStack extends AEStack<IAEItemStack> implements IAEItemStack {
     private static final String NBT_STACKSIZE = "Cnt";
@@ -132,7 +136,9 @@ public class AEItemStack extends AEStack<IAEItemStack> implements IAEItemStack {
 
     @Override
     public void writeToPacket(final ByteBuf i) {
-        final byte mask = (byte) ((this.getType(this.getStackSize()) << 2) | (this.getType(this.getCountRequestable()) << 4) | ((byte) (this.isCraftable() ? 1 : 0) << 6) | (this.hasTagCompound() ? 1 : 0) << 7);
+        final byte mask = (byte) ((this.getType(this.getStackSize()) << 2)
+                | (this.getType(this.getCountRequestable()) << 4) | ((byte) (this.isCraftable() ? 1 : 0) << 6)
+                | (this.hasTagCompound() ? 1 : 0) << 7);
 
         i.writeByte(mask);
         ByteBufUtils.writeTag(i, this.getDefinition().serializeNBT());
@@ -181,7 +187,8 @@ public class AEItemStack extends AEStack<IAEItemStack> implements IAEItemStack {
 
     @Override
     public ItemStack createItemStack() {
-        return ItemHandlerHelper.copyStackWithSize(this.getDefinition(), (int) Math.min(Integer.MAX_VALUE, this.getStackSize()));
+        return ItemHandlerHelper.copyStackWithSize(this.getDefinition(),
+                (int) Math.min(Integer.MAX_VALUE, this.getStackSize()));
     }
 
     @Override
@@ -322,7 +329,8 @@ public class AEItemStack extends AEStack<IAEItemStack> implements IAEItemStack {
                 }
             } else if (mode == FuzzyMode.PERCENT_99) {
                 if (Platform.isIC2DamageableItem(a.getItem())) {
-                    return ((ICustomDamageItem) a.getItem()).getCustomDamage(a) > 1 == ((ICustomDamageItem) b.getItem()).getCustomDamage(b) > 1;
+                    return ((ICustomDamageItem) a.getItem()).getCustomDamage(a) > 1 == ((ICustomDamageItem) b.getItem())
+                            .getCustomDamage(b) > 1;
                 } else if (a.getItem().isDamageable()) {
                     return a.getItemDamage() > 1 == b.getItemDamage() > 1;
                 } else if (Platform.isGTDamageableItem(a.getItem())) {
@@ -332,8 +340,10 @@ public class AEItemStack extends AEStack<IAEItemStack> implements IAEItemStack {
                 float percentDamageOfA = 0;
                 float percentDamageOfB = 0;
                 if (Platform.isIC2DamageableItem(a.getItem())) {
-                    percentDamageOfA = (float) ((ICustomDamageItem) a.getItem()).getCustomDamage(a) / ((ICustomDamageItem) a.getItem()).getMaxCustomDamage(a);
-                    percentDamageOfB = (float) ((ICustomDamageItem) b.getItem()).getCustomDamage(b) / ((ICustomDamageItem) b.getItem()).getMaxCustomDamage(b);
+                    percentDamageOfA = (float) ((ICustomDamageItem) a.getItem()).getCustomDamage(a)
+                            / ((ICustomDamageItem) a.getItem()).getMaxCustomDamage(a);
+                    percentDamageOfB = (float) ((ICustomDamageItem) b.getItem()).getCustomDamage(b)
+                            / ((ICustomDamageItem) b.getItem()).getMaxCustomDamage(b);
                 } else if (a.getItem().isDamageable()) {
                     percentDamageOfA = (float) a.getItemDamage() / a.getMaxDamage();
                     percentDamageOfB = (float) b.getItemDamage() / b.getMaxDamage();

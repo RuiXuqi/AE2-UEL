@@ -18,17 +18,15 @@
 
 package appeng.fluids.client.gui;
 
-
-import appeng.api.implementations.guiobjects.IPortableCell;
-import appeng.fluids.container.ContainerWirelessFluidTerminal;
-import appeng.helpers.WirelessTerminalGuiObject;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.entity.player.InventoryPlayer;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.Gui;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import appeng.fluids.container.ContainerWirelessFluidTerminal;
+import appeng.helpers.WirelessTerminalGuiObject;
 
 public class GuiWirelessFluidTerminal extends GuiMEPortableFluidCell {
 

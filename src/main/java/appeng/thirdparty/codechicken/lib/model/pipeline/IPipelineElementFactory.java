@@ -18,7 +18,6 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline;
 
-
 /**
  * @author covers1624
  */

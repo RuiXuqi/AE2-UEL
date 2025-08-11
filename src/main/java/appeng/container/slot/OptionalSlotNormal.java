@@ -18,16 +18,15 @@
 
 package appeng.container.slot;
 
-
 import net.minecraftforge.items.IItemHandler;
-
 
 public class OptionalSlotNormal extends AppEngSlot implements IOptionalSlot {
 
     private final int groupNum;
     private final IOptionalSlotHost host;
 
-    public OptionalSlotNormal(final IItemHandler inv, final IOptionalSlotHost containerBus, final int slot, final int xPos, final int yPos, final int groupNum) {
+    public OptionalSlotNormal(final IItemHandler inv, final IOptionalSlotHost containerBus, final int slot,
+            final int xPos, final int yPos, final int groupNum) {
         super(inv, slot, xPos, yPos);
         this.groupNum = groupNum;
         this.host = containerBus;

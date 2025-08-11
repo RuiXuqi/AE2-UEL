@@ -18,7 +18,6 @@
 
 package appeng.entity;
 
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderEntityItem;
@@ -27,7 +26,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 @SideOnly(Side.CLIENT)
 public class RenderFloatingItem extends RenderEntityItem {
@@ -38,7 +36,8 @@ public class RenderFloatingItem extends RenderEntityItem {
     }
 
     @Override
-    public void doRender(final EntityItem entityItem, final double x, final double y, final double z, final float yaw, final float partialTick) {
+    public void doRender(final EntityItem entityItem, final double x, final double y, final double z, final float yaw,
+            final float partialTick) {
         if (entityItem instanceof EntityFloatingItem) {
             final EntityFloatingItem efi = (EntityFloatingItem) entityItem;
             if (efi.getProgress() > 0.0) {

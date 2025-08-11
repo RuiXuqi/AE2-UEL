@@ -18,11 +18,13 @@
 
 package appeng.client.render.spatial;
 
+import java.util.List;
+import java.util.Map;
 
-import appeng.block.spatial.BlockSpatialPylon;
-import appeng.client.render.cablebus.CubeBuilder;
-import appeng.tile.spatial.TileSpatialPylon;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -33,10 +35,9 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
-
+import appeng.block.spatial.BlockSpatialPylon;
+import appeng.client.render.cablebus.CubeBuilder;
+import appeng.tile.spatial.TileSpatialPylon;
 
 /**
  * The baked model that will be used for rendering the spatial pylon.

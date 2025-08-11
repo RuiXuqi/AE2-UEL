@@ -18,6 +18,16 @@
 
 package appeng.parts.p2p;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.FailedConnectionException;
@@ -38,17 +48,6 @@ import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.Connections;
 import appeng.me.cache.helpers.TunnelConnection;
 import appeng.me.helpers.AENetworkProxy;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-
 
 public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements IGridTickable {
 
@@ -100,7 +99,7 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
     @Override
     public void removeFromWorld() {
         super.removeFromWorld();
-        this.outerProxy.invalidate();
+        this.outerProxy.remove();
     }
 
     @Override
@@ -121,7 +120,8 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
     }
 
     @Override
-    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held, final AEPartLocation side) {
+    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held,
+            final AEPartLocation side) {
         super.onPlacement(player, hand, held, side);
         this.outerProxy.setOwner(player);
     }
@@ -138,14 +138,14 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
             if (!this.getProxy().getPath().isNetworkBooting()) {
                 if (!this.getProxy().getEnergy().isNetworkPowered()) {
                     this.connection.markDestroy();
-                    TickHandler.INSTANCE.addCallable(this.getTile().getWorld(), this.connection);
+                    TickHandler.instance().addCallable(this.getTile().getWorld(), this.connection);
                 } else {
                     if (this.getProxy().isActive()) {
                         this.connection.markCreate();
-                        TickHandler.INSTANCE.addCallable(this.getTile().getWorld(), this.connection);
+                        TickHandler.instance().addCallable(this.getTile().getWorld(), this.connection);
                     } else {
                         this.connection.markDestroy();
-                        TickHandler.INSTANCE.addCallable(this.getTile().getWorld(), this.connection);
+                        TickHandler.instance().addCallable(this.getTile().getWorld(), this.connection);
                     }
                 }
 
@@ -205,8 +205,10 @@ public class PartP2PTunnelME extends PartP2PTunnel<PartP2PTunnelME> implements I
 
                         AELog.debug(e);
 
-                        AELog.warn("Failed to establish a ME P2P Tunnel between the tunnels at [x=%d, y=%d, z=%d] and [x=%d, y=%d, z=%d]",
-                                start.getPos().getX(), start.getPos().getY(), start.getPos().getZ(), end.getPos().getX(), end.getPos().getY(),
+                        AELog.warn(
+                                "Failed to establish a ME P2P Tunnel between the tunnels at [x=%d, y=%d, z=%d] and [x=%d, y=%d, z=%d]",
+                                start.getPos().getX(), start.getPos().getY(), start.getPos().getZ(),
+                                end.getPos().getX(), end.getPos().getY(),
                                 end.getPos().getZ());
                         // :(
                     }

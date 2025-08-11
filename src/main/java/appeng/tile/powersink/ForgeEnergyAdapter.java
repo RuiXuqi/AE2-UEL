@@ -1,10 +1,9 @@
 package appeng.tile.powersink;
 
+import net.minecraftforge.energy.IEnergyStorage;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerUnits;
-import net.minecraftforge.energy.IEnergyStorage;
-
 
 /**
  * Adapts an {@link IExternalPowerSink} to Forges {@link IEnergyStorage}.
@@ -20,7 +19,8 @@ class ForgeEnergyAdapter implements IEnergyStorage {
     @Override
     public final int receiveEnergy(int maxReceive, boolean simulate) {
         final double offered = maxReceive;
-        final double overflow = this.sink.injectExternalPower(PowerUnits.RF, offered, simulate ? Actionable.SIMULATE : Actionable.MODULATE);
+        final double overflow = this.sink.injectExternalPower(PowerUnits.RF, offered,
+                simulate ? Actionable.SIMULATE : Actionable.MODULATE);
 
         return (int) (maxReceive - overflow);
     }

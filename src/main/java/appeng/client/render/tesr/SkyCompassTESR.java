@@ -18,11 +18,6 @@
 
 package appeng.client.render.tesr;
 
-
-import appeng.block.AEBaseTileBlock;
-import appeng.block.misc.BlockSkyCompass;
-import appeng.client.render.model.SkyCompassBakedModel;
-import appeng.tile.misc.TileSkyCompass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -38,6 +33,10 @@ import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.block.AEBaseTileBlock;
+import appeng.block.misc.BlockSkyCompass;
+import appeng.client.render.model.SkyCompassBakedModel;
+import appeng.tile.misc.TileSkyCompass;
 
 @SideOnly(Side.CLIENT)
 public class SkyCompassTESR extends FastTESR<TileSkyCompass> {
@@ -45,7 +44,8 @@ public class SkyCompassTESR extends FastTESR<TileSkyCompass> {
     private static BlockRendererDispatcher blockRenderer;
 
     @Override
-    public void renderTileEntityFast(TileSkyCompass te, double x, double y, double z, float partialTicks, int destroyStage, float var10, BufferBuilder buffer) {
+    public void renderTileEntityFast(TileSkyCompass te, double x, double y, double z, float partialTicks,
+            int destroyStage, float var10, BufferBuilder buffer) {
 
         if (!te.hasWorld()) {
             return;

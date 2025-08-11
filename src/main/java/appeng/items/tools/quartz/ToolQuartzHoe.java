@@ -18,12 +18,11 @@
 
 package appeng.items.tools.quartz;
 
-
-import appeng.core.features.AEFeature;
-import appeng.util.Platform;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 
+import appeng.core.features.AEFeature;
+import appeng.util.Platform;
 
 public class ToolQuartzHoe extends ItemHoe {
     private final AEFeature type;

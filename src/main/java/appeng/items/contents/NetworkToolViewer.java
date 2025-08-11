@@ -18,6 +18,8 @@
 
 package appeng.items.contents;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.implementations.guiobjects.INetworkTool;
 import appeng.api.implementations.items.IUpgradeModule;
@@ -27,9 +29,6 @@ import appeng.util.Platform;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.filter.IAEItemFilter;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class NetworkToolViewer implements INetworkTool, IAEAppEngInventory {
 
@@ -54,7 +53,8 @@ public class NetworkToolViewer implements INetworkTool, IAEAppEngInventory {
     }
 
     @Override
-    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
+    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack,
+            ItemStack newStack) {
     }
 
     @Override
@@ -75,7 +75,8 @@ public class NetworkToolViewer implements INetworkTool, IAEAppEngInventory {
 
         @Override
         public boolean allowInsert(IItemHandler inv, int slot, ItemStack stack) {
-            return stack.getItem() instanceof IUpgradeModule && ((IUpgradeModule) stack.getItem()).getType(stack) != null;
+            return stack.getItem() instanceof IUpgradeModule
+                    && ((IUpgradeModule) stack.getItem()).getType(stack) != null;
         }
     }
 

@@ -18,20 +18,19 @@
 
 package appeng.core.features.registries;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.exceptions.AppEngException;
 import appeng.api.movable.IMovableHandler;
 import appeng.api.movable.IMovableRegistry;
 import appeng.api.movable.IMovableTile;
 import appeng.spatial.DefaultSpatialHandler;
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
 
 public class MovableTileRegistry implements IMovableRegistry {
 
@@ -52,7 +51,8 @@ public class MovableTileRegistry implements IMovableRegistry {
     @Override
     public void whiteListTileEntity(final Class<? extends TileEntity> c) {
         if (c.getName().equals(TileEntity.class.getName())) {
-            throw new IllegalArgumentException(new AppEngException("Someone tried to make all tiles movable with " + c + ", this is a clear violation of the purpose of the white list."));
+            throw new IllegalArgumentException(new AppEngException("Someone tried to make all tiles movable with " + c
+                    + ", this is a clear violation of the purpose of the white list."));
         }
 
         this.test.add(c);

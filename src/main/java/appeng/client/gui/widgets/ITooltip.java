@@ -18,7 +18,6 @@
 
 package appeng.client.gui.widgets;
 
-
 /**
  * AEBaseGui controlled Tooltip Interface.
  */

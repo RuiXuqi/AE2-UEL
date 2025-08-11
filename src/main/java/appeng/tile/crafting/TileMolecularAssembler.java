@@ -18,6 +18,26 @@
 
 package appeng.tile.crafting;
 
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
+import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
+
+import java.io.IOException;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -63,28 +83,9 @@ import appeng.util.inv.WrapperChainedItemHandler;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.IAEItemFilter;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.items.IItemHandler;
 
-import java.io.IOException;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
-
-
-public class TileMolecularAssembler extends AENetworkInvTile implements IUpgradeableHost, IConfigManagerHost, IGridTickable, ICraftingMachine, IPowerChannelState {
+public class TileMolecularAssembler extends AENetworkInvTile
+        implements IUpgradeableHost, IConfigManagerHost, IGridTickable, ICraftingMachine, IPowerChannelState {
     private final InventoryCrafting craftingInv;
     private final AppEngInternalInventory gridInv = new AppEngInternalInventory(this, 9 + 1, 1);
     private final AppEngInternalInventory patternInv = new AppEngInternalInventory(this, 1, 1);
@@ -124,7 +125,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
             Object capability = null;
             if (te != null) {
                 // Prioritize a handler to directly link to another ME network
-                IStorageMonitorableAccessor accessor = te.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR, f.getOpposite());
+                IStorageMonitorableAccessor accessor = te.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR,
+                        f.getOpposite());
 
                 if (accessor != null) {
                     IStorageMonitorable inventory = accessor.getInventory(this.mySrc);
@@ -181,7 +183,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
             Object capability = null;
             if (te != null) {
                 // Prioritize a handler to directly link to another ME network
-                IStorageMonitorableAccessor accessor = te.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR, updateFromFacing.getOpposite());
+                IStorageMonitorableAccessor accessor = te.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR,
+                        updateFromFacing.getOpposite());
 
                 if (accessor != null) {
                     IStorageMonitorable inventory = accessor.getInventory(this.mySrc);
@@ -204,7 +207,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
     }
 
     @Override
-    public boolean pushPattern(final ICraftingPatternDetails patternDetails, final InventoryCrafting table, final EnumFacing where) {
+    public boolean pushPattern(final ICraftingPatternDetails patternDetails, final InventoryCrafting table,
+            final EnumFacing where) {
         if (this.myPattern.isEmpty()) {
             boolean isEmpty = ItemHandlerUtil.isEmpty(this.gridInv) && ItemHandlerUtil.isEmpty(this.patternInv);
 
@@ -401,7 +405,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         if (inv == this.gridInv || inv == this.patternInv) {
             this.recalculatePlan();
         }
@@ -505,9 +510,11 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
                 this.ejectHeldItems();
 
                 try {
-                    final TargetPoint where = new TargetPoint(this.world.provider.getDimension(), this.pos.getX(), this.pos.getY(), this.pos.getZ(), 32);
+                    final TargetPoint where = new TargetPoint(this.world.provider.getDimension(), this.pos.getX(),
+                            this.pos.getY(), this.pos.getZ(), 32);
                     final IAEItemStack item = AEItemStack.fromItemStack(output);
-                    NetworkHandler.instance().sendToAllAround(new PacketAssemblerAnimation(this.pos, (byte) speed, item), where);
+                    NetworkHandler.instance()
+                            .sendToAllAround(new PacketAssemblerAnimation(this.pos, (byte) speed, item), where);
                 } catch (final IOException e) {
                     // ;P
                 }
@@ -539,7 +546,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
 
     private int userPower(final int ticksPassed, final int bonusValue, final double acceleratorTax) {
         try {
-            return (int) (this.getProxy().getEnergy().extractAEPower(ticksPassed * bonusValue * acceleratorTax, Actionable.MODULATE, PowerMultiplier.CONFIG) / acceleratorTax);
+            return (int) (this.getProxy().getEnergy().extractAEPower(ticksPassed * bonusValue * acceleratorTax,
+                    Actionable.MODULATE, PowerMultiplier.CONFIG) / acceleratorTax);
         } catch (final GridAccessException e) {
             return 0;
         }
@@ -575,7 +583,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
             // Prioritize a handler to directly link to another ME network
             IStorageMonitorable inventory = (IStorageMonitorable) capability;
             IAEItemStack toInsert = AEItemStack.fromItemStack(output);
-            IMEMonitor<IAEItemStack> inv = inventory.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+            IMEMonitor<IAEItemStack> inv = inventory
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
             IAEItemStack remainder = inv.injectItems(toInsert, Actionable.SIMULATE, this.mySrc);
             if (remainder == null) {
                 inv.injectItems(toInsert, Actionable.MODULATE, this.mySrc);
@@ -584,7 +593,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
                 if (remainder.getStackSize() == toInsert.getStackSize()) {
                     return output;
                 }
-                inv.injectItems(toInsert.setStackSize(toInsert.getStackSize() - remainder.getStackSize()), Actionable.MODULATE, this.mySrc);
+                inv.injectItems(toInsert.setStackSize(toInsert.getStackSize() - remainder.getStackSize()),
+                        Actionable.MODULATE, this.mySrc);
                 this.saveChanges();
                 return remainder.createItemStack();
             }
@@ -612,7 +622,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
         boolean newState = false;
 
         try {
-            newState = this.getProxy().isActive() && this.getProxy().getEnergy().extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.CONFIG) > 0.0001;
+            newState = this.getProxy().isActive() && this.getProxy().getEnergy().extractAEPower(1, Actionable.SIMULATE,
+                    PowerMultiplier.CONFIG) > 0.0001;
         } catch (final GridAccessException ignored) {
 
         }
@@ -635,7 +646,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
 
     private class CraftingGridFilter implements IAEItemFilter {
         private boolean hasPattern() {
-            return TileMolecularAssembler.this.myPlan != null && !ItemHandlerUtil.isEmpty(TileMolecularAssembler.this.patternInv);
+            return TileMolecularAssembler.this.myPlan != null
+                    && !ItemHandlerUtil.isEmpty(TileMolecularAssembler.this.patternInv);
         }
 
         @Override
@@ -650,7 +662,8 @@ public class TileMolecularAssembler extends AENetworkInvTile implements IUpgrade
             }
 
             if (this.hasPattern()) {
-                return TileMolecularAssembler.this.myPlan.isValidItemForSlot(slot, stack, TileMolecularAssembler.this.getWorld());
+                return TileMolecularAssembler.this.myPlan.isValidItemForSlot(slot, stack,
+                        TileMolecularAssembler.this.getWorld());
             }
             return false;
         }

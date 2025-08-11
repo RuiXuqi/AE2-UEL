@@ -18,12 +18,8 @@
 
 package appeng.block.grindstone;
 
+import javax.annotation.Nullable;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.grindstone.TileGrinder;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,8 +28,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.grindstone.TileGrinder;
+import appeng.util.Platform;
 
 public class BlockGrinder extends AEBaseTileBlock {
 
@@ -44,7 +43,9 @@ public class BlockGrinder extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         final TileGrinder tg = this.getTileEntity(w, pos);
         if (tg != null && !p.isSneaking()) {
             Platform.openGUI(p, tg, AEPartLocation.fromFacing(side), GuiBridge.GUI_GRINDER);

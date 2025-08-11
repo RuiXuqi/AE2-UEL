@@ -18,6 +18,12 @@
 
 package appeng.parts.automation;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -45,23 +51,19 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.IInventoryDestination;
 import appeng.util.item.AEItemStack;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-
 
 public class PartImportBus extends PartSharedItemBus implements IInventoryDestination {
 
     public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID, "part/import_bus_base");
     @PartModels
-    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/import_bus_off"));
+    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/import_bus_off"));
     @PartModels
-    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/import_bus_on"));
+    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/import_bus_on"));
     @PartModels
-    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/import_bus_has_channel"));
+    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/import_bus_has_channel"));
 
     private final IActionSource source;
     private int itemsToSend; // used in tickingRequest
@@ -88,7 +90,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
                     .getInventory(
                             AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
 
-            final IAEItemStack out = inv.injectItems(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(stack),
+            final IAEItemStack out = inv.injectItems(
+                    AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(stack),
                     Actionable.SIMULATE,
                     this.source);
             if (out == null) {
@@ -181,7 +184,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         return this.worked ? TickRateModulation.FASTER : TickRateModulation.SLOWER;
     }
 
-    private boolean importStuff(final InventoryAdaptor myAdaptor, final IAEItemStack whatToImport, final IMEMonitor<IAEItemStack> inv, final IEnergySource energy, final FuzzyMode fzMode) {
+    private boolean importStuff(final InventoryAdaptor myAdaptor, final IAEItemStack whatToImport,
+            final IMEMonitor<IAEItemStack> inv, final IEnergySource energy, final FuzzyMode fzMode) {
         final int toSend = this.calculateMaximumAmountToImport(myAdaptor, whatToImport, inv, fzMode);
 
         if (toSend == 0) {
@@ -191,13 +195,16 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         final ItemStack newItems;
 
         if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
-            newItems = myAdaptor.removeSimilarItems(toSend, whatToImport == null ? ItemStack.EMPTY : whatToImport.getDefinition(), fzMode, this);
+            newItems = myAdaptor.removeSimilarItems(toSend,
+                    whatToImport == null ? ItemStack.EMPTY : whatToImport.getDefinition(), fzMode, this);
         } else {
-            newItems = myAdaptor.removeItems(toSend, whatToImport == null ? ItemStack.EMPTY : whatToImport.getDefinition(), this);
+            newItems = myAdaptor.removeItems(toSend,
+                    whatToImport == null ? ItemStack.EMPTY : whatToImport.getDefinition(), this);
         }
 
         if (!newItems.isEmpty()) {
-            final IAEItemStack aeStack = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(newItems);
+            final IAEItemStack aeStack = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                    .createStack(newItems);
             final IAEItemStack failed = Platform.poweredInsert(energy, inv, aeStack, this.source);
 
             if (failed != null) {
@@ -219,7 +226,8 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         return false;
     }
 
-    private int calculateMaximumAmountToImport(final InventoryAdaptor myAdaptor, final IAEItemStack whatToImport, final IMEMonitor<IAEItemStack> inv, final FuzzyMode fzMode) {
+    private int calculateMaximumAmountToImport(final InventoryAdaptor myAdaptor, final IAEItemStack whatToImport,
+            final IMEMonitor<IAEItemStack> inv, final FuzzyMode fzMode) {
         final int toSend = Math.min(this.itemsToSend, 64);
         final ItemStack itemStackToImport;
 
@@ -233,10 +241,12 @@ public class PartImportBus extends PartSharedItemBus implements IInventoryDestin
         final ItemStack simResult;
         if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
             simResult = myAdaptor.simulateSimilarRemove(toSend, itemStackToImport, fzMode, null);
-            itemAmountNotStorable = inv.injectItems(AEItemStack.fromItemStack(simResult), Actionable.SIMULATE, this.source);
+            itemAmountNotStorable = inv.injectItems(AEItemStack.fromItemStack(simResult), Actionable.SIMULATE,
+                    this.source);
         } else {
             simResult = myAdaptor.simulateRemove(toSend, itemStackToImport, null);
-            itemAmountNotStorable = inv.injectItems(AEItemStack.fromItemStack(simResult), Actionable.SIMULATE, this.source);
+            itemAmountNotStorable = inv.injectItems(AEItemStack.fromItemStack(simResult), Actionable.SIMULATE,
+                    this.source);
         }
 
         if (simResult.isEmpty()) {

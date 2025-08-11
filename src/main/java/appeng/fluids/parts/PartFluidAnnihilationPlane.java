@@ -1,5 +1,19 @@
 package appeng.fluids.parts;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -34,24 +48,10 @@ import appeng.parts.PartBasicState;
 import appeng.parts.automation.PlaneConnections;
 import appeng.parts.automation.PlaneModels;
 import appeng.util.Platform;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-
-import java.util.List;
-
 
 public class PartFluidAnnihilationPlane extends PartBasicState implements IGridTickable {
-    private static final PlaneModels MODELS = new PlaneModels("part/fluid_annihilation_plane_", "part/fluid_annihilation_plane_on_");
+    private static final PlaneModels MODELS = new PlaneModels("part/fluid_annihilation_plane_",
+            "part/fluid_annihilation_plane_on_");
 
     @PartModels
     public static List<IPartModel> getModels() {
@@ -143,7 +143,8 @@ public class PartFluidAnnihilationPlane extends PartBasicState implements IGridT
 
             final BlockPos pos = te.getPos();
 
-            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingRight.getOpposite())), this.getSide())) {
+            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingRight.getOpposite())),
+                    this.getSide())) {
                 left = true;
             }
 
@@ -151,7 +152,8 @@ public class PartFluidAnnihilationPlane extends PartBasicState implements IGridT
                 right = true;
             }
 
-            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingUp.getOpposite())), this.getSide())) {
+            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingUp.getOpposite())),
+                    this.getSide())) {
                 down = true;
             }
 
@@ -239,7 +241,8 @@ public class PartFluidAnnihilationPlane extends PartBasicState implements IGridT
 
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
-        return new TickingRequest(TickRates.AnnihilationPlane.getMin(), TickRates.AnnihilationPlane.getMax(), false, true);
+        return new TickingRequest(TickRates.AnnihilationPlane.getMin(), TickRates.AnnihilationPlane.getMax(), false,
+                true);
     }
 
     @Override
@@ -250,7 +253,8 @@ public class PartFluidAnnihilationPlane extends PartBasicState implements IGridT
     private boolean storeFluid(IAEFluidStack stack, boolean modulate) {
         try {
             final IStorageGrid storage = this.getProxy().getStorage();
-            final IMEInventory<IAEFluidStack> inv = storage.getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
+            final IMEInventory<IAEFluidStack> inv = storage
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
 
             if (modulate) {
                 final IEnergyGrid energy = this.getProxy().getEnergy();

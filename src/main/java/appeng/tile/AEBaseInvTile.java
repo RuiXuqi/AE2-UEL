@@ -18,10 +18,14 @@
 
 package appeng.tile;
 
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
+import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
 
-import appeng.util.helpers.ItemHandlerUtil;
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.InvOperation;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -35,13 +39,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
-
+import appeng.util.helpers.ItemHandlerUtil;
+import appeng.util.inv.IAEAppEngInventory;
+import appeng.util.inv.InvOperation;
 
 public abstract class AEBaseInvTile extends AEBaseTile implements IAEAppEngInventory {
 
@@ -58,8 +58,7 @@ public abstract class AEBaseInvTile extends AEBaseTile implements IAEAppEngInven
         }
     }
 
-    public abstract @Nonnull
-    IItemHandler getInternalInventory();
+    public abstract @Nonnull IItemHandler getInternalInventory();
 
     @Override
     public NBTTagCompound writeToNBT(final NBTTagCompound data) {
@@ -93,7 +92,8 @@ public abstract class AEBaseInvTile extends AEBaseTile implements IAEAppEngInven
     }
 
     @Override
-    public abstract void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removed, ItemStack added);
+    public abstract void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removed,
+            ItemStack added);
 
     @Override
     public ITextComponent getDisplayName() {
@@ -103,8 +103,7 @@ public abstract class AEBaseInvTile extends AEBaseTile implements IAEAppEngInven
         return new TextComponentTranslation(this.getBlockType().getTranslationKey());
     }
 
-    protected @Nonnull
-    IItemHandler getItemHandlerForSide(@Nonnull EnumFacing side) {
+    protected @Nonnull IItemHandler getItemHandlerForSide(@Nonnull EnumFacing side) {
         return this.getInternalInventory();
     }
 

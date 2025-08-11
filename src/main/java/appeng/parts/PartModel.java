@@ -18,13 +18,13 @@
 
 package appeng.parts;
 
-
-import appeng.api.parts.IPartModel;
-import com.google.common.collect.ImmutableList;
-import net.minecraft.util.ResourceLocation;
-
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
+import net.minecraft.util.ResourceLocation;
+
+import appeng.api.parts.IPartModel;
 
 public class PartModel implements IPartModel {
     private final boolean isSolid;

@@ -18,6 +18,9 @@
 
 package appeng.me.helpers;
 
+import java.util.Iterator;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.networking.IGridMultiblock;
 import appeng.api.networking.IGridNode;
@@ -25,14 +28,11 @@ import appeng.me.cluster.IAECluster;
 import appeng.me.cluster.IAEMultiBlock;
 import appeng.util.iterators.ChainedIterator;
 import appeng.util.iterators.ProxyNodeIterator;
-import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
-
 
 public class AENetworkProxyMultiblock extends AENetworkProxy implements IGridMultiblock {
 
-    public AENetworkProxyMultiblock(final IGridProxyable te, final String nbtName, final ItemStack itemStack, final boolean inWorld) {
+    public AENetworkProxyMultiblock(final IGridProxyable te, final String nbtName, final ItemStack itemStack,
+            final boolean inWorld) {
         super(te, nbtName, itemStack, inWorld);
     }
 
@@ -41,11 +41,10 @@ public class AENetworkProxyMultiblock extends AENetworkProxy implements IGridMul
         if (this.getCluster() == null) {
             return new ChainedIterator<>();
         }
-
         return new ProxyNodeIterator(this.getCluster().getTiles());
     }
 
     private IAECluster getCluster() {
-        return ((IAEMultiBlock) this.getMachine()).getCluster();
+        return ((IAEMultiBlock<?>) this.getMachine()).getCluster();
     }
 }

@@ -18,14 +18,13 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.slot.IOptionalSlotHost;
 import appeng.container.slot.OptionalSlotRestrictedInput;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.qnb.TileQuantumBridge;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerQNB extends AEBaseContainer implements IOptionalSlotHost {
 
@@ -45,7 +44,6 @@ public class ContainerQNB extends AEBaseContainer implements IOptionalSlotHost {
 
         this.bindPlayerInventory(ip, 0, 166 - /* height of player inventory */82);
     }
-
 
     @Override
     public boolean isSlotEnabled(int idx) {

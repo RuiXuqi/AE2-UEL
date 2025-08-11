@@ -18,7 +18,6 @@
 
 package appeng.parts.p2p;
 
-
 // import javax.annotation.Nullable;
 //
 // import net.minecraft.item.ItemStack;

@@ -18,11 +18,10 @@
 
 package appeng.worldgen.meteorite;
 
+import net.minecraft.block.state.IBlockState;
 
 import appeng.api.definitions.IBlockDefinition;
 import appeng.util.Platform;
-import net.minecraft.block.state.IBlockState;
-
 
 public class FalloutCopy extends Fallout {
     private static final double SPECIFIED_BLOCK_THRESHOLD = 0.9;
@@ -32,7 +31,8 @@ public class FalloutCopy extends Fallout {
     private final IBlockState block;
     private final MeteoriteBlockPutter putter;
 
-    public FalloutCopy(final IMeteoriteWorld w, final int x, final int y, final int z, final MeteoriteBlockPutter putter, final IBlockDefinition skyStoneDefinition) {
+    public FalloutCopy(final IMeteoriteWorld w, final int x, final int y, final int z,
+            final MeteoriteBlockPutter putter, final IBlockDefinition skyStoneDefinition) {
         super(putter, skyStoneDefinition);
         this.putter = putter;
         this.block = w.getBlockState(x, y, z);

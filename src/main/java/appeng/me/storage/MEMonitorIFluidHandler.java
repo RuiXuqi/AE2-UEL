@@ -18,6 +18,12 @@
 
 package appeng.me.storage;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -32,17 +38,11 @@ import appeng.api.storage.channels.IFluidStorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
 import appeng.fluids.util.AEFluidStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-
-import java.util.*;
-import java.util.Map.Entry;
-
 
 public class MEMonitorIFluidHandler implements IMEMonitor<IAEFluidStack>, ITickingMonitor {
     private final IFluidHandler handler;
-    private IItemList<IAEFluidStack> cache = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+    private IItemList<IAEFluidStack> cache = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)
+            .createList();
     private final HashMap<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> listeners = new HashMap<>();
     private IActionSource mySource;
     private StorageFilter mode = StorageFilter.EXTRACTABLE_ONLY;
@@ -119,7 +119,8 @@ public class MEMonitorIFluidHandler implements IMEMonitor<IAEFluidStack>, ITicki
         final List<IAEFluidStack> changes = new ArrayList<>();
         final IFluidTankProperties[] tankProperties = this.handler.getTankProperties();
 
-        IItemList<IAEFluidStack> currentlyOnStorage = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+        IItemList<IAEFluidStack> currentlyOnStorage = AEApi.instance().storage()
+                .getStorageChannel(IFluidStorageChannel.class).createList();
 
         for (IFluidTankProperties tankProperty : tankProperties) {
             if (this.mode == StorageFilter.EXTRACTABLE_ONLY && this.handler.drain(1, false) == null) {
@@ -154,7 +155,8 @@ public class MEMonitorIFluidHandler implements IMEMonitor<IAEFluidStack>, ITicki
 
     private void postDifference(final Iterable<IAEFluidStack> a) {
         if (a != null) {
-            final Iterator<Entry<IMEMonitorHandlerReceiver<IAEFluidStack>, Object>> i = this.listeners.entrySet().iterator();
+            final Iterator<Entry<IMEMonitorHandlerReceiver<IAEFluidStack>, Object>> i = this.listeners.entrySet()
+                    .iterator();
             while (i.hasNext()) {
                 final Entry<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> l = i.next();
                 final IMEMonitorHandlerReceiver<IAEFluidStack> key = l.getKey();

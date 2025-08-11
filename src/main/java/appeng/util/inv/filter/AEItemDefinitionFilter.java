@@ -18,11 +18,10 @@
 
 package appeng.util.inv.filter;
 
-
-import appeng.api.definitions.IItemDefinition;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
+import appeng.api.definitions.IItemDefinition;
 
 public class AEItemDefinitionFilter implements IAEItemFilter {
     private final IItemDefinition definition;

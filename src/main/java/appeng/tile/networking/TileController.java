@@ -18,6 +18,13 @@
 
 package appeng.tile.networking;
 
+import java.util.EnumSet;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
@@ -35,14 +42,6 @@ import appeng.block.networking.BlockController.ControllerBlockState;
 import appeng.me.GridAccessException;
 import appeng.tile.grid.AENetworkPowerTile;
 import appeng.util.inv.InvOperation;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
-
-import java.util.EnumSet;
-
 
 public class TileController extends AENetworkPowerTile {
     private boolean isValid = false;
@@ -66,9 +65,12 @@ public class TileController extends AENetworkPowerTile {
     }
 
     public void onNeighborChange(final boolean force) {
-        final boolean xx = this.checkController(this.pos.offset(EnumFacing.EAST)) && this.checkController(this.pos.offset(EnumFacing.WEST));
-        final boolean yy = this.checkController(this.pos.offset(EnumFacing.UP)) && this.checkController(this.pos.offset(EnumFacing.DOWN));
-        final boolean zz = this.checkController(this.pos.offset(EnumFacing.NORTH)) && this.checkController(this.pos.offset(EnumFacing.SOUTH));
+        final boolean xx = this.checkController(this.pos.offset(EnumFacing.EAST))
+                && this.checkController(this.pos.offset(EnumFacing.WEST));
+        final boolean yy = this.checkController(this.pos.offset(EnumFacing.UP))
+                && this.checkController(this.pos.offset(EnumFacing.DOWN));
+        final boolean zz = this.checkController(this.pos.offset(EnumFacing.NORTH))
+                && this.checkController(this.pos.offset(EnumFacing.SOUTH));
 
         // int meta = world.getBlockMetadata( xCoord, yCoord, zCoord );
         // boolean hasPower = meta > 0;
@@ -76,7 +78,8 @@ public class TileController extends AENetworkPowerTile {
 
         final boolean oldValid = this.isValid;
 
-        this.isValid = (xx && !yy && !zz) || (!xx && yy && !zz) || (!xx && !yy && zz) || ((xx ? 1 : 0) + (yy ? 1 : 0) + (zz ? 1 : 0) <= 1);
+        this.isValid = (xx && !yy && !zz) || (!xx && yy && !zz) || (!xx && !yy && zz)
+                || ((xx ? 1 : 0) + (yy ? 1 : 0) + (zz ? 1 : 0) <= 1);
 
         if (oldValid != this.isValid || force) {
             if (this.isValid) {
@@ -109,8 +112,10 @@ public class TileController extends AENetworkPowerTile {
             metaState = ControllerBlockState.offline;
         }
 
-        if (this.checkController(this.pos) && this.world.getBlockState(this.pos).getValue(BlockController.CONTROLLER_STATE) != metaState) {
-            this.world.setBlockState(this.pos, this.world.getBlockState(this.pos).withProperty(BlockController.CONTROLLER_STATE, metaState));
+        if (this.checkController(this.pos)
+                && this.world.getBlockState(this.pos).getValue(BlockController.CONTROLLER_STATE) != metaState) {
+            this.world.setBlockState(this.pos,
+                    this.world.getBlockState(this.pos).withProperty(BlockController.CONTROLLER_STATE, metaState));
         }
 
     }
@@ -165,7 +170,8 @@ public class TileController extends AENetworkPowerTile {
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
     }
 
     /**

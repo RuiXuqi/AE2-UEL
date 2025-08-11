@@ -18,11 +18,10 @@
 
 package appeng.tile.storage;
 
+import java.io.IOException;
 
-import appeng.tile.AEBaseInvTile;
-import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.util.inv.InvOperation;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -30,8 +29,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.items.IItemHandler;
 
-import java.io.IOException;
-
+import appeng.tile.AEBaseInvTile;
+import appeng.tile.inventory.AppEngInternalInventory;
+import appeng.util.inv.InvOperation;
 
 public class TileSkyChest extends AEBaseInvTile implements ITickable {
 
@@ -86,7 +86,8 @@ public class TileSkyChest extends AEBaseInvTile implements ITickable {
 
             if (this.getPlayerOpen() == 1) {
                 this.getWorld()
-                        .playSound(player, this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_CHEST_OPEN,
+                        .playSound(player, this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D,
+                                SoundEvents.BLOCK_CHEST_OPEN,
                                 SoundCategory.BLOCKS, 0.5F, this.getWorld().rand.nextFloat() * 0.1F + 0.9F);
                 this.markForUpdate();
             }
@@ -106,7 +107,8 @@ public class TileSkyChest extends AEBaseInvTile implements ITickable {
 
             if (this.getPlayerOpen() == 0) {
                 this.getWorld()
-                        .playSound(player, this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_CHEST_CLOSE,
+                        .playSound(player, this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D,
+                                SoundEvents.BLOCK_CHEST_CLOSE,
                                 SoundCategory.BLOCKS, 0.5F, this.getWorld().rand.nextFloat() * 0.1F + 0.9F);
                 this.markForUpdate();
             }
@@ -144,7 +146,8 @@ public class TileSkyChest extends AEBaseInvTile implements ITickable {
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
 
     }
 

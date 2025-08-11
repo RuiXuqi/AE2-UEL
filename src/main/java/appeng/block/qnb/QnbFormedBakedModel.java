@@ -1,10 +1,14 @@
 package appeng.block.qnb;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
-import appeng.api.AEApi;
-import appeng.client.render.cablebus.CubeBuilder;
-import appeng.core.AppEng;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -17,21 +21,22 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-
+import appeng.api.AEApi;
+import appeng.client.render.cablebus.CubeBuilder;
+import appeng.core.AppEng;
 
 class QnbFormedBakedModel implements IBakedModel {
 
     private static final ResourceLocation TEXTURE_LINK = new ResourceLocation(AppEng.MOD_ID, "blocks/quantum_link");
     private static final ResourceLocation TEXTURE_RING = new ResourceLocation(AppEng.MOD_ID, "blocks/quantum_ring");
-    private static final ResourceLocation TEXTURE_RING_LIGHT = new ResourceLocation(AppEng.MOD_ID, "blocks/quantum_ring_light");
-    private static final ResourceLocation TEXTURE_RING_LIGHT_CORNER = new ResourceLocation(AppEng.MOD_ID, "blocks/quantum_ring_light_corner");
-    private static final ResourceLocation TEXTURE_CABLE_GLASS = new ResourceLocation(AppEng.MOD_ID, "parts/cable/glass/transparent");
-    private static final ResourceLocation TEXTURE_COVERED_CABLE = new ResourceLocation(AppEng.MOD_ID, "parts/cable/covered/transparent");
+    private static final ResourceLocation TEXTURE_RING_LIGHT = new ResourceLocation(AppEng.MOD_ID,
+            "blocks/quantum_ring_light");
+    private static final ResourceLocation TEXTURE_RING_LIGHT_CORNER = new ResourceLocation(AppEng.MOD_ID,
+            "blocks/quantum_ring_light_corner");
+    private static final ResourceLocation TEXTURE_CABLE_GLASS = new ResourceLocation(AppEng.MOD_ID,
+            "parts/cable/glass/transparent");
+    private static final ResourceLocation TEXTURE_COVERED_CABLE = new ResourceLocation(AppEng.MOD_ID,
+            "parts/cable/covered/transparent");
 
     private static final float DEFAULT_RENDER_MIN = 2.0f;
     private static final float DEFAULT_RENDER_MAX = 14.0f;
@@ -55,7 +60,8 @@ class QnbFormedBakedModel implements IBakedModel {
     private final TextureAtlasSprite lightTexture;
     private final TextureAtlasSprite lightCornerTexture;
 
-    public QnbFormedBakedModel(VertexFormat vertexFormat, IBakedModel baseModel, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public QnbFormedBakedModel(VertexFormat vertexFormat, IBakedModel baseModel,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         this.vertexFormat = vertexFormat;
         this.baseModel = baseModel;
         this.linkTexture = bakedTextureGetter.apply(TEXTURE_LINK);
@@ -91,13 +97,16 @@ class QnbFormedBakedModel implements IBakedModel {
             this.renderCableAt(builder, 0.188f * 16, this.coveredCableTexture, 0.1875f * 16, sides);
 
             builder.setTexture(this.linkTexture);
-            builder.addCube(DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX);
+            builder.addCube(DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MAX,
+                    DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX);
         } else {
             if (formedState.isCorner()) {
-                this.renderCableAt(builder, 0.188f * 16, this.coveredCableTexture, 0.05f * 16, formedState.getAdjacentQuantumBridges());
+                this.renderCableAt(builder, 0.188f * 16, this.coveredCableTexture, 0.05f * 16,
+                        formedState.getAdjacentQuantumBridges());
 
                 builder.setTexture(this.ringTexture);
-                builder.addCube(DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX);
+                builder.addCube(DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MIN, DEFAULT_RENDER_MAX,
+                        DEFAULT_RENDER_MAX, DEFAULT_RENDER_MAX);
 
                 if (formedState.isPowered()) {
                     builder.setTexture(this.lightCornerTexture);
@@ -111,8 +120,10 @@ class QnbFormedBakedModel implements IBakedModel {
 
                         builder.setDrawFaces(EnumSet.of(facing));
                         builder.addCube(
-                                DEFAULT_RENDER_MIN - xOffset, DEFAULT_RENDER_MIN - yOffset, DEFAULT_RENDER_MIN - zOffset,
-                                DEFAULT_RENDER_MAX + xOffset, DEFAULT_RENDER_MAX + yOffset, DEFAULT_RENDER_MAX + zOffset);
+                                DEFAULT_RENDER_MIN - xOffset, DEFAULT_RENDER_MIN - yOffset,
+                                DEFAULT_RENDER_MIN - zOffset,
+                                DEFAULT_RENDER_MAX + xOffset, DEFAULT_RENDER_MAX + yOffset,
+                                DEFAULT_RENDER_MAX + zOffset);
                     }
                 }
             } else {
@@ -146,7 +157,8 @@ class QnbFormedBakedModel implements IBakedModel {
         return builder.getOutput();
     }
 
-    private void renderCableAt(CubeBuilder builder, float thickness, TextureAtlasSprite texture, float pull, Set<EnumFacing> connections) {
+    private void renderCableAt(CubeBuilder builder, float thickness, TextureAtlasSprite texture, float pull,
+            Set<EnumFacing> connections) {
         builder.setTexture(texture);
 
         if (connections.contains(EnumFacing.WEST)) {
@@ -206,6 +218,7 @@ class QnbFormedBakedModel implements IBakedModel {
 
     public static List<ResourceLocation> getRequiredTextures() {
         return ImmutableList.of(
-                TEXTURE_LINK, TEXTURE_RING, TEXTURE_CABLE_GLASS, TEXTURE_COVERED_CABLE, TEXTURE_RING_LIGHT, TEXTURE_RING_LIGHT_CORNER);
+                TEXTURE_LINK, TEXTURE_RING, TEXTURE_CABLE_GLASS, TEXTURE_COVERED_CABLE, TEXTURE_RING_LIGHT,
+                TEXTURE_RING_LIGHT_CORNER);
     }
 }

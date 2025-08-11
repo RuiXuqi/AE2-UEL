@@ -18,20 +18,20 @@
 
 package appeng.recipes.factories.ingredients;
 
+import javax.annotation.Nonnull;
+
+import com.google.gson.JsonObject;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.crafting.IIngredientFactory;
+import net.minecraftforge.common.crafting.JsonContext;
 
 import appeng.api.recipes.ResolverResult;
 import appeng.api.recipes.ResolverResultSet;
 import appeng.core.AELog;
 import appeng.core.Api;
 import appeng.core.AppEng;
-import com.google.gson.JsonObject;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.crafting.IIngredientFactory;
-import net.minecraftforge.common.crafting.JsonContext;
-
-import javax.annotation.Nonnull;
-
 
 public class PartIngredientFactory implements IIngredientFactory {
 

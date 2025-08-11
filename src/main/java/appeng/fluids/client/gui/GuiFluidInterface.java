@@ -18,6 +18,10 @@
 
 package appeng.fluids.client.gui;
 
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.util.IConfigManager;
 import appeng.client.gui.implementations.GuiUpgradeable;
@@ -34,11 +38,6 @@ import appeng.fluids.helper.DualityFluidInterface;
 import appeng.fluids.helper.IFluidInterfaceHost;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.util.IConfigManagerHost;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
-import java.io.IOException;
-
 
 public class GuiFluidInterface extends GuiUpgradeable implements IConfigManagerHost {
     public final static int ID_BUTTON_TANK = 222;
@@ -64,11 +63,13 @@ public class GuiFluidInterface extends GuiUpgradeable implements IConfigManagerH
         final IAEFluidTank fluidTank = this.host.getDualityFluidInterface().getTanks();
 
         for (int i = 0; i < DualityFluidInterface.NUMBER_OF_TANKS; ++i) {
-            this.guiSlots.add(new GuiFluidTank(fluidTank, i, DualityFluidInterface.NUMBER_OF_TANKS + i, 8 + 18 * i, 53, 16, 68));
+            this.guiSlots.add(
+                    new GuiFluidTank(fluidTank, i, DualityFluidInterface.NUMBER_OF_TANKS + i, 8 + 18 * i, 53, 16, 68));
             this.guiSlots.add(new GuiFluidSlot(configFluids, i, i, 8 + 18 * i, 35));
         }
 
-        this.priority = new GuiTabButton(this.getGuiLeft() + 154, this.getGuiTop(), 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender);
+        this.priority = new GuiTabButton(this.getGuiLeft() + 154, this.getGuiTop(), 2 + 4 * 16,
+                GuiText.Priority.getLocal(), this.itemRender);
         this.buttonList.add(this.priority);
     }
 
@@ -103,7 +104,8 @@ public class GuiFluidInterface extends GuiUpgradeable implements IConfigManagerH
     protected void mouseClicked(int xCoord, int yCoord, int btn) throws IOException {
         for (GuiCustomSlot slot : this.guiSlots) {
             if (slot instanceof GuiFluidTank) {
-                if (this.isPointInRegion(slot.xPos(), slot.yPos(), slot.getWidth(), slot.getHeight(), xCoord, yCoord) && slot.canClick(this.mc.player)) {
+                if (this.isPointInRegion(slot.xPos(), slot.yPos(), slot.getWidth(), slot.getHeight(), xCoord, yCoord)
+                        && slot.canClick(this.mc.player)) {
                     this.container.setTargetStack(((GuiFluidTank) slot).getFluidStack());
                     slot.slotClicked(this.mc.player.inventory.getItemStack(), btn);
                     return;

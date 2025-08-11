@@ -18,13 +18,13 @@
 
 package appeng.integration.modules.crafttweaker;
 
-
-import appeng.api.AEApi;
-import appeng.core.AELog;
 import net.minecraft.tileentity.TileEntity;
+
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import appeng.api.AEApi;
+import appeng.core.AELog;
 
 @ZenClass("mods.appliedenergistics2.Spatial")
 public class SpatialRegistry {

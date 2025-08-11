@@ -1,18 +1,17 @@
 package appeng.fluids.helper;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IContainerListener;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketFluidSlot;
 import appeng.fluids.util.AEFluidInventory;
 import appeng.fluids.util.IAEFluidTank;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IContainerListener;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 
 public class FluidSyncHelper {
     private final IAEFluidTank inv;

@@ -18,9 +18,7 @@
 
 package appeng.integration;
 
-
 import appeng.integration.abstraction.*;
-
 
 /**
  * Provides convenient access to various integrations with other mods.

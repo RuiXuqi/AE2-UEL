@@ -18,26 +18,23 @@
 
 package appeng.core.worlddata;
 
-
-import com.google.common.base.Preconditions;
-import net.minecraftforge.common.config.ConfigCategory;
-
-import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraftforge.common.config.ConfigCategory;
 
 /**
- * Wrapper class for the player mappings.
- * Will grant access to a pre initialized player map
- * based on the "players" category in the settings.cfg
+ * Wrapper class for the player mappings. Will grant access to a pre initialized player map based on the "players"
+ * category in the settings.cfg
  */
 final class PlayerMapping implements IWorldPlayerMapping {
     /**
-     * View of player mappings, is not immutable,
-     * since it needs to be edited upon runtime,
-     * cause new players can join
+     * View of player mappings, is not immutable, since it needs to be edited upon runtime, cause new players can join
      */
     private final Map<Integer, UUID> mappings;
 

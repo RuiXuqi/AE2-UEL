@@ -18,17 +18,14 @@
 
 package appeng.thirdparty.codechicken.lib.model;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-
 /**
- * A simple VertexFormat cache.
- * This caches the existence of attributes and their indexes.
+ * A simple VertexFormat cache. This caches the existence of attributes and their indexes.
  *
  * @author covers1624
  */

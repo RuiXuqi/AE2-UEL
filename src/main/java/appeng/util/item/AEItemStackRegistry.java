@@ -23,11 +23,13 @@
 
 package appeng.util.item;
 
-import com.google.common.collect.MapMaker;
-import net.minecraft.item.ItemStack;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
+
+import com.google.common.collect.MapMaker;
+
+import net.minecraft.item.ItemStack;
 
 public final class AEItemStackRegistry {
 

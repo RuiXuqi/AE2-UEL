@@ -18,10 +18,12 @@
 
 package appeng.client.render.crafting;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
 
-import appeng.block.crafting.BlockCraftingUnit;
-import appeng.core.AppEng;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -30,10 +32,8 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Function;
-
+import appeng.block.crafting.BlockCraftingUnit;
+import appeng.core.AppEng;
 
 /**
  * The built-in model for the connected texture crafting cube.
@@ -68,12 +68,15 @@ class CraftingCubeModel implements IModel {
 
     @Override
     public Collection<ResourceLocation> getTextures() {
-        return ImmutableList.of(RING_CORNER, RING_SIDE_HOR, RING_SIDE_VER, UNIT_BASE, LIGHT_BASE, ACCELERATOR_LIGHT, STORAGE_1K_LIGHT, STORAGE_4K_LIGHT,
-                STORAGE_16K_LIGHT, STORAGE_64K_LIGHT, MONITOR_BASE, MONITOR_LIGHT_DARK, MONITOR_LIGHT_MEDIUM, MONITOR_LIGHT_BRIGHT);
+        return ImmutableList.of(RING_CORNER, RING_SIDE_HOR, RING_SIDE_VER, UNIT_BASE, LIGHT_BASE, ACCELERATOR_LIGHT,
+                STORAGE_1K_LIGHT, STORAGE_4K_LIGHT,
+                STORAGE_16K_LIGHT, STORAGE_64K_LIGHT, MONITOR_BASE, MONITOR_LIGHT_DARK, MONITOR_LIGHT_MEDIUM,
+                MONITOR_LIGHT_BRIGHT);
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         // Retrieve our textures and pass them on to the baked model
         TextureAtlasSprite ringCorner = bakedTextureGetter.apply(RING_CORNER);
         TextureAtlasSprite ringSideHor = bakedTextureGetter.apply(RING_SIDE_HOR);
@@ -81,7 +84,8 @@ class CraftingCubeModel implements IModel {
 
         switch (this.type) {
             case UNIT:
-                return new UnitBakedModel(format, ringCorner, ringSideHor, ringSideVer, bakedTextureGetter.apply(UNIT_BASE));
+                return new UnitBakedModel(format, ringCorner, ringSideHor, ringSideVer,
+                        bakedTextureGetter.apply(UNIT_BASE));
             case ACCELERATOR:
             case STORAGE_1K:
             case STORAGE_4K:
@@ -90,15 +94,19 @@ class CraftingCubeModel implements IModel {
                 return new LightBakedModel(format, ringCorner, ringSideHor, ringSideVer, bakedTextureGetter
                         .apply(LIGHT_BASE), getLightTexture(bakedTextureGetter, this.type));
             case MONITOR:
-                return new MonitorBakedModel(format, ringCorner, ringSideHor, ringSideVer, bakedTextureGetter.apply(UNIT_BASE), bakedTextureGetter
-                        .apply(MONITOR_BASE), bakedTextureGetter.apply(
-                        MONITOR_LIGHT_DARK), bakedTextureGetter.apply(MONITOR_LIGHT_MEDIUM), bakedTextureGetter.apply(MONITOR_LIGHT_BRIGHT));
+                return new MonitorBakedModel(format, ringCorner, ringSideHor, ringSideVer,
+                        bakedTextureGetter.apply(UNIT_BASE), bakedTextureGetter
+                                .apply(MONITOR_BASE),
+                        bakedTextureGetter.apply(
+                                MONITOR_LIGHT_DARK),
+                        bakedTextureGetter.apply(MONITOR_LIGHT_MEDIUM), bakedTextureGetter.apply(MONITOR_LIGHT_BRIGHT));
             default:
                 throw new IllegalArgumentException("Unsupported crafting unit type: " + this.type);
         }
     }
 
-    private static TextureAtlasSprite getLightTexture(Function<ResourceLocation, TextureAtlasSprite> textureGetter, BlockCraftingUnit.CraftingUnitType type) {
+    private static TextureAtlasSprite getLightTexture(Function<ResourceLocation, TextureAtlasSprite> textureGetter,
+            BlockCraftingUnit.CraftingUnitType type) {
         switch (type) {
             case ACCELERATOR:
                 return textureGetter.apply(ACCELERATOR_LIGHT);

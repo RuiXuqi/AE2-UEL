@@ -18,8 +18,13 @@
 
 package appeng.client.render.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -29,20 +34,16 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-
-
 /**
  * The parent model for the compass baked model. Declares the dependencies for the base and pointer submodels mostly.
  */
 public class SkyCompassModel implements IModel {
 
-    private static final ResourceLocation MODEL_BASE = new ResourceLocation("appliedenergistics2:block/sky_compass_base");
+    private static final ResourceLocation MODEL_BASE = new ResourceLocation(
+            "appliedenergistics2:block/sky_compass_base");
 
-    private static final ResourceLocation MODEL_POINTER = new ResourceLocation("appliedenergistics2:block/sky_compass_pointer");
+    private static final ResourceLocation MODEL_POINTER = new ResourceLocation(
+            "appliedenergistics2:block/sky_compass_pointer");
 
     private static final List<ResourceLocation> DEPENDENCIES = ImmutableList.of(MODEL_BASE, MODEL_POINTER);
 
@@ -57,7 +58,8 @@ public class SkyCompassModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         IModel baseModel, pointerModel;
         try {
             baseModel = ModelLoaderRegistry.getModel(MODEL_BASE);

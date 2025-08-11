@@ -18,22 +18,10 @@
 
 package appeng.me.cluster.implementations;
 
+import java.util.Iterator;
 
-import appeng.api.AEApi;
-import appeng.api.events.LocatableEventAnnounce;
-import appeng.api.events.LocatableEventAnnounce.LocatableEvent;
-import appeng.api.exceptions.FailedConnectionException;
-import appeng.api.features.ILocatable;
-import appeng.api.networking.IGridHost;
-import appeng.api.networking.IGridNode;
-import appeng.api.util.AEPartLocation;
-import appeng.api.util.WorldCoord;
-import appeng.core.AELog;
-import appeng.me.cache.helpers.ConnectionWrapper;
-import appeng.me.cluster.IAECluster;
-import appeng.tile.qnb.TileQuantumBridge;
-import appeng.util.iterators.ChainedIterator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
@@ -41,13 +29,24 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.Iterator;
-
+import appeng.api.AEApi;
+import appeng.api.events.LocatableEventAnnounce;
+import appeng.api.events.LocatableEventAnnounce.LocatableEvent;
+import appeng.api.exceptions.FailedConnectionException;
+import appeng.api.features.ILocatable;
+import appeng.api.networking.IGridNode;
+import appeng.api.util.AEPartLocation;
+import appeng.core.AELog;
+import appeng.me.cache.helpers.ConnectionWrapper;
+import appeng.me.cluster.IAECluster;
+import appeng.me.cluster.MBCalculator;
+import appeng.tile.qnb.TileQuantumBridge;
+import appeng.util.iterators.ChainedIterator;
 
 public class QuantumCluster implements ILocatable, IAECluster {
 
-    private final WorldCoord min;
-    private final WorldCoord max;
+    private final BlockPos boundsMin;
+    private final BlockPos boundsMax;
     private boolean isDestroyed = false;
     private boolean updateStatus = true;
     private TileQuantumBridge[] Ring;
@@ -57,9 +56,9 @@ public class QuantumCluster implements ILocatable, IAECluster {
     private long otherSide;
     private TileQuantumBridge center;
 
-    public QuantumCluster(final WorldCoord min, final WorldCoord max) {
-        this.min = min;
-        this.max = max;
+    public QuantumCluster(final BlockPos min, final BlockPos max) {
+        this.boundsMin = min.toImmutable();
+        this.boundsMax = max.toImmutable();
         this.setRing(new TileQuantumBridge[8]);
     }
 
@@ -99,7 +98,8 @@ public class QuantumCluster implements ILocatable, IAECluster {
             }
         }
 
-        final ILocatable myOtherSide = this.otherSide == 0 ? null : AEApi.instance().registries().locatable().getLocatableBy(this.otherSide);
+        final ILocatable myOtherSide = this.otherSide == 0 ? null
+                : AEApi.instance().registries().locatable().getLocatableBy(this.otherSide);
 
         boolean shutdown = false;
 
@@ -180,7 +180,7 @@ public class QuantumCluster implements ILocatable, IAECluster {
             return false;
         }
 
-        return this.center.isPowered() && this.hasQES();
+        return this.hasQES();
     }
 
     private IGridNode getNode() {
@@ -192,41 +192,64 @@ public class QuantumCluster implements ILocatable, IAECluster {
     }
 
     @Override
+    public BlockPos getBoundsMin() {
+        return boundsMin;
+    }
+
+    @Override
+    public BlockPos getBoundsMax() {
+        return boundsMax;
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    @Override
     public void destroy() {
         if (this.isDestroyed) {
             return;
         }
         this.isDestroyed = true;
 
-        if (this.registered) {
-            MinecraftForge.EVENT_BUS.unregister(this);
-            this.registered = false;
+        MBCalculator.setModificationInProgress(this);
+        try {
+            if (this.registered) {
+                MinecraftForge.EVENT_BUS.unregister(this);
+                this.registered = false;
+            }
+
+            if (this.thisSide != 0) {
+                this.updateStatus(true);
+                MinecraftForge.EVENT_BUS.post(new LocatableEventAnnounce(this, LocatableEvent.UNREGISTER));
+            }
+
+            this.center.updateStatus(null, (byte) -1, this.isUpdateStatus());
+
+            for (final TileQuantumBridge r : this.getRing()) {
+                r.updateStatus(null, (byte) -1, this.isUpdateStatus());
+            }
+
+            this.center = null;
+            this.setRing(new TileQuantumBridge[8]);
+        } finally {
+            MBCalculator.setModificationInProgress(null);
         }
-
-        if (this.thisSide != 0) {
-            this.updateStatus(true);
-            MinecraftForge.EVENT_BUS.post(new LocatableEventAnnounce(this, LocatableEvent.UNREGISTER));
-        }
-
-        this.center.updateStatus(null, (byte) -1, this.isUpdateStatus());
-
-        for (final TileQuantumBridge r : this.getRing()) {
-            r.updateStatus(null, (byte) -1, this.isUpdateStatus());
-        }
-
-        this.center = null;
-        this.setRing(new TileQuantumBridge[8]);
     }
 
     @Override
-    public Iterator<IGridHost> getTiles() {
-        return new ChainedIterator<>(this.getRing()[0], this.getRing()[1], this.getRing()[2], this.getRing()[3], this.getRing()[4], this
-                .getRing()[5], this.getRing()[6], this.getRing()[7], this.center);
+    public Iterator<TileQuantumBridge> getTiles() {
+        return new ChainedIterator<>(this.getRing()[0], this.getRing()[1], this.getRing()[2], this.getRing()[3],
+                this.getRing()[4], this
+                        .getRing()[5],
+                this.getRing()[6], this.getRing()[7], this.center);
     }
 
     public boolean isCorner(final TileQuantumBridge tileQuantumBridge) {
-        return this.getRing()[0] == tileQuantumBridge || this.getRing()[2] == tileQuantumBridge || this.getRing()[4] == tileQuantumBridge || this
-                .getRing()[6] == tileQuantumBridge;
+        return this.getRing()[0] == tileQuantumBridge || this.getRing()[2] == tileQuantumBridge
+                || this.getRing()[4] == tileQuantumBridge || this
+                        .getRing()[6] == tileQuantumBridge;
     }
 
     @Override

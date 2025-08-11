@@ -18,6 +18,31 @@
 
 package appeng.client.gui.implementations;
 
+import static appeng.client.render.BlockPosHighlighter.hilightBlock;
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
+
+import com.google.common.collect.HashMultimap;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.DimensionManager;
+
+import mezz.jei.api.gui.IGhostIngredientHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.ActionItems;
@@ -40,29 +65,6 @@ import appeng.parts.reporting.PartInterfaceConfigurationTerminal;
 import appeng.util.BlockPosUtils;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import com.google.common.collect.HashMultimap;
-import mezz.jei.api.gui.IGhostIngredientHandler;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.DimensionManager;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
-import java.util.*;
-
-import static appeng.client.render.BlockPosHighlighter.hilightBlock;
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-
 
 public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEIGhostIngredients {
 
@@ -89,7 +91,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
     private final HashMap<ClientDCInternalInv, Integer> dimHashMap = new HashMap<>();
     public Map<IGhostIngredientHandler.Target<?>, Object> mapTargetSlot = new HashMap<>();
 
-    public GuiInterfaceConfigurationTerminal(final InventoryPlayer inventoryPlayer, final PartInterfaceConfigurationTerminal te) {
+    public GuiInterfaceConfigurationTerminal(final InventoryPlayer inventoryPlayer,
+            final PartInterfaceConfigurationTerminal te) {
         super(new ContainerInterfaceConfigurationTerminal(inventoryPlayer, te));
 
         this.partInterfaceTerminal = te;
@@ -107,7 +110,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
         this.getScrollBar().setHeight(106);
         this.getScrollBar().setTop(31);
 
-        this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX), this.guiTop + 17, 65, 12);
+        this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX),
+                this.guiTop + 17, 65, 12);
         this.searchFieldInputs.setEnableBackgroundDrawing(false);
         this.searchFieldInputs.setMaxStringLength(25);
         this.searchFieldInputs.setTextColor(0xFFFFFF);
@@ -127,7 +131,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         this.buttonList.clear();
 
-        this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.InterfaceConfigurationTerminal.getLocal()), 8, 6, 4210752);
+        this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.InterfaceConfigurationTerminal.getLocal()), 8, 6,
+                4210752);
         this.fontRenderer.drawString(GuiText.inventory.getLocal(), this.offsetX + 2, this.ySize - 96 + 3, 4210752);
 
         final int currentScroll = this.getScrollBar().getCurrentScroll();
@@ -141,14 +146,16 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
             if (lineObj instanceof ClientDCInternalInv) {
                 final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS,
+                        ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
                 this.buttonList.add(guiButton);
                 int extraLines = numUpgradesMap.get(inv);
 
                 for (int row = 0; row < 1 + extraLines && linesDraw < LINES_ON_PAGE; ++row) {
                     for (int z = 0; z < 9; z++) {
-                        this.inventorySlots.inventorySlots.add(new SlotDisconnected(inv, z + (row * 9), (z * 18 + 22), offset));
+                        this.inventorySlots.inventorySlots
+                                .add(new SlotDisconnected(inv, z + (row * 9), (z * 18 + 22), offset));
                         if (this.matchedStacks.contains(inv.getInventory().getStackInSlot(z + (row * 9)))) {
                             drawRect(z * 18 + 22, offset, z * 18 + 22 + 16, offset + 16, 0x8A00FF00);
                         } else if (!matchedInterfaces.contains(inv)) {
@@ -175,7 +182,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
         }
 
         if (searchFieldInputs.isMouseIn(mouseX, mouseY)) {
-            drawTooltip(Mouse.getEventX() * this.width / this.mc.displayWidth - offsetX, mouseY - guiTop, "Inputs OR names");
+            drawTooltip(Mouse.getEventX() * this.width / this.mc.displayWidth - offsetX, mouseY - guiTop,
+                    "Inputs OR names");
         }
     }
 
@@ -200,13 +208,20 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
             int interfaceDim = dimHashMap.get(guiButtonHashMap.get(this.selectedButton));
             if (playerDim != interfaceDim) {
                 try {
-                    mc.player.sendStatusMessage(new TextComponentString("Interface located at dimension: " + interfaceDim + " [" + DimensionManager.getWorld(interfaceDim).provider.getDimensionType().getName() + "] and cant be highlighted"), false);
+                    mc.player.sendStatusMessage(
+                            new TextComponentString("Interface located at dimension: " + interfaceDim + " ["
+                                    + DimensionManager.getWorld(interfaceDim).provider.getDimensionType().getName()
+                                    + "] and cant be highlighted"),
+                            false);
                 } catch (Exception e) {
-                    mc.player.sendStatusMessage(new TextComponentString("Interface is located in another dimension and cannot be highlighted"), false);
+                    mc.player.sendStatusMessage(new TextComponentString(
+                            "Interface is located in another dimension and cannot be highlighted"), false);
                 }
             } else {
-                hilightBlock(blockPos, System.currentTimeMillis() + 500 * BlockPosUtils.getDistance(blockPos, blockPos2), playerDim);
-                mc.player.sendStatusMessage(new TextComponentString("The interface is now highlighted at " + "X: " + blockPos.getX() + " Y: " + blockPos.getY() + " Z: " + blockPos.getZ()), false);
+                hilightBlock(blockPos,
+                        System.currentTimeMillis() + 500 * BlockPosUtils.getDistance(blockPos, blockPos2), playerDim);
+                mc.player.sendStatusMessage(new TextComponentString("The interface is now highlighted at " + "X: "
+                        + blockPos.getX() + " Y: " + blockPos.getY() + " Z: " + blockPos.getZ()), false);
             }
             mc.player.closeScreen();
         }
@@ -221,10 +236,13 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
                 final PacketInventoryAction p;
                 if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
                     InventoryAction direction = wheel > 0 ? InventoryAction.DOUBLE : InventoryAction.HALVE;
-                    p = new PacketInventoryAction(direction, slot.getSlotIndex(), ((SlotDisconnected) slot).getSlot().getId());
+                    p = new PacketInventoryAction(direction, slot.getSlotIndex(),
+                            ((SlotDisconnected) slot).getSlot().getId());
                 } else {
-                    InventoryAction direction = wheel > 0 ? InventoryAction.PLACE_SINGLE : InventoryAction.PICKUP_SINGLE;
-                    p = new PacketInventoryAction(direction, slot.getSlotIndex(), ((SlotDisconnected) slot).getSlot().getId());
+                    InventoryAction direction = wheel > 0 ? InventoryAction.PLACE_SINGLE
+                            : InventoryAction.PICKUP_SINGLE;
+                    p = new PacketInventoryAction(direction, slot.getSlotIndex(),
+                            ((SlotDisconnected) slot).getSlot().getId());
                 }
                 NetworkHandler.instance().sendToServer(p);
             }
@@ -292,7 +310,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
                     final NBTTagCompound invData = in.getCompoundTag(key);
-                    final ClientDCInternalInv current = this.getById(id, invData.getLong("sortBy"), invData.getString("un"));
+                    final ClientDCInternalInv current = this.getById(id, invData.getLong("sortBy"),
+                            invData.getString("un"));
                     blockPosHashMap.put(current, NBTUtil.getPosFromTag(invData.getCompoundTag("pos")));
                     dimHashMap.put(current, invData.getInteger("dim"));
                     numUpgradesMap.put(current, invData.getInteger("numUpgrades"));
@@ -398,7 +417,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
         boolean foundMatchingItemStack = false;
 
         final String displayName = Platform
-                .getItemDisplayName(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(itemStack))
+                .getItemDisplayName(
+                        AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(itemStack))
                 .toLowerCase();
 
         for (String term : searchTerm.split(" ")) {
@@ -453,7 +473,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
         ClientDCInternalInv o = this.byId.get(id);
 
         if (o == null) {
-            this.byId.put(id, o = new ClientDCInternalInv(DualityInterface.NUMBER_OF_CONFIG_SLOTS, id, sortBy, string, 512));
+            this.byId.put(id,
+                    o = new ClientDCInternalInv(DualityInterface.NUMBER_OF_CONFIG_SLOTS, id, sortBy, string, 512));
             this.refreshList = true;
         }
 
@@ -479,7 +500,8 @@ public class GuiInterfaceConfigurationTerminal extends AEBaseGui implements IJEI
                     public void accept(Object ingredient) {
                         final PacketInventoryAction p;
                         try {
-                            p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, (SlotDisconnected) slot, AEItemStack.fromItemStack(itemStack));
+                            p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, (SlotDisconnected) slot,
+                                    AEItemStack.fromItemStack(itemStack));
                             NetworkHandler.instance().sendToServer(p);
 
                         } catch (IOException e) {

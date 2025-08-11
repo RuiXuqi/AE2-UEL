@@ -18,16 +18,15 @@
 
 package appeng.core;
 
-
-import appeng.api.config.TunnelType;
-import appeng.core.api.IIMCProcessor;
-import appeng.core.api.imc.*;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+
+import appeng.api.config.TunnelType;
+import appeng.core.api.IIMCProcessor;
+import appeng.core.api.imc.*;
 
 /**
  * Handles the delegation of the corresponding IMC messages to the suitable IMC processors
@@ -58,7 +57,8 @@ public class IMCHandler {
         this.processors.put("add-mattercannon-ammo", new IMCMatterCannon());
 
         for (final TunnelType type : TunnelType.values()) {
-            this.processors.put("add-p2p-attunement-" + type.name().replace('_', '-').toLowerCase(Locale.ENGLISH), new IMCP2PAttunement());
+            this.processors.put("add-p2p-attunement-" + type.name().replace('_', '-').toLowerCase(Locale.ENGLISH),
+                    new IMCP2PAttunement());
         }
     }
 

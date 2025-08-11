@@ -18,17 +18,15 @@
 
 package appeng.fluids.helper;
 
+import java.util.EnumSet;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 
 import appeng.api.implementations.IUpgradeableHost;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.me.helpers.IGridProxyable;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.EnumSet;
-
 
 public interface IFluidInterfaceHost extends IActionHost, IGridProxyable, IUpgradeableHost {
     DualityFluidInterface getDualityFluidInterface();

@@ -18,11 +18,9 @@
 
 package appeng.container.slot;
 
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-
 
 public class SlotDisabled extends AppEngSlot {
 

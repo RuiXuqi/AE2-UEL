@@ -18,12 +18,10 @@
 
 package appeng.bootstrap.components;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraftforge.fml.relauncher.Side;
-
 
 public class BlockColorComponent implements IInitComponent {
 

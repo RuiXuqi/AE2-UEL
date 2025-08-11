@@ -1,5 +1,9 @@
 package appeng.decorative.slab;
 
+import java.util.Random;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
@@ -16,14 +20,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Random;
-
-
 public abstract class BlockSlabCommon extends BlockSlab {
 
-    static final PropertyEnum<BlockSlabCommon.Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
+    static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
 
     private BlockSlabCommon(Block block) {
         super(block.getMaterial(block.getDefaultState()));
@@ -49,7 +48,8 @@ public abstract class BlockSlabCommon extends BlockSlab {
         IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, Variant.DEFAULT);
 
         if (!this.isDouble()) {
-            iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+            iblockstate = iblockstate.withProperty(HALF,
+                    (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
         }
 
         return iblockstate;
@@ -100,8 +100,6 @@ public abstract class BlockSlabCommon extends BlockSlab {
         return Variant.DEFAULT;
     }
 
-
-
     public static class Double extends BlockSlabCommon {
 
         private final Block halfSlabBlock;
@@ -141,7 +139,8 @@ public abstract class BlockSlabCommon extends BlockSlab {
         }
 
         @Override
-        public boolean doesSideBlockChestOpening(@Nonnull IBlockState blockState, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
+        public boolean doesSideBlockChestOpening(@Nonnull IBlockState blockState, @Nonnull IBlockAccess world,
+                @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
             return false;
         }
     }

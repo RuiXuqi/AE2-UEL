@@ -18,10 +18,8 @@
 
 package appeng.me;
 
-
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridVisitor;
-
 
 class GridSplitDetector implements IGridVisitor {
 

@@ -18,7 +18,6 @@
 
 package appeng.thirdparty.codechicken.lib.math;
 
-
 /**
  * @author covers1624
  */

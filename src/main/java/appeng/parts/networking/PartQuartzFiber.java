@@ -18,6 +18,16 @@
 
 package appeng.parts.networking;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
@@ -35,24 +45,14 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.AEBasePart;
 import appeng.parts.PartModel;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-
 
 public class PartQuartzFiber extends AEBasePart implements IEnergyGridProvider {
 
     @PartModels
     private static final IPartModel MODELS = new PartModel(new ResourceLocation(AppEng.MOD_ID, "part/quartz_fiber"));
 
-    private final AENetworkProxy outerProxy = new AENetworkProxy(this, "outer", this.getProxy().getMachineRepresentation(), true);
+    private final AENetworkProxy outerProxy = new AENetworkProxy(this, "outer",
+            this.getProxy().getMachineRepresentation(), true);
 
     public PartQuartzFiber(final ItemStack is) {
         super(is);
@@ -87,7 +87,7 @@ public class PartQuartzFiber extends AEBasePart implements IEnergyGridProvider {
     @Override
     public void removeFromWorld() {
         super.removeFromWorld();
-        this.outerProxy.invalidate();
+        this.outerProxy.remove();
     }
 
     @Override
@@ -113,7 +113,8 @@ public class PartQuartzFiber extends AEBasePart implements IEnergyGridProvider {
     }
 
     @Override
-    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held, final AEPartLocation side) {
+    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held,
+            final AEPartLocation side) {
         super.onPlacement(player, hand, held, side);
         this.outerProxy.setOwner(player);
     }

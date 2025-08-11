@@ -18,6 +18,14 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.*;
 import appeng.api.implementations.items.IUpgradeModule;
@@ -29,14 +37,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.tile.misc.TileCellWorkbench;
 import appeng.util.Platform;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 public class GuiCellWorkbench extends GuiUpgradeable {
 
@@ -56,9 +56,11 @@ public class GuiCellWorkbench extends GuiUpgradeable {
     protected void addButtons() {
         this.clear = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.ACTIONS, ActionItems.CLOSE);
         this.partition = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.ACTIONS, ActionItems.WRENCH);
-        this.copyMode = new GuiToggleButton(this.guiLeft - 18, this.guiTop + 48, 11 * 16 + 5, 12 * 16 + 5, GuiText.CopyMode.getLocal(), GuiText.CopyModeDesc
-                .getLocal());
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.copyMode = new GuiToggleButton(this.guiLeft - 18, this.guiTop + 48, 11 * 16 + 5, 12 * 16 + 5,
+                GuiText.CopyMode.getLocal(), GuiText.CopyModeDesc
+                        .getLocal());
+        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
 
         this.buttonList.add(this.fuzzyMode);
         this.buttonList.add(this.partition);
@@ -74,8 +76,10 @@ public class GuiCellWorkbench extends GuiUpgradeable {
         this.drawTexturedModalRect(offsetX, offsetY, 0, 0, 211 - 34, this.ySize);
         if (this.drawUpgrades()) {
             if (this.workbench.availableUpgrades() <= 8) {
-                this.drawTexturedModalRect(offsetX + 177, offsetY, 177, 0, 35, 7 + this.workbench.availableUpgrades() * 18);
-                this.drawTexturedModalRect(offsetX + 177, offsetY + (7 + (this.workbench.availableUpgrades()) * 18), 177, 151, 35, 7);
+                this.drawTexturedModalRect(offsetX + 177, offsetY, 177, 0, 35,
+                        7 + this.workbench.availableUpgrades() * 18);
+                this.drawTexturedModalRect(offsetX + 177, offsetY + (7 + (this.workbench.availableUpgrades()) * 18),
+                        177, 151, 35, 7);
             } else if (this.workbench.availableUpgrades() <= 16) {
                 this.drawTexturedModalRect(offsetX + 177, offsetY, 177, 0, 35, 7 + 8 * 18);
                 this.drawTexturedModalRect(offsetX + 177, offsetY + (7 + (8) * 18), 177, 151, 35, 7);
@@ -85,7 +89,8 @@ public class GuiCellWorkbench extends GuiUpgradeable {
                 if (dx == 8) {
                     this.drawTexturedModalRect(offsetX + 177 + 27, offsetY + (7 + (dx) * 18), 186, 151, 35 - 8, 7);
                 } else {
-                    this.drawTexturedModalRect(offsetX + 177 + 27 + 4, offsetY + (7 + (dx) * 18), 186 + 4, 151, 35 - 8, 7);
+                    this.drawTexturedModalRect(offsetX + 177 + 27 + 4, offsetY + (7 + (dx) * 18), 186 + 4, 151, 35 - 8,
+                            7);
                 }
             } else {
                 this.drawTexturedModalRect(offsetX + 177, offsetY, 177, 0, 35, 7 + 8 * 18);
@@ -99,7 +104,8 @@ public class GuiCellWorkbench extends GuiUpgradeable {
                 if (dx == 8) {
                     this.drawTexturedModalRect(offsetX + 177 + 27 + 18, offsetY + (7 + (dx) * 18), 186, 151, 35 - 8, 7);
                 } else {
-                    this.drawTexturedModalRect(offsetX + 177 + 27 + 18 + 4, offsetY + (7 + (dx) * 18), 186 + 4, 151, 35 - 8, 7);
+                    this.drawTexturedModalRect(offsetX + 177 + 27 + 18 + 4, offsetY + (7 + (dx) * 18), 186 + 4, 151,
+                            35 - 8, 7);
                 }
             }
         }

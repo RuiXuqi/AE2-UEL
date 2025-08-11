@@ -18,13 +18,13 @@
 
 package appeng.recipes.game;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.*;
-import appeng.api.storage.IMEInventory;
-import appeng.api.storage.channels.IItemStorageChannel;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -33,14 +33,15 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import appeng.api.AEApi;
+import appeng.api.definitions.*;
+import appeng.api.storage.IMEInventory;
+import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
 
-
-public final class DisassembleRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public final class DisassembleRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe>
+        implements IRecipe {
     private static final ItemStack MISMATCHED_STACK = ItemStack.EMPTY;
 
     private final Map<IItemDefinition, IItemDefinition> cellMappings;
@@ -98,7 +99,8 @@ public final class DisassembleRecipe extends net.minecraftforge.registries.IForg
                                     AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
                     if (cellInv != null) {
                         final IItemList<IAEItemStack> list = cellInv
-                                .getAvailableItems(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
+                                .getAvailableItems(AEApi.instance().storage()
+                                        .getStorageChannel(IItemStorageChannel.class).createList());
                         if (!list.isEmpty()) {
                             return ItemStack.EMPTY;
                         }

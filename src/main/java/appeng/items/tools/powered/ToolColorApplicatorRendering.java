@@ -1,22 +1,23 @@
 package appeng.items.tools.powered;
 
-
-import appeng.api.util.AEColor;
-import appeng.bootstrap.IItemRendering;
-import appeng.bootstrap.ItemRenderingCustomizer;
-import appeng.client.render.model.ColorApplicatorModel;
-import appeng.core.AppEng;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.util.AEColor;
+import appeng.bootstrap.IItemRendering;
+import appeng.bootstrap.ItemRenderingCustomizer;
+import appeng.client.render.model.ColorApplicatorModel;
+import appeng.core.AppEng;
 
 public class ToolColorApplicatorRendering extends ItemRenderingCustomizer {
 
-    private static final ModelResourceLocation MODEL_COLORED = new ModelResourceLocation(new ResourceLocation(AppEng.MOD_ID, "builtin/color_applicator_colored"), "inventory");
-    private static final ModelResourceLocation MODEL_UNCOLORED = new ModelResourceLocation(new ResourceLocation(AppEng.MOD_ID, "color_applicator_uncolored"), "inventory");
+    private static final ModelResourceLocation MODEL_COLORED = new ModelResourceLocation(
+            new ResourceLocation(AppEng.MOD_ID, "builtin/color_applicator_colored"), "inventory");
+    private static final ModelResourceLocation MODEL_UNCOLORED = new ModelResourceLocation(
+            new ResourceLocation(AppEng.MOD_ID, "color_applicator_uncolored"), "inventory");
 
     @Override
     @SideOnly(Side.CLIENT)

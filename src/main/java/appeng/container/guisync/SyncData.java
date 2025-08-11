@@ -18,19 +18,18 @@
 
 package appeng.container.guisync;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.EnumSet;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IContainerListener;
 
 import appeng.container.AEBaseContainer;
 import appeng.core.AELog;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketProgressBar;
 import appeng.core.sync.packets.PacketValueConfig;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IContainerListener;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.EnumSet;
-
 
 public class SyncData {
 
@@ -70,7 +69,8 @@ public class SyncData {
     private void send(final IContainerListener o, final Object val) throws IOException {
         if (val instanceof String) {
             if (o instanceof EntityPlayerMP) {
-                NetworkHandler.instance().sendTo(new PacketValueConfig("SyncDat." + this.channel, (String) val), (EntityPlayerMP) o);
+                NetworkHandler.instance().sendTo(new PacketValueConfig("SyncDat." + this.channel, (String) val),
+                        (EntityPlayerMP) o);
             }
         } else if (this.field.getType().isEnum()) {
             o.sendWindowProperty(this.source, this.channel, ((Enum) val).ordinal());

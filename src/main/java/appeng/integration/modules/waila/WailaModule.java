@@ -18,14 +18,14 @@
 
 package appeng.integration.modules.waila;
 
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+
+import mcp.mobius.waila.api.IWailaDataProvider;
+import mcp.mobius.waila.api.IWailaRegistrar;
 
 import appeng.integration.IIntegrationModule;
 import appeng.integration.IntegrationHelper;
 import appeng.tile.AEBaseTile;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-
 
 public class WailaModule implements IIntegrationModule {
 

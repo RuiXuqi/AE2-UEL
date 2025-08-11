@@ -18,6 +18,14 @@
 
 package appeng.tile.networking;
 
+import java.io.IOException;
+import java.util.EnumSet;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
@@ -37,14 +45,6 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.filter.AEItemDefinitionFilter;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.EnumSet;
-
 
 public class TileWireless extends AENetworkInvTile implements IWirelessAccessPoint, IPowerChannelState {
 
@@ -122,7 +122,8 @@ public class TileWireless extends AENetworkInvTile implements IWirelessAccessPoi
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         // :P
     }
 

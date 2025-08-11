@@ -18,10 +18,9 @@
 
 package appeng.util.helpers;
 
-
-import appeng.api.util.AEColor;
 import com.google.common.base.Preconditions;
 
+import appeng.api.util.AEColor;
 
 public class P2PHelper {
 

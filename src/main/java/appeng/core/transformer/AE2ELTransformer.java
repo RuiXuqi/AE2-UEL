@@ -19,13 +19,17 @@
 
 package appeng.core.transformer;
 
-import appeng.core.AE2ELCore;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+import java.util.function.Consumer;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteStreams;
-import net.minecraft.launchwrapper.IClassTransformer;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.fml.common.Loader;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -38,12 +42,11 @@ import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-import java.util.function.Consumer;
+import net.minecraft.launchwrapper.IClassTransformer;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.fml.common.Loader;
+
+import appeng.core.AE2ELCore;
 
 public class AE2ELTransformer implements IClassTransformer {
 
@@ -59,7 +62,8 @@ public class AE2ELTransformer implements IClassTransformer {
             return cw.toByteArray();
         }
 
-        Consumer<ClassNode> consumer = (n) -> {};
+        Consumer<ClassNode> consumer = (n) -> {
+        };
         Consumer<ClassNode> emptyConsumer = consumer;
 
         if (Loader.instance().getIndexedModList().get("stackup") == null) {
@@ -92,15 +96,16 @@ public class AE2ELTransformer implements IClassTransformer {
     }
 
     public static void spliceClasses(final ClassNode data, final String className, final String... methods) {
-        try (InputStream stream = AE2ELCore.class.getClassLoader().getResourceAsStream(className.replace('.', '/') + ".class")) {
+        try (InputStream stream = AE2ELCore.class.getClassLoader()
+                .getResourceAsStream(className.replace('.', '/') + ".class")) {
             spliceClasses(data, ByteStreams.toByteArray(stream), className, methods);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-    public static void spliceClasses(final ClassNode nodeData, final byte[] dataSplice, final String className, final String... methods) {
+    public static void spliceClasses(final ClassNode nodeData, final byte[] dataSplice, final String className,
+            final String... methods) {
         // System.out.println("Splicing from " + className + " to " + targetClassName)
         if (dataSplice == null) {
             throw new RuntimeException("Class " + className + " not found! This is a AE2EL bug!");

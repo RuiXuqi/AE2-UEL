@@ -18,10 +18,6 @@
 
 package appeng.block.qnb;
 
-
-import appeng.block.AEBaseTileBlock;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.qnb.TileQuantumBridge;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -37,8 +33,9 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-import javax.annotation.Nonnull;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.qnb.TileQuantumBridge;
 
 public abstract class BlockQuantumBase extends AEBaseTileBlock implements ICustomCollision {
 
@@ -57,12 +54,12 @@ public abstract class BlockQuantumBase extends AEBaseTileBlock implements ICusto
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{FORMED};
+        return new IProperty[] { FORMED };
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{FORMED_STATE});
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] { FORMED_STATE });
     }
 
     @Override
@@ -71,7 +68,8 @@ public abstract class BlockQuantumBase extends AEBaseTileBlock implements ICusto
 
         TileQuantumBridge bridge = this.getTileEntity(world, pos);
         if (bridge != null) {
-            QnbFormedState formedState = new QnbFormedState(bridge.getAdjacentQuantumBridges(), bridge.isCorner(), bridge.isPowered());
+            QnbFormedState formedState = new QnbFormedState(bridge.getAdjacentQuantumBridges(), bridge.isCorner(),
+                    bridge.isPowered());
             extState = extState.withProperty(FORMED_STATE, formedState);
         }
 
@@ -96,7 +94,7 @@ public abstract class BlockQuantumBase extends AEBaseTileBlock implements ICusto
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
         final TileQuantumBridge bridge = this.getTileEntity(world, pos);
         if (bridge != null) {
-            bridge.neighborUpdate();
+            bridge.neighborUpdate(fromPos);
         }
     }
 

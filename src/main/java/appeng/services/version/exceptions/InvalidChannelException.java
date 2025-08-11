@@ -18,9 +18,7 @@
 
 package appeng.services.version.exceptions;
 
-
 import appeng.services.version.Channel;
-
 
 /**
  * Indicates an invalid {@link Channel} value.

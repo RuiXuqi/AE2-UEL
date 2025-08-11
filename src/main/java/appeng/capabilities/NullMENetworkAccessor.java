@@ -18,11 +18,9 @@
 
 package appeng.capabilities;
 
-
 import appeng.api.networking.security.IActionSource;
 import appeng.api.storage.IStorageMonitorable;
 import appeng.api.storage.IStorageMonitorableAccessor;
-
 
 class NullMENetworkAccessor implements IStorageMonitorableAccessor {
 

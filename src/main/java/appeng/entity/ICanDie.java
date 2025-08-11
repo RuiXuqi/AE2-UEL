@@ -18,7 +18,6 @@
 
 package appeng.entity;
 
-
 public interface ICanDie {
 
     boolean isDead();

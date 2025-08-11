@@ -18,6 +18,14 @@
 
 package appeng.tile.grindstone;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 
 import appeng.api.AEApi;
 import appeng.api.features.IGrinderRecipe;
@@ -30,15 +38,6 @@ import appeng.util.inv.AdaptorItemHandler;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.IAEItemFilter;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.RangedWrapper;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class TileGrinder extends AEBaseInvTile implements ICrankable {
     private final AppEngInternalInventory inv = new AppEngInternalInventory(this, 7);
@@ -63,7 +62,8 @@ public class TileGrinder extends AEBaseInvTile implements ICrankable {
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
 
     }
 
@@ -123,8 +123,7 @@ public class TileGrinder extends AEBaseInvTile implements ICrankable {
 
             this.addItem(sia, r.getOutput());
 
-            r.getOptionalOutput().ifPresent(itemStack ->
-            {
+            r.getOptionalOutput().ifPresent(itemStack -> {
                 final float chance = (Platform.getRandomInt() % 2000) / 2000.0f;
 
                 if (chance <= r.getOptionalChance()) {
@@ -132,8 +131,7 @@ public class TileGrinder extends AEBaseInvTile implements ICrankable {
                 }
             });
 
-            r.getSecondOptionalOutput().ifPresent(itemStack ->
-            {
+            r.getSecondOptionalOutput().ifPresent(itemStack -> {
                 final float chance = (Platform.getRandomInt() % 2000) / 2000.0f;
 
                 if (chance <= r.getSecondOptionalChance()) {

@@ -18,19 +18,6 @@
 
 package appeng.container.implementations;
 
-
-import appeng.api.storage.ITerminalHost;
-import appeng.container.ContainerNull;
-import appeng.container.slot.SlotCraftingMatrix;
-import appeng.container.slot.SlotCraftingTerm;
-import appeng.helpers.IContainerCraftingPacket;
-import appeng.parts.reporting.AbstractPartTerminal;
-import appeng.parts.reporting.PartCraftingTerminal;
-import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.util.IConfigManagerHost;
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.InvOperation;
-import appeng.util.inv.WrapperInvItemHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -40,8 +27,19 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
+import appeng.api.storage.ITerminalHost;
+import appeng.container.ContainerNull;
+import appeng.container.slot.SlotCraftingMatrix;
+import appeng.container.slot.SlotCraftingTerm;
+import appeng.helpers.IContainerCraftingPacket;
+import appeng.parts.reporting.PartCraftingTerminal;
+import appeng.tile.inventory.AppEngInternalInventory;
+import appeng.util.inv.IAEAppEngInventory;
+import appeng.util.inv.InvOperation;
+import appeng.util.inv.WrapperInvItemHandler;
 
-public class ContainerCraftingTerm extends ContainerMEMonitorable implements IAEAppEngInventory, IContainerCraftingPacket {
+public class ContainerCraftingTerm extends ContainerMEMonitorable
+        implements IAEAppEngInventory, IContainerCraftingPacket {
 
     private final PartCraftingTerminal ct;
     private final AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
@@ -57,12 +55,14 @@ public class ContainerCraftingTerm extends ContainerMEMonitorable implements IAE
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotCraftingMatrix(this, crafting, x + y * 3, 37 + x * 18, -72 + y * 18));
+                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotCraftingMatrix(this, crafting,
+                        x + y * 3, 37 + x * 18, -72 + y * 18));
             }
         }
 
-        this.addSlotToContainer(this.outputSlot = new SlotCraftingTerm(this.getPlayerInv().player, this.getActionSource(), this
-                .getPowerSource(), monitorable, crafting, crafting, this.output, 131, -72 + 18, this));
+        this.addSlotToContainer(
+                this.outputSlot = new SlotCraftingTerm(this.getPlayerInv().player, this.getActionSource(), this
+                        .getPowerSource(), monitorable, crafting, crafting, this.output, 131, -72 + 18, this));
 
         this.bindPlayerInventory(ip, 0, 0);
 
@@ -101,7 +101,8 @@ public class ContainerCraftingTerm extends ContainerMEMonitorable implements IAE
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
 
     }
 

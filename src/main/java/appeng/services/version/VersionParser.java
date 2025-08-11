@@ -18,14 +18,14 @@
 
 package appeng.services.version;
 
-
-import appeng.services.version.exceptions.*;
-import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import appeng.services.version.exceptions.*;
 
 /**
  * can parse a version in form of rv2-beta-8 or rv2.beta.8
@@ -73,9 +73,8 @@ public final class VersionParser {
     }
 
     /**
-     * parses the {@link Version} out of the split.
-     * The split must have a length of 3,
-     * representing revision, channel and build.
+     * parses the {@link Version} out of the split. The split must have a length of 3, representing revision, channel
+     * and build.
      *
      * @param splitRaw raw version split with length of 3
      * @return {@link Version} represented by the splitRaw
@@ -84,7 +83,8 @@ public final class VersionParser {
      * @throws InvalidChannelException  {@link VersionParser#parseChannel(String)}
      * @throws InvalidBuildException    {@link VersionParser#parseBuild(String)}
      */
-    private Version parseVersion(@Nonnull final String[] splitRaw) throws InvalidVersionException, InvalidRevisionException, InvalidChannelException, InvalidBuildException {
+    private Version parseVersion(@Nonnull final String[] splitRaw)
+            throws InvalidVersionException, InvalidRevisionException, InvalidChannelException, InvalidBuildException {
         if (splitRaw.length != 3) {
             throw new InvalidVersionException();
         }
@@ -129,8 +129,9 @@ public final class VersionParser {
      * @throws InvalidChannelException if not one of {@link Channel} values.
      */
     private Channel parseChannel(@Nonnull final String rawChannel) throws InvalidChannelException {
-        if (!(rawChannel.equalsIgnoreCase(Channel.Alpha.name()) || rawChannel.equalsIgnoreCase(Channel.Beta.name()) || rawChannel
-                .equalsIgnoreCase(Channel.Stable.name()))) {
+        if (!(rawChannel.equalsIgnoreCase(Channel.Alpha.name()) || rawChannel.equalsIgnoreCase(Channel.Beta.name())
+                || rawChannel
+                        .equalsIgnoreCase(Channel.Stable.name()))) {
             throw new InvalidChannelException();
         }
 

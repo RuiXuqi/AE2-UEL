@@ -18,13 +18,9 @@
 
 package appeng.core.sync.packets;
 
-
-import appeng.block.networking.BlockCableBus;
-import appeng.core.sync.AppEngPacket;
-import appeng.core.sync.network.INetworkInfo;
-import appeng.items.tools.ToolNetworkTool;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,6 +29,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import appeng.block.networking.BlockCableBus;
+import appeng.core.sync.AppEngPacket;
+import appeng.core.sync.network.INetworkInfo;
+import appeng.items.tools.ToolNetworkTool;
 
 public class PacketClick extends AppEngPacket {
 
@@ -65,11 +65,13 @@ public class PacketClick extends AppEngPacket {
     }
 
     // api
-    public PacketClick(final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+    public PacketClick(final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ,
+            final EnumHand hand) {
         this(pos, side, hitX, hitY, hitZ, hand, false);
     }
 
-    public PacketClick(final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand, boolean leftClick) {
+    public PacketClick(final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ,
+            final EnumHand hand, boolean leftClick) {
 
         final ByteBuf data = Unpooled.buffer();
 
@@ -97,7 +99,8 @@ public class PacketClick extends AppEngPacket {
         if (this.leftClick) {
             final Block block = player.world.getBlockState(pos).getBlock();
             if (block instanceof BlockCableBus) {
-                ((BlockCableBus) block).onBlockClickPacket(player.world, pos, player, this.hand, new Vec3d(this.hitX, this.hitY, this.hitZ));
+                ((BlockCableBus) block).onBlockClickPacket(player.world, pos, player, this.hand,
+                        new Vec3d(this.hitX, this.hitY, this.hitZ));
             }
         } else {
             final ItemStack is = player.inventory.getCurrentItem();

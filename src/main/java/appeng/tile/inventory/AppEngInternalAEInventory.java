@@ -18,6 +18,14 @@
 
 package appeng.tile.inventory;
 
+import java.util.Iterator;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import appeng.api.AEApi;
 import appeng.api.storage.channels.IItemStorageChannel;
@@ -29,14 +37,6 @@ import appeng.util.inv.InvOperation;
 import appeng.util.item.AEItemStack;
 import appeng.util.iterators.AEInvIterator;
 import appeng.util.iterators.InvIterator;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
-
-import javax.annotation.Nonnull;
-import java.util.Iterator;
-
 
 public class AppEngInternalAEInventory implements IItemHandlerModifiable, Iterable<ItemStack> {
     private final IAEAppEngInventory te;
@@ -180,7 +180,8 @@ public class AppEngInternalAEInventory implements IItemHandlerModifiable, Iterab
             } else {
                 if (!simulate) {
                     split.grow(-amount);
-                    this.fireOnChangeInventory(slot, InvOperation.EXTRACT, ItemHandlerHelper.copyStackWithSize(split, amount), ItemStack.EMPTY);
+                    this.fireOnChangeInventory(slot, InvOperation.EXTRACT,
+                            ItemHandlerHelper.copyStackWithSize(split, amount), ItemStack.EMPTY);
                 }
                 return ItemHandlerHelper.copyStackWithSize(split, amount);
             }
@@ -191,7 +192,8 @@ public class AppEngInternalAEInventory implements IItemHandlerModifiable, Iterab
     @Override
     public void setStackInSlot(final int slot, final ItemStack newItemStack) {
         ItemStack oldStack = this.getStackInSlot(slot).copy();
-        this.inv[slot] = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(newItemStack);
+        this.inv[slot] = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                .createStack(newItemStack);
 
         if (this.te != null && Platform.isServer()) {
             ItemStack newStack = newItemStack.copy();

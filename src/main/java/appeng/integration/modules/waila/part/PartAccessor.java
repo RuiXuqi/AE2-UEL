@@ -18,17 +18,16 @@
 
 package appeng.integration.modules.waila.part;
 
+import java.util.Optional;
 
-import appeng.api.parts.IPart;
-import appeng.api.parts.IPartHost;
-import appeng.api.parts.SelectedPart;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Optional;
-
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartHost;
+import appeng.api.parts.SelectedPart;
 
 /**
  * Accessor to access specific parts for WAILA
@@ -41,8 +40,8 @@ public final class PartAccessor {
     /**
      * Hits a {@link IPartHost} with {@link BlockPos}.
      * <p/>
-     * You can derive the looked at {@link IPart} by doing that. If a facade is being looked at, it is
-     * defined as being absent.
+     * You can derive the looked at {@link IPart} by doing that. If a facade is being looked at, it is defined as being
+     * absent.
      *
      * @param te  being looked at {@link TileEntity}
      * @param mop type of ray-trace

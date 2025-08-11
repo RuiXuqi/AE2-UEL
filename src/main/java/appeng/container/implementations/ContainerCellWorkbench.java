@@ -18,6 +18,15 @@
 
 package appeng.container.implementations;
 
+import java.util.Iterator;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.CopyMode;
@@ -39,16 +48,6 @@ import appeng.util.Platform;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.WrapperSupplierItemHandler;
 import appeng.util.iterators.NullIterator;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
-
-import java.util.Iterator;
-
 
 public class ContainerCellWorkbench extends ContainerUpgradeable {
     private final TileCellWorkbench workBench;
@@ -70,7 +69,8 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
     }
 
     public void nextWorkBenchCopyMode() {
-        this.workBench.getConfigManager().putSetting(Settings.COPY_MODE, Platform.nextEnum(this.getWorkBenchCopyMode()));
+        this.workBench.getConfigManager().putSetting(Settings.COPY_MODE,
+                Platform.nextEnum(this.getWorkBenchCopyMode()));
     }
 
     private CopyMode getWorkBenchCopyMode() {
@@ -85,10 +85,12 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
     @Override
     protected void setupConfig() {
         final IItemHandler cell = this.getUpgradeable().getInventoryByName("cell");
-        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.WORKBENCH_CELL, cell, 0, 152, 8, this.getPlayerInv()));
+        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.WORKBENCH_CELL, cell, 0,
+                152, 8, this.getPlayerInv()));
 
         final IItemHandler inv = this.getUpgradeable().getInventoryByName("config");
-        final WrapperSupplierItemHandler upgradeInventory = new WrapperSupplierItemHandler(this::getCellUpgradeInventory);
+        final WrapperSupplierItemHandler upgradeInventory = new WrapperSupplierItemHandler(
+                this::getCellUpgradeInventory);
         // null, 3 * 8 );
 
         int offset = 0;
@@ -105,17 +107,17 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
             for (int z = 0; z < 8; z++) {
                 final int iSLot = zz * 8 + z;
                 this.addSlotToContainer(
-                        new OptionalSlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgradeInventory, this, iSLot, 187 + zz * 18, 8 + 18 * z, iSLot, this
-                                .getInventoryPlayer()));
+                        new OptionalSlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgradeInventory,
+                                this, iSLot, 187 + zz * 18, 8 + 18 * z, iSLot, this
+                                        .getInventoryPlayer()));
             }
         }
         /*
          * if ( supportCapacity() ) { for (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new
-         * OptionalSlotFakeTypeOnly( inv, this, offset++, x, y, z, w, 1 ) );
-         * for (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly(
-         * inv, this, offset++, x, y, z, w + 2, 2 ) );
-         * for (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly(
-         * inv, this, offset++, x, y, z, w + 4, 3 ) ); }
+         * OptionalSlotFakeTypeOnly( inv, this, offset++, x, y, z, w, 1 ) ); for (int w = 0; w < 2; w++) for (int z = 0;
+         * z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly( inv, this, offset++, x, y, z, w + 2, 2 ) ); for
+         * (int w = 0; w < 2; w++) for (int z = 0; z < 9; z++) addSlotToContainer( new OptionalSlotFakeTypeOnly( inv,
+         * this, offset++, x, y, z, w + 4, 3 ) ); }
          */
     }
 
@@ -195,9 +197,11 @@ public class ContainerCellWorkbench extends ContainerUpgradeable {
         final IItemHandler inv = this.getUpgradeable().getInventoryByName("config");
 
         final ItemStack is = this.getUpgradeable().getInventoryByName("cell").getStackInSlot(0);
-        final IStorageChannel channel = is.getItem() instanceof IStorageCell ? ((IStorageCell) is.getItem()).getChannel() : AEApi.instance()
-                .storage()
-                .getStorageChannel(IItemStorageChannel.class);
+        final IStorageChannel channel = is.getItem() instanceof IStorageCell
+                ? ((IStorageCell) is.getItem()).getChannel()
+                : AEApi.instance()
+                        .storage()
+                        .getStorageChannel(IItemStorageChannel.class);
 
         final IMEInventory cellInv = AEApi.instance().registries().cell().getCellInventory(is, null, channel);
 

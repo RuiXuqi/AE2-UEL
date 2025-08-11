@@ -18,6 +18,31 @@
 
 package appeng.parts;
 
+import java.io.IOException;
+import java.util.*;
+
+import com.google.common.base.Preconditions;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
@@ -41,35 +66,10 @@ import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.parts.automation.PartLevelEmitter;
-import appeng.parts.misc.PartOreDicStorageBus;
 import appeng.parts.networking.PartCable;
 import appeng.tile.inventory.AppEngInternalAEInventory;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
-import com.google.common.base.Preconditions;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.*;
-
 
 public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, IUpgradeableHost, ICustomNameObject {
 
@@ -177,6 +177,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
         this.getItemStack().setStackDisplayName(name);
     }
 
+    @Override
     public void addEntityCrashInfo(final CrashReportCategory crashreportcategory) {
         crashreportcategory.addCrashSection("Part Side", this.getSide());
     }
@@ -248,7 +249,7 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
 
     @Override
     public void removeFromWorld() {
-        this.proxy.invalidate();
+        this.proxy.remove();
     }
 
     @Override
@@ -316,10 +317,6 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
             if (cm != null) {
                 cm.readFromNBT(compound);
             }
-
-            if (this instanceof PartOreDicStorageBus oreDicStorageBus) {
-                oreDicStorageBus.saveOreMatch(compound.getString("oreMatch"));
-            }
         }
 
         if (this instanceof IPriorityHost) {
@@ -381,10 +378,6 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
         final IConfigManager cm = this.getConfigManager();
         if (cm != null) {
             cm.writeToNBT(output);
-        }
-
-        if (this instanceof PartOreDicStorageBus oreDicStorageBus) {
-            output.setString("oreMatch", oreDicStorageBus.getOreExp());
         }
 
         if (this instanceof IPriorityHost) {
@@ -462,7 +455,8 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
     private boolean useRenamer(final EntityPlayer player) {
         final ItemStack stack = player.inventory.getCurrentItem();
         if (stack != null && stack.getItem() instanceof ToolQuartzCuttingKnife) {
-            if (ForgeEventFactory.onItemUseStart(player, stack, 1) <= 0) return false;
+            if (ForgeEventFactory.onItemUseStart(player, stack, 1) <= 0)
+                return false;
             Platform.openGUI(player, tile, side, GuiBridge.GUI_RENAMER);
             return true;
         }
@@ -496,7 +490,8 @@ public abstract class AEBasePart implements IPart, IGridProxyable, IActionHost, 
     }
 
     @Override
-    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held, final AEPartLocation side) {
+    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held,
+            final AEPartLocation side) {
         this.proxy.setOwner(player);
     }
 

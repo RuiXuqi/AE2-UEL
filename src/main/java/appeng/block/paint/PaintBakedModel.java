@@ -1,10 +1,14 @@
 package appeng.block.paint;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 
-import appeng.client.render.cablebus.CubeBuilder;
-import appeng.core.AppEng;
-import appeng.helpers.Splotch;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -16,17 +20,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-
+import appeng.client.render.cablebus.CubeBuilder;
+import appeng.core.AppEng;
+import appeng.helpers.Splotch;
 
 /**
  * Renders paint blocks, which render multiple "splotches" that have been applied to the sides of adjacent blocks using
- * a
- * matter cannon with paint balls.
+ * a matter cannon with paint balls.
  */
 class PaintBakedModel implements IBakedModel {
 
@@ -40,7 +40,7 @@ class PaintBakedModel implements IBakedModel {
 
     PaintBakedModel(VertexFormat vertexFormat, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         this.vertexFormat = vertexFormat;
-        this.textures = new TextureAtlasSprite[]{
+        this.textures = new TextureAtlasSprite[] {
                 bakedTextureGetter.apply(TEXTURE_PAINT1),
                 bakedTextureGetter.apply(TEXTURE_PAINT2),
                 bakedTextureGetter.apply(TEXTURE_PAINT3)

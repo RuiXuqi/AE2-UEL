@@ -18,9 +18,7 @@
 
 package appeng.entity;
 
-
 import net.minecraft.entity.Entity;
-
 
 public final class EntityIds {
     private static final int TINY_TNT = 10;

@@ -18,6 +18,21 @@
 
 package appeng.tile.qnb;
 
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.Optional;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IBlockDefinition;
@@ -28,7 +43,6 @@ import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.GridAccessException;
-import appeng.me.cluster.IAECluster;
 import appeng.me.cluster.IAEMultiBlock;
 import appeng.me.cluster.implementations.QuantumCalculator;
 import appeng.me.cluster.implementations.QuantumCluster;
@@ -36,24 +50,9 @@ import appeng.tile.grid.AENetworkInvTile;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
-import appeng.util.inv.filter.AEItemDefinitionFilter;
 import appeng.util.inv.filter.IAEItemFilter;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
 
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.Optional;
-
-
-public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock, ITickable {
+public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock<QuantumCluster>, ITickable {
     private final byte corner = 16;
     private final AppEngInternalInventory internalInventory = new AppEngInternalInventory(this, 2, 1);
     private final byte hasSingularity = 32;
@@ -112,7 +111,8 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         if (this.cluster != null) {
             this.cluster.updateStatus(true);
         }
@@ -188,7 +188,7 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
     }
 
     @Override
-    public IAECluster getCluster() {
+    public QuantumCluster getCluster() {
         return this.cluster;
     }
 
@@ -207,10 +207,7 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
             }
 
             if (this.isCorner() || this.isCenter()) {
-                final EnumSet<EnumFacing> sides = EnumSet.noneOf(EnumFacing.class);
-                for (final EnumFacing dir : this.getAdjacentQuantumBridges()) {
-                    sides.add(dir);
-                }
+                EnumSet<EnumFacing> sides = EnumSet.copyOf(this.getAdjacentQuantumBridges());
 
                 this.getProxy().setValidSides(sides);
             } else {
@@ -270,8 +267,8 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
         return AECableType.DENSE_SMART;
     }
 
-    public void neighborUpdate() {
-        this.calc.calculateMultiblock(this.world, this.getLocation());
+    public void neighborUpdate(BlockPos fromPos) {
+        this.calc.updateMultiblockAfterNeighborUpdate(this.world, this.pos, fromPos);
     }
 
     @Override
@@ -298,7 +295,6 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
 
     private class QuantumBridgeInventoryFilter implements IAEItemFilter {
 
-
         @Override
         public boolean allowExtract(IItemHandler inv, int slot, int amount) {
             return true;
@@ -306,13 +302,15 @@ public class TileQuantumBridge extends AENetworkInvTile implements IAEMultiBlock
 
         @Override
         public boolean allowInsert(IItemHandler inv, int slot, ItemStack stack) {
-            if (inv.getStackInSlot(0).isEmpty() && inv.getStackInSlot(1).isEmpty() ) {
+            if (inv.getStackInSlot(0).isEmpty() && inv.getStackInSlot(1).isEmpty()) {
                 if (slot == 0 && AEApi.instance().definitions().materials().qESingularity().isSameAs(stack)) {
                     return true;
-                } else return slot == 1 && AEApi.instance().definitions().materials().cardQuantumLink().isSameAs(stack);
+                } else
+                    return slot == 1 && AEApi.instance().definitions().materials().cardQuantumLink().isSameAs(stack);
             } else if (slot == 0 && inv.getStackInSlot(1).isEmpty()) {
                 return true;
-            }else return slot == 1 && inv.getStackInSlot(0).isEmpty();
+            } else
+                return slot == 1 && inv.getStackInSlot(0).isEmpty();
         }
     }
 }

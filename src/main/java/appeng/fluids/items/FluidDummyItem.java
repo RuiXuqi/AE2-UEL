@@ -18,8 +18,6 @@
 
 package appeng.fluids.items;
 
-
-import appeng.items.AEBaseItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +26,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import appeng.items.AEBaseItem;
 
 /**
  * Dummy item to display the fluid Icon

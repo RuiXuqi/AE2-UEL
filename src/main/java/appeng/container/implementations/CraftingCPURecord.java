@@ -18,11 +18,9 @@
 
 package appeng.container.implementations;
 
-
-import appeng.api.networking.crafting.ICraftingCPU;
-
 import javax.annotation.Nonnull;
 
+import appeng.api.networking.crafting.ICraftingCPU;
 
 public class CraftingCPURecord implements Comparable<CraftingCPURecord> {
 

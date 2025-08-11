@@ -18,7 +18,6 @@
 
 package appeng.client.gui.widgets;
 
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,7 +25,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 
 public class GuiTabButton extends GuiButton implements ITooltip {
     private final RenderItem itemRenderer;

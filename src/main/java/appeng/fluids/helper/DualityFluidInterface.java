@@ -18,6 +18,35 @@
 
 package appeng.fluids.helper;
 
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
+
+import gregtech.api.block.machines.BlockMachine;
+import gregtech.api.metatileentity.MetaTileEntity;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -54,9 +83,7 @@ import appeng.fluids.util.AENetworkFluidInventory;
 import appeng.fluids.util.IAEFluidInventory;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.helpers.ICustomNameObject;
-import appeng.helpers.IInterfaceHost;
 import appeng.me.GridAccessException;
-import appeng.me.GridNodeCollection;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.MachineSource;
 import appeng.me.storage.MEMonitorIFluidHandler;
@@ -70,37 +97,9 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import gregtech.api.block.machines.BlockMachine;
-import gregtech.api.metatileentity.MetaTileEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-
-
-public class DualityFluidInterface implements IGridTickable, IStorageMonitorable, IAEFluidInventory, IAEAppEngInventory, IUpgradeableHost, IConfigManagerHost, IConfigurableFluidInventory {
+public class DualityFluidInterface implements IGridTickable, IStorageMonitorable, IAEFluidInventory, IAEAppEngInventory,
+        IUpgradeableHost, IConfigManagerHost, IConfigurableFluidInventory {
     public static final int NUMBER_OF_TANKS = 9;
     public static final int TANK_CAPACITY = Fluid.BUCKET_VOLUME * 4;
     private static final Collection<Block> BAD_BLOCKS = new HashSet<>(100);
@@ -118,8 +117,11 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
     private int isWorking = -1;
     private int priority;
 
-    private final MEMonitorPassThrough<IAEItemStack> items = new MEMonitorPassThrough<>(new NullInventory<IAEItemStack>(), AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
-    private final MEMonitorPassThrough<IAEFluidStack> fluids = new MEMonitorPassThrough<>(new NullInventory<IAEFluidStack>(), AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
+    private final MEMonitorPassThrough<IAEItemStack> items = new MEMonitorPassThrough<>(
+            new NullInventory<IAEItemStack>(), AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+    private final MEMonitorPassThrough<IAEFluidStack> fluids = new MEMonitorPassThrough<>(
+            new NullInventory<IAEFluidStack>(),
+            AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
     private boolean resetConfigCache = true;
     private IMEMonitor<IAEFluidStack> configCachedHandler;
 
@@ -134,7 +136,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
 
         this.mySource = new MachineSource(this.iHost);
         this.interfaceRequestSource = new InterfaceRequestSource(this.iHost);
-        this.tanks = new AENetworkFluidInventory(this::getStorageGrid, this.mySource, this, NUMBER_OF_TANKS, TANK_CAPACITY);
+        this.tanks = new AENetworkFluidInventory(this::getStorageGrid, this.mySource, this, NUMBER_OF_TANKS,
+                TANK_CAPACITY);
 
         this.fluids.setChangeSource(this.mySource);
         this.items.setChangeSource(this.mySource);
@@ -191,7 +194,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
 
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
-        return new TickingRequest(TickRates.Interface.getMin(), TickRates.Interface.getMax(), !this.hasWorkToDo(), true);
+        return new TickingRequest(TickRates.Interface.getMin(), TickRates.Interface.getMax(), !this.hasWorkToDo(),
+                true);
     }
 
     @Override
@@ -201,7 +205,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
         }
 
         final boolean couldDoWork = this.updateStorage();
-        return this.hasWorkToDo() ? (couldDoWork ? TickRateModulation.URGENT : TickRateModulation.SLOWER) : TickRateModulation.SLEEP;
+        return this.hasWorkToDo() ? (couldDoWork ? TickRateModulation.URGENT : TickRateModulation.SLOWER)
+                : TickRateModulation.SLEEP;
     }
 
     public void notifyNeighbors() {
@@ -221,8 +226,10 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
 
     public void gridChanged() {
         try {
-            this.items.setInternal(this.gridProxy.getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
-            this.fluids.setInternal(this.gridProxy.getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)));
+            this.items.setInternal(this.gridProxy.getStorage()
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
+            this.fluids.setInternal(this.gridProxy.getStorage()
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)));
         } catch (final GridAccessException gae) {
             this.items.setInternal(new NullInventory<>());
             this.fluids.setInternal(new NullInventory<>());
@@ -262,7 +269,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
 
             if (directedTile instanceof IFluidInterfaceHost) {
                 try {
-                    if (((IFluidInterfaceHost) directedTile).getDualityFluidInterface().sameGrid(this.gridProxy.getGrid())) {
+                    if (((IFluidInterfaceHost) directedTile).getDualityFluidInterface()
+                            .sameGrid(this.gridProxy.getGrid())) {
                         continue;
                     }
                 } catch (final GridAccessException e) {
@@ -281,20 +289,24 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
                 ItemStack what = new ItemStack(directedBlock, 1, directedBlock.getMetaFromState(directedBlockState));
 
                 if (Platform.GTLoaded && directedBlock instanceof BlockMachine) {
-                    MetaTileEntity metaTileEntity = Platform.getMetaTileEntity(directedTile.getWorld(), directedTile.getPos());
+                    MetaTileEntity metaTileEntity = Platform.getMetaTileEntity(directedTile.getWorld(),
+                            directedTile.getPos());
                     if (metaTileEntity != null) {
                         return metaTileEntity.getMetaFullName();
                     }
                 }
 
                 try {
-                    Vec3d from = new Vec3d(hostTile.getPos().getX() + 0.5, hostTile.getPos().getY() + 0.5, hostTile.getPos().getZ() + 0.5);
-                    from = from.add(direction.getXOffset() * 0.501, direction.getYOffset() * 0.501, direction.getZOffset() * 0.501);
+                    Vec3d from = new Vec3d(hostTile.getPos().getX() + 0.5, hostTile.getPos().getY() + 0.5,
+                            hostTile.getPos().getZ() + 0.5);
+                    from = from.add(direction.getXOffset() * 0.501, direction.getYOffset() * 0.501,
+                            direction.getZOffset() * 0.501);
                     final Vec3d to = from.add(direction.getXOffset(), direction.getYOffset(), direction.getZOffset());
                     final RayTraceResult mop = hostWorld.rayTraceBlocks(from, to, true);
                     if (mop != null && !BAD_BLOCKS.contains(directedBlock)) {
                         if (mop.getBlockPos().equals(directedTile.getPos())) {
-                            final ItemStack g = directedBlock.getPickBlock(directedBlockState, mop, hostWorld, directedTile.getPos(), null);
+                            final ItemStack g = directedBlock.getPickBlock(directedBlockState, mop, hostWorld,
+                                    directedTile.getPos(), null);
                             if (!g.isEmpty()) {
                                 what = g;
                             }
@@ -324,7 +336,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
     }
 
     public boolean hasCapability(Capability<?> capabilityClass, EnumFacing facing) {
-        return capabilityClass == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capabilityClass == Capabilities.STORAGE_MONITORABLE_ACCESSOR;
+        return capabilityClass == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+                || capabilityClass == Capabilities.STORAGE_MONITORABLE_ACCESSOR;
     }
 
     @SuppressWarnings("unchecked")
@@ -442,8 +455,11 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
                 // make sure strange things didn't happen...
                 if (this.tanks.fill(slot, work.getFluidStack(), false) != work.getStackSize()) {
                     changed = true;
-                } else if (this.gridProxy.getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)).getStorageList().findPrecise(work) != null) {
-                    final IAEFluidStack acquired = Platform.poweredExtraction(src, dest, work, this.interfaceRequestSource);
+                } else if (this.gridProxy.getStorage()
+                        .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class))
+                        .getStorageList().findPrecise(work) != null) {
+                    final IAEFluidStack acquired = Platform.poweredExtraction(src, dest, work,
+                            this.interfaceRequestSource);
                     if (acquired != null) {
                         changed = true;
                         final int filled = this.tanks.fill(slot, acquired.getFluidStack(), true);
@@ -487,11 +503,6 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
     }
 
     @Override
-    public void onFluidInventoryChanged(IAEFluidTank inv, int slot) {
-        onFluidInventoryChanged(inv, slot, null, null, null);
-    }
-
-    @Override
     public void onFluidInventoryChanged(final IAEFluidTank inventory, FluidStack added, FluidStack removed) {
         if (inventory == this.tanks) {
             if (added != null) {
@@ -502,7 +513,13 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
     }
 
     @Override
-    public void onFluidInventoryChanged(final IAEFluidTank inventory, final int slot, InvOperation operation, FluidStack added, FluidStack removed) {
+    public void onFluidInventoryChanged(IAEFluidTank inv, int slot) {
+        onFluidInventoryChanged(inv, slot, null, null, null);
+    }
+
+    @Override
+    public void onFluidInventoryChanged(final IAEFluidTank inventory, final int slot, InvOperation operation,
+            FluidStack added, FluidStack removed) {
         if (this.isWorking == slot) {
             return;
         }
@@ -560,7 +577,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
         this.tanks.readFromNBT(data, "storage");
         this.priority = data.getInteger("priority");
         this.upgrades.readFromNBT(data, "upgrades");
-        this.tanks.setCapacity((int) (Math.pow(4, this.getInstalledUpgrades(Upgrades.CAPACITY) + 1) * Fluid.BUCKET_VOLUME));
+        this.tanks.setCapacity(
+                (int) (Math.pow(4, this.getInstalledUpgrades(Upgrades.CAPACITY) + 1) * Fluid.BUCKET_VOLUME));
         this.readConfig();
     }
 
@@ -618,7 +636,8 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
         @Override
         public IAEFluidStack extractItems(final IAEFluidStack request, final Actionable type, final IActionSource src) {
             final Optional<InterfaceRequestContext> context = src.context(InterfaceRequestContext.class);
-            final boolean hasLowerOrEqualPriority = context.map(c -> c.compareTo(DualityFluidInterface.this.priority) <= 0).orElse(false);
+            final boolean hasLowerOrEqualPriority = context
+                    .map(c -> c.compareTo(DualityFluidInterface.this.priority) <= 0).orElse(false);
 
             if (hasLowerOrEqualPriority) {
                 return null;
@@ -633,9 +652,11 @@ public class DualityFluidInterface implements IGridTickable, IStorageMonitorable
     }
 
     @Override
-    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
+    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack,
+            ItemStack newStack) {
         if (inv == this.upgrades) {
-            this.tanks.setCapacity((int) (Math.pow(4, this.getInstalledUpgrades(Upgrades.CAPACITY) + 1) * Fluid.BUCKET_VOLUME));
+            this.tanks.setCapacity(
+                    (int) (Math.pow(4, this.getInstalledUpgrades(Upgrades.CAPACITY) + 1) * Fluid.BUCKET_VOLUME));
             try {
                 this.gridProxy.getTick().alertDevice(this.gridProxy.getNode());
             } catch (GridAccessException ignored) {

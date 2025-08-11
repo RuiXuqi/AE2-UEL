@@ -18,10 +18,6 @@
 
 package appeng.debug;
 
-
-import appeng.core.AppEng;
-import appeng.tile.AEBaseTile;
-import appeng.util.Platform;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,6 +27,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
+import appeng.core.AppEng;
+import appeng.tile.AEBaseTile;
+import appeng.util.Platform;
 
 public class TileCubeGenerator extends AEBaseTile implements ITickable {
 

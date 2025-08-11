@@ -18,16 +18,15 @@
 
 package appeng.util.inv;
 
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.config.FuzzyMode;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.iterators.StackToSlotIterator;
-import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
-import java.util.List;
-
 
 public class AdaptorList extends InventoryAdaptor {
 
@@ -94,11 +93,13 @@ public class AdaptorList extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack removeSimilarItems(int amount, final ItemStack filter, final FuzzyMode fuzzyMode, final IInventoryDestination destination) {
+    public ItemStack removeSimilarItems(int amount, final ItemStack filter, final FuzzyMode fuzzyMode,
+            final IInventoryDestination destination) {
         final int s = this.i.size();
         for (int x = 0; x < s; x++) {
             final ItemStack is = this.i.get(x);
-            if (!is.isEmpty() && (filter.isEmpty() || Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
+            if (!is.isEmpty()
+                    && (filter.isEmpty() || Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
                 if (amount > is.getCount()) {
                     amount = is.getCount();
                 }
@@ -124,9 +125,11 @@ public class AdaptorList extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack simulateSimilarRemove(int amount, final ItemStack filter, final FuzzyMode fuzzyMode, final IInventoryDestination destination) {
+    public ItemStack simulateSimilarRemove(int amount, final ItemStack filter, final FuzzyMode fuzzyMode,
+            final IInventoryDestination destination) {
         for (final ItemStack is : this.i) {
-            if (!is.isEmpty() && (filter.isEmpty() || Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
+            if (!is.isEmpty()
+                    && (filter.isEmpty() || Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
                 if (amount > is.getCount()) {
                     amount = is.getCount();
                 }

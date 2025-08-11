@@ -18,6 +18,12 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.Settings;
@@ -31,12 +37,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.core.sync.packets.PacketSwitchGuis;
 import appeng.parts.automation.PartFormationPlane;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 public class GuiFormationPlane extends GuiUpgradeable {
 
@@ -51,9 +51,11 @@ public class GuiFormationPlane extends GuiUpgradeable {
     @Override
     protected void addButtons() {
         this.placeMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.PLACE_BLOCK, YesNo.YES);
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
 
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender));
+        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16,
+                GuiText.Priority.getLocal(), this.itemRender));
 
         this.buttonList.add(this.placeMode);
         this.buttonList.add(this.fuzzyMode);

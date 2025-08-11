@@ -18,10 +18,8 @@
 
 package appeng.client.render.model;
 
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
-
 
 /**
  * Used as the cache key for caching automatically rotated baked models.
@@ -65,7 +63,8 @@ final class AutoRotatingCacheKey {
         }
 
         AutoRotatingCacheKey cacheKey = (AutoRotatingCacheKey) o;
-        return this.blockState.equals(cacheKey.blockState) && this.forward == cacheKey.forward && this.up == cacheKey.up && this.side == cacheKey.side;
+        return this.blockState.equals(cacheKey.blockState) && this.forward == cacheKey.forward && this.up == cacheKey.up
+                && this.side == cacheKey.side;
     }
 
     @Override

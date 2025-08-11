@@ -18,6 +18,7 @@
 
 package appeng.me.storage;
 
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -31,12 +32,11 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.items.contents.CellConfig;
 import appeng.util.item.AEItemStack;
-import net.minecraft.item.ItemStack;
-
 
 public class CreativeCellInventory implements IMEInventoryHandler<IAEItemStack> {
 
-    private final IItemList<IAEItemStack> itemListCache = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> itemListCache = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
 
     protected CreativeCellInventory(final ItemStack o) {
         final CellConfig cc = new CellConfig(o);
@@ -50,7 +50,8 @@ public class CreativeCellInventory implements IMEInventoryHandler<IAEItemStack> 
     }
 
     public static ICellInventoryHandler getCell(final ItemStack o) {
-        return new BasicCellInventoryHandler(new CreativeCellInventory(o), AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        return new BasicCellInventoryHandler(new CreativeCellInventory(o),
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
     }
 
     @Override

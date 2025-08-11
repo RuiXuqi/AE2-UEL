@@ -18,16 +18,15 @@
 
 package appeng.core;
 
+import java.util.Optional;
 
-import appeng.api.AEApi;
-import appeng.items.parts.ItemFacade;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import java.util.Optional;
-
+import appeng.api.AEApi;
+import appeng.items.parts.ItemFacade;
 
 public final class CreativeTabFacade extends CreativeTabs {
 

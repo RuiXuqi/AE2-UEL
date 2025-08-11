@@ -18,15 +18,11 @@
 
 package appeng.items.tools.powered;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import appeng.api.config.Actionable;
-import appeng.api.util.DimensionalCoord;
-import appeng.block.misc.BlockTinyTNT;
-import appeng.core.AEConfig;
-import appeng.hooks.IBlockTool;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
-import appeng.util.InWorldToolOperationResult;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.material.Material;
@@ -44,11 +40,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import appeng.api.config.Actionable;
+import appeng.api.util.DimensionalCoord;
+import appeng.block.misc.BlockTinyTNT;
+import appeng.core.AEConfig;
+import appeng.hooks.IBlockTool;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.util.InWorldToolOperationResult;
+import appeng.util.Platform;
 
 public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockTool {
     private final Map<InWorldToolOperationIngredient, InWorldToolOperationResult> heatUp;
@@ -64,18 +63,24 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
                 new InWorldToolOperationResult(Blocks.COBBLESTONE.getDefaultState()));
         this.coolDown.put(new InWorldToolOperationIngredient(Blocks.STONEBRICK.getDefaultState()),
                 new InWorldToolOperationResult(Blocks.STONEBRICK.getStateFromMeta(2)));
-        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.LAVA, true), new InWorldToolOperationResult(Blocks.OBSIDIAN.getDefaultState()));
+        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.LAVA, true),
+                new InWorldToolOperationResult(Blocks.OBSIDIAN.getDefaultState()));
         this.coolDown.put(new InWorldToolOperationIngredient(Blocks.FLOWING_LAVA, true),
                 new InWorldToolOperationResult(Blocks.OBSIDIAN.getDefaultState()));
-        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.GRASS, true), new InWorldToolOperationResult(Blocks.DIRT.getDefaultState()));
+        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.GRASS, true),
+                new InWorldToolOperationResult(Blocks.DIRT.getDefaultState()));
 
         final List<ItemStack> snowBalls = new ArrayList<>();
         snowBalls.add(new ItemStack(Items.SNOWBALL));
-        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.FLOWING_WATER, true), new InWorldToolOperationResult(null, snowBalls));
-        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.WATER, true), new InWorldToolOperationResult(Blocks.ICE.getDefaultState()));
+        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.FLOWING_WATER, true),
+                new InWorldToolOperationResult(null, snowBalls));
+        this.coolDown.put(new InWorldToolOperationIngredient(Blocks.WATER, true),
+                new InWorldToolOperationResult(Blocks.ICE.getDefaultState()));
 
-        this.heatUp.put(new InWorldToolOperationIngredient(Blocks.ICE.getDefaultState()), new InWorldToolOperationResult(Blocks.WATER.getDefaultState()));
-        this.heatUp.put(new InWorldToolOperationIngredient(Blocks.FLOWING_WATER, true), new InWorldToolOperationResult());
+        this.heatUp.put(new InWorldToolOperationIngredient(Blocks.ICE.getDefaultState()),
+                new InWorldToolOperationResult(Blocks.WATER.getDefaultState()));
+        this.heatUp.put(new InWorldToolOperationIngredient(Blocks.FLOWING_WATER, true),
+                new InWorldToolOperationResult());
         this.heatUp.put(new InWorldToolOperationIngredient(Blocks.WATER, true), new InWorldToolOperationResult());
         this.heatUp.put(new InWorldToolOperationIngredient(Blocks.SNOW, true),
                 new InWorldToolOperationResult(Blocks.FLOWING_WATER.getStateFromMeta(7)));
@@ -200,12 +205,14 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer p, World w, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer p, World w, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+            float hitY, float hitZ) {
         return this.onItemUse(p.getHeldItem(hand), p, w, pos, hand, side, hitX, hitY, hitZ);
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack item, EntityPlayer p, World w, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(ItemStack item, EntityPlayer p, World w, BlockPos pos, EnumHand hand,
+            EnumFacing side, float hitX, float hitY, float hitZ) {
         if (this.getAECurrentPower(item) > 1600) {
             if (!p.canPlayerEdit(pos, side, item)) {
                 return EnumActionResult.FAIL;
@@ -249,8 +256,9 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
 
                     if (!result.isEmpty()) {
                         if (result.getItem() instanceof ItemBlock) {
-                            if (Block.getBlockFromItem(result.getItem()) == blockID && result.getItem().getDamage(result) == blockID
-                                    .getMetaFromState(state)) {
+                            if (Block.getBlockFromItem(result.getItem()) == blockID
+                                    && result.getItem().getDamage(result) == blockID
+                                            .getMetaFromState(state)) {
                                 canFurnaceable = false;
                             }
                         }
@@ -264,8 +272,10 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
 
                 if (hasFurnaceable && canFurnaceable) {
                     this.extractAEPower(item, 1600, Actionable.MODULATE);
-                    final InWorldToolOperationResult or = InWorldToolOperationResult.getBlockOperationResult(out.toArray(new ItemStack[out.size()]));
-                    w.playSound(p, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F,
+                    final InWorldToolOperationResult or = InWorldToolOperationResult
+                            .getBlockOperationResult(out.toArray(new ItemStack[out.size()]));
+                    w.playSound(p, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
+                            SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F,
                             itemRand.nextFloat() * 0.4F + 0.8F);
 
                     if (or.getBlockState() == null) {
@@ -288,7 +298,8 @@ public class ToolEntropyManipulator extends AEBasePoweredItem implements IBlockT
 
                     if (w.isAirBlock(offsetPos)) {
                         this.extractAEPower(item, 1600, Actionable.MODULATE);
-                        w.playSound(p, offsetPos.getX() + 0.5D, offsetPos.getY() + 0.5D, offsetPos.getZ() + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE,
+                        w.playSound(p, offsetPos.getX() + 0.5D, offsetPos.getY() + 0.5D, offsetPos.getZ() + 0.5D,
+                                SoundEvents.ITEM_FLINTANDSTEEL_USE,
                                 SoundCategory.PLAYERS, 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
                         w.setBlockState(offsetPos, Blocks.FIRE.getDefaultState());
                     }

@@ -18,6 +18,8 @@
 
 package appeng.bootstrap;
 
+import java.util.Arrays;
+import java.util.Collection;
 
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -27,19 +29,14 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-
 /**
  * Allows the rendering of an item to be customized.
  */
 public interface IItemRendering {
 
     /**
-     * Registers a custom item mesh definition that will be used to dynamically determine the
-     * item model to be used for rendering by inspecting the item stack (i.e. for NBT data).
-     * Please
+     * Registers a custom item mesh definition that will be used to dynamically determine the item model to be used for
+     * rendering by inspecting the item stack (i.e. for NBT data). Please
      */
     @SideOnly(Side.CLIENT)
     IItemRendering meshDefinition(ItemMeshDefinition meshDefinition);
@@ -67,9 +64,8 @@ public interface IItemRendering {
     }
 
     /**
-     * Registers the item variants of this item. This are all models that need to be loaded for this item.
-     * This has no direct effect on rendering, but is used to load models that are used for example by
-     * the ItemMeshDefinition.
+     * Registers the item variants of this item. This are all models that need to be loaded for this item. This has no
+     * direct effect on rendering, but is used to load models that are used for example by the ItemMeshDefinition.
      * <p>
      * Models registered via {@link #model(int, ModelResourceLocation)} are automatically added here.
      */
@@ -77,8 +73,7 @@ public interface IItemRendering {
     IItemRendering variants(Collection<ResourceLocation> resources);
 
     /**
-     * Registers a custom item color definition that inspects an item stack and tint and
-     * returns a color multiplier.
+     * Registers a custom item color definition that inspects an item stack and tint and returns a color multiplier.
      */
     @SideOnly(Side.CLIENT)
     IItemRendering color(IItemColor itemColor);

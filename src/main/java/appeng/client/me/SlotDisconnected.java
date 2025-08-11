@@ -18,15 +18,14 @@
 
 package appeng.client.me;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.IJEITargetSlot;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-
 
 public class SlotDisconnected extends AppEngSlot implements IJEITargetSlot {
 

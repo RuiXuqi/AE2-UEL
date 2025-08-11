@@ -18,9 +18,6 @@
 
 package appeng.client.render.effects;
 
-
-import appeng.api.util.AEPartLocation;
-import appeng.client.render.textures.ParticleTextures;
 import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -28,12 +25,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 
+import appeng.api.util.AEPartLocation;
+import appeng.client.render.textures.ParticleTextures;
 
 public class MatterCannonFX extends ParticleBreaking {
 
     private final TextureAtlasSprite particleTextureIndex;
 
-    public MatterCannonFX(final World par1World, final double par2, final double par4, final double par6, final Item par8Item) {
+    public MatterCannonFX(final World par1World, final double par2, final double par4, final double par6,
+            final Item par8Item) {
         super(par1World, par2, par4, par6, par8Item);
         this.particleGravity = 0;
         this.particleBlue = 1;
@@ -77,7 +77,8 @@ public class MatterCannonFX extends ParticleBreaking {
     }
 
     @Override
-    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
+    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float par2,
+            final float par3, final float par4, final float par5, final float par6, final float par7) {
         final float f6 = this.particleTextureIndex.getMinU();
         final float f7 = this.particleTextureIndex.getMaxU();
         final float f8 = this.particleTextureIndex.getMinV();

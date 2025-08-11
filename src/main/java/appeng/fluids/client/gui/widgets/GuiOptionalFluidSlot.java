@@ -1,11 +1,10 @@
 package appeng.fluids.client.gui.widgets;
 
+import net.minecraft.client.renderer.GlStateManager;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.container.slot.IOptionalSlotHost;
 import appeng.fluids.util.IAEFluidTank;
-import net.minecraft.client.renderer.GlStateManager;
-
 
 public class GuiOptionalFluidSlot extends GuiFluidSlot {
     private final IOptionalSlotHost containerBus;
@@ -13,7 +12,8 @@ public class GuiOptionalFluidSlot extends GuiFluidSlot {
     private final int srcX;
     private final int srcY;
 
-    public GuiOptionalFluidSlot(IAEFluidTank fluids, final IOptionalSlotHost containerBus, int slot, int id, int groupNum, int x, int y, int xoffs, int yoffs) {
+    public GuiOptionalFluidSlot(IAEFluidTank fluids, final IOptionalSlotHost containerBus, int slot, int id,
+            int groupNum, int x, int y, int xoffs, int yoffs) {
         super(fluids, slot, id, x + xoffs * 18, y + yoffs * 18);
         this.containerBus = containerBus;
         this.groupNum = groupNum;
@@ -45,7 +45,8 @@ public class GuiOptionalFluidSlot extends GuiFluidSlot {
         } else {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 0.4F);
         }
-        this.drawTexturedModalRect(guileft + this.xPos() - 1, guitop + this.yPos() - 1, this.srcX - 1, this.srcY - 1, this.getWidth() + 2,
+        this.drawTexturedModalRect(guileft + this.xPos() - 1, guitop + this.yPos() - 1, this.srcX - 1, this.srcY - 1,
+                this.getWidth() + 2,
                 this.getHeight() + 2);
     }
 }

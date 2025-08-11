@@ -18,11 +18,8 @@
 
 package appeng.debug;
 
+import java.util.List;
 
-import appeng.core.AELog;
-import appeng.core.AppEng;
-import appeng.tile.AEBaseTile;
-import appeng.util.Platform;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ITickable;
@@ -33,8 +30,10 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.util.List;
-
+import appeng.core.AELog;
+import appeng.core.AppEng;
+import appeng.tile.AEBaseTile;
+import appeng.util.Platform;
 
 public class TileChunkLoader extends AEBaseTile implements ITickable {
 

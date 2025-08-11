@@ -18,6 +18,7 @@
 
 package appeng.fluids.client.gui;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.client.gui.implementations.GuiUpgradeable;
 import appeng.core.localization.GuiText;
@@ -27,8 +28,6 @@ import appeng.fluids.container.ContainerFluidIO;
 import appeng.fluids.parts.PartFluidImportBus;
 import appeng.fluids.parts.PartSharedFluidBus;
 import appeng.fluids.util.IAEFluidTank;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 /**
  * @author BrockWS

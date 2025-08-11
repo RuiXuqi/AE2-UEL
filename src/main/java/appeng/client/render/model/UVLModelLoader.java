@@ -18,11 +18,30 @@
 
 package appeng.client.render.model;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-import appeng.client.render.VertexFormats;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.gson.*;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.util.vector.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -42,25 +61,8 @@ import net.minecraftforge.client.model.pipeline.VertexLighterFlat;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.ITransformation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.util.vector.Vector3f;
 
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
+import appeng.client.render.VertexFormats;
 
 public enum UVLModelLoader implements ICustomModelLoader {
     INSTANCE;
@@ -77,7 +79,8 @@ public enum UVLModelLoader implements ICustomModelLoader {
             faceBakery = ReflectionHelper.findField(ModelBakery.class, "faceBakery", "field_177607_l");
 
             Class clas = Class.forName(ModelLoader.class.getName() + "$VanillaModelWrapper");
-            vanillaModelWrapper = clas.getDeclaredConstructor(ModelLoader.class, ResourceLocation.class, ModelBlock.class, boolean.class,
+            vanillaModelWrapper = clas.getDeclaredConstructor(ModelLoader.class, ResourceLocation.class,
+                    ModelBlock.class, boolean.class,
                     ModelBlockAnimation.class);
             vanillaModelWrapper.setAccessible(true);
 
@@ -104,7 +107,8 @@ public enum UVLModelLoader implements ICustomModelLoader {
         }
     }
 
-    private static <M extends IModel> M vanillaModelWrapper(ModelLoader loader, ResourceLocation location, ModelBlock model, boolean uvlock, ModelBlockAnimation animation) {
+    private static <M extends IModel> M vanillaModelWrapper(ModelLoader loader, ResourceLocation location,
+            ModelBlock model, boolean uvlock, ModelBlockAnimation animation) {
         try {
             return (M) vanillaModelWrapper.newInstance(loader, location, model, uvlock, animation);
         } catch (Exception e) {
@@ -160,7 +164,8 @@ public enum UVLModelLoader implements ICustomModelLoader {
     }
 
     public class UVLModelWrapper implements IModel {
-        final Gson UVLSERIALIZER = (new GsonBuilder()).registerTypeAdapter(ModelBlock.class, deserializer(ModelBlock.class))
+        final Gson UVLSERIALIZER = (new GsonBuilder())
+                .registerTypeAdapter(ModelBlock.class, deserializer(ModelBlock.class))
                 .registerTypeAdapter(BlockPart.class, deserializer(BlockPart.class))
                 .registerTypeAdapter(BlockPartFace.class, new BlockPartFaceOverrideSerializer())
                 .registerTypeAdapter(BlockFaceUV.class, deserializer(BlockFaceUV.class))
@@ -178,8 +183,10 @@ public enum UVLModelLoader implements ICustomModelLoader {
             if (modelLocation.getPath().startsWith("models/")) {
                 modelPath = modelPath.substring("models/".length());
             }
-            ResourceLocation armatureLocation = new ResourceLocation(modelLocation.getNamespace(), "armatures/" + modelPath + ".json");
-            ModelBlockAnimation animation = ModelBlockAnimation.loadVanillaAnimation(UVLModelLoader.this.resourceManager, armatureLocation);
+            ResourceLocation armatureLocation = new ResourceLocation(modelLocation.getNamespace(),
+                    "armatures/" + modelPath + ".json");
+            ModelBlockAnimation animation = ModelBlockAnimation
+                    .loadVanillaAnimation(UVLModelLoader.this.resourceManager, armatureLocation);
             ModelBlock model;
             {
                 Reader reader = null;
@@ -192,7 +199,8 @@ public enum UVLModelLoader implements ICustomModelLoader {
                     iresource = Minecraft.getMinecraft()
                             .getResourceManager()
                             .getResource(
-                                    new ResourceLocation(modelLocation.getNamespace(), "models/" + modelPath + ".json"));
+                                    new ResourceLocation(modelLocation.getNamespace(),
+                                            "models/" + modelPath + ".json"));
                     reader = new InputStreamReader(iresource.getInputStream(), Charsets.UTF_8);
 
                     lvt_5_1_ = JsonUtils.gsonDeserialize(this.UVLSERIALIZER, reader, ModelBlock.class, false);
@@ -221,7 +229,8 @@ public enum UVLModelLoader implements ICustomModelLoader {
         }
 
         @Override
-        public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+        public IBakedModel bake(IModelState state, VertexFormat format,
+                Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
             setFaceBakery(UVLModelLoader.this.getLoader(), new FaceBakeryOverride());
             IBakedModel model = this.parent.bake(state, format, bakedTextureGetter);
             setFaceBakery(UVLModelLoader.this.getLoader(), new FaceBakery());
@@ -235,7 +244,8 @@ public enum UVLModelLoader implements ICustomModelLoader {
 
         public class BlockPartFaceOverrideSerializer implements JsonDeserializer<BlockPartFace> {
             @Override
-            public BlockPartFace deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException {
+            public BlockPartFace deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_,
+                    JsonDeserializationContext p_deserialize_3_) throws JsonParseException {
                 JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
                 EnumFacing enumfacing = this.parseCullFace(jsonobject);
                 int i = this.parseTintIndex(jsonobject);
@@ -265,15 +275,19 @@ public enum UVLModelLoader implements ICustomModelLoader {
                     return null;
                 }
                 object = object.get("uvlightmap").getAsJsonObject();
-                return new ImmutablePair<>(JsonUtils.getFloat(object, "sky", 0), JsonUtils.getFloat(object, "block", 0));
+                return new ImmutablePair<>(JsonUtils.getFloat(object, "sky", 0),
+                        JsonUtils.getFloat(object, "block", 0));
             }
         }
 
         public class FaceBakeryOverride extends FaceBakery {
 
             @Override
-            public BakedQuad makeBakedQuad(Vector3f posFrom, Vector3f posTo, BlockPartFace face, TextureAtlasSprite sprite, EnumFacing facing, ITransformation modelRotationIn, BlockPartRotation partRotation, boolean uvLocked, boolean shade) {
-                BakedQuad quad = super.makeBakedQuad(posFrom, posTo, face, sprite, facing, modelRotationIn, partRotation, uvLocked, shade);
+            public BakedQuad makeBakedQuad(Vector3f posFrom, Vector3f posTo, BlockPartFace face,
+                    TextureAtlasSprite sprite, EnumFacing facing, ITransformation modelRotationIn,
+                    BlockPartRotation partRotation, boolean uvLocked, boolean shade) {
+                BakedQuad quad = super.makeBakedQuad(posFrom, posTo, face, sprite, facing, modelRotationIn,
+                        partRotation, uvLocked, shade);
 
                 Pair<Float, Float> brightness = UVLModelWrapper.this.uvlightmap.get(face);
                 if (brightness != null) {

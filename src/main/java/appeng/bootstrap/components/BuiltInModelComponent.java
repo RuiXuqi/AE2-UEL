@@ -18,17 +18,17 @@
 
 package appeng.bootstrap.components;
 
+import java.util.HashMap;
+import java.util.Map;
 
-import appeng.client.render.model.BuiltInModelLoader;
 import com.google.common.base.Preconditions;
+
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import appeng.client.render.model.BuiltInModelLoader;
 
 @SideOnly(Side.CLIENT)
 public class BuiltInModelComponent implements IPreInitComponent {

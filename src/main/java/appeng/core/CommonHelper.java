@@ -18,23 +18,22 @@
 
 package appeng.core;
 
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
 
 import appeng.api.parts.CableRenderMode;
 import appeng.block.AEBaseBlock;
 import appeng.client.ActionKey;
 import appeng.client.EffectType;
 import appeng.core.sync.AppEngPacket;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
 
 public abstract class CommonHelper {
 
@@ -48,9 +47,11 @@ public abstract class CommonHelper {
 
     public abstract List<EntityPlayer> getPlayers();
 
-    public abstract void sendToAllNearExcept(EntityPlayer p, double x, double y, double z, double dist, World w, AppEngPacket packet);
+    public abstract void sendToAllNearExcept(EntityPlayer p, double x, double y, double z, double dist, World w,
+            AppEngPacket packet);
 
-    public abstract void spawnEffect(EffectType effect, World world, double posX, double posY, double posZ, Object extra);
+    public abstract void spawnEffect(EffectType effect, World world, double posX, double posY, double posZ,
+            Object extra);
 
     public abstract boolean shouldAddParticles(Random r);
 

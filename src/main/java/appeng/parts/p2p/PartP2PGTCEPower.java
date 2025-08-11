@@ -1,20 +1,23 @@
 package appeng.parts.p2p;
 
-import appeng.api.parts.IPartModel;
-import appeng.items.parts.PartModels;
-import appeng.me.GridAccessException;
-import gregtech.api.capability.GregtechCapabilities;
-import gregtech.api.capability.IEnergyContainer;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
+import gregtech.api.capability.GregtechCapabilities;
+import gregtech.api.capability.IEnergyContainer;
+
+import appeng.api.parts.IPartModel;
+import appeng.items.parts.PartModels;
+import appeng.me.GridAccessException;
 
 public class PartP2PGTCEPower extends PartP2PTunnel<PartP2PGTCEPower> {
     private static final P2PModels MODELS = new P2PModels("part/p2p/p2p_tunnel_gteu");
@@ -46,8 +49,10 @@ public class PartP2PGTCEPower extends PartP2PTunnel<PartP2PGTCEPower> {
             final TileEntity self = this.getTile();
             final TileEntity te = self.getWorld().getTileEntity(self.getPos().offset(this.getSide().getFacing()));
 
-            if (te != null && te.hasCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, this.getSide().getOpposite().getFacing())) {
-                return te.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, this.getSide().getOpposite().getFacing());
+            if (te != null && te.hasCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER,
+                    this.getSide().getOpposite().getFacing())) {
+                return te.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER,
+                        this.getSide().getOpposite().getFacing());
             }
         }
         return NULL_ENERGY_STORAGE;
@@ -122,11 +127,13 @@ public class PartP2PGTCEPower extends PartP2PTunnel<PartP2PGTCEPower> {
                     PartP2PGTCEPower target = outputs.poll();
                     final IEnergyContainer output = target.getAttachedEnergyStorage();
 
-                    if (output == null || !output.inputsEnergy(target.getSide().getFacing().getOpposite()) || output.getEnergyCanBeInserted() <= 0) {
+                    if (output == null || !output.inputsEnergy(target.getSide().getFacing().getOpposite())
+                            || output.getEnergyCanBeInserted() <= 0) {
                         continue;
                     }
 
-                    amperesUsed += output.acceptEnergyFromNetwork(target.getSide().getFacing().getOpposite(), voltage, amperage - amperesUsed);
+                    amperesUsed += output.acceptEnergyFromNetwork(target.getSide().getFacing().getOpposite(), voltage,
+                            amperage - amperesUsed);
 
                     if (amperesUsed == amperage) {
                         outputs.clear();

@@ -18,16 +18,16 @@
 
 package appeng.recipes.factories.conditions;
 
+import java.util.function.BooleanSupplier;
 
-import appeng.core.Api;
-import appeng.core.AppEng;
 import com.google.gson.JsonObject;
+
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 
-import java.util.function.BooleanSupplier;
-
+import appeng.core.Api;
+import appeng.core.AppEng;
 
 public class MaterialExists implements IConditionFactory {
     private static final String JSON_MATERIAL_KEY = "material";

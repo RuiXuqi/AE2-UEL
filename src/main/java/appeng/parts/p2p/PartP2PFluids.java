@@ -18,10 +18,8 @@
 
 package appeng.parts.p2p;
 
+import java.util.*;
 
-import appeng.api.parts.IPartModel;
-import appeng.items.parts.PartModels;
-import appeng.me.GridAccessException;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -34,16 +32,17 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
-import java.util.*;
-
+import appeng.api.parts.IPartModel;
+import appeng.items.parts.PartModels;
+import appeng.me.GridAccessException;
 
 public class PartP2PFluids extends PartP2PTunnel<PartP2PFluids> implements IFluidHandler {
 
     private static final P2PModels MODELS = new P2PModels("part/p2p/p2p_tunnel_fluids");
 
     private static final ThreadLocal<Deque<PartP2PFluids>> DEPTH = new ThreadLocal<>();
-    private static final FluidTankProperties[] ACTIVE_TANK = {new FluidTankProperties(null, 10000, true, false)};
-    private static final FluidTankProperties[] INACTIVE_TANK = {new FluidTankProperties(null, 0, false, false)};
+    private static final FluidTankProperties[] ACTIVE_TANK = { new FluidTankProperties(null, 10000, true, false) };
+    private static final FluidTankProperties[] INACTIVE_TANK = { new FluidTankProperties(null, 0, false, false) };
 
     private IFluidHandler cachedTank;
     private int tmpUsed;
@@ -250,9 +249,11 @@ public class PartP2PFluids extends PartP2PTunnel<PartP2PFluids> implements IFlui
             return this.cachedTank;
         }
 
-        final TileEntity te = this.getTile().getWorld().getTileEntity(this.getTile().getPos().offset(this.getSide().getFacing()));
+        final TileEntity te = this.getTile().getWorld()
+                .getTileEntity(this.getTile().getPos().offset(this.getSide().getFacing()));
 
-        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this.getSide().getFacing().getOpposite())) {
+        if (te != null && te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+                this.getSide().getFacing().getOpposite())) {
             return this.cachedTank = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
                     this.getSide().getFacing().getOpposite());
         }

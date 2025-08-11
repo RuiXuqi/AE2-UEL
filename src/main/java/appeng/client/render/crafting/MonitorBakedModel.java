@@ -18,23 +18,20 @@
 
 package appeng.client.render.crafting;
 
-
-import appeng.api.util.AEColor;
-import appeng.block.crafting.BlockCraftingMonitor;
-import appeng.client.render.cablebus.CubeBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
+import appeng.api.util.AEColor;
+import appeng.block.crafting.BlockCraftingMonitor;
+import appeng.client.render.cablebus.CubeBuilder;
 
 /**
  * The baked model for the crafting monitor. Please note that this model doesn't handle the item being displayed. That
- * is handled by a TESR.
- * Instead, this model adds 3 layered light textures using the [dark|medium|bright] color variants of the attached bus
- * color. The textures
- * are full-bright if the cube is powered.
+ * is handled by a TESR. Instead, this model adds 3 layered light textures using the [dark|medium|bright] color variants
+ * of the attached bus color. The textures are full-bright if the cube is powered.
  */
 class MonitorBakedModel extends CraftingCubeBakedModel {
 
@@ -48,7 +45,10 @@ class MonitorBakedModel extends CraftingCubeBakedModel {
 
     private final TextureAtlasSprite lightBrightTexture;
 
-    MonitorBakedModel(VertexFormat format, TextureAtlasSprite ringCorner, TextureAtlasSprite ringHor, TextureAtlasSprite ringVer, TextureAtlasSprite chassisTexture, TextureAtlasSprite baseTexture, TextureAtlasSprite lightDarkTexture, TextureAtlasSprite lightMediumTexture, TextureAtlasSprite lightBrightTexture) {
+    MonitorBakedModel(VertexFormat format, TextureAtlasSprite ringCorner, TextureAtlasSprite ringHor,
+            TextureAtlasSprite ringVer, TextureAtlasSprite chassisTexture, TextureAtlasSprite baseTexture,
+            TextureAtlasSprite lightDarkTexture, TextureAtlasSprite lightMediumTexture,
+            TextureAtlasSprite lightBrightTexture) {
         super(format, ringCorner, ringHor, ringVer);
         this.chassisTexture = chassisTexture;
         this.baseTexture = baseTexture;
@@ -58,7 +58,8 @@ class MonitorBakedModel extends CraftingCubeBakedModel {
     }
 
     @Override
-    protected void addInnerCube(EnumFacing side, IBlockState state, CubeBuilder builder, float x1, float y1, float z1, float x2, float y2, float z2) {
+    protected void addInnerCube(EnumFacing side, IBlockState state, CubeBuilder builder, float x1, float y1, float z1,
+            float x2, float y2, float z2) {
         EnumFacing forward = getForward(state);
 
         // For sides other than the front, use the chassis texture

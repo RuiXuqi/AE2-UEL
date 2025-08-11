@@ -18,10 +18,8 @@
 
 package appeng.util;
 
-
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
 
 public class BlockUpdate implements IWorldCallable<Boolean> {
     private final BlockPos pos;

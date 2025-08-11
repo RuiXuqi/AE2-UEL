@@ -1,8 +1,6 @@
 package appeng.client.render.cablebus;
 
-
 import net.minecraft.block.state.IBlockState;
-
 
 /**
  * Captures the state required to render a facade properly.

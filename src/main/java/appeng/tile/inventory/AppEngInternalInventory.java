@@ -18,25 +18,25 @@
 
 package appeng.tile.inventory;
 
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
+import static appeng.helpers.ItemStackHelper.stackToNBT;
 
-import appeng.util.Platform;
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.InvOperation;
-import appeng.util.inv.filter.IAEItemFilter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-import static appeng.helpers.ItemStackHelper.stackToNBT;
-
+import appeng.util.Platform;
+import appeng.util.inv.IAEAppEngInventory;
+import appeng.util.inv.InvOperation;
+import appeng.util.inv.filter.IAEItemFilter;
 
 public class AppEngInternalInventory extends ItemStackHandler implements Iterable<ItemStack> {
     protected boolean enableClientEvents = false;
@@ -46,7 +46,8 @@ public class AppEngInternalInventory extends ItemStackHandler implements Iterabl
     protected IAEItemFilter filter;
     protected boolean dirtyFlag = false;
 
-    public AppEngInternalInventory(final IAEAppEngInventory inventory, final int size, final int maxStack, IAEItemFilter filter) {
+    public AppEngInternalInventory(final IAEAppEngInventory inventory, final int size, final int maxStack,
+            IAEItemFilter filter) {
         super(size);
         this.setTileEntity(inventory);
         this.setFilter(filter);
@@ -113,7 +114,8 @@ public class AppEngInternalInventory extends ItemStackHandler implements Iterabl
             ItemStack oldStack = this.previousStack;
             InvOperation op = InvOperation.SET;
 
-            if (newStack.isEmpty() || oldStack.isEmpty() || oldStack.getCount() != newStack.getCount() && ItemStack.areItemsEqual(newStack, oldStack)) {
+            if (newStack.isEmpty() || oldStack.isEmpty()
+                    || oldStack.getCount() != newStack.getCount() && ItemStack.areItemsEqual(newStack, oldStack)) {
                 if (newStack.getCount() > oldStack.getCount()) {
                     newStack = newStack.copy();
                     newStack.shrink(oldStack.getCount());

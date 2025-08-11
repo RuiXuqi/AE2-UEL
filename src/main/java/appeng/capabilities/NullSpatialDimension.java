@@ -18,11 +18,10 @@
 
 package appeng.capabilities;
 
-
-import appeng.api.storage.ISpatialDimension;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import appeng.api.storage.ISpatialDimension;
 
 class NullSpatialDimension implements ISpatialDimension {
     @Override

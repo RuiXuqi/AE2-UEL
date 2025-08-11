@@ -18,6 +18,27 @@
 
 package appeng.parts.automation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -44,28 +65,6 @@ import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
 import appeng.util.prioritylist.FuzzyPriorityList;
 import appeng.util.prioritylist.PrecisePriorityList;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 
 public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack> {
 
@@ -92,10 +91,12 @@ public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack>
     @Override
     protected void updateHandler() {
         this.myHandler.setBaseAccess(AccessRestriction.WRITE);
-        this.myHandler.setWhitelist(this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST : IncludeExclude.WHITELIST);
+        this.myHandler.setWhitelist(
+                this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST : IncludeExclude.WHITELIST);
         this.myHandler.setPriority(this.getPriority());
 
-        final IItemList<IAEItemStack> priorityList = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+        final IItemList<IAEItemStack> priorityList = AEApi.instance().storage()
+                .getStorageChannel(IItemStorageChannel.class).createList();
 
         final int slotsToUse = 18 + this.getInstalledUpgrades(Upgrades.CAPACITY) * 9;
         for (int x = 0; x < this.Config.getSlots() && x < slotsToUse; x++) {
@@ -107,7 +108,8 @@ public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack>
 
         if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
             this.myHandler.setPartitionList(
-                    new FuzzyPriorityList<IAEItemStack>(priorityList, (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
+                    new FuzzyPriorityList<IAEItemStack>(priorityList,
+                            (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
         } else {
             this.myHandler.setPartitionList(new PrecisePriorityList<IAEItemStack>(priorityList));
         }
@@ -120,7 +122,8 @@ public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack>
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         super.onChangeInventory(inv, slot, mc, removedStack, newStack);
 
         if (inv == this.Config) {
@@ -201,8 +204,10 @@ public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack>
         final BlockPos tePos = te.getPos().offset(side.getFacing());
 
         if (w.getBlockState(tePos).getBlock().isReplaceable(w, tePos)) {
-            if (placeBlock == YesNo.YES && (i instanceof ItemBlock || i instanceof ItemBlockSpecial || i instanceof IPlantable || i instanceof ItemSkull || i instanceof ItemFirework || i instanceof IPartItem || i == Item
-                    .getItemFromBlock(Blocks.REEDS))) {
+            if (placeBlock == YesNo.YES && (i instanceof ItemBlock || i instanceof ItemBlockSpecial
+                    || i instanceof IPlantable || i instanceof ItemSkull || i instanceof ItemFirework
+                    || i instanceof IPartItem || i == Item
+                            .getItemFromBlock(Blocks.REEDS))) {
                 final EntityPlayer player = Platform.getPlayer((WorldServer) w);
                 Platform.configurePlayer(player, side, this.getTile());
                 EnumHand hand = player.getActiveHand();
@@ -215,27 +220,32 @@ public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack>
                         boolean Worked = false;
 
                         if (side.xOffset == 0 && side.zOffset == 0) {
-                            Worked = i.onItemUse(player, w, tePos.offset(side.getFacing()), hand, side.getFacing().getOpposite(), side.xOffset,
+                            Worked = i.onItemUse(player, w, tePos.offset(side.getFacing()), hand,
+                                    side.getFacing().getOpposite(), side.xOffset,
                                     side.yOffset, side.zOffset) == EnumActionResult.SUCCESS;
                         }
 
                         if (!Worked && side.xOffset == 0 && side.zOffset == 0) {
-                            Worked = i.onItemUse(player, w, tePos.offset(side.getFacing().getOpposite()), hand, side.getFacing(), side.xOffset,
+                            Worked = i.onItemUse(player, w, tePos.offset(side.getFacing().getOpposite()), hand,
+                                    side.getFacing(), side.xOffset,
                                     side.yOffset, side.zOffset) == EnumActionResult.SUCCESS;
                         }
 
                         if (!Worked && side.yOffset == 0) {
-                            Worked = i.onItemUse(player, w, tePos.offset(EnumFacing.DOWN), hand, EnumFacing.UP, side.xOffset, side.yOffset,
+                            Worked = i.onItemUse(player, w, tePos.offset(EnumFacing.DOWN), hand, EnumFacing.UP,
+                                    side.xOffset, side.yOffset,
                                     side.zOffset) == EnumActionResult.SUCCESS;
                         }
 
                         if (!Worked) {
-                            i.onItemUse(player, w, tePos, hand, side.getFacing().getOpposite(), side.xOffset, side.yOffset, side.zOffset);
+                            i.onItemUse(player, w, tePos, hand, side.getFacing().getOpposite(), side.xOffset,
+                                    side.yOffset, side.zOffset);
                         }
 
                         maxStorage -= is.getCount();
                     } else {
-                        i.onItemUse(player, w, tePos, hand, side.getFacing().getOpposite(), side.xOffset, side.yOffset, side.zOffset);
+                        i.onItemUse(player, w, tePos, hand, side.getFacing().getOpposite(), side.xOffset, side.yOffset,
+                                side.zOffset);
                         maxStorage -= is.getCount();
                     }
                 } else {
@@ -252,9 +262,12 @@ public class PartFormationPlane extends PartAbstractFormationPlane<IAEItemStack>
                 if (sum < AEConfig.instance().getFormationPlaneEntityLimit()) {
                     if (type == Actionable.MODULATE) {
                         is.setCount((int) maxStorage);
-                        final double x = (side.xOffset != 0 ? 0 : .7 * (Platform.getRandomFloat() - .5)) + side.xOffset + .5 + te.getPos().getX();
-                        final double y = (side.yOffset != 0 ? 0 : .7 * (Platform.getRandomFloat() - .5)) + side.yOffset + .5 + te.getPos().getY();
-                        final double z = (side.zOffset != 0 ? 0 : .7 * (Platform.getRandomFloat() - .5)) + side.zOffset + .5 + te.getPos().getZ();
+                        final double x = (side.xOffset != 0 ? 0 : .7 * (Platform.getRandomFloat() - .5)) + side.xOffset
+                                + .5 + te.getPos().getX();
+                        final double y = (side.yOffset != 0 ? 0 : .7 * (Platform.getRandomFloat() - .5)) + side.yOffset
+                                + .5 + te.getPos().getY();
+                        final double z = (side.zOffset != 0 ? 0 : .7 * (Platform.getRandomFloat() - .5)) + side.zOffset
+                                + .5 + te.getPos().getZ();
 
                         final EntityItem ei = new EntityItem(w, x, y, z, is.copy());
 

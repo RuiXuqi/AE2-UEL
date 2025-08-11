@@ -18,6 +18,18 @@
 
 package appeng.fluids.util;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+import javax.annotation.Nonnull;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -28,17 +40,6 @@ import appeng.core.Api;
 import appeng.fluids.items.FluidDummyItem;
 import appeng.util.Platform;
 import appeng.util.item.AEStack;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
-import javax.annotation.Nonnull;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-
 
 public final class AEFluidStack extends AEStack<IAEFluidStack> implements IAEFluidStack, Comparable<AEFluidStack> {
 
@@ -274,7 +275,8 @@ public final class AEFluidStack extends AEStack<IAEFluidStack> implements IAEFlu
     @Override
     public void writeToPacket(final ByteBuf buffer) throws IOException {
         final byte mask = (byte) ((this.getType(this.getStackSize()) << 2) | (this
-                .getType(this.getCountRequestable()) << 4) | ((byte) (this.isCraftable() ? 1 : 0) << 6) | (this.hasTagCompound() ? 1 : 0) << 7);
+                .getType(this.getCountRequestable()) << 4) | ((byte) (this.isCraftable() ? 1 : 0) << 6)
+                | (this.hasTagCompound() ? 1 : 0) << 7);
 
         buffer.writeByte(mask);
 

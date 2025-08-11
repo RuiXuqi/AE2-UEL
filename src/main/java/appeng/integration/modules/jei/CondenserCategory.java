@@ -18,6 +18,18 @@
 
 package appeng.integration.modules.jei;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 
 import appeng.api.AEApi;
 import appeng.api.config.CondenserOutput;
@@ -25,18 +37,6 @@ import appeng.api.definitions.IMaterials;
 import appeng.api.implementations.items.IStorageComponent;
 import appeng.core.AppEng;
 import appeng.tile.misc.TileCondenser;
-import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.*;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 class CondenserCategory implements IRecipeCategory<CondenserOutputWrapper> {
 
@@ -63,7 +63,8 @@ class CondenserCategory implements IRecipeCategory<CondenserOutputWrapper> {
         this.iconButton = guiHelper.createDrawable(statesLocation, 240, 240, 16, 16, 28, 0, 78, 0);
 
         IDrawableStatic progressDrawable = guiHelper.createDrawable(location, 178, 25, 6, 18, 0, 0, 70, 0);
-        this.progress = guiHelper.createAnimatedDrawable(progressDrawable, 40, IDrawableAnimated.StartDirection.BOTTOM, false);
+        this.progress = guiHelper.createAnimatedDrawable(progressDrawable, 40, IDrawableAnimated.StartDirection.BOTTOM,
+                false);
     }
 
     @Override
@@ -77,8 +78,7 @@ class CondenserCategory implements IRecipeCategory<CondenserOutputWrapper> {
     }
 
     /**
-     * Return the name of the mod associated with this recipe category.
-     * Used for the recipe category tab's tooltip.
+     * Return the name of the mod associated with this recipe category. Used for the recipe category tab's tooltip.
      *
      * @since JEI 4.5.0
      */
@@ -116,14 +116,19 @@ class CondenserCategory implements IRecipeCategory<CondenserOutputWrapper> {
         CondenserOutput condenserOutput = recipeWrapper.getCondenserOutput();
         IMaterials materials = AEApi.instance().definitions().materials();
         List<ItemStack> viableComponents = new ArrayList<>();
-        materials.cell1kPart().maybeStack(1).ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
-        materials.cell4kPart().maybeStack(1).ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
-        materials.cell16kPart().maybeStack(1).ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
-        materials.cell64kPart().maybeStack(1).ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
+        materials.cell1kPart().maybeStack(1)
+                .ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
+        materials.cell4kPart().maybeStack(1)
+                .ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
+        materials.cell16kPart().maybeStack(1)
+                .ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
+        materials.cell64kPart().maybeStack(1)
+                .ifPresent(itemStack -> this.addViableComponent(condenserOutput, viableComponents, itemStack));
         return viableComponents;
     }
 
-    private void addViableComponent(CondenserOutput condenserOutput, List<ItemStack> viableComponents, ItemStack itemStack) {
+    private void addViableComponent(CondenserOutput condenserOutput, List<ItemStack> viableComponents,
+            ItemStack itemStack) {
         IStorageComponent comp = (IStorageComponent) itemStack.getItem();
         int storage = comp.getBytes(itemStack) * TileCondenser.BYTE_MULTIPLIER;
         if (storage >= condenserOutput.requiredPower) {

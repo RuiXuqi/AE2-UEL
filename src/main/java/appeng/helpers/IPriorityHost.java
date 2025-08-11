@@ -18,10 +18,9 @@
 
 package appeng.helpers;
 
-
-import appeng.core.sync.GuiBridge;
 import net.minecraft.item.ItemStack;
 
+import appeng.core.sync.GuiBridge;
 
 public interface IPriorityHost {
 

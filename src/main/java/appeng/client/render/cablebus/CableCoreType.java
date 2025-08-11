@@ -18,23 +18,20 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.EnumMap;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.util.AECableType;
 import appeng.api.util.AEColor;
 import appeng.core.AppEng;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.util.ResourceLocation;
-
-import java.util.EnumMap;
-import java.util.Map;
-
 
 /**
  * AE can render the core of a cable (the core that connections are made to, in case the cable is not a straight line)
- * in three different ways:
- * - Glass
- * - Covered (also used by the Smart Cable)
- * - Dense
+ * in three different ways: - Glass - Covered (also used by the Smart Cable) - Dense
  */
 public enum CableCoreType {
     GLASS("parts/cable/core/glass"), COVERED("parts/cable/core/covered"), DENSE("parts/cable/core/dense_smart");
@@ -65,8 +62,7 @@ public enum CableCoreType {
 
     /**
      * @return The type of core that should be rendered when the given cable isn't straight and needs to have a core to
-     * attach connections to.
-     * Is null for the NULL cable.
+     *         attach connections to. Is null for the NULL cable.
      */
     public static CableCoreType fromCableType(AECableType cableType) {
         return cableMapping.get(cableType);

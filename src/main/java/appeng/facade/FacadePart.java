@@ -18,12 +18,6 @@
 
 package appeng.facade;
 
-
-import appeng.api.AEApi;
-import appeng.api.parts.IBoxProvider;
-import appeng.api.parts.IFacadePart;
-import appeng.api.parts.IPartCollisionHelper;
-import appeng.api.util.AEPartLocation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,6 +26,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import appeng.api.AEApi;
+import appeng.api.parts.IBoxProvider;
+import appeng.api.parts.IFacadePart;
+import appeng.api.parts.IPartCollisionHelper;
+import appeng.api.util.AEPartLocation;
 
 public class FacadePart implements IFacadePart, IBoxProvider {
 

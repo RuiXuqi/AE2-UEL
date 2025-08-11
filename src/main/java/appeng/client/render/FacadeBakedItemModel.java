@@ -18,8 +18,12 @@
 
 package appeng.client.render;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import appeng.client.render.cablebus.FacadeBuilder;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -27,11 +31,7 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import appeng.client.render.cablebus.FacadeBuilder;
 
 /**
  * This model used the provided FacadeBuilder to "slice" the item quads for the facade provided.

@@ -18,6 +18,26 @@
 
 package appeng.fluids.parts;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -63,44 +83,27 @@ import appeng.parts.automation.PartUpgradeable;
 import appeng.tile.networking.TileCableBus;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
-import appeng.util.inv.InvOperation;
 import appeng.util.prioritylist.FuzzyPriorityList;
 import appeng.util.prioritylist.PrecisePriorityList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 
 /**
  * @author BrockWS
  * @version rv6 - 22/05/2018
  * @since rv6 22/05/2018
  */
-public class PartFluidStorageBus extends PartUpgradeable implements IGridTickable, ICellContainer, IMEMonitorHandlerReceiver<IAEFluidStack>, IAEFluidInventory, IConfigurableFluidInventory, IPriorityHost {
-    public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_base");
+public class PartFluidStorageBus extends PartUpgradeable implements IGridTickable, ICellContainer,
+        IMEMonitorHandlerReceiver<IAEFluidStack>, IAEFluidInventory, IConfigurableFluidInventory, IPriorityHost {
+    public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID,
+            "part/fluid_storage_bus_base");
     @PartModels
-    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_off"));
+    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_off"));
     @PartModels
-    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_on"));
+    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_on"));
     @PartModels
-    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_has_channel"));
+    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/fluid_storage_bus_has_channel"));
 
     private final IActionSource source;
     private final AEFluidInventory config = new AEFluidInventory(this, 63);
@@ -198,7 +201,8 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
     }
 
     protected void resetCache(final boolean fullReset) {
-        if (this.getHost() == null || this.getHost().getTile() == null || this.getHost().getTile().getWorld() == null || this.getHost().getTile().getWorld().isRemote) {
+        if (this.getHost() == null || this.getHost().getTile() == null || this.getHost().getTile().getWorld() == null
+                || this.getHost().getTile().getWorld().isRemote) {
             return;
         }
 
@@ -221,15 +225,19 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
     }
 
     @Override
-    public void postChange(final IBaseMonitor<IAEFluidStack> monitor, final Iterable<IAEFluidStack> change, final IActionSource source) {
+    public void postChange(final IBaseMonitor<IAEFluidStack> monitor, final Iterable<IAEFluidStack> change,
+            final IActionSource source) {
         if (this.getProxy().isActive()) {
             var filteredChanges = this.filterChanges(change);
 
-            AccessRestriction currentAccess = (AccessRestriction) ((ConfigManager) this.getConfigManager()).getSetting(Settings.ACCESS);
+            AccessRestriction currentAccess = (AccessRestriction) ((ConfigManager) this.getConfigManager())
+                    .getSetting(Settings.ACCESS);
             if (readOncePass) {
                 readOncePass = false;
                 try {
-                    this.getProxy().getStorage().postAlterationOfStoredItems(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class), filteredChanges, this.source);
+                    this.getProxy().getStorage().postAlterationOfStoredItems(
+                            AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class), filteredChanges,
+                            this.source);
                 } catch (final GridAccessException e) {
                     // :(
                 }
@@ -239,7 +247,9 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
                 return;
             }
             try {
-                this.getProxy().getStorage().postAlterationOfStoredItems(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class), filteredChanges, source);
+                this.getProxy().getStorage().postAlterationOfStoredItems(
+                        AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class), filteredChanges,
+                        source);
             } catch (final GridAccessException e) {
                 // :(
             }
@@ -295,7 +305,8 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
 
     @Override
     public TickingRequest getTickingRequest(IGridNode node) {
-        return new TickingRequest(TickRates.FluidStorageBus.getMin(), TickRates.FluidStorageBus.getMax(), monitor == null, true);
+        return new TickingRequest(TickRates.FluidStorageBus.getMin(), TickRates.FluidStorageBus.getMax(),
+                monitor == null, true);
     }
 
     @Override
@@ -316,12 +327,16 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
         this.resetCacheLogic = 0;
 
         final MEInventoryHandler<IAEFluidStack> in = this.getInternalHandler();
-        IItemList<IAEFluidStack> before = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+        IItemList<IAEFluidStack> before = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)
+                .createList();
         if (in != null) {
             if (accessChanged) {
-                AccessRestriction currentAccess = (AccessRestriction) ((ConfigManager) this.getConfigManager()).getSetting(Settings.ACCESS);
-                AccessRestriction oldAccess = (AccessRestriction) ((ConfigManager) this.getConfigManager()).getOldSetting(Settings.ACCESS);
-                if (oldAccess.hasPermission(AccessRestriction.READ) && !currentAccess.hasPermission(AccessRestriction.READ)) {
+                AccessRestriction currentAccess = (AccessRestriction) ((ConfigManager) this.getConfigManager())
+                        .getSetting(Settings.ACCESS);
+                AccessRestriction oldAccess = (AccessRestriction) ((ConfigManager) this.getConfigManager())
+                        .getOldSetting(Settings.ACCESS);
+                if (oldAccess.hasPermission(AccessRestriction.READ)
+                        && !currentAccess.hasPermission(AccessRestriction.READ)) {
                     readOncePass = true;
                 }
                 in.setBaseAccess(oldAccess);
@@ -339,7 +354,8 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
         }
 
         final MEInventoryHandler<IAEFluidStack> out = this.getInternalHandler();
-        IItemList<IAEFluidStack> after = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+        IItemList<IAEFluidStack> after = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)
+                .createList();
 
         if (in != out) {
             if (out != null) {
@@ -352,7 +368,8 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
     private IMEInventory<IAEFluidStack> getInventoryWrapper(TileEntity target) {
         EnumFacing targetSide = this.getSide().getFacing().getOpposite();
         // Prioritize a handler to directly link to another ME network
-        IStorageMonitorableAccessor accessor = target.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR, targetSide);
+        IStorageMonitorableAccessor accessor = target.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR,
+                targetSide);
         if (accessor != null) {
             IStorageMonitorable inventory = accessor.getInventory(this.source);
             if (inventory != null) {
@@ -386,7 +403,8 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
             return Objects.hash(target, target.getCapability(Capabilities.STORAGE_MONITORABLE_ACCESSOR, targetSide));
         }
 
-        final IFluidHandler fluidHandler = target.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, targetSide);
+        final IFluidHandler fluidHandler = target.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY,
+                targetSide);
 
         if (fluidHandler != null) {
             return Objects.hash(target, fluidHandler, fluidHandler.getTankProperties().length);
@@ -426,14 +444,18 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
             }
 
             if (inv != null) {
-                this.handler = new MEInventoryHandler<>(inv, AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
+                this.handler = new MEInventoryHandler<>(inv,
+                        AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
 
                 this.handler.setBaseAccess((AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
-                this.handler.setWhitelist(this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST : IncludeExclude.WHITELIST);
+                this.handler.setWhitelist(this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST
+                        : IncludeExclude.WHITELIST);
                 this.handler.setPriority(this.getPriority());
-                this.handler.setStorageFilter((StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
+                this.handler
+                        .setStorageFilter((StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
 
-                final IItemList<IAEFluidStack> priorityList = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+                final IItemList<IAEFluidStack> priorityList = AEApi.instance().storage()
+                        .getStorageChannel(IFluidStorageChannel.class).createList();
 
                 final int slotsToUse = 18 + this.getInstalledUpgrades(Upgrades.CAPACITY) * 9;
                 for (int x = 0; x < this.config.getSlots() && x < slotsToUse; x++) {
@@ -448,13 +470,15 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
                 }
 
                 if (this.getInstalledUpgrades(Upgrades.FUZZY) > 0) {
-                    this.handler.setPartitionList(new FuzzyPriorityList<IAEFluidStack>(priorityList, (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
+                    this.handler.setPartitionList(new FuzzyPriorityList<IAEFluidStack>(priorityList,
+                            (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE)));
                 } else {
                     this.handler.setPartitionList(new PrecisePriorityList<IAEFluidStack>(priorityList));
                 }
 
                 if (inv instanceof IBaseMonitor) {
-                    if (((AccessRestriction) ((ConfigManager) this.getConfigManager()).getSetting(Settings.ACCESS)).hasPermission(AccessRestriction.READ)) {
+                    if (((AccessRestriction) ((ConfigManager) this.getConfigManager()).getSetting(Settings.ACCESS))
+                            .hasPermission(AccessRestriction.READ)) {
                         ((IBaseMonitor<IAEFluidStack>) inv).addListener(this, this.handler);
                     }
                 }
@@ -547,8 +571,8 @@ public class PartFluidStorageBus extends PartUpgradeable implements IGridTickabl
     // TODO: 1/28/2024 Unify both methods.
 
     /**
-     * Filters the changes to only include items that pass the storage filter.
-     * Optimally, this should be handled by the underlying monitor.
+     * Filters the changes to only include items that pass the storage filter. Optimally, this should be handled by the
+     * underlying monitor.
      *
      * @see appeng.parts.misc.PartStorageBus#filterChanges
      */

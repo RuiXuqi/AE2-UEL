@@ -18,66 +18,61 @@
 
 package appeng.core.worlddata;
 
-
-import appeng.core.AELog;
-import appeng.me.GridStorage;
-import appeng.me.GridStorageSearch;
-import com.google.common.base.Preconditions;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.ref.WeakReference;
-import java.util.Map;
-import java.util.WeakHashMap;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.storage.WorldSavedData;
+
+import appeng.core.AELog;
+import appeng.core.AppEng;
+import appeng.me.GridStorage;
 
 /**
  * @author thatsIch
  * @version rv3 - 30.05.2015
  * @since rv3 30.05.2015
  */
-final class StorageData implements IWorldGridStorageData, IOnWorldStartable, IOnWorldStoppable {
-    private static final String LAST_GRID_STORAGE_CATEGORY = "Counters";
-    private static final String LAST_GRID_STORAGE_KEY = "lastGridStorage";
-    private static final int LAST_GRID_STORAGE_DEFAULT = 0;
+final class StorageData extends WorldSavedData implements IWorldGridStorageData {
 
-    private static final String GRID_STORAGE_CATEGORY = "gridstorage";
+    public static final String NAME = AppEng.MOD_ID + "_storage";
 
-    private final Map<GridStorageSearch, WeakReference<GridStorageSearch>> loadedStorage = new WeakHashMap<>(10);
-    private final Configuration config;
+    private static final String TAG_NEXT_ID = "nextId";
+    public static final String TAG_ORDERED_VALUES = "orderedValues";
+    public static final String TAG_STORAGE = "storage";
 
-    private long lastGridStorage;
+    private final Map<Long, GridStorage> storage = new HashMap<>();
 
-    public StorageData(@Nonnull final Configuration settingsFile) {
-        Preconditions.checkNotNull(settingsFile);
+    // id that will be assigned to the next new grid, this needs to be persisted
+    // because grids can be removed and we do not want to re-assign the same id twice
+    private long nextGridId;
 
-        this.config = settingsFile;
+    // Stores once-per-save values. I.e. which storage press to drop next in a spawned meteor
+    private final Map<String, Integer> orderedValues = new HashMap<>();
+
+    public StorageData() {
+        super(NAME);
     }
 
     /**
      * lazy loading, can load any id, even ones that don't exist anymore.
      *
      * @param storageID ID of grid storage
+     *
      * @return corresponding grid storage
      */
-    @Nullable
     @Override
     public GridStorage getGridStorage(final long storageID) {
-        final GridStorageSearch gss = new GridStorageSearch(storageID);
-        final WeakReference<GridStorageSearch> result = this.loadedStorage.get(gss);
+        GridStorage result = storage.get(storageID);
 
-        if (result == null || result.get() == null) {
-            final String id = String.valueOf(storageID);
-            final String data = this.config.get("gridstorage", id, "").getString();
-            final GridStorage thisStorage = new GridStorage(data, storageID, gss);
-            gss.setGridStorage(new WeakReference<>(thisStorage));
-            this.loadedStorage.put(gss, new WeakReference<>(gss));
-            return thisStorage;
+        if (result == null) {
+            result = new GridStorage(storageID);
+            storage.put(storageID, result);
         }
 
-        return result.get().getGridStorage().get();
+        return result;
     }
 
     /**
@@ -86,61 +81,78 @@ final class StorageData implements IWorldGridStorageData, IOnWorldStartable, IOn
     @Nonnull
     @Override
     public GridStorage getNewGridStorage() {
-        final long storageID = this.nextGridStorage();
-        final GridStorageSearch gss = new GridStorageSearch(storageID);
-        final GridStorage newStorage = new GridStorage(storageID, gss);
-        gss.setGridStorage(new WeakReference<>(newStorage));
-        this.loadedStorage.put(gss, new WeakReference<>(gss));
-
-        return newStorage;
-    }
-
-    @Override
-    public long nextGridStorage() {
-        final long r = this.lastGridStorage;
-        this.lastGridStorage++;
-        this.config.get("Counters", "lastGridStorage", this.lastGridStorage).set(Long.toString(this.lastGridStorage));
-        return r;
+        return getGridStorage(nextGridId++);
     }
 
     @Override
     public void destroyGridStorage(final long id) {
-        final String stringID = String.valueOf(id);
-        this.config.getCategory("gridstorage").remove(stringID);
+        this.storage.remove(id);
     }
 
     @Override
-    public int getNextOrderedValue(final String name) {
-        final Property p = this.config.get("orderedValues", name, 0);
-        final int myValue = p.getInt();
-        p.set(myValue + 1);
-        return myValue;
+    public int getNextOrderedValue(final String name, int firstValue) {
+        return orderedValues.merge(name, firstValue, (oldValue, value) -> oldValue + 1);
     }
 
     @Override
-    public void onWorldStart() {
-        final String lastString = this.config.get(LAST_GRID_STORAGE_CATEGORY, LAST_GRID_STORAGE_KEY, LAST_GRID_STORAGE_DEFAULT).getString();
+    public void readFromNBT(NBTTagCompound tag) {
 
-        try {
-            this.lastGridStorage = Long.parseLong(lastString);
-        } catch (final NumberFormatException err) {
-            AELog.warn("The config contained a value which was not represented as a Long: %s", lastString);
+        nextGridId = tag.getLong(TAG_NEXT_ID);
 
-            this.lastGridStorage = 0;
-        }
-    }
-
-    @Override
-    public void onWorldStop() {
-        // populate new data
-        for (final GridStorageSearch gs : this.loadedStorage.keySet()) {
-            final GridStorage thisStorage = gs.getGridStorage().get();
-            if (thisStorage != null && thisStorage.getGrid() != null && !thisStorage.getGrid().isEmpty()) {
-                final String value = thisStorage.getValue();
-                this.config.get(GRID_STORAGE_CATEGORY, String.valueOf(thisStorage.getID()), value).set(value);
+        // Load serialized grid storage
+        NBTTagCompound storageTag = tag.getCompoundTag(TAG_STORAGE);
+        for (String storageIdStr : storageTag.getKeySet()) {
+            long storageId;
+            try {
+                storageId = Long.parseLong(storageIdStr);
+            } catch (NumberFormatException e) {
+                AELog.warn("Unable to load grid storage with malformed id: '{}'", storageIdStr);
+                continue;
             }
+            storage.put(storageId, new GridStorage(storageId, storageTag.getCompoundTag(storageIdStr)));
         }
 
-        this.config.save();
+        // Load ordered values map
+        NBTTagCompound orderedValuesTag = tag.getCompoundTag(TAG_ORDERED_VALUES);
+        this.orderedValues.clear();
+        for (String key : orderedValuesTag.getKeySet()) {
+            this.orderedValues.put(key, orderedValuesTag.getInteger(key));
+        }
+
     }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+
+        tag.setLong(TAG_NEXT_ID, nextGridId);
+
+        // Save serialized grid storage
+        NBTTagCompound storageTag = new NBTTagCompound();
+        for (Map.Entry<Long, GridStorage> entry : storage.entrySet()) {
+
+            GridStorage gridStorage = entry.getValue();
+
+            if (gridStorage.getGrid() == null || gridStorage.getGrid().isEmpty()) {
+                continue;
+            }
+
+            try {
+                entry.getValue().saveState();
+            } catch (Exception e) {
+                AELog.warn("Failed to save state of Grid {}, storing last known value instead.", entry.getKey(), e);
+            }
+            storageTag.setTag(String.valueOf(entry.getKey()), entry.getValue().dataObject());
+        }
+        tag.setTag(TAG_STORAGE, storageTag);
+
+        // Save ordered values
+        NBTTagCompound orderedValuesTag = new NBTTagCompound();
+        for (Map.Entry<String, Integer> entry : orderedValues.entrySet()) {
+            orderedValuesTag.setInteger(entry.getKey(), entry.getValue());
+        }
+        tag.setTag(TAG_ORDERED_VALUES, orderedValuesTag);
+
+        return tag;
+    }
+
 }

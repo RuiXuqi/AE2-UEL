@@ -18,12 +18,10 @@
 
 package appeng.me;
 
-
 import appeng.api.networking.IGridCache;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridStorage;
-
 
 public class GridCacheWrapper implements IGridCache {
 

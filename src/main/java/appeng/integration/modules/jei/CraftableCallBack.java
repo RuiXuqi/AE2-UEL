@@ -1,12 +1,27 @@
 package appeng.integration.modules.jei;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
+
+import mezz.jei.api.gui.ITooltipCallback;
+
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.container.AEBaseContainer;
-import appeng.container.implementations.ContainerCraftingTerm;
 import appeng.container.implementations.ContainerMEMonitorable;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketInventoryAction;
@@ -14,24 +29,11 @@ import appeng.helpers.IContainerCraftingPacket;
 import appeng.helpers.InventoryAction;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import com.google.common.base.Stopwatch;
-import mezz.jei.api.gui.ITooltipCallback;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
-import org.lwjgl.input.Mouse;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class CraftableCallBack implements ITooltipCallback<ItemStack> {
     private final IItemList<IAEItemStack> list;
     private final Container container;
     private final Stopwatch lastClicked = Stopwatch.createStarted();
-
 
     public CraftableCallBack(Container container, IItemList<IAEItemStack> ir) {
         this.list = ir;
@@ -40,7 +42,8 @@ public class CraftableCallBack implements ITooltipCallback<ItemStack> {
 
     @Override
     public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-        if (!input) return;
+        if (!input)
+            return;
         if (list != null) {
 
             IItemList<IAEItemStack> available = mergeInventories(list, (ContainerMEMonitorable) container);
@@ -59,15 +62,19 @@ public class CraftableCallBack implements ITooltipCallback<ItemStack> {
 
                             break;
                         } else {
-                            String line = "§c[" + I18n.translateToLocalFormatted("gui.appliedenergistics2.Missing") + "]";
+                            String line = "§c[" + I18n.translateToLocalFormatted("gui.appliedenergistics2.Missing")
+                                    + "]";
                             tooltip.add(line);
                             if (itemStack.isCraftable()) {
-                                line = "§1[" + I18n.translateToLocalFormatted("gui.tooltips.appliedenergistics2.Craftable") + "]";
+                                line = "§1["
+                                        + I18n.translateToLocalFormatted("gui.tooltips.appliedenergistics2.Craftable")
+                                        + "]";
                                 tooltip.add(line);
                                 if (Mouse.isButtonDown(2) && this.lastClicked.elapsed(TimeUnit.MILLISECONDS) > 200) {
                                     this.lastClicked.reset().start();
                                     ((AEBaseContainer) container).setTargetStack(itemStack);
-                                    final PacketInventoryAction p = new PacketInventoryAction(InventoryAction.AUTO_CRAFT, container.getInventory().size(), 0);
+                                    final PacketInventoryAction p = new PacketInventoryAction(
+                                            InventoryAction.AUTO_CRAFT, container.getInventory().size(), 0);
                                     NetworkHandler.instance().sendToServer(p);
                                 }
                             }
@@ -85,12 +92,14 @@ public class CraftableCallBack implements ITooltipCallback<ItemStack> {
                         tooltip.add(line);
                     }
                     if (found.isCraftable()) {
-                        String line = "§1[" + I18n.translateToLocalFormatted("gui.tooltips.appliedenergistics2.Craftable") + "]";
+                        String line = "§1["
+                                + I18n.translateToLocalFormatted("gui.tooltips.appliedenergistics2.Craftable") + "]";
                         tooltip.add(line);
                         if (Mouse.isButtonDown(2) && this.lastClicked.elapsed(TimeUnit.MILLISECONDS) > 200) {
                             this.lastClicked.reset().start();
                             ((AEBaseContainer) container).setTargetStack(found);
-                            final PacketInventoryAction p = new PacketInventoryAction(InventoryAction.AUTO_CRAFT, container.getInventory().size(), 0);
+                            final PacketInventoryAction p = new PacketInventoryAction(InventoryAction.AUTO_CRAFT,
+                                    container.getInventory().size(), 0);
                             NetworkHandler.instance().sendToServer(p);
                         }
                     }
@@ -102,8 +111,10 @@ public class CraftableCallBack implements ITooltipCallback<ItemStack> {
         }
     }
 
-    IItemList<IAEItemStack> mergeInventories(IItemList<IAEItemStack> repo, ContainerMEMonitorable containerCraftingTerm) {
-        IItemList<IAEItemStack> itemList = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    IItemList<IAEItemStack> mergeInventories(IItemList<IAEItemStack> repo,
+            ContainerMEMonitorable containerCraftingTerm) {
+        IItemList<IAEItemStack> itemList = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                .createList();
         for (IAEItemStack i : repo) {
             itemList.addStorage(i);
         }
@@ -114,7 +125,8 @@ public class CraftableCallBack implements ITooltipCallback<ItemStack> {
         }
 
         if (containerCraftingTerm instanceof IContainerCraftingPacket) {
-            IItemHandler itemHandler = ((IContainerCraftingPacket) containerCraftingTerm).getInventoryByName("crafting");
+            IItemHandler itemHandler = ((IContainerCraftingPacket) containerCraftingTerm)
+                    .getInventoryByName("crafting");
             for (int i = 0; i < itemHandler.getSlots(); i++) {
                 itemList.addStorage(AEItemStack.fromItemStack(itemHandler.getStackInSlot(i)));
             }

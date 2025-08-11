@@ -18,6 +18,22 @@
 
 package appeng.container.slot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import com.blamejared.recipestages.recipes.RecipeStage;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -40,22 +56,6 @@ import appeng.util.inv.AdaptorItemHandler;
 import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.inv.WrapperInvItemHandler;
 import appeng.util.item.AEItemStack;
-import com.blamejared.recipestages.recipes.RecipeStage;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class SlotCraftingTerm extends AppEngCraftingSlot {
 
@@ -67,7 +67,9 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
     private final IStorageMonitorable storage;
     private final IContainerCraftingPacket container;
 
-    public SlotCraftingTerm(final EntityPlayer player, final IActionSource mySrc, final IEnergySource energySrc, final IStorageMonitorable storage, final IItemHandler cMatrix, final IItemHandler secondMatrix, final IItemHandler output, final int x, final int y, final IContainerCraftingPacket ccp) {
+    public SlotCraftingTerm(final EntityPlayer player, final IActionSource mySrc, final IEnergySource energySrc,
+            final IStorageMonitorable storage, final IItemHandler cMatrix, final IItemHandler secondMatrix,
+            final IItemHandler output, final int x, final int y, final IContainerCraftingPacket ccp) {
         super(player, cMatrix, output, 0, x, y);
         this.energySrc = energySrc;
         this.storage = storage;
@@ -104,7 +106,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
             return;
         }
 
-        final IMEMonitor<IAEItemStack> inv = this.storage.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        final IMEMonitor<IAEItemStack> inv = this.storage
+                .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
         final int howManyPerCraft = this.getStack().getCount();
         int maxTimesToCraft = 0;
 
@@ -192,7 +195,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         return maxTimesToCraft;
     }
 
-    private ItemStack craftItem(final EntityPlayer p, final ItemStack request, final IMEMonitor<IAEItemStack> inv, final IItemList all) {
+    private ItemStack craftItem(final EntityPlayer p, final ItemStack request, final IMEMonitor<IAEItemStack> inv,
+            final IItemList all) {
         // update crafting matrix...
         ItemStack is = this.getStack();
 
@@ -238,8 +242,10 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
                 if (inv != null) {
                     for (int x = 0; x < this.getPattern().getSlots(); x++) {
                         if (!this.getPattern().getStackInSlot(x).isEmpty()) {
-                            set[x] = Platform.extractItemsByRecipe(this.energySrc, this.mySrc, inv, p.world, r, is, ic, this.getPattern().getStackInSlot(x),
-                                    x, all, Actionable.MODULATE, ItemViewCell.createFilter(this.container.getViewCells()));
+                            set[x] = Platform.extractItemsByRecipe(this.energySrc, this.mySrc, inv, p.world, r, is, ic,
+                                    this.getPattern().getStackInSlot(x),
+                                    x, all, Actionable.MODULATE,
+                                    ItemViewCell.createFilter(this.container.getViewCells()));
                             ic.setInventorySlotContents(x, set[x]);
                         }
                     }
@@ -260,7 +266,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         return ItemStack.EMPTY;
     }
 
-    private boolean preCraft(final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set, final ItemStack result) {
+    private boolean preCraft(final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set,
+            final ItemStack result) {
         return true;
     }
 
@@ -268,7 +275,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
         super.onTake(p, is);
     }
 
-    private void postCraft(final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set, final ItemStack result) {
+    private void postCraft(final EntityPlayer p, final IMEMonitor<IAEItemStack> inv, final ItemStack[] set,
+            final ItemStack result) {
         final List<ItemStack> drops = new ArrayList<>();
 
         // add one of each item to the items on the board...
@@ -279,7 +287,8 @@ public class SlotCraftingTerm extends AppEngCraftingSlot {
                     ItemHandlerUtil.setStackInSlot(this.craftInv, x, set[x]);
                 } else if (!set[x].isEmpty()) {
                     // eek! put it back!
-                    final IAEItemStack fail = inv.injectItems(AEItemStack.fromItemStack(set[x]), Actionable.MODULATE, this.mySrc);
+                    final IAEItemStack fail = inv.injectItems(AEItemStack.fromItemStack(set[x]), Actionable.MODULATE,
+                            this.mySrc);
                     if (fail != null) {
                         drops.add(fail.createItemStack());
                     }

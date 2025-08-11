@@ -18,6 +18,20 @@
 
 package appeng.tile.storage;
 
+import java.io.IOException;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -57,20 +71,6 @@ import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperChainedItemHandler;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.AEItemFilters;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-
 
 public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IConfigManagerHost, IGridTickable {
     private static final int NUMBER_OF_CELL_SLOTS = 6;
@@ -82,8 +82,10 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
     private final AppEngInternalInventory outputCells = new AppEngInternalInventory(this, NUMBER_OF_CELL_SLOTS, 1);
     private final IItemHandler combinedInventory = new WrapperChainedItemHandler(this.inputCells, this.outputCells);
 
-    private final IItemHandler inputCellsExt = new WrapperFilteredItemHandler(this.inputCells, AEItemFilters.INSERT_ONLY);
-    private final IItemHandler outputCellsExt = new WrapperFilteredItemHandler(this.outputCells, AEItemFilters.EXTRACT_ONLY);
+    private final IItemHandler inputCellsExt = new WrapperFilteredItemHandler(this.inputCells,
+            AEItemFilters.INSERT_ONLY);
+    private final IItemHandler outputCellsExt = new WrapperFilteredItemHandler(this.outputCells,
+            AEItemFilters.EXTRACT_ONLY);
 
     private final UpgradeInventory upgrades;
     private final IActionSource mySrc;
@@ -263,7 +265,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         if (this.inputCells == inv) {
             this.updateTask();
         }
@@ -316,7 +319,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
 
                     for (IStorageChannel<? extends IAEStack<?>> c : AEApi.instance().storage().storageChannels()) {
                         if (itemsToMove > 0) {
-                            final IMEMonitor<? extends IAEStack<?>> network = this.getProxy().getStorage().getInventory(c);
+                            final IMEMonitor<? extends IAEStack<?>> network = this.getProxy().getStorage()
+                                    .getInventory(c);
                             final IMEInventory<?> inv = this.getInv(is, c);
 
                             if (inv == null) {
@@ -372,7 +376,8 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
         return this.cachedInventories.get(chan);
     }
 
-    private long transferContents(final IEnergySource energy, final IMEInventory src, final IMEInventory destination, long itemsToMove, final IStorageChannel chan) {
+    private long transferContents(final IEnergySource energy, final IMEInventory src, final IMEInventory destination,
+            long itemsToMove, final IStorageChannel chan) {
         final IItemList<? extends IAEStack> myList;
         if (src instanceof IMEMonitor) {
             myList = ((IMEMonitor) src).getStorageList();
@@ -426,8 +431,7 @@ public class TileIOPort extends AENetworkInvTile implements IUpgradeableHost, IC
                     }
                 }
             }
-        }
-        while (itemsToMove > 0 && didStuff);
+        } while (itemsToMove > 0 && didStuff);
 
         return itemsToMove / chan.transferFactor();
     }

@@ -18,7 +18,6 @@
 
 package appeng.services.version;
 
-
 /**
  * Exceptional template when the {@link Version} could not be retrieved
  */

@@ -18,10 +18,9 @@
 
 package appeng.parts.networking;
 
-
-import appeng.api.util.AECableType;
 import net.minecraft.item.ItemStack;
 
+import appeng.api.util.AECableType;
 
 public class PartDenseCableSmart extends PartDenseCable {
 

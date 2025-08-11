@@ -18,6 +18,17 @@
 
 package appeng.crafting;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -34,22 +45,14 @@ import appeng.me.cluster.implementations.CraftingCPUCluster;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.MeaningfulItemIterator;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 public class CraftingTreeNode {
 
     // what slot!
     private final int slot;
     private final CraftingJob job;
-    private final IItemList<IAEItemStack> used = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> used = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+            .createList();
     // parent node.
     private final CraftingTreeProcess parent;
     private final World world;
@@ -65,7 +68,8 @@ public class CraftingTreeNode {
     private long howManyEmitted = 0;
     private boolean exhausted = false;
 
-    public CraftingTreeNode(final ICraftingGrid cc, final CraftingJob job, final IAEItemStack wat, final CraftingTreeProcess par, final int slot, final int depth) {
+    public CraftingTreeNode(final ICraftingGrid cc, final CraftingJob job, final IAEItemStack wat,
+            final CraftingTreeProcess par, final int slot, final int depth) {
         this.what = wat;
         this.parent = par;
         this.slot = slot;
@@ -86,7 +90,8 @@ public class CraftingTreeNode {
             return; // if you can emit for something, you can't make it with patterns.
         }
 
-        for (final ICraftingPatternDetails details : cc.getCraftingFor(this.what, this.parent == null ? null : this.parent.details, slot, this.world))// in
+        for (final ICraftingPatternDetails details : cc.getCraftingFor(this.what,
+                this.parent == null ? null : this.parent.details, slot, this.world))// in
         // order.
         {
             if (this.parent == null || notRecursive(details) && this.parent.details != details) {
@@ -95,7 +100,8 @@ public class CraftingTreeNode {
         }
     }
 
-    IAEItemStack request(final MECraftingInventory inv, long l, final IActionSource src) throws CraftBranchFailure, InterruptedException {
+    IAEItemStack request(final MECraftingInventory inv, long l, final IActionSource src)
+            throws CraftBranchFailure, InterruptedException {
         addNode();
         this.job.handlePausing();
 
@@ -107,12 +113,14 @@ public class CraftingTreeNode {
         if (this.getSlot() >= 0 && this.parent != null && this.parent.details.isCraftable()) {
             LinkedList<IAEItemStack> itemList = new LinkedList<>();
 
-            boolean damageableItem = this.what.getItem().isDamageable() || Platform.isGTDamageableItem(this.what.getItem());
+            boolean damageableItem = this.what.getItem().isDamageable()
+                    || Platform.isGTDamageableItem(this.what.getItem());
 
             if (this.parent.details.canSubstitute()) {
                 for (IAEItemStack subs : this.parent.details.getSubstituteInputs(this.slot)) {
                     if (damageableItem) {
-                        Iterator<IAEItemStack> it = new MeaningfulItemIterator<>(inventoryList.findFuzzy(this.what, FuzzyMode.IGNORE_ALL));
+                        Iterator<IAEItemStack> it = new MeaningfulItemIterator<>(
+                                inventoryList.findFuzzy(this.what, FuzzyMode.IGNORE_ALL));
                         while (it.hasNext()) {
                             IAEItemStack i = it.next();
                             if (i.getStackSize() > 0) {
@@ -127,7 +135,8 @@ public class CraftingTreeNode {
                 }
             } else {
                 if (damageableItem) {
-                    Iterator<IAEItemStack> it = new MeaningfulItemIterator<>(inventoryList.findFuzzy(this.what, FuzzyMode.IGNORE_ALL));
+                    Iterator<IAEItemStack> it = new MeaningfulItemIterator<>(
+                            inventoryList.findFuzzy(this.what, FuzzyMode.IGNORE_ALL));
                     while (it.hasNext()) {
                         IAEItemStack i = it.next();
                         if (i.getStackSize() > 0) {
@@ -338,7 +347,8 @@ public class CraftingTreeNode {
         }
     }
 
-    public void setJob(final MECraftingInventory storage, final CraftingCPUCluster craftingCPUCluster, final IActionSource src) throws CraftBranchFailure {
+    public void setJob(final MECraftingInventory storage, final CraftingCPUCluster craftingCPUCluster,
+            final IActionSource src) throws CraftBranchFailure {
         for (final IAEItemStack i : this.used) {
             final IAEItemStack actuallyExtracted = storage.extractItems(i, Actionable.MODULATE, src);
 
@@ -346,9 +356,14 @@ public class CraftingTreeNode {
                 if (src.player().isPresent()) {
                     try {
                         if (actuallyExtracted == null) {
-                            NetworkHandler.instance().sendTo(new PacketInformPlayer(i, null, PacketInformPlayer.InfoType.NO_ITEMS_EXTRACTED), (EntityPlayerMP) src.player().get());
+                            NetworkHandler.instance().sendTo(
+                                    new PacketInformPlayer(i, null, PacketInformPlayer.InfoType.NO_ITEMS_EXTRACTED),
+                                    (EntityPlayerMP) src.player().get());
                         } else {
-                            NetworkHandler.instance().sendTo(new PacketInformPlayer(i, actuallyExtracted, PacketInformPlayer.InfoType.PARTIAL_ITEM_EXTRACTION), (EntityPlayerMP) src.player().get());
+                            NetworkHandler.instance()
+                                    .sendTo(new PacketInformPlayer(i, actuallyExtracted,
+                                            PacketInformPlayer.InfoType.PARTIAL_ITEM_EXTRACTION),
+                                            (EntityPlayerMP) src.player().get());
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -396,4 +411,22 @@ public class CraftingTreeNode {
     int getSlot() {
         return this.slot;
     }
+
+    public long getTotalCraftsForPrimaryOutput(IAEItemStack targetMaterial) {
+        long total = 0;
+
+        for (CraftingTreeProcess process : this.nodes) {
+            if (process.isPrimaryOutput(targetMaterial)) {
+                total += process.getCrafts();
+            }
+
+            for (Object2LongMap.Entry<CraftingTreeNode> entry : process.nodes.object2LongEntrySet()) {
+                CraftingTreeNode childNode = entry.getKey();
+                total += childNode.getTotalCraftsForPrimaryOutput(targetMaterial);
+            }
+        }
+
+        return total;
+    }
+
 }

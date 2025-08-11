@@ -1,13 +1,12 @@
 package appeng.tile.inventory;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import appeng.api.storage.ICellInventory;
 import appeng.api.storage.ICellInventoryHandler;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.filter.IAEItemFilter;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
-
 
 public class AppEngCellInventory implements IItemHandlerModifiable {
     private final AppEngInternalInventory inv;

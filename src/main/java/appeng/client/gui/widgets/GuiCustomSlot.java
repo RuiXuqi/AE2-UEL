@@ -1,12 +1,11 @@
 package appeng.client.gui.widgets;
 
-
-import appeng.container.interfaces.ISpecialSlotIngredient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import appeng.container.interfaces.ISpecialSlotIngredient;
 
 public abstract class GuiCustomSlot extends Gui implements ITooltip, ISpecialSlotIngredient {
     protected final int x;

@@ -1,5 +1,15 @@
 package appeng.container.implementations;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.oredict.OreDictionary;
+
 import appeng.api.AEApi;
 import appeng.api.config.*;
 import appeng.api.storage.IMEInventory;
@@ -13,16 +23,6 @@ import appeng.parts.misc.PartOreDicStorageBus;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.OreReference;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 
 public class ContainerOreDictStorageBus extends ContainerUpgradeable {
     private final PartOreDicStorageBus part;
@@ -68,7 +68,8 @@ public class ContainerOreDictStorageBus extends ContainerUpgradeable {
 
         Set<Integer> oreIDs = new HashSet<>();
 
-        for (IAEItemStack itemStack : cellInv.getAvailableItems(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList())) {
+        for (IAEItemStack itemStack : cellInv.getAvailableItems(
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList())) {
             OreReference ref = ((AEItemStack) itemStack).getOre().orElse(null);
             if (ref != null) {
                 oreIDs.addAll(ref.getOres());
@@ -78,7 +79,7 @@ public class ContainerOreDictStorageBus extends ContainerUpgradeable {
         String oreMatch = "(";
         String append = "";
 
-        for (Iterator<Integer> it = oreIDs.iterator(); it.hasNext(); ) {
+        for (Iterator<Integer> it = oreIDs.iterator(); it.hasNext();) {
             int oreID = it.next();
             if (it.hasNext()) {
                 append = ")|(";
@@ -102,7 +103,8 @@ public class ContainerOreDictStorageBus extends ContainerUpgradeable {
 
     public void sendRegex() {
         try {
-            NetworkHandler.instance().sendTo(new PacketValueConfig("OreDictStorageBus.sendRegex", part.getOreExp()), (EntityPlayerMP) getInventoryPlayer().player);
+            NetworkHandler.instance().sendTo(new PacketValueConfig("OreDictStorageBus.sendRegex", part.getOreExp()),
+                    (EntityPlayerMP) getInventoryPlayer().player);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,7 +129,8 @@ public class ContainerOreDictStorageBus extends ContainerUpgradeable {
     @Override
     protected void setupConfig() {
         final IItemHandler upgrades = this.getUpgradeable().getInventoryByName("upgrades");
-        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
+        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0,
+                187, 8, this.getInventoryPlayer()))
                 .setNotDraggable());
     }
 

@@ -18,14 +18,13 @@
 
 package appeng.services.compass;
 
-
-import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
 
 public final class CompassReader {
     private final Map<Long, CompassRegion> regions = new HashMap<>(100);

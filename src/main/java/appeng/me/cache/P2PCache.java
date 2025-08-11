@@ -18,6 +18,11 @@
 
 package appeng.me.cache;
 
+import java.util.Collection;
+import java.util.Random;
+
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 import appeng.api.networking.*;
 import appeng.api.networking.events.MENetworkBootingStatusChange;
@@ -28,15 +33,10 @@ import appeng.core.AELog;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.parts.p2p.PartP2PTunnel;
 import appeng.parts.p2p.PartP2PTunnelME;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-
-import java.util.Collection;
-import java.util.Random;
-
 
 public class P2PCache implements IGridCache {
-    private static final TunnelCollection<PartP2PTunnel> NULL_COLLECTION = new TunnelCollection<PartP2PTunnel>(null, null);
+    private static final TunnelCollection<PartP2PTunnel> NULL_COLLECTION = new TunnelCollection<PartP2PTunnel>(null,
+            null);
 
     private final IGrid myGrid;
     private final Multimap<Short, PartP2PTunnel> inputs = LinkedHashMultimap.create();
@@ -194,8 +194,7 @@ public class P2PCache implements IGridCache {
         do {
             newFrequency = (short) this.frequencyGenerator.nextInt(1 << 16);
             cycles++;
-        }
-        while (newFrequency == 0 || this.inputs.containsKey(newFrequency));
+        } while (newFrequency == 0 || this.inputs.containsKey(newFrequency));
 
         if (cycles > 25) {
             AELog.debug("Generating a new P2P frequency '%1$d' took %2$d cycles", newFrequency, cycles);

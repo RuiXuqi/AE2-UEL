@@ -18,12 +18,11 @@
 
 package appeng.core.features.registries.grinder;
 
-
-import appeng.api.features.IGrinderRecipe;
-import net.minecraft.item.ItemStack;
-
 import java.util.Optional;
 
+import net.minecraft.item.ItemStack;
+
+import appeng.api.features.IGrinderRecipe;
 
 public class AppEngGrinderRecipe implements IGrinderRecipe {
 
@@ -42,11 +41,13 @@ public class AppEngGrinderRecipe implements IGrinderRecipe {
         this(input, output, null, null, 0, 0, cost);
     }
 
-    AppEngGrinderRecipe(final ItemStack input, final ItemStack output, final ItemStack optional, final float chance, final int cost) {
+    AppEngGrinderRecipe(final ItemStack input, final ItemStack output, final ItemStack optional, final float chance,
+            final int cost) {
         this(input, output, optional, null, chance, 0, cost);
     }
 
-    AppEngGrinderRecipe(final ItemStack input, final ItemStack output, final ItemStack optional1, final ItemStack optional2, final float chance1, final float chance2, final int cost) {
+    AppEngGrinderRecipe(final ItemStack input, final ItemStack output, final ItemStack optional1,
+            final ItemStack optional2, final float chance1, final float chance2, final int cost) {
         this.in = input;
         this.out = output;
 

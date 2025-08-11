@@ -18,15 +18,15 @@
 
 package appeng.core.sync.packets;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.hooks.CompassManager;
 import appeng.hooks.CompassResult;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-
 
 public class PacketCompassResponse extends AppEngPacket {
 
@@ -48,7 +48,8 @@ public class PacketCompassResponse extends AppEngPacket {
     }
 
     // api
-    public PacketCompassResponse(final PacketCompassRequest req, final boolean hasResult, final boolean spin, final double radians) {
+    public PacketCompassResponse(final PacketCompassRequest req, final boolean hasResult, final boolean spin,
+            final double radians) {
 
         final ByteBuf data = Unpooled.buffer();
 

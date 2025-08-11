@@ -18,14 +18,10 @@
 
 package appeng.block.misc;
 
+import java.util.Random;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.AEConfig;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.AEBaseTile;
-import appeng.tile.misc.TileVibrationChamber;
-import appeng.util.Platform;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -39,9 +35,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.AEConfig;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.AEBaseTile;
+import appeng.tile.misc.TileVibrationChamber;
+import appeng.util.Platform;
 
 public final class BlockVibrationChamber extends AEBaseTileBlock {
 
@@ -65,11 +65,13 @@ public final class BlockVibrationChamber extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{ACTIVE};
+        return new IProperty[] { ACTIVE };
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (player.isSneaking()) {
             return false;
         }

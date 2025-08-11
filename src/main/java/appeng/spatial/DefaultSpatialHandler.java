@@ -18,14 +18,13 @@
 
 package appeng.spatial;
 
-
-import appeng.api.movable.IMovableHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import appeng.api.movable.IMovableHandler;
 
 public class DefaultSpatialHandler implements IMovableHandler {
 

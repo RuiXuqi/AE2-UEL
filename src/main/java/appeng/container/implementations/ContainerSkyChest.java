@@ -18,13 +18,12 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.slot.SlotNormal;
 import appeng.tile.storage.TileSkyChest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerSkyChest extends AEBaseContainer {
 
@@ -36,7 +35,8 @@ public class ContainerSkyChest extends AEBaseContainer {
 
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 9; x++) {
-                this.addSlotToContainer(new SlotNormal(this.chest.getInternalInventory(), y * 9 + x, 8 + 18 * x, 24 + 18 * y));
+                this.addSlotToContainer(
+                        new SlotNormal(this.chest.getInternalInventory(), y * 9 + x, 8 + 18 * x, 24 + 18 * y));
             }
         }
 

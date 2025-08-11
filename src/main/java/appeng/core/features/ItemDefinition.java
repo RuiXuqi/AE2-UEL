@@ -18,17 +18,18 @@
 
 package appeng.core.features;
 
+import java.util.Optional;
 
-import appeng.api.definitions.IItemDefinition;
-import appeng.util.Platform;
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-import java.util.Optional;
-
+import appeng.api.definitions.IItemDefinition;
+import appeng.util.Platform;
 
 public class ItemDefinition implements IItemDefinition {
     private final String identifier;
@@ -63,7 +64,8 @@ public class ItemDefinition implements IItemDefinition {
 
     @Override
     public final boolean isSameAs(final ItemStack comparableStack) {
-        return this.isEnabled() && Platform.itemComparisons().isEqualItemType(comparableStack, this.maybeStack(1).get());
+        return this.isEnabled()
+                && Platform.itemComparisons().isEqualItemType(comparableStack, this.maybeStack(1).get());
     }
 
 }

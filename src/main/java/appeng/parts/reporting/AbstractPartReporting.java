@@ -18,6 +18,19 @@
 
 package appeng.parts.reporting;
 
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IBlockAccess;
 
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.implementations.parts.IPartMonitor;
@@ -31,19 +44,6 @@ import appeng.api.util.AEPartLocation;
 import appeng.me.GridAccessException;
 import appeng.parts.AEBasePart;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
-
-import java.io.IOException;
-
 
 /**
  * The most basic class for any part reporting information, like terminals or monitors. This can also include basic
@@ -51,8 +51,8 @@ import java.io.IOException;
  * <p>
  * It deals with the most basic functionalities like network data, grid registration or the rotation of the actual part.
  * <p>
- * The direct abstract subclasses are usually a better entry point for adding new concrete ones.
- * But this might be an ideal starting point to completely new type, which does not resemble any existing one.
+ * The direct abstract subclasses are usually a better entry point for adding new concrete ones. But this might be an
+ * ideal starting point to completely new type, which does not resemble any existing one.
  *
  * @author AlgorithmX2
  * @author yueh
@@ -200,7 +200,8 @@ public abstract class AbstractPartReporting extends AEBasePart implements IPartM
     }
 
     @Override
-    public final void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held, final AEPartLocation side) {
+    public final void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held,
+            final AEPartLocation side) {
         super.onPlacement(player, hand, held, side);
 
         final byte rotation = (byte) (MathHelper.floor((player.rotationYaw * 4F) / 360F + 2.5D) & 3);
@@ -236,7 +237,9 @@ public abstract class AbstractPartReporting extends AEBasePart implements IPartM
     @Override
     public final boolean isActive() {
         if (!this.isLightSource()) {
-            return ((this.getClientFlags() & (PartPanel.CHANNEL_FLAG | PartPanel.POWERED_FLAG)) == (PartPanel.CHANNEL_FLAG | PartPanel.POWERED_FLAG));
+            return ((this.getClientFlags()
+                    & (PartPanel.CHANNEL_FLAG | PartPanel.POWERED_FLAG)) == (PartPanel.CHANNEL_FLAG
+                            | PartPanel.POWERED_FLAG));
         } else {
             return this.isPowered();
         }

@@ -18,6 +18,51 @@
 
 package appeng.client.gui;
 
+import static appeng.integration.modules.jei.JEIPlugin.aeGuiHandler;
+import static appeng.integration.modules.jei.JEIPlugin.runtime;
+
+import java.awt.*;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fml.common.Optional;
+
+import mezz.jei.api.gui.IGhostIngredientHandler;
+import yalter.mousetweaks.api.IMTModGuiContainer2;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
@@ -42,48 +87,6 @@ import appeng.helpers.InventoryAction;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import com.google.common.base.Joiner;
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
-import mezz.jei.api.gui.IGhostIngredientHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fml.common.Optional;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import yalter.mousetweaks.api.IMTModGuiContainer2;
-
-import java.awt.*;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.List;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import static appeng.integration.modules.jei.JEIPlugin.aeGuiHandler;
-import static appeng.integration.modules.jei.JEIPlugin.runtime;
 
 @Optional.Interface(iface = "yalter.mousetweaks.api.IMTModGuiContainer2", modid = "mousetweaks")
 public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContainer2 {
@@ -210,7 +213,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
             hoveredIngredientTargets = aeGuiHandler.getTargets(this, bookmarkedIngredient, false);
             ItemStack dragItem = ItemStack.EMPTY;
             if (hoveredIngredientTargets.size() > 0) {
-                if (isShiftKeyDown() && Mouse.isButtonDown(0) && this.lastClicked.elapsed(TimeUnit.MILLISECONDS) > 200) {
+                if (isShiftKeyDown() && Mouse.isButtonDown(0)
+                        && this.lastClicked.elapsed(TimeUnit.MILLISECONDS) > 200) {
                     this.lastClicked = Stopwatch.createStarted();
                     aeGuiHandler.getTargets(this, bookmarkedIngredient, true);
                 } else if (Mouse.isButtonDown(0) && this.lastClicked.elapsed(TimeUnit.MILLISECONDS) > 200) {
@@ -253,7 +257,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
 
             slot.drawContent(this.mc, mouseX, mouseY, partialTicks);
 
-            if (this.isPointInRegion(left, top, slot.getWidth(), slot.getHeight(), mouseX, mouseY) && slot.canClick(this.mc.player)) {
+            if (this.isPointInRegion(left, top, slot.getWidth(), slot.getHeight(), mouseX, mouseY)
+                    && slot.canClick(this.mc.player)) {
                 GlStateManager.disableLighting();
                 GlStateManager.colorMask(true, true, true, false);
                 this.drawGradientRect(left, top, right, bottom, -2130706433, -2130706433);
@@ -334,11 +339,13 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                 if (optionalSlot.isRenderDisabled()) {
                     final AppEngSlot aeSlot = (AppEngSlot) slot;
                     if (aeSlot.isSlotEnabled()) {
-                        this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1, optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
+                        this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1,
+                                optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
                     } else {
                         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.4F);
                         GlStateManager.enableBlend();
-                        this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1, optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
+                        this.drawTexturedModalRect(ox + aeSlot.xPos - 1, oy + aeSlot.yPos - 1,
+                                optionalSlot.getSourceX() - 1, optionalSlot.getSourceY() - 1, 18, 18);
                         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     }
                 }
@@ -365,7 +372,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         }
 
         for (GuiCustomSlot slot : this.guiSlots) {
-            if (this.isPointInRegion(slot.xPos(), slot.yPos(), slot.getWidth(), slot.getHeight(), xCoord, yCoord) && slot.canClick(this.mc.player)) {
+            if (this.isPointInRegion(slot.xPos(), slot.yPos(), slot.getWidth(), slot.getHeight(), xCoord, yCoord)
+                    && slot.canClick(this.mc.player)) {
                 slot.slotClicked(this.mc.player.inventory.getItemStack(), btn);
             }
         }
@@ -396,7 +404,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
 
         if (slot instanceof SlotFake && !itemstack.isEmpty()) {
             if (this.drag_click.add(slot)) {
-                final PacketInventoryAction p = new PacketInventoryAction(c == 0 ? InventoryAction.PICKUP_OR_SET_DOWN : InventoryAction.PLACE_SINGLE, slot.slotNumber, 0);
+                final PacketInventoryAction p = new PacketInventoryAction(
+                        c == 0 ? InventoryAction.PICKUP_OR_SET_DOWN : InventoryAction.PLACE_SINGLE, slot.slotNumber, 0);
                 NetworkHandler.instance().sendToServer(p);
             }
         } else if (slot instanceof SlotDisconnected) {
@@ -409,7 +418,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                         } else {
                             action = InventoryAction.PICKUP_OR_SET_DOWN;
                         }
-                        final PacketInventoryAction p = new PacketInventoryAction(action, slot.getSlotIndex(), ((SlotDisconnected) slot).getSlot().getId());
+                        final PacketInventoryAction p = new PacketInventoryAction(action, slot.getSlotIndex(),
+                                ((SlotDisconnected) slot).getSlot().getId());
                         NetworkHandler.instance().sendToServer(p);
                     }
                 }
@@ -420,7 +430,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                         action = InventoryAction.SHIFT_CLICK;
                     }
                     if (action != null) {
-                        final PacketInventoryAction p = new PacketInventoryAction(action, dr.getSlotIndex(), ((SlotDisconnected) slot).getSlot().getId());
+                        final PacketInventoryAction p = new PacketInventoryAction(action, dr.getSlotIndex(),
+                                ((SlotDisconnected) slot).getSlot().getId());
                         NetworkHandler.instance().sendToServer(p);
                     }
                 }
@@ -432,7 +443,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
 
     // TODO 1.9.4 aftermath - Whole ClickType thing, to be checked.
     @Override
-    protected void handleMouseClick(final Slot slot, final int slotIdx, final int mouseButton, final ClickType clickType) {
+    protected void handleMouseClick(final Slot slot, final int slotIdx, final int mouseButton,
+            final ClickType clickType) {
         final EntityPlayer player = Minecraft.getMinecraft().player;
 
         if (this.isJeiGhostItem && isDraggingJeiGhostItem) {
@@ -556,7 +568,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
             }
 
             if (action != null) {
-                final PacketInventoryAction p = new PacketInventoryAction(action, slot.getSlotIndex(), ((SlotDisconnected) slot).getSlot().getId());
+                final PacketInventoryAction p = new PacketInventoryAction(action, slot.getSlotIndex(),
+                        ((SlotDisconnected) slot).getSlot().getId());
                 NetworkHandler.instance().sendToServer(p);
             }
 
@@ -569,7 +582,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
 
             switch (clickType) {
                 case PICKUP: // pickup / set-down.
-                    action = (mouseButton == 1) ? InventoryAction.SPLIT_OR_PLACE_SINGLE : InventoryAction.PICKUP_OR_SET_DOWN;
+                    action = (mouseButton == 1) ? InventoryAction.SPLIT_OR_PLACE_SINGLE
+                            : InventoryAction.PICKUP_OR_SET_DOWN;
                     stack = ((SlotME) slot).getAEStack();
 
                     if (stack != null
@@ -614,7 +628,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         if (!this.disableShiftClick && isShiftKeyDown() && mouseButton == 0) {
             this.disableShiftClick = true;
 
-            if (this.dbl_whichItem.isEmpty() || this.bl_clicked != slot || this.dbl_clickTimer.elapsed(TimeUnit.MILLISECONDS) > 250) {
+            if (this.dbl_whichItem.isEmpty() || this.bl_clicked != slot
+                    || this.dbl_clickTimer.elapsed(TimeUnit.MILLISECONDS) > 250) {
                 // some simple double click logic.
                 this.bl_clicked = slot;
                 this.dbl_clickTimer = Stopwatch.createStarted();
@@ -628,7 +643,9 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
 
                 final List<Slot> slots = this.getInventorySlots();
                 for (final Slot inventorySlot : slots) {
-                    if (inventorySlot != null && inventorySlot.canTakeStack(this.mc.player) && inventorySlot.getHasStack() && inventorySlot.isSameInventory(slot) && Container.canAddItemToSlot(inventorySlot, this.dbl_whichItem, true)) {
+                    if (inventorySlot != null && inventorySlot.canTakeStack(this.mc.player)
+                            && inventorySlot.getHasStack() && inventorySlot.isSameInventory(slot)
+                            && Container.canAddItemToSlot(inventorySlot, this.dbl_whichItem, true)) {
                         this.handleMouseClick(inventorySlot, inventorySlot.slotNumber, 0, ClickType.QUICK_MOVE);
                     }
                 }
@@ -655,7 +672,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                 if (keyCode == this.mc.gameSettings.keyBindsHotbar[j].getKeyCode()) {
                     final List<Slot> slots = this.getInventorySlots();
                     for (final Slot s : slots) {
-                        if (s.getSlotIndex() == j && s.inventory == ((AEBaseContainer) this.inventorySlots).getPlayerInv()) {
+                        if (s.getSlotIndex() == j
+                                && s.inventory == ((AEBaseContainer) this.inventorySlots).getPlayerInv()) {
                             if (!s.canTakeStack(((AEBaseContainer) this.inventorySlots).getPlayerInv().player)) {
                                 return false;
                             }
@@ -667,8 +685,10 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                         return true;
                     } else {
                         for (final Slot s : slots) {
-                            if (s.getSlotIndex() == j && s.inventory == ((AEBaseContainer) this.inventorySlots).getPlayerInv()) {
-                                NetworkHandler.instance().sendToServer(new PacketSwapSlots(s.slotNumber, theSlot.slotNumber));
+                            if (s.getSlotIndex() == j
+                                    && s.inventory == ((AEBaseContainer) this.inventorySlots).getPlayerInv()) {
+                                NetworkHandler.instance()
+                                        .sendToServer(new PacketSwapSlots(s.slotNumber, theSlot.slotNumber));
                                 return true;
                             }
                         }
@@ -736,7 +756,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                     InventoryAction direction = wheel > 0 ? InventoryAction.DOUBLE : InventoryAction.HALVE;
                     p = new PacketInventoryAction(direction, slot.slotNumber, 0);
                 } else {
-                    InventoryAction direction = wheel > 0 ? InventoryAction.PLACE_SINGLE : InventoryAction.PICKUP_SINGLE;
+                    InventoryAction direction = wheel > 0 ? InventoryAction.PLACE_SINGLE
+                            : InventoryAction.PICKUP_SINGLE;
                     p = new PacketInventoryAction(direction, slot.slotNumber, 0);
                 }
                 NetworkHandler.instance().sendToServer(p);
@@ -818,7 +839,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                 GlStateManager.disableBlend();
                 final Fluid fluid = fs.getFluid();
                 Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-                final TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getStill().toString());
+                final TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks()
+                        .getAtlasSprite(fluid.getStill().toString());
 
                 // Set color for dynamic fluids
                 // Convert int color to RGB
@@ -840,7 +862,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
         } else {
             try {
                 final ItemStack is = s.getStack();
-                if (s instanceof AppEngSlot && (((AppEngSlot) s).renderIconWithItem() || is.isEmpty()) && (((AppEngSlot) s).shouldDisplay())) {
+                if (s instanceof AppEngSlot && (((AppEngSlot) s).renderIconWithItem() || is.isEmpty())
+                        && (((AppEngSlot) s).shouldDisplay())) {
                     final AppEngSlot aes = (AppEngSlot) s;
                     if (aes.getIcon() >= 0) {
                         this.bindTexture("guis/states.png");
@@ -867,11 +890,15 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                             final float f1 = 0.00390625F;
                             final float f = 0.00390625F;
                             final float par6 = 16;
-                            vb.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + par6) * f1).color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
+                            vb.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + par6) * f1)
+                                    .color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
                             final float par5 = 16;
-                            vb.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + par5) * f, (par4 + par6) * f1).color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
-                            vb.pos(par1 + par5, par2 + 0, this.zLevel).tex((par3 + par5) * f, (par4 + 0) * f1).color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
-                            vb.pos(par1 + 0, par2 + 0, this.zLevel).tex((par3 + 0) * f, (par4 + 0) * f1).color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
+                            vb.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + par5) * f, (par4 + par6) * f1)
+                                    .color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
+                            vb.pos(par1 + par5, par2 + 0, this.zLevel).tex((par3 + par5) * f, (par4 + 0) * f1)
+                                    .color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
+                            vb.pos(par1 + 0, par2 + 0, this.zLevel).tex((par3 + 0) * f, (par4 + 0) * f1)
+                                    .color(1.0f, 1.0f, 1.0f, aes.getOpacityOfIcon()).endVertex();
                             tessellator.draw();
 
                         } catch (final Exception err) {
@@ -881,7 +908,10 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
 
                 if (!is.isEmpty() && s instanceof AppEngSlot) {
                     if (((AppEngSlot) s).getIsValid() == hasCalculatedValidness.NotAvailable) {
-                        boolean isValid = s.isItemValid(is) || s instanceof SlotOutput || s instanceof AppEngCraftingSlot || s instanceof SlotDisabled || s instanceof SlotInaccessible || s instanceof SlotFake || s instanceof SlotRestrictedInput || s instanceof SlotDisconnected;
+                        boolean isValid = s.isItemValid(is) || s instanceof SlotOutput
+                                || s instanceof AppEngCraftingSlot || s instanceof SlotDisabled
+                                || s instanceof SlotInaccessible || s instanceof SlotFake
+                                || s instanceof SlotRestrictedInput || s instanceof SlotDisconnected;
                         if (isValid && s instanceof SlotRestrictedInput) {
                             try {
                                 isValid = ((SlotRestrictedInput) s).isValid(is, this.mc.world);
@@ -889,7 +919,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                                 AELog.debug(err);
                             }
                         }
-                        ((AppEngSlot) s).setIsValid(isValid ? hasCalculatedValidness.Valid : hasCalculatedValidness.Invalid);
+                        ((AppEngSlot) s)
+                                .setIsValid(isValid ? hasCalculatedValidness.Valid : hasCalculatedValidness.Invalid);
                     }
 
                     if (((AppEngSlot) s).getIsValid() == hasCalculatedValidness.Invalid) {
@@ -927,7 +958,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                             super.drawSlot(s);
 
                             if (isShiftKeyDown()) {
-                                this.stackSizeRenderer.renderStackSize(this.fontRenderer, AEItemStack.fromItemStack(out), s.xPos, s.yPos);
+                                this.stackSizeRenderer.renderStackSize(this.fontRenderer,
+                                        AEItemStack.fromItemStack(out), s.xPos, s.yPos);
                             } else {
                                 super.drawSlot(s);
                             }
@@ -956,40 +988,40 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
                     this.itemRender.zLevel = 0.0F;
 
                     boolean wasDragSplitting = this.dragSplitting;
-                    this.dragSplitting = false; // to prevent the vanilla slot renderer from rendering the stack count during drag splitting, we're re-enabling it later
+                    this.dragSplitting = false; // to prevent the vanilla slot renderer from rendering the stack count
+                                                // during drag splitting, we're re-enabling it later
 
                     // Annoying but easier than trying to splice into render item
                     super.drawSlot(s);
 
-                    ItemStack stackInSlot = ((AppEngSlot)s).getDisplayStack();
+                    ItemStack stackInSlot = ((AppEngSlot) s).getDisplayStack();
                     ItemStack stackUnderCursor = this.mc.player.inventory.getItemStack();
 
                     if (wasDragSplitting
-                        && this.dragSplittingSlots.contains(s)
-                        && this.dragSplittingSlots.size() > 1
-                        && !stackUnderCursor.isEmpty()) {
-                        if (Container.canAddItemToSlot(s, stackUnderCursor, true) && this.inventorySlots.canDragIntoSlot(s))
-                        {
+                            && this.dragSplittingSlots.contains(s)
+                            && this.dragSplittingSlots.size() > 1
+                            && !stackUnderCursor.isEmpty()) {
+                        if (Container.canAddItemToSlot(s, stackUnderCursor, true)
+                                && this.inventorySlots.canDragIntoSlot(s)) {
                             drawRect(s.xPos, s.yPos, s.xPos + 16, s.yPos + 16, -2130706433);
 
                             stackInSlot = stackUnderCursor.copy();
-                            Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, stackInSlot, s.getStack().isEmpty() ? 0 : s.getStack().getCount());
+                            Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, stackInSlot,
+                                    s.getStack().isEmpty() ? 0 : s.getStack().getCount());
                             int k = Math.min(stackInSlot.getMaxStackSize(), s.getItemStackLimit(stackInSlot));
 
-                            if (stackInSlot.getCount() > k)
-                            {
+                            if (stackInSlot.getCount() > k) {
                                 stackInSlot.setCount(k);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             this.dragSplittingSlots.remove(s);
                             this.updateDragSplitting();
                         }
                     }
 
                     this.dragSplitting = wasDragSplitting;
-                    this.stackSizeRenderer.renderStackSize(this.fontRenderer, AEItemStack.fromItemStack(stackInSlot), s.xPos, s.yPos);
+                    this.stackSizeRenderer.renderStackSize(this.fontRenderer, AEItemStack.fromItemStack(stackInSlot),
+                            s.xPos, s.yPos);
 
                     return;
                 } else {
@@ -1027,30 +1059,23 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     }
 
     // TODO: remove this when refactoring slot rendering
-    private void updateDragSplitting()
-    {
+    private void updateDragSplitting() {
         ItemStack itemstack = this.mc.player.inventory.getItemStack();
 
-        if (!itemstack.isEmpty() && this.dragSplitting)
-        {
-            if (this.dragSplittingLimit == 2)
-            {
+        if (!itemstack.isEmpty() && this.dragSplitting) {
+            if (this.dragSplittingLimit == 2) {
                 this.dragSplittingRemnant = itemstack.getMaxStackSize();
-            }
-            else
-            {
+            } else {
                 this.dragSplittingRemnant = itemstack.getCount();
 
-                for (Slot slot : this.dragSplittingSlots)
-                {
+                for (Slot slot : this.dragSplittingSlots) {
                     ItemStack itemstack1 = itemstack.copy();
                     ItemStack itemstack2 = slot.getStack();
                     int i = itemstack2.isEmpty() ? 0 : itemstack2.getCount();
                     Container.computeStackSize(this.dragSplittingSlots, this.dragSplittingLimit, itemstack1, i);
                     int j = Math.min(itemstack1.getMaxStackSize(), slot.getItemStackLimit(itemstack1));
 
-                    if (itemstack1.getCount() > j)
-                    {
+                    if (itemstack1.getCount() > j) {
                         itemstack1.setCount(j);
                     }
 
@@ -1099,14 +1124,16 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     @Override
     @Optional.Method(modid = "mousetweaks")
     public boolean MT_disableRMBDraggingFunctionality() {
-       if (this.dragSplitting && this.dragSplittingButton == 1) {
-           this.dragSplitting = false;
-           // Don't ignoreMouseUp on slots that can't accept the item. (crafting output, ME slot, etc.)
-           if (this.getSlotUnderMouse() != null && this.getSlotUnderMouse().isItemValid(this.mc.player.inventory.getItemStack())) {
-               this.ignoreMouseUp = true;
-           }
-           return true;
-       }
-       return false;
+        if (this.dragSplitting && this.dragSplittingButton == 1) {
+            this.dragSplitting = false;
+            // Don't ignoreMouseUp on slots that can't accept the item. (crafting output, ME slot, etc.)
+            if (this.getSlotUnderMouse() != null
+                    && this.getSlotUnderMouse().isItemValid(this.mc.player.inventory.getItemStack())) {
+                this.ignoreMouseUp = true;
+            }
+            return true;
+        }
+        return false;
     }
+
 }

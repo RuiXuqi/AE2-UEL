@@ -18,14 +18,6 @@
 
 package appeng.entity;
 
-
-import appeng.api.implementations.items.IGrowableCrystal;
-import appeng.api.implementations.tiles.ICrystalGrowthAccelerator;
-import appeng.client.EffectType;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
-import appeng.core.features.AEFeature;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -36,6 +28,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import appeng.api.implementations.items.IGrowableCrystal;
+import appeng.api.implementations.tiles.ICrystalGrowthAccelerator;
+import appeng.client.EffectType;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
+import appeng.core.features.AEFeature;
+import appeng.util.Platform;
 
 public final class EntityGrowingCrystal extends EntityItem {
 
@@ -64,7 +63,8 @@ public final class EntityGrowingCrystal extends EntityItem {
         if (gc instanceof IGrowableCrystal) // if it changes this just stops being an issue...
         {
             final int j = MathHelper.floor(this.posX);
-            final int i = MathHelper.floor((this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D);
+            final int i = MathHelper
+                    .floor((this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D);
             final int k = MathHelper.floor(this.posZ);
 
             final IBlockState state = this.world.getBlockState(new BlockPos(j, i, k));
@@ -115,7 +115,8 @@ public final class EntityGrowingCrystal extends EntityItem {
 
                 if (this.progress_1000 >= len) {
                     this.progress_1000 = 0;
-                    AppEng.proxy.spawnEffect(EffectType.Vibrant, this.world, this.posX, this.posY + 0.2, this.posZ, null);
+                    AppEng.proxy.spawnEffect(EffectType.Vibrant, this.world, this.posX, this.posY + 0.2, this.posZ,
+                            null);
                 }
             } else {
                 if (this.progress_1000 > 1000) {

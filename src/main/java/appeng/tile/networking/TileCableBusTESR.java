@@ -18,7 +18,6 @@
 
 package appeng.tile.networking;
 
-
 public class TileCableBusTESR extends TileCableBus {
 
     /**

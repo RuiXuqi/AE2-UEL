@@ -18,13 +18,6 @@
 
 package appeng.container.implementations;
 
-
-import appeng.api.config.*;
-import appeng.container.guisync.GuiSync;
-import appeng.container.slot.SlotFakeTypeOnly;
-import appeng.container.slot.SlotRestrictedInput;
-import appeng.parts.automation.PartLevelEmitter;
-import appeng.util.Platform;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -32,6 +25,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
+import appeng.api.config.*;
+import appeng.container.guisync.GuiSync;
+import appeng.container.slot.SlotFakeTypeOnly;
+import appeng.container.slot.SlotRestrictedInput;
+import appeng.parts.automation.PartLevelEmitter;
+import appeng.util.Platform;
 
 public class ContainerLevelEmitter extends ContainerUpgradeable {
 
@@ -67,22 +66,26 @@ public class ContainerLevelEmitter extends ContainerUpgradeable {
         final IItemHandler upgrades = this.getUpgradeable().getInventoryByName("upgrades");
         if (this.availableUpgrades() > 0) {
             this.addSlotToContainer(
-                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
+                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8,
+                            this.getInventoryPlayer()))
                             .setNotDraggable());
         }
         if (this.availableUpgrades() > 1) {
             this.addSlotToContainer(
-                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18, this.getInventoryPlayer()))
+                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18,
+                            this.getInventoryPlayer()))
                             .setNotDraggable());
         }
         if (this.availableUpgrades() > 2) {
             this.addSlotToContainer(
-                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2, this.getInventoryPlayer()))
+                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187,
+                            8 + 18 * 2, this.getInventoryPlayer()))
                             .setNotDraggable());
         }
         if (this.availableUpgrades() > 3) {
             this.addSlotToContainer(
-                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 3, 187, 8 + 18 * 3, this.getInventoryPlayer()))
+                    (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 3, 187,
+                            8 + 18 * 3, this.getInventoryPlayer()))
                             .setNotDraggable());
         }
 
@@ -109,10 +112,12 @@ public class ContainerLevelEmitter extends ContainerUpgradeable {
 
         if (Platform.isServer()) {
             this.EmitterValue = this.lvlEmitter.getReportingValue();
-            this.setCraftingMode((YesNo) this.getUpgradeable().getConfigManager().getSetting(Settings.CRAFT_VIA_REDSTONE));
+            this.setCraftingMode(
+                    (YesNo) this.getUpgradeable().getConfigManager().getSetting(Settings.CRAFT_VIA_REDSTONE));
             this.setLevelMode((LevelType) this.getUpgradeable().getConfigManager().getSetting(Settings.LEVEL_TYPE));
             this.setFuzzyMode((FuzzyMode) this.getUpgradeable().getConfigManager().getSetting(Settings.FUZZY_MODE));
-            this.setRedStoneMode((RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_EMITTER));
+            this.setRedStoneMode(
+                    (RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_EMITTER));
         }
 
         this.standardDetectAndSendChanges();

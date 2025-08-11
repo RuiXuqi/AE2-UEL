@@ -18,10 +18,9 @@
 
 package appeng.items.contents;
 
-
-import appeng.api.implementations.guiobjects.IGuiItemObject;
 import net.minecraft.item.ItemStack;
 
+import appeng.api.implementations.guiobjects.IGuiItemObject;
 
 public class QuartzKnifeObj implements IGuiItemObject {
 

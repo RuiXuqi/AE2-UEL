@@ -1,5 +1,8 @@
 package appeng.me.storage;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.Actionable;
 import appeng.api.exceptions.AppEngException;
@@ -13,10 +16,6 @@ import appeng.api.storage.data.IAEStack;
 import appeng.core.AEConfig;
 import appeng.core.AELog;
 import appeng.util.item.AEStack;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 
 public class BasicCellInventory<T extends IAEStack<T>> extends AbstractCellInventory<T> {
     private final IStorageChannel<T> channel;
@@ -26,7 +25,8 @@ public class BasicCellInventory<T extends IAEStack<T>> extends AbstractCellInven
         this.channel = cellType.getChannel();
     }
 
-    public static <T extends IAEStack<T>> ICellInventory<T> createInventory(final ItemStack o, final ISaveProvider container) {
+    public static <T extends IAEStack<T>> ICellInventory<T> createInventory(final ItemStack o,
+            final ISaveProvider container) {
         try {
             if (o == null) {
                 throw new AppEngException("ItemStack was used as a cell, but was not a cell!");
@@ -84,7 +84,7 @@ public class BasicCellInventory<T extends IAEStack<T>> extends AbstractCellInven
         return null;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private static boolean isCellEmpty(ICellInventory inv) {
         if (inv != null) {
             return inv.getAvailableItems(inv.getChannel().createList()).isEmpty();
@@ -140,7 +140,8 @@ public class BasicCellInventory<T extends IAEStack<T>> extends AbstractCellInven
 
         if (this.canHoldNewItem()) // room for new type, and for at least one item!
         {
-            final long remainingItemCount = this.getRemainingItemCount() - (long) this.getBytesPerType() * this.itemsPerByte;
+            final long remainingItemCount = this.getRemainingItemCount()
+                    - (long) this.getBytesPerType() * this.itemsPerByte;
             if (remainingItemCount > 0) {
                 if (input.getStackSize() > remainingItemCount) {
                     final T toReturn = input.copy();
@@ -211,12 +212,14 @@ public class BasicCellInventory<T extends IAEStack<T>> extends AbstractCellInven
         try {
             t = this.getChannel().createFromNBT(compoundTag);
             if (t == null) {
-                AELog.warn("Removing item " + compoundTag + " from storage cell because the associated item type couldn't be found.");
+                AELog.warn("Removing item " + compoundTag
+                        + " from storage cell because the associated item type couldn't be found.");
                 return false;
             }
         } catch (Throwable ex) {
             if (AEConfig.instance().isRemoveCrashingItemsOnLoad()) {
-                AELog.warn(ex, "Removing item " + compoundTag + " from storage cell because loading the ItemStack crashed.");
+                AELog.warn(ex,
+                        "Removing item " + compoundTag + " from storage cell because loading the ItemStack crashed.");
                 return false;
             }
             throw ex;

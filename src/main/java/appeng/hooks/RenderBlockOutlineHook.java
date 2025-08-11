@@ -1,5 +1,27 @@
 package appeng.hooks;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import appeng.api.AEApi;
 import appeng.api.parts.IFacadePart;
 import appeng.api.parts.IPart;
@@ -15,25 +37,6 @@ import appeng.items.parts.ItemFacade;
 import appeng.parts.BusCollisionHelper;
 import appeng.parts.PartPlacement;
 import appeng.parts.PartPlacement.Placement;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(Side.CLIENT)
@@ -41,10 +44,13 @@ public class RenderBlockOutlineHook {
 
     @SubscribeEvent
     public static void onDrawHighlightEvent(DrawBlockHighlightEvent event) {
-        if (event.getTarget() == null) return;
+        if (event.getTarget() == null)
+            return;
         // noinspection ConstantConditions
-        if (event.getTarget().getBlockPos() == null) return;
-        if (event.getTarget().typeOfHit != RayTraceResult.Type.BLOCK) return;
+        if (event.getTarget().getBlockPos() == null)
+            return;
+        if (event.getTarget().typeOfHit != RayTraceResult.Type.BLOCK)
+            return;
 
         EntityPlayer player = event.getPlayer();
         ItemStack stack = player.getHeldItemMainhand();
@@ -59,7 +65,8 @@ public class RenderBlockOutlineHook {
         }
     }
 
-    private static boolean replaceBlockOutline(EntityPlayer player, ItemStack stack, RayTraceResult hitResult, float partialTicks) {
+    private static boolean replaceBlockOutline(EntityPlayer player, ItemStack stack, RayTraceResult hitResult,
+            float partialTicks) {
         BlockPos pos = hitResult.getBlockPos();
 
         // Render the placement preview
@@ -79,7 +86,8 @@ public class RenderBlockOutlineHook {
             // Render the Part Host block outline, which is done differently from default behavior
             SelectedPart selectedPart = host.selectPartGlobal(hitResult.hitVec);
             if (selectedPart.facade != null) {
-                renderFacade(selectedPart.facade, host, pos, selectedPart.side.getFacing(), player, partialTicks, false, false);
+                renderFacade(selectedPart.facade, host, pos, selectedPart.side.getFacing(), player, partialTicks, false,
+                        false);
                 return true;
             }
             if (selectedPart.part != null) {
@@ -92,15 +100,21 @@ public class RenderBlockOutlineHook {
     }
 
     /** Render a placement preview for a part item, if possible. */
-    private static void renderPartPlacementPreview(EntityPlayer player, RayTraceResult hitResult, ItemStack stack, float partialTicks) {
-        if (!(stack.getItem() instanceof IPartItem<?> partItem)) return;
+    private static void renderPartPlacementPreview(EntityPlayer player, RayTraceResult hitResult, ItemStack stack,
+            float partialTicks) {
+        if (!(stack.getItem() instanceof IPartItem<?> partItem))
+            return;
 
-        Placement placement = PartPlacement.getPartPlacement(player, player.world, stack, hitResult.getBlockPos(), hitResult.sideHit);
-        if (placement == null) return;
-        if (!player.world.getWorldBorder().contains(placement.pos())) return;
+        Placement placement = PartPlacement.getPartPlacement(player, player.world, stack, hitResult.getBlockPos(),
+                hitResult.sideHit);
+        if (placement == null)
+            return;
+        if (!player.world.getWorldBorder().contains(placement.pos()))
+            return;
 
         IPart part = partItem.createPartFromItemStack(stack);
-        if (part == null) return;
+        if (part == null)
+            return;
 
         // Render with two depth passes to render behind blocks
         renderPart(part, placement.pos(), placement.side(), player, partialTicks, true, true);
@@ -108,15 +122,21 @@ public class RenderBlockOutlineHook {
     }
 
     /** Render a placement preview for a facade item, if possible. */
-    private static void renderFacadePlacementPreview(@Nonnull IPartHost host, EntityPlayer player, RayTraceResult hitResult, ItemStack stack, float partialTicks) {
-        if (!(stack.getItem() instanceof IFacadeItem facadeItem)) return;
+    private static void renderFacadePlacementPreview(@Nonnull IPartHost host, EntityPlayer player,
+            RayTraceResult hitResult, ItemStack stack, float partialTicks) {
+        if (!(stack.getItem() instanceof IFacadeItem facadeItem))
+            return;
 
-        Placement placement = PartPlacement.getPartPlacement(player, player.world, stack, hitResult.getBlockPos(), hitResult.sideHit);
-        if (placement == null) return;
+        Placement placement = PartPlacement.getPartPlacement(player, player.world, stack, hitResult.getBlockPos(),
+                hitResult.sideHit);
+        if (placement == null)
+            return;
 
         FacadePart part = facadeItem.createPartFromItemStack(stack, AEPartLocation.fromFacing(placement.side()));
-        if (part == null) return;
-        if (!ItemFacade.canPlaceFacade(host, part)) return;
+        if (part == null)
+            return;
+        if (!ItemFacade.canPlaceFacade(host, part))
+            return;
 
         // Render with two depth passes to render behind blocks
         renderFacade(part, host, placement.pos(), placement.side(), player, partialTicks, true, true);
@@ -124,7 +144,8 @@ public class RenderBlockOutlineHook {
     }
 
     /** Render a part block outline. */
-    private static void renderPart(IPart part, BlockPos pos, EnumFacing side, EntityPlayer player, float partialTicks, boolean preview, boolean insideBlock) {
+    private static void renderPart(IPart part, BlockPos pos, EnumFacing side, EntityPlayer player, float partialTicks,
+            boolean preview, boolean insideBlock) {
         List<AxisAlignedBB> boxes = new ArrayList<>();
         IPartCollisionHelper helper = new BusCollisionHelper(boxes, AEPartLocation.fromFacing(side), player, true);
         part.getBoxes(helper);
@@ -133,7 +154,8 @@ public class RenderBlockOutlineHook {
     }
 
     /** Render a facade block outline. */
-    private static void renderFacade(IFacadePart facade, IPartHost host, BlockPos pos, EnumFacing side, EntityPlayer player, float partialTicks, boolean preview, boolean insideBlock) {
+    private static void renderFacade(IFacadePart facade, IPartHost host, BlockPos pos, EnumFacing side,
+            EntityPlayer player, float partialTicks, boolean preview, boolean insideBlock) {
         List<AxisAlignedBB> boxes = new ArrayList<>();
         IPartCollisionHelper helper = new BusCollisionHelper(boxes, AEPartLocation.fromFacing(side), player, true);
         facade.getBoxes(helper, player);
@@ -151,7 +173,8 @@ public class RenderBlockOutlineHook {
     /**
      * Render the provided list of AABB boxes as a block outline.
      *
-     * @param preview     Whether this is a preview placement or a normal block outline. Determines coloration of the outline.
+     * @param preview     Whether this is a preview placement or a normal block outline. Determines coloration of the
+     *                    outline.
      * @param insideBlock Whether to disable depth test and darken the outline. Will draw behind other blocks.
      */
     private static void renderBoxes(List<AxisAlignedBB> boxes, boolean preview, boolean insideBlock) {

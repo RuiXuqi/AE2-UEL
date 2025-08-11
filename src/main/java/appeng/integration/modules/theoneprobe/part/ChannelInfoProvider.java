@@ -18,32 +18,35 @@
 
 package appeng.integration.modules.theoneprobe.part;
 
-
-import appeng.api.parts.IPart;
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import appeng.integration.modules.theoneprobe.TheOneProbeText;
-import appeng.parts.networking.PartCableSmart;
-import appeng.parts.networking.PartDenseCableSmart;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+
+import appeng.api.networking.pathing.ChannelMode;
+import appeng.api.parts.IPart;
+import appeng.core.AEConfig;
+import appeng.integration.modules.theoneprobe.TheOneProbeText;
+import appeng.parts.networking.PartCableSmart;
+import appeng.parts.networking.PartDenseCableSmart;
 
 public class ChannelInfoProvider implements IPartProbInfoProvider {
 
     @Override
-    public void addProbeInfo(IPart part, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
-        if (!AEConfig.instance().isFeatureEnabled(AEFeature.CHANNELS)) {
+    public void addProbeInfo(IPart part, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+            IBlockState blockState, IProbeHitData data) {
+        if (AEConfig.instance().getChannelMode() == ChannelMode.INFINITE) {
             return;
         }
         if (part instanceof PartDenseCableSmart || part instanceof PartCableSmart) {
             final int usedChannels;
-            final int maxChannels = (part instanceof PartDenseCableSmart) ? AEConfig.instance().getDenseChannelCapacity() : AEConfig.instance().getNormalChannelCapacity();
+            final int maxChannels = (part instanceof PartDenseCableSmart)
+                    ? AEConfig.instance().getDenseChannelCapacity()
+                    : AEConfig.instance().getNormalChannelCapacity();
 
             if (part.getGridNode().isActive()) {
                 final NBTTagCompound tmp = new NBTTagCompound();
@@ -53,7 +56,8 @@ public class ChannelInfoProvider implements IPartProbInfoProvider {
                 usedChannels = 0;
             }
 
-            final String formattedChannelString = String.format(TheOneProbeText.CHANNELS.getLocal(), usedChannels, maxChannels);
+            final String formattedChannelString = String.format(TheOneProbeText.CHANNELS.getLocal(), usedChannels,
+                    maxChannels);
 
             probeInfo.text(formattedChannelString);
         }

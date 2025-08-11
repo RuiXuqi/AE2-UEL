@@ -18,10 +18,8 @@
 
 package appeng.me.cache.helpers;
 
-
 import appeng.api.networking.IGridConnection;
 import appeng.parts.p2p.PartP2PTunnelME;
-
 
 public class TunnelConnection {
 

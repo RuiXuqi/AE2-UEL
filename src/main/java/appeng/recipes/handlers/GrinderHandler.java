@@ -1,17 +1,17 @@
 package appeng.recipes.handlers;
 
+import com.google.gson.JsonObject;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.JsonUtils;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.JsonContext;
 
 import appeng.api.AEApi;
 import appeng.api.features.IGrinderRecipeBuilder;
 import appeng.api.features.IGrinderRegistry;
 import appeng.recipes.IAERecipeFactory;
 import appeng.recipes.factories.recipes.PartRecipeFactory;
-import com.google.gson.JsonObject;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.JsonUtils;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.JsonContext;
-
 
 public class GrinderHandler implements IAERecipeFactory {
 

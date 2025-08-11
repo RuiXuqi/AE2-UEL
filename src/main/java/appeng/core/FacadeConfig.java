@@ -18,9 +18,11 @@
 
 package appeng.core;
 
+import java.io.File;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -28,11 +30,8 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.config.Property.Type;
 
-import java.io.File;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 
 public class FacadeConfig {
 
@@ -71,7 +70,8 @@ public class FacadeConfig {
         final Configuration configurartion = migrate(new Configuration(configFile, CONFIG_VERSION));
 
         final boolean allowTileEntityFacades = configurartion
-                .get(CONFIG_COMMON_KEY, CONFIG_COMMON_ALLOW_TILEENTITIES_KEY, false, CONFIG_COMMON_ALLOW_TILEENTITIES_COMMENT)
+                .get(CONFIG_COMMON_KEY, CONFIG_COMMON_ALLOW_TILEENTITIES_KEY, false,
+                        CONFIG_COMMON_ALLOW_TILEENTITIES_COMMENT)
                 .setRequiresMcRestart(true)
                 .setShowInGui(false)
                 .getBoolean();

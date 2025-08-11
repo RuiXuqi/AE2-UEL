@@ -1,13 +1,14 @@
 package appeng.util.inv;
 
+import java.util.Iterator;
+
+import com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository;
+
+import net.minecraft.item.ItemStack;
+
 import appeng.api.config.FuzzyMode;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
-import com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository;
-import net.minecraft.item.ItemStack;
-
-import java.util.Iterator;
-
 
 public class AdaptorItemRepository extends InventoryAdaptor {
     protected final IItemRepository itemRepository;
@@ -73,7 +74,8 @@ public class AdaptorItemRepository extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack removeSimilarItems(int amount, ItemStack filter, FuzzyMode fuzzyMode, IInventoryDestination destination) {
+    public ItemStack removeSimilarItems(int amount, ItemStack filter, FuzzyMode fuzzyMode,
+            IInventoryDestination destination) {
         ItemStack rv = ItemStack.EMPTY;
         ItemStack extracted = ItemStack.EMPTY;
 
@@ -101,7 +103,8 @@ public class AdaptorItemRepository extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack simulateSimilarRemove(int amount, ItemStack filter, FuzzyMode fuzzyMode, IInventoryDestination destination) {
+    public ItemStack simulateSimilarRemove(int amount, ItemStack filter, FuzzyMode fuzzyMode,
+            IInventoryDestination destination) {
         ItemStack rv = ItemStack.EMPTY;
         ItemStack extracted = ItemStack.EMPTY;
 
@@ -169,4 +172,3 @@ public class AdaptorItemRepository extends InventoryAdaptor {
         return null;
     }
 }
-

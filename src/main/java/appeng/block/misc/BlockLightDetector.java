@@ -18,13 +18,10 @@
 
 package appeng.block.misc;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.block.AEBaseTileBlock;
-import appeng.helpers.ICustomCollision;
-import appeng.helpers.MetaRotation;
-import appeng.tile.misc.TileLightDetector;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -41,11 +38,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.block.AEBaseTileBlock;
+import appeng.helpers.ICustomCollision;
+import appeng.helpers.MetaRotation;
+import appeng.tile.misc.TileLightDetector;
 
 public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBlock, ICustomCollision {
 
@@ -58,7 +56,8 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     public BlockLightDetector() {
         super(Material.CIRCUITS);
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ODD, false));
+        this.setDefaultState(
+                this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ODD, false));
         this.setLightOpacity(0);
         this.setFullSize(false);
         this.setOpaque(false);
@@ -77,7 +76,7 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{FACING, ODD};
+        return new IProperty[] { FACING, ODD };
     }
 
     @Override
@@ -105,7 +104,8 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     }
 
     @Override
-    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward, final EnumFacing up) {
+    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward,
+            final EnumFacing up) {
         return this.canPlaceAt(w, pos, up.getOpposite());
     }
 
@@ -114,22 +114,25 @@ public class BlockLightDetector extends AEBaseTileBlock implements IOrientableBl
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
         final EnumFacing up = this.getOrientable(w, pos).getUp();
         final double xOff = -0.3 * up.getXOffset();
         final double yOff = -0.3 * up.getYOffset();
         final double zOff = -0.3 * up.getZOffset();
-        return Collections.singletonList(new AxisAlignedBB(xOff + 0.3, yOff + 0.3, zOff + 0.3, xOff + 0.7, yOff + 0.7, zOff + 0.7));
+        return Collections.singletonList(
+                new AxisAlignedBB(xOff + 0.3, yOff + 0.3, zOff + 0.3, xOff + 0.7, yOff + 0.7, zOff + 0.7));
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {/*
-     * double xOff = -0.15 * getUp().offsetX; double yOff = -0.15 *
-     * getUp().offsetY; double zOff = -0.15 * getUp().offsetZ; out.add(
-     * AxisAlignedBB.getBoundingBox( xOff + (double) x + 0.15, yOff +
-     * (double) y + 0.15, zOff + (double) z + 0.15,// ahh xOff + (double) x
-     * + 0.85, yOff + (double) y + 0.85, zOff + (double) z + 0.85 ) );
-     */
+    public void addCollidingBlockToList(
+            final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out,
+            final Entity e) {/*
+                              * double xOff = -0.15 * getUp().offsetX; double yOff = -0.15 * getUp().offsetY; double
+                              * zOff = -0.15 * getUp().offsetZ; out.add( AxisAlignedBB.getBoundingBox( xOff + (double) x
+                              * + 0.15, yOff + (double) y + 0.15, zOff + (double) z + 0.15,// ahh xOff + (double) x +
+                              * 0.85, yOff + (double) y + 0.85, zOff + (double) z + 0.85 ) );
+                              */
     }
 
     @Override

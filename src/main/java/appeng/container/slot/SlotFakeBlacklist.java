@@ -18,9 +18,7 @@
 
 package appeng.container.slot;
 
-
 import net.minecraftforge.items.IItemHandler;
-
 
 public class SlotFakeBlacklist extends SlotFakeTypeOnly {
 

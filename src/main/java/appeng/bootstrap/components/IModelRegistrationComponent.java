@@ -18,11 +18,10 @@
 
 package appeng.bootstrap.components;
 
+import net.minecraftforge.fml.relauncher.Side;
 
 import appeng.bootstrap.IBootstrapComponent;
 import appeng.bootstrap.IModelRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-
 
 /**
  * @author GuntherDW

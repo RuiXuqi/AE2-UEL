@@ -18,15 +18,10 @@
 
 package appeng.entity;
 
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
-import appeng.core.features.AEFeature;
-import appeng.core.sync.packets.PacketMockExplosion;
-import appeng.helpers.Reflected;
-import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -45,8 +40,13 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
+import appeng.core.features.AEFeature;
+import appeng.core.sync.packets.PacketMockExplosion;
+import appeng.helpers.Reflected;
+import appeng.util.Platform;
 
 public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntityAdditionalSpawnData {
 
@@ -58,7 +58,8 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
         this.setSize(SIZE, SIZE);
     }
 
-    public EntityTinyTNTPrimed(final World w, final double x, final double y, final double z, final EntityLivingBase igniter) {
+    public EntityTinyTNTPrimed(final World w, final double x, final double y, final double z,
+            final EntityLivingBase igniter) {
         super(w, x, y, z, igniter);
         this.setSize(SIZE, SIZE);
         // this.yOffset = this.height / 2.0F;
@@ -88,8 +89,7 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
 
         if (this.isInWater() && Platform.isServer()) // put out the fuse.
         {
-            AEApi.instance().definitions().blocks().tinyTNT().maybeStack(1).ifPresent(tntStack ->
-            {
+            AEApi.instance().definitions().blocks().tinyTNT().maybeStack(1).ifPresent(tntStack -> {
                 final EntityItem item = new EntityItem(this.world, this.posX, this.posY, this.posZ, tntStack);
 
                 item.motionX = this.motionX;
@@ -118,7 +118,8 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
 
     // override :P
     void explode() {
-        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F,
+        this.world.playSound(null, this.posX, this.posY, this.posZ, SoundEvents.ENTITY_GENERIC_EXPLODE,
+                SoundCategory.BLOCKS, 4.0F,
                 (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 32.9F);
 
         if (this.isInWater()) {
@@ -126,7 +127,8 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
         }
 
         final Explosion ex = new Explosion(this.world, this, this.posX, this.posY, this.posZ, 0.2f, false, false);
-        final AxisAlignedBB area = new AxisAlignedBB(this.posX - 1.5, this.posY - 1.5f, this.posZ - 1.5, this.posX + 1.5, this.posY + 1.5, this.posZ + 1.5);
+        final AxisAlignedBB area = new AxisAlignedBB(this.posX - 1.5, this.posY - 1.5f, this.posZ - 1.5,
+                this.posX + 1.5, this.posY + 1.5, this.posZ + 1.5);
         final List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, area);
 
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, ex, list, 0.2f * 2d);
@@ -146,7 +148,9 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
                         final Block block = state.getBlock();
 
                         if (block != null && !block.isAir(state, this.world, point)) {
-                            float strength = (float) (2.3f - (((x + 0.5f) - this.posX) * ((x + 0.5f) - this.posX) + ((y + 0.5f) - this.posY) * ((y + 0.5f) - this.posY) + ((z + 0.5f) - this.posZ) * ((z + 0.5f) - this.posZ)));
+                            float strength = (float) (2.3f - (((x + 0.5f) - this.posX) * ((x + 0.5f) - this.posX)
+                                    + ((y + 0.5f) - this.posY) * ((y + 0.5f) - this.posY)
+                                    + ((z + 0.5f) - this.posZ) * ((z + 0.5f) - this.posZ)));
 
                             final float resistance = block.getExplosionResistance(this.world, point, this, ex);
                             strength -= (resistance + 0.3F) * 0.11f;
@@ -166,7 +170,8 @@ public final class EntityTinyTNTPrimed extends EntityTNTPrimed implements IEntit
             }
         }
 
-        AppEng.proxy.sendToAllNearExcept(null, this.posX, this.posY, this.posZ, 64, this.world, new PacketMockExplosion(this.posX, this.posY, this.posZ));
+        AppEng.proxy.sendToAllNearExcept(null, this.posX, this.posY, this.posZ, 64, this.world,
+                new PacketMockExplosion(this.posX, this.posY, this.posZ));
     }
 
     @Override

@@ -18,6 +18,14 @@
 
 package appeng.client.gui;
 
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.me.SlotME;
@@ -26,15 +34,6 @@ import appeng.container.slot.SlotPlayerHotBar;
 import appeng.container.slot.SlotPlayerInv;
 import appeng.core.AEConfig;
 import appeng.core.localization.ButtonToolTips;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-
 
 public abstract class AEBaseMEGui extends AEBaseGui {
 
@@ -62,7 +61,8 @@ public abstract class AEBaseMEGui extends AEBaseGui {
             if (myStack != null) {
                 if (myStack.getStackSize() > 1) {
                     final String local = ButtonToolTips.ItemsStored.getLocal();
-                    final String formattedAmount = NumberFormat.getNumberInstance(Locale.US).format(myStack.getStackSize());
+                    final String formattedAmount = NumberFormat.getNumberInstance(Locale.US)
+                            .format(myStack.getStackSize());
                     final String format = String.format(local, formattedAmount);
 
                     currentToolTip.add(TextFormatting.GRAY + format);
@@ -70,7 +70,8 @@ public abstract class AEBaseMEGui extends AEBaseGui {
 
                 if (myStack.getCountRequestable() > 0) {
                     final String local = ButtonToolTips.ItemsRequestable.getLocal();
-                    final String formattedAmount = NumberFormat.getNumberInstance(Locale.US).format(myStack.getCountRequestable());
+                    final String formattedAmount = NumberFormat.getNumberInstance(Locale.US)
+                            .format(myStack.getCountRequestable());
                     final String format = String.format(local, formattedAmount);
 
                     currentToolTip.add(format);
@@ -98,7 +99,8 @@ public abstract class AEBaseMEGui extends AEBaseGui {
         } else if (s instanceof AppEngSlot) {
             if (!(s instanceof SlotPlayerInv) && !(s instanceof SlotPlayerHotBar)) {
                 if (!s.getStack().isEmpty()) {
-                    final String formattedAmount = NumberFormat.getNumberInstance(Locale.US).format(s.getStack().getCount());
+                    final String formattedAmount = NumberFormat.getNumberInstance(Locale.US)
+                            .format(s.getStack().getCount());
                     currentToolTip.add(TextFormatting.GRAY + formattedAmount);
                     this.drawHoveringText(currentToolTip, x, y, this.fontRenderer);
                     return;

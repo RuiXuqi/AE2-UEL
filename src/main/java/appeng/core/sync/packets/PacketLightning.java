@@ -18,6 +18,13 @@
 
 package appeng.core.sync.packets;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.client.render.effects.LightningFX;
 import appeng.core.AEConfig;
@@ -25,13 +32,6 @@ import appeng.core.AppEng;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 
 public class PacketLightning extends AppEngPacket {
 
@@ -67,7 +67,8 @@ public class PacketLightning extends AppEngPacket {
     public void clientPacketData(final INetworkInfo network, final AppEngPacket packet, final EntityPlayer player) {
         try {
             if (Platform.isClient() && AEConfig.instance().isEnableEffects()) {
-                final LightningFX fx = new LightningFX(AppEng.proxy.getWorld(), this.x, this.y, this.z, 0.0f, 0.0f, 0.0f);
+                final LightningFX fx = new LightningFX(AppEng.proxy.getWorld(), this.x, this.y, this.z, 0.0f, 0.0f,
+                        0.0f);
                 Minecraft.getMinecraft().effectRenderer.addEffect(fx);
             }
         } catch (final Exception ignored) {

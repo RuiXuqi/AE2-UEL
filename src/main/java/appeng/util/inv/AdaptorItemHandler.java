@@ -18,15 +18,14 @@
 
 package appeng.util.inv;
 
+import java.util.Iterator;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.FuzzyMode;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.Iterator;
-
 
 public class AdaptorItemHandler extends InventoryAdaptor {
     protected final IItemHandler itemHandler;
@@ -124,13 +123,15 @@ public class AdaptorItemHandler extends InventoryAdaptor {
      * different damage values.
      */
     @Override
-    public ItemStack removeSimilarItems(int amount, ItemStack filter, FuzzyMode fuzzyMode, IInventoryDestination destination) {
+    public ItemStack removeSimilarItems(int amount, ItemStack filter, FuzzyMode fuzzyMode,
+            IInventoryDestination destination) {
         int slots = this.itemHandler.getSlots();
         ItemStack extracted = ItemStack.EMPTY;
 
         for (int slot = 0; slot < slots && extracted.isEmpty(); slot++) {
             final ItemStack is = this.itemHandler.getStackInSlot(slot);
-            if (is.isEmpty() || (!filter.isEmpty() && !Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
+            if (is.isEmpty()
+                    || (!filter.isEmpty() && !Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
                 continue;
             }
 
@@ -156,13 +157,15 @@ public class AdaptorItemHandler extends InventoryAdaptor {
     }
 
     @Override
-    public ItemStack simulateSimilarRemove(int amount, ItemStack filter, FuzzyMode fuzzyMode, IInventoryDestination destination) {
+    public ItemStack simulateSimilarRemove(int amount, ItemStack filter, FuzzyMode fuzzyMode,
+            IInventoryDestination destination) {
         int slots = this.itemHandler.getSlots();
         ItemStack extracted = ItemStack.EMPTY;
 
         for (int slot = 0; slot < slots && extracted.isEmpty(); slot++) {
             final ItemStack is = this.itemHandler.getStackInSlot(slot);
-            if (is.isEmpty() || (!filter.isEmpty() && !Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
+            if (is.isEmpty()
+                    || (!filter.isEmpty() && !Platform.itemComparisons().isFuzzyEqualItem(is, filter, fuzzyMode))) {
                 continue;
             }
 

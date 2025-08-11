@@ -18,8 +18,8 @@
 
 package appeng.thirdparty.codechicken.lib.model;
 
+import javax.vecmath.Vector3f;
 
-import appeng.thirdparty.codechicken.lib.math.InterpHelper;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -31,8 +31,7 @@ import net.minecraftforge.client.model.pipeline.IVertexProducer;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 
-import javax.vecmath.Vector3f;
-
+import appeng.thirdparty.codechicken.lib.math.InterpHelper;
 
 /**
  * A simple easy to manipulate quad format. Can be reset and then used on a different format.
@@ -176,8 +175,7 @@ public class Quad implements IVertexProducer, ISmartVertexConsumer {
     }
 
     /**
-     * Re-calculates the Orientation of this quad,
-     * optionally the normal vector.
+     * Re-calculates the Orientation of this quad, optionally the normal vector.
      *
      * @param setNormal If the normal vector should be updated.
      */
@@ -280,7 +278,8 @@ public class Quad implements IVertexProducer, ISmartVertexConsumer {
                 LightUtil.pack(this.vertices[v].raw[e], packedData, this.format.format, v, e);
             }
         }
-        return new BakedQuad(packedData, this.tintIndex, this.orientation, this.sprite, this.diffuseLighting, this.format.format);
+        return new BakedQuad(packedData, this.tintIndex, this.orientation, this.sprite, this.diffuseLighting,
+                this.format.format);
     }
 
     /**

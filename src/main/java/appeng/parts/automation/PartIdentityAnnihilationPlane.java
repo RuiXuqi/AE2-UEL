@@ -18,11 +18,9 @@
 
 package appeng.parts.automation;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.parts.IPartHost;
-import appeng.api.parts.IPartModel;
-import appeng.items.parts.PartModels;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
@@ -37,13 +35,15 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.parts.IPartHost;
+import appeng.api.parts.IPartModel;
+import appeng.items.parts.PartModels;
 
 public class PartIdentityAnnihilationPlane extends PartAnnihilationPlane {
 
-    private static final PlaneModels MODELS = new PlaneModels("part/identity_annihilation_plane_", "part/identity_annihilation_plane_on_");
+    private static final PlaneModels MODELS = new PlaneModels("part/identity_annihilation_plane_",
+            "part/identity_annihilation_plane_on_");
 
     @PartModels
     public static List<IPartModel> getModels() {
@@ -91,7 +91,8 @@ public class PartIdentityAnnihilationPlane extends PartAnnihilationPlane {
         TileEntity tile = getTile();
         if (tile instanceof IPartHost host) {
             host.removePart(getSide(), false);
-            ItemStack itemStack = AEApi.instance().definitions().parts().annihilationPlane().maybeStack(1).orElse(ItemStack.EMPTY);
+            ItemStack itemStack = AEApi.instance().definitions().parts().annihilationPlane().maybeStack(1)
+                    .orElse(ItemStack.EMPTY);
             itemStack.addEnchantment(Enchantments.SILK_TOUCH, 1);
             host.addPart(itemStack, getSide(), player, hand);
             return true;

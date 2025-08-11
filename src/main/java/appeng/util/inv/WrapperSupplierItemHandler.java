@@ -18,14 +18,13 @@
 
 package appeng.util.inv;
 
+import java.util.function.Supplier;
 
-import appeng.util.helpers.ItemHandlerUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import java.util.function.Supplier;
-
+import appeng.util.helpers.ItemHandlerUtil;
 
 public class WrapperSupplierItemHandler implements IItemHandlerModifiable {
     private final Supplier<IItemHandler> sourceHandler;

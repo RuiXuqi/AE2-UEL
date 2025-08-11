@@ -18,6 +18,7 @@
 
 package appeng.client.render.effects;
 
+import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -26,9 +27,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.Random;
-
 
 public class LightningFX extends Particle {
 
@@ -41,12 +39,14 @@ public class LightningFX extends Particle {
     private final double[] verticesWithUV = new double[3];
     private boolean hasData = false;
 
-    public LightningFX(final World w, final double x, final double y, final double z, final double r, final double g, final double b) {
+    public LightningFX(final World w, final double x, final double y, final double z, final double r, final double g,
+            final double b) {
         this(w, x, y, z, r, g, b, 6);
         this.regen();
     }
 
-    protected LightningFX(final World w, final double x, final double y, final double z, final double r, final double g, final double b, final int maxAge) {
+    protected LightningFX(final World w, final double x, final double y, final double z, final double r, final double g,
+            final double b, final int maxAge) {
         super(w, x, y, z, r, g, b);
         this.precomputedSteps = new double[LightningFX.STEPS][3];
         this.motionX = 0;
@@ -60,9 +60,12 @@ public class LightningFX extends Particle {
         double lastDirectionY = (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9;
         double lastDirectionZ = (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9;
         for (int s = 0; s < LightningFX.STEPS; s++) {
-            this.precomputedSteps[s][0] = lastDirectionX = (lastDirectionX + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
-            this.precomputedSteps[s][1] = lastDirectionY = (lastDirectionY + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
-            this.precomputedSteps[s][2] = lastDirectionZ = (lastDirectionZ + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
+            this.precomputedSteps[s][0] = lastDirectionX = (lastDirectionX
+                    + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
+            this.precomputedSteps[s][1] = lastDirectionY = (lastDirectionY
+                    + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
+            this.precomputedSteps[s][2] = lastDirectionZ = (lastDirectionZ
+                    + (RANDOM_GENERATOR.nextDouble() - 0.5) * 0.9) / 2.0;
         }
     }
 
@@ -88,7 +91,8 @@ public class LightningFX extends Particle {
     }
 
     @Override
-    public void renderParticle(final BufferBuilder tess, final Entity p_180434_2_, final float l, final float rX, final float rY, final float rZ, final float rYZ, final float rXY) {
+    public void renderParticle(final BufferBuilder tess, final Entity p_180434_2_, final float l, final float rX,
+            final float rY, final float rZ, final float rYZ, final float rXY) {
         final float j = 1.0f;
         float red = this.particleRed * j * 0.9f;
         float green = this.particleGreen * j * 0.95f;
@@ -172,7 +176,8 @@ public class LightningFX extends Particle {
                     }
 
                     final double ss = Math
-                            .sqrt(ox * ox + oy * oy + oz * oz) / ((((double) LightningFX.STEPS - (double) s) / LightningFX.STEPS) * scale);
+                            .sqrt(ox * ox + oy * oy + oz * oz)
+                            / ((((double) LightningFX.STEPS - (double) s) / LightningFX.STEPS) * scale);
                     ox /= ss;
                     oy /= ss;
                     oz /= ss;
@@ -203,9 +208,11 @@ public class LightningFX extends Particle {
         this.hasData = false;
     }
 
-    private void draw(float red, float green, float blue, final BufferBuilder tess, final double[] a, final double[] b, final double f6, final double f8) {
+    private void draw(float red, float green, float blue, final BufferBuilder tess, final double[] a, final double[] b,
+            final double f6, final double f8) {
         if (this.hasData) {
-            tess.pos(a[0], a[1], a[2]).tex(f6, f8).color(red, green, blue, this.particleAlpha).lightmap(BRIGHTNESS, BRIGHTNESS).endVertex();
+            tess.pos(a[0], a[1], a[2]).tex(f6, f8).color(red, green, blue, this.particleAlpha)
+                    .lightmap(BRIGHTNESS, BRIGHTNESS).endVertex();
             tess.pos(this.vertices[0], this.vertices[1], this.vertices[2])
                     .tex(f6, f8)
                     .color(red, green, blue, this.particleAlpha)
@@ -216,7 +223,8 @@ public class LightningFX extends Particle {
                     .color(red, green, blue, this.particleAlpha)
                     .lightmap(BRIGHTNESS, BRIGHTNESS)
                     .endVertex();
-            tess.pos(b[0], b[1], b[2]).tex(f6, f8).color(red, green, blue, this.particleAlpha).lightmap(BRIGHTNESS, BRIGHTNESS).endVertex();
+            tess.pos(b[0], b[1], b[2]).tex(f6, f8).color(red, green, blue, this.particleAlpha)
+                    .lightmap(BRIGHTNESS, BRIGHTNESS).endVertex();
         }
         this.hasData = true;
         for (int x = 0; x < 3; x++) {

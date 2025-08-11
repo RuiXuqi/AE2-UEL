@@ -1,5 +1,12 @@
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
 import appeng.client.gui.AEBaseGui;
 import appeng.client.gui.widgets.MEGuiTextField;
 import appeng.container.implementations.ContainerRenamer;
@@ -8,11 +15,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.helpers.ICustomNameObject;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Keyboard;
-
-import java.io.IOException;
 
 public class GuiRenamer extends AEBaseGui {
     private MEGuiTextField textField;

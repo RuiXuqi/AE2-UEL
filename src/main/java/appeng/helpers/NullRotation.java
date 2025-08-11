@@ -18,10 +18,9 @@
 
 package appeng.helpers;
 
-
-import appeng.api.util.IOrientable;
 import net.minecraft.util.EnumFacing;
 
+import appeng.api.util.IOrientable;
 
 public class NullRotation implements IOrientable {
 

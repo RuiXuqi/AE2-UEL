@@ -18,6 +18,7 @@
 
 package appeng.core.api;
 
+import com.google.common.base.Preconditions;
 
 import appeng.api.exceptions.FailedConnectionException;
 import appeng.api.networking.IGridBlock;
@@ -28,8 +29,6 @@ import appeng.api.util.AEPartLocation;
 import appeng.me.GridConnection;
 import appeng.me.GridNode;
 import appeng.util.Platform;
-import com.google.common.base.Preconditions;
-
 
 /**
  * @author yueh

@@ -18,6 +18,20 @@
 
 package appeng.core.features.registries.grinder;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Maps;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.features.*;
 import appeng.core.AEConfig;
@@ -25,19 +39,6 @@ import appeng.core.AELog;
 import appeng.recipes.ores.IOreListener;
 import appeng.recipes.ores.OreDictionaryHandler;
 import appeng.util.Platform;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Map.Entry;
-
 
 public final class GrinderRecipeManager implements IGrinderRegistry, IOreListener {
     private final Map<CacheKey, IGrinderRecipe> recipes;
@@ -122,7 +123,8 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
             return null;
         }
 
-        this.log("Recipe for '%1$s' found '%2$s'", input.getTranslationKey(), Platform.getItemDisplayName(recipe.getOutput()));
+        this.log("Recipe for '%1$s' found '%2$s'", input.getTranslationKey(),
+                Platform.getItemDisplayName(recipe.getOutput()));
         return recipe;
     }
 
@@ -147,8 +149,9 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
 
     @Override
     public void oreRegistered(final String name, final ItemStack item) {
-        if (!AEConfig.instance().getGrinderBlackList().contains(name) && (name.startsWith("ore") || name.startsWith("crystal") || name
-                .startsWith("gem") || name.startsWith("ingot") || name.startsWith("dust"))) {
+        if (!AEConfig.instance().getGrinderBlackList().contains(name)
+                && (name.startsWith("ore") || name.startsWith("crystal") || name
+                        .startsWith("gem") || name.startsWith("ingot") || name.startsWith("dust"))) {
             for (final String ore : AEConfig.instance().getGrinderOres()) {
                 if (name.equals("ore" + ore)) {
                     this.addOre(ore, item);
@@ -330,14 +333,15 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
 
             if (this.item == null) {
                 return other.item == null;
-            } else return this.item == other.item;
+            } else
+                return this.item == other.item;
         }
 
     }
 
     /**
-     * Internal {@link IInscriberRecipeBuilder} implementation.
-     * Needs to be adapted to represent a correct {@link IInscriberRecipe}
+     * Internal {@link IInscriberRecipeBuilder} implementation. Needs to be adapted to represent a correct
+     * {@link IInscriberRecipe}
      */
     private static final class Builder implements IGrinderRecipeBuilder {
 
@@ -411,7 +415,8 @@ public final class GrinderRecipeManager implements IGrinderRegistry, IOreListene
             Preconditions.checkState(this.in != null, "Input itemstack must be defined.");
             Preconditions.checkState(this.out != null, "Output itemstack must be defined.");
 
-            return new AppEngGrinderRecipe(this.in, this.out, this.optionalOutput, this.optionalOutput2, this.optionalChance, this.optionalChance2, this.turns);
+            return new AppEngGrinderRecipe(this.in, this.out, this.optionalOutput, this.optionalOutput2,
+                    this.optionalChance, this.optionalChance2, this.turns);
         }
 
         private ItemStack copy(final ItemStack is) {

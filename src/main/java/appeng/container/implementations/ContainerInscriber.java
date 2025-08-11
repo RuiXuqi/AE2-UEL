@@ -18,6 +18,10 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IItemDefinition;
@@ -28,11 +32,6 @@ import appeng.container.slot.SlotOutput;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.misc.TileInscriber;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
 
 /**
  * @author AlgorithmX2
@@ -61,11 +60,14 @@ public class ContainerInscriber extends ContainerUpgradeable implements IProgres
         IItemHandler inv = te.getInternalInventory();
 
         this.addSlotToContainer(
-                this.top = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.INSCRIBER_PLATE, inv, 0, 45, 16, this.getInventoryPlayer()));
+                this.top = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.INSCRIBER_PLATE, inv, 0, 45, 16,
+                        this.getInventoryPlayer()));
         this.addSlotToContainer(
-                this.bottom = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.INSCRIBER_PLATE, inv, 1, 45, 62, this.getInventoryPlayer()));
+                this.bottom = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.INSCRIBER_PLATE, inv, 1, 45,
+                        62, this.getInventoryPlayer()));
         this.addSlotToContainer(
-                this.middle = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.INSCRIBER_INPUT, inv, 2, 63, 39, this.getInventoryPlayer()));
+                this.middle = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.INSCRIBER_INPUT, inv, 2, 63,
+                        39, this.getInventoryPlayer()));
 
         this.addSlotToContainer(new SlotOutput(inv, 3, 113, 40, -1));
     }
@@ -118,15 +120,19 @@ public class ContainerInscriber extends ContainerUpgradeable implements IProgres
             for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
                 // Check if plateA matches any item in the list of top components of the recipe
                 final boolean matchA = top.isEmpty() && recipe.getTopInputs().isEmpty() ||
-                        recipe.getTopInputs().stream().anyMatch(topItem -> Platform.itemComparisons().isSameItem(top, topItem)) &&
+                        recipe.getTopInputs().stream()
+                                .anyMatch(topItem -> Platform.itemComparisons().isSameItem(top, topItem)) &&
                                 (bot.isEmpty() && recipe.getBottomInputs().isEmpty() ||
-                                        recipe.getBottomInputs().stream().anyMatch(bottomItem -> Platform.itemComparisons().isSameItem(bot, bottomItem)));
+                                        recipe.getBottomInputs().stream().anyMatch(
+                                                bottomItem -> Platform.itemComparisons().isSameItem(bot, bottomItem)));
 
                 // Check if plateB matches any item in the list of top components of the recipe
                 final boolean matchB = bot.isEmpty() && recipe.getTopInputs().isEmpty() ||
-                        recipe.getTopInputs().stream().anyMatch(topItem -> Platform.itemComparisons().isSameItem(bot, topItem)) &&
+                        recipe.getTopInputs().stream()
+                                .anyMatch(topItem -> Platform.itemComparisons().isSameItem(bot, topItem)) &&
                                 (top.isEmpty() && recipe.getBottomInputs().isEmpty() ||
-                                        recipe.getBottomInputs().stream().anyMatch(bottomItem -> Platform.itemComparisons().isSameItem(top, bottomItem)));
+                                        recipe.getBottomInputs().stream().anyMatch(
+                                                bottomItem -> Platform.itemComparisons().isSameItem(top, bottomItem)));
 
                 // If either matchA or matchB is true, iterate through the recipe's inputs
                 if (matchA || matchB) {

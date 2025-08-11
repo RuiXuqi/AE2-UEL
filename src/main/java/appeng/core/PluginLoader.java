@@ -18,12 +18,6 @@
 
 package appeng.core;
 
-
-import appeng.api.AEInjectable;
-import appeng.api.AEPlugin;
-import com.google.common.collect.ImmutableMap;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
-
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,6 +25,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableMap;
+
+import net.minecraftforge.fml.common.discovery.ASMDataTable;
+
+import appeng.api.AEInjectable;
+import appeng.api.AEPlugin;
 
 /**
  * Loads AE plugins on startup and provides them with access to various components of the AE API.
@@ -94,7 +94,8 @@ class PluginLoader {
         for (int i = 0; i < types.length; i++) {
             args[i] = injectableMap.get(types[i]);
             if (args[i] == null) {
-                throw new IllegalArgumentException("Constructor has parameter of type " + types[i] + " which is not an injectable type." + " Please see the documentation for @AEPlugin.");
+                throw new IllegalArgumentException("Constructor has parameter of type " + types[i]
+                        + " which is not an injectable type." + " Please see the documentation for @AEPlugin.");
             }
         }
 

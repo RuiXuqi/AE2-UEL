@@ -18,13 +18,11 @@
 
 package appeng.tile.crafting;
 
+import java.io.IOException;
+import java.util.Optional;
 
-import appeng.api.AEApi;
-import appeng.api.implementations.tiles.IColorableTile;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.AEColor;
-import appeng.util.item.AEItemStack;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,9 +30,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.io.IOException;
-import java.util.Optional;
-
+import appeng.api.AEApi;
+import appeng.api.implementations.tiles.IColorableTile;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.util.AEColor;
+import appeng.util.item.AEItemStack;
 
 public class TileCraftingMonitorTile extends TileCraftingTile implements IColorableTile {
 

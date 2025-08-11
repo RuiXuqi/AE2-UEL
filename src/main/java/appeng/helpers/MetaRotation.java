@@ -18,9 +18,6 @@
 
 package appeng.helpers;
 
-
-import appeng.api.util.IOrientable;
-import appeng.decorative.solid.BlockQuartzPillar;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -29,6 +26,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import appeng.api.util.IOrientable;
+import appeng.decorative.solid.BlockQuartzPillar;
 
 public class MetaRotation implements IOrientable {
 
@@ -85,10 +84,12 @@ public class MetaRotation implements IOrientable {
     public void setOrientation(final EnumFacing forward, final EnumFacing up) {
         if (this.w instanceof World) {
             if (this.facingProp != null) {
-                ((World) this.w).setBlockState(this.pos, this.w.getBlockState(this.pos).withProperty(this.facingProp, up));
+                ((World) this.w).setBlockState(this.pos,
+                        this.w.getBlockState(this.pos).withProperty(this.facingProp, up));
             } else {
                 // TODO 1.10.2-R - Temp
-                ((World) this.w).setBlockState(this.pos, this.w.getBlockState(this.pos).withProperty(BlockQuartzPillar.AXIS_ORIENTATION, up.getAxis()));
+                ((World) this.w).setBlockState(this.pos,
+                        this.w.getBlockState(this.pos).withProperty(BlockQuartzPillar.AXIS_ORIENTATION, up.getAxis()));
             }
         } else {
             throw new IllegalStateException(this.w.getClass().getName() + " received, expected World");

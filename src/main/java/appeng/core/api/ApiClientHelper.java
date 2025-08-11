@@ -1,5 +1,18 @@
 package appeng.core.api;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Collection;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.config.IncludeExclude;
 import appeng.api.storage.ICellInventory;
@@ -18,23 +31,10 @@ import appeng.fluids.items.FluidDummyItem;
 import appeng.fluids.util.AEFluidStack;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.input.Keyboard;
-
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Collection;
-import java.util.List;
-
 
 public class ApiClientHelper implements IClientHelper {
 
-    private static final String[] NUMBER_FORMATS = new String[]{"#.000", "#.00", "#.0", "#"};
+    private static final String[] NUMBER_FORMATS = new String[] { "#.000", "#.00", "#.0", "#" };
 
     @Override
     public <T extends IAEStack<T>> void addCellInformation(ICellInventoryHandler<T> handler, List<String> lines) {
@@ -45,15 +45,18 @@ public class ApiClientHelper implements IClientHelper {
         final ICellInventory<?> cellInventory = handler.getCellInv();
 
         if (cellInventory != null) {
-            lines.add(Tooltips.bytesUsed(cellInventory.getUsedBytes(),cellInventory.getTotalBytes()).getFormattedText());
+            lines.add(
+                    Tooltips.bytesUsed(cellInventory.getUsedBytes(), cellInventory.getTotalBytes()).getFormattedText());
 
-            lines.add(Tooltips.typesUsed(cellInventory.getStoredItemTypes(),cellInventory.getTotalItemTypes()).getFormattedText());
+            lines.add(Tooltips.typesUsed(cellInventory.getStoredItemTypes(), cellInventory.getTotalItemTypes())
+                    .getFormattedText());
         }
 
         IItemList<?> itemList = cellInventory.getChannel().createList();
 
         if (handler.isPreformatted()) {
-            final String list = (handler.getIncludeExcludeMode() == IncludeExclude.WHITELIST ? GuiText.Included : GuiText.Excluded).getLocal();
+            final String list = (handler.getIncludeExcludeMode() == IncludeExclude.WHITELIST ? GuiText.Included
+                    : GuiText.Excluded).getLocal();
 
             if (handler.isFuzzy()) {
                 lines.add("[" + GuiText.Partitioned.getLocal() + "]" + " - " + list + ' ' + GuiText.Fuzzy.getLocal());
@@ -65,7 +68,8 @@ public class ApiClientHelper implements IClientHelper {
                 lines.add(GuiText.Sticky.getLocal());
             }
 
-            if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+            if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
+                    || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
                 IItemHandler inv = cellInventory.getConfigInventory();
                 cellInventory.getAvailableItems((IItemList) itemList);
                 for (int i = 0; i < inv.getSlots(); i++) {
@@ -75,10 +79,12 @@ public class ApiClientHelper implements IClientHelper {
                             if (!handler.isFuzzy()) {
                                 final IAEItemStack ais = AEItemStack.fromItemStack(is);
                                 IAEItemStack stocked = ((IItemList<IAEItemStack>) itemList).findPrecise(ais);
-                                lines.add("[" + is.getDisplayName() + "]" + ": " + (stocked == null ? "0" : ReadableNumberConverter.INSTANCE.toWideReadableForm(stocked.getStackSize())));
+                                lines.add("[" + is.getDisplayName() + "]" + ": " + (stocked == null ? "0"
+                                        : ReadableNumberConverter.INSTANCE.toWideReadableForm(stocked.getStackSize())));
                             } else {
                                 final IAEItemStack ais = AEItemStack.fromItemStack(is);
-                                Collection<IAEItemStack> stocked = ((IItemList<IAEItemStack>) itemList).findFuzzy(ais, handler.getCellInv().getFuzzyMode());
+                                Collection<IAEItemStack> stocked = ((IItemList<IAEItemStack>) itemList).findFuzzy(ais,
+                                        handler.getCellInv().getFuzzyMode());
 
                                 int[] ids = OreDictionary.getOreIDs(is);
                                 long size = 0;
@@ -93,7 +99,8 @@ public class ApiClientHelper implements IClientHelper {
                                     for (int j : ids) {
                                         sb.append(OreDictionary.getOreName(j)).append(", ");
                                     }
-                                    lines.add("[{" + sb.substring(0, sb.length() - 2) + "}]" + ": " + ReadableNumberConverter.INSTANCE.toWideReadableForm(size));
+                                    lines.add("[{" + sb.substring(0, sb.length() - 2) + "}]" + ": "
+                                            + ReadableNumberConverter.INSTANCE.toWideReadableForm(size));
                                 }
                             }
                         } else if (cellInventory.getChannel() instanceof IFluidStorageChannel) {
@@ -104,22 +111,25 @@ public class ApiClientHelper implements IClientHelper {
                                 ais = AEFluidStack.fromFluidStack(FluidUtil.getFluidContained(is));
                             }
                             IAEFluidStack stocked = ((IItemList<IAEFluidStack>) itemList).findPrecise(ais);
-                            lines.add("[" + is.getDisplayName() + "]" + ": " + (stocked == null ? "0" : fluidStackSize(stocked.getStackSize())));
+                            lines.add("[" + is.getDisplayName() + "]" + ": "
+                                    + (stocked == null ? "0" : fluidStackSize(stocked.getStackSize())));
                         }
                     }
                 }
             }
         } else {
-            if (!AEConfig.instance().showCellContentsPreview()) return;
+            if (!AEConfig.instance().showCellContentsPreview())
+                return;
             if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips
-                    || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)
-            ) {
+                    || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
                 cellInventory.getAvailableItems((IItemList) itemList);
                 for (IAEStack<?> s : itemList) {
                     if (s instanceof IAEItemStack) {
-                        lines.add(((IAEItemStack) s).getDefinition().getDisplayName() + ": " + ReadableNumberConverter.INSTANCE.toWideReadableForm(s.getStackSize()));
+                        lines.add(((IAEItemStack) s).getDefinition().getDisplayName() + ": "
+                                + ReadableNumberConverter.INSTANCE.toWideReadableForm(s.getStackSize()));
                     } else if (s instanceof IAEFluidStack) {
-                        lines.add(((IAEFluidStack) s).getFluidStack().getLocalizedName() + ": " + fluidStackSize(s.getStackSize()));
+                        lines.add(((IAEFluidStack) s).getFluidStack().getLocalizedName() + ": "
+                                + fluidStackSize(s.getStackSize()));
                     }
                 }
             }

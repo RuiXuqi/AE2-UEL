@@ -18,18 +18,16 @@
 
 package appeng.util.iterators;
 
+import java.util.Iterator;
 
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AEPartLocation;
 
-import java.util.Iterator;
-
-
 public final class ProxyNodeIterator implements Iterator<IGridNode> {
-    private final Iterator<IGridHost> hosts;
+    private final Iterator<? extends IGridHost> hosts;
 
-    public ProxyNodeIterator(final Iterator<IGridHost> hosts) {
+    public ProxyNodeIterator(final Iterator<? extends IGridHost> hosts) {
         this.hosts = hosts;
     }
 

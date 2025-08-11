@@ -18,14 +18,10 @@
 
 package appeng.block;
 
+import java.util.List;
 
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.block.misc.BlockLightDetector;
-import appeng.block.misc.BlockSkyCompass;
-import appeng.block.networking.BlockWireless;
-import appeng.me.helpers.IGridProxyable;
-import appeng.tile.AEBaseTile;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -38,10 +34,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.block.misc.BlockLightDetector;
+import appeng.block.misc.BlockSkyCompass;
+import appeng.block.networking.BlockWireless;
+import appeng.me.helpers.IGridProxyable;
+import appeng.tile.AEBaseTile;
 
 public class AEBaseItemBlock extends ItemBlock {
 
@@ -63,12 +63,14 @@ public class AEBaseItemBlock extends ItemBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void addInformation(final ItemStack itemStack, final World world, final List<String> toolTip, final ITooltipFlag advancedTooltips) {
+    public final void addInformation(final ItemStack itemStack, final World world, final List<String> toolTip,
+            final ITooltipFlag advancedTooltips) {
         this.addCheckedInformation(itemStack, world, toolTip, advancedTooltips);
     }
 
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack itemStack, final World world, final List<String> toolTip, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack itemStack, final World world, final List<String> toolTip,
+            final ITooltipFlag advancedTooltips) {
         this.blockType.addInformation(itemStack, world, toolTip, advancedTooltips);
     }
 
@@ -84,7 +86,8 @@ public class AEBaseItemBlock extends ItemBlock {
     }
 
     @Override
-    public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World w, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final IBlockState newState) {
+    public boolean placeBlockAt(final ItemStack stack, final EntityPlayer player, final World w, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final IBlockState newState) {
         EnumFacing up = null;
         EnumFacing forward = null;
 

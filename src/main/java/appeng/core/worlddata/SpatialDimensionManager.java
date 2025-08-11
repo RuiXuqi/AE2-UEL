@@ -18,9 +18,9 @@
 
 package appeng.core.worlddata;
 
+import java.util.HashMap;
+import java.util.Map;
 
-import appeng.api.storage.ISpatialDimension;
-import appeng.capabilities.Capabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -30,9 +30,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import appeng.api.storage.ISpatialDimension;
+import appeng.capabilities.Capabilities;
 
 public class SpatialDimensionManager implements ISpatialDimension, ICapabilitySerializable<NBTTagCompound> {
     private static final String NBT_SPATIAL_DATA_KEY = "spatial_data";
@@ -207,7 +206,8 @@ public class SpatialDimensionManager implements ISpatialDimension, ICapabilitySe
 
         @Override
         public void deserializeNBT(NBTTagCompound nbt) {
-            this.contentDimension = new BlockPos(nbt.getInteger(NBT_DIM_X_KEY), nbt.getInteger(NBT_DIM_Y_KEY), nbt.getInteger(NBT_DIM_Z_KEY));
+            this.contentDimension = new BlockPos(nbt.getInteger(NBT_DIM_X_KEY), nbt.getInteger(NBT_DIM_Y_KEY),
+                    nbt.getInteger(NBT_DIM_Z_KEY));
             this.owner = nbt.getInteger(NBT_OWNER_KEY);
         }
     }

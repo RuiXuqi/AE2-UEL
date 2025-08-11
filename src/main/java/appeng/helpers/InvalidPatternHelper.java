@@ -18,18 +18,17 @@
 
 package appeng.helpers;
 
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
 
-import appeng.util.Platform;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-
+import appeng.util.Platform;
 
 public class InvalidPatternHelper {
 

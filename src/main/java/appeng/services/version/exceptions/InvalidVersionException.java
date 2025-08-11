@@ -18,7 +18,6 @@
 
 package appeng.services.version.exceptions;
 
-
 /**
  * Indicates an invalid version, which does not consists of 3 parts matching /(rv\d+)-(alpha|beta|stable)-(b\d+)/.
  */

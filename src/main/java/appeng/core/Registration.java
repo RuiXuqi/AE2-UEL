@@ -18,6 +18,47 @@
 
 package appeng.core;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.ICriterionInstance;
+import net.minecraft.advancements.ICriterionTrigger;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
@@ -71,46 +112,6 @@ import appeng.spatial.StorageWorldProvider;
 import appeng.tile.AEBaseTile;
 import appeng.worldgen.MeteoriteWorldGen;
 import appeng.worldgen.QuartzWorldGen;
-import com.google.common.base.Preconditions;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.ICriterionTrigger;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.IForgeRegistry;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 
 final class Registration {
     DimensionType storageDimensionType;
@@ -130,7 +131,8 @@ final class Registration {
         ApiDefinitions definitions = api.definitions();
 
         // Register
-        definitions.getRegistry().getBootstrapComponents(IPreInitComponent.class).forEachRemaining(b -> b.preInitialize(event.getSide()));
+        definitions.getRegistry().getBootstrapComponents(IPreInitComponent.class)
+                .forEachRemaining(b -> b.preInitialize(event.getSide()));
     }
 
     private void registerSpatialBiome(IForgeRegistry<Biome> registry) {
@@ -164,7 +166,8 @@ final class Registration {
             config.save();
         }
 
-        this.storageDimensionType = DimensionType.register("Storage Cell", "_cell", config.getStorageProviderID(), StorageWorldProvider.class, true);
+        this.storageDimensionType = DimensionType.register("Storage Cell", "_cell", config.getStorageProviderID(),
+                StorageWorldProvider.class, true);
 
         if (config.getStorageDimensionID() == -1) {
             config.setStorageDimensionID(DimensionManager.getNextFreeDimId());
@@ -188,9 +191,10 @@ final class Registration {
         final IRegistryContainer registries = api.registries();
 
         ApiDefinitions definitions = api.definitions();
-        definitions.getRegistry().getBootstrapComponents(IInitComponent.class).forEachRemaining(b -> b.initialize(event.getSide()));
+        definitions.getRegistry().getBootstrapComponents(IInitComponent.class)
+                .forEachRemaining(b -> b.initialize(event.getSide()));
 
-        MinecraftForge.EVENT_BUS.register(TickHandler.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(TickHandler.instance());
 
         MinecraftForge.EVENT_BUS.register(new WrenchClickHook());
 
@@ -199,22 +203,21 @@ final class Registration {
         }
 
         final IGridCacheRegistry gcr = registries.gridCache();
-        gcr.registerGridCache(ITickManager.class, TickManagerCache.class);
-        gcr.registerGridCache(IEnergyGrid.class, EnergyGridCache.class);
-        gcr.registerGridCache(IPathingGrid.class, PathGridCache.class);
-        gcr.registerGridCache(IStorageGrid.class, GridStorageCache.class);
-        gcr.registerGridCache(P2PCache.class, P2PCache.class);
-        gcr.registerGridCache(ISpatialCache.class, SpatialPylonCache.class);
-        gcr.registerGridCache(ISecurityGrid.class, SecurityCache.class);
-        gcr.registerGridCache(ICraftingGrid.class, CraftingGridCache.class);
+        gcr.registerGridCache(ITickManager.class, TickManagerCache::new);
+        gcr.registerGridCache(IEnergyGrid.class, EnergyGridCache::new);
+        gcr.registerGridCache(IPathingGrid.class, PathGridCache::new);
+        gcr.registerGridCache(IStorageGrid.class, GridStorageCache::new);
+        gcr.registerGridCache(P2PCache.class, P2PCache::new);
+        gcr.registerGridCache(ISpatialCache.class, SpatialPylonCache::new);
+        gcr.registerGridCache(ISecurityGrid.class, SecurityCache::new);
+        gcr.registerGridCache(ICraftingGrid.class, CraftingGridCache::new);
 
         registries.cell().addCellHandler(new BasicCellHandler());
         registries.cell().addCellHandler(new CreativeCellHandler());
         registries.cell().addCellGuiHandler(new BasicItemCellGuiHandler());
         registries.cell().addCellGuiHandler(new BasicFluidCellGuiHandler());
 
-        api.definitions().materials().matterBall().maybeStack(1).ifPresent(ammoStack ->
-        {
+        api.definitions().materials().matterBall().maybeStack(1).ifPresent(ammoStack -> {
             final double weight = 32;
 
             registries.matterCannon().registerAmmo(ammoStack, weight);
@@ -237,7 +240,8 @@ final class Registration {
         final ApiDefinitions definitions = Api.INSTANCE.definitions();
         final IModelRegistry registry = new ModelLoaderWrapper();
         final Side side = FMLCommonHandler.instance().getEffectiveSide();
-        definitions.getRegistry().getBootstrapComponents(IModelRegistrationComponent.class).forEachRemaining(b -> b.modelRegistration(side, registry));
+        definitions.getRegistry().getBootstrapComponents(IModelRegistrationComponent.class)
+                .forEachRemaining(b -> b.modelRegistration(side, registry));
     }
 
     @SubscribeEvent
@@ -245,7 +249,8 @@ final class Registration {
         final IForgeRegistry<Block> registry = event.getRegistry();
         final ApiDefinitions definitions = Api.INSTANCE.definitions();
         final Side side = FMLCommonHandler.instance().getEffectiveSide();
-        definitions.getRegistry().getBootstrapComponents(IBlockRegistrationComponent.class).forEachRemaining(b -> b.blockRegistration(side, registry));
+        definitions.getRegistry().getBootstrapComponents(IBlockRegistrationComponent.class)
+                .forEachRemaining(b -> b.blockRegistration(side, registry));
     }
 
     @SubscribeEvent
@@ -253,9 +258,11 @@ final class Registration {
         final IForgeRegistry<Item> registry = event.getRegistry();
         final ApiDefinitions definitions = Api.INSTANCE.definitions();
         final Side side = FMLCommonHandler.instance().getEffectiveSide();
-        definitions.getRegistry().getBootstrapComponents(IItemRegistrationComponent.class).forEachRemaining(b -> b.itemRegistration(side, registry));
+        definitions.getRegistry().getBootstrapComponents(IItemRegistrationComponent.class)
+                .forEachRemaining(b -> b.itemRegistration(side, registry));
         // register oredicts
-        definitions.getRegistry().getBootstrapComponents(IOreDictComponent.class).forEachRemaining(b -> b.oreRegistration(side));
+        definitions.getRegistry().getBootstrapComponents(IOreDictComponent.class)
+                .forEachRemaining(b -> b.oreRegistration(side));
         ItemMaterial.instance.registerOredicts();
         ItemPart.instance.registerOreDicts();
     }
@@ -274,14 +281,14 @@ final class Registration {
         }
 
         if (AEConfig.instance().isFeatureEnabled(AEFeature.ENABLE_FACADE_CRAFTING)) {
-            definitions.items().facade().maybeItem().ifPresent(facadeItem ->
-            {
+            definitions.items().facade().maybeItem().ifPresent(facadeItem -> {
                 FacadeRecipe f = new FacadeRecipe((ItemFacade) facadeItem);
                 registry.register(f.setRegistryName(AppEng.MOD_ID.toLowerCase(), "facade"));
             });
         }
 
-        definitions.getRegistry().getBootstrapComponents(IRecipeRegistrationComponent.class).forEachRemaining(b -> b.recipeRegistration(side, registry));
+        definitions.getRegistry().getBootstrapComponents(IRecipeRegistrationComponent.class)
+                .forEachRemaining(b -> b.recipeRegistration(side, registry));
 
         final AERecipeLoader ldr = new AERecipeLoader();
         ldr.loadProcessingRecipes();
@@ -291,14 +298,17 @@ final class Registration {
     public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
         final IForgeRegistry<EntityEntry> registry = event.getRegistry();
         final ApiDefinitions definitions = Api.INSTANCE.definitions();
-        definitions.getRegistry().getBootstrapComponents(IEntityRegistrationComponent.class).forEachRemaining(b -> b.entityRegistration(registry));
+        definitions.getRegistry().getBootstrapComponents(IEntityRegistrationComponent.class)
+                .forEachRemaining(b -> b.entityRegistration(registry));
     }
 
     @SubscribeEvent
     public void attachSpatialDimensionManager(AttachCapabilitiesEvent<World> event) {
         if (AEConfig.instance()
-                .isFeatureEnabled(AEFeature.SPATIAL_IO) && event.getObject() == DimensionManager.getWorld(AEConfig.instance().getStorageDimensionID())) {
-            event.addCapability(new ResourceLocation("appliedenergistics2:spatial_dimension_manager"), new SpatialDimensionManager(event.getObject()));
+                .isFeatureEnabled(AEFeature.SPATIAL_IO)
+                && event.getObject() == DimensionManager.getWorld(AEConfig.instance().getStorageDimensionID())) {
+            event.addCapability(new ResourceLocation("appliedenergistics2:spatial_dimension_manager"),
+                    new SpatialDimensionManager(event.getObject()));
         }
     }
 
@@ -318,7 +328,8 @@ final class Registration {
         PlayerMessages.values();
         GuiText.values();
 
-        definitions.getRegistry().getBootstrapComponents(IPostInitComponent.class).forEachRemaining(b -> b.postInitialize(event.getSide()));
+        definitions.getRegistry().getBootstrapComponents(IPostInitComponent.class)
+                .forEachRemaining(b -> b.postInitialize(event.getSide()));
 
         // Interface
         Upgrades.CRAFTING.registerItem(parts.iface(), 1);
@@ -444,15 +455,21 @@ final class Registration {
                 Upgrades.MAGNET.registerItem(id, 1);
             });
         }
-        items.wirelessFluidTerminal().maybeItem().ifPresent(terminal -> registries.wireless().registerWirelessHandler((IWirelessTermHandler) terminal));
-        items.wirelessInterfaceTerminal().maybeItem().ifPresent(terminal -> registries.wireless().registerWirelessHandler((IWirelessTermHandler) terminal));
+        items.wirelessFluidTerminal().maybeItem()
+                .ifPresent(terminal -> registries.wireless().registerWirelessHandler((IWirelessTermHandler) terminal));
+        items.wirelessInterfaceTerminal().maybeItem().ifPresent(terminal -> registries.wireless()
+                .registerWirelessHandler((IWirelessTermHandler) terminal));
 
         // Charge Rates
-        items.chargedStaff().maybeItem().ifPresent(chargedStaff -> registries.charger().addChargeRate(chargedStaff, 320d));
-        items.portableCell().maybeItem().ifPresent(chargedStaff -> registries.charger().addChargeRate(chargedStaff, 800d));
-        items.colorApplicator().maybeItem().ifPresent(colorApplicator -> registries.charger().addChargeRate(colorApplicator, 800d));
+        items.chargedStaff().maybeItem()
+                .ifPresent(chargedStaff -> registries.charger().addChargeRate(chargedStaff, 320d));
+        items.portableCell().maybeItem()
+                .ifPresent(chargedStaff -> registries.charger().addChargeRate(chargedStaff, 800d));
+        items.colorApplicator().maybeItem()
+                .ifPresent(colorApplicator -> registries.charger().addChargeRate(colorApplicator, 800d));
         items.wirelessTerminal().maybeItem().ifPresent(terminal -> registries.charger().addChargeRate(terminal, 8000d));
-        items.entropyManipulator().maybeItem().ifPresent(entropyManipulator -> registries.charger().addChargeRate(entropyManipulator, 8000d));
+        items.entropyManipulator().maybeItem()
+                .ifPresent(entropyManipulator -> registries.charger().addChargeRate(entropyManipulator, 8000d));
         items.massCannon().maybeItem().ifPresent(massCannon -> registries.charger().addChargeRate(massCannon, 8000d));
         blocks.energyCell().maybeItem().ifPresent(cell -> registries.charger().addChargeRate(cell, 8000d));
         blocks.energyCellDense().maybeItem().ifPresent(cell -> registries.charger().addChargeRate(cell, 16000d));
@@ -554,7 +571,8 @@ final class Registration {
         private final Method method;
 
         CriterionTrigggerRegistry() {
-            this.method = ReflectionHelper.findMethod(CriteriaTriggers.class, "register", "func_192118_a", ICriterionTrigger.class);
+            this.method = ReflectionHelper.findMethod(CriteriaTriggers.class, "register", "func_192118_a",
+                    ICriterionTrigger.class);
             this.method.setAccessible(true);
         }
 

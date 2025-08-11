@@ -18,9 +18,17 @@
 
 package appeng.container.slot;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
-import appeng.api.config.Upgrades;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.definitions.IItems;
 import appeng.api.definitions.IMaterials;
@@ -34,16 +42,6 @@ import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.ICellWorkbenchItem;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
-
 
 /**
  * @author AlgorithmX2
@@ -58,7 +56,8 @@ public class SlotRestrictedInput extends AppEngSlot {
     private boolean allowEdit = true;
     private int stackLimit = -1;
 
-    public SlotRestrictedInput(final PlacableItemType valid, final IItemHandler i, final int slotIndex, final int x, final int y, final InventoryPlayer p) {
+    public SlotRestrictedInput(final PlacableItemType valid, final IItemHandler i, final int slotIndex, final int x,
+            final int y, final InventoryPlayer p) {
         super(i, slotIndex, x, y);
         this.which = valid;
         this.setIIcon(valid.IIcon);
@@ -79,8 +78,10 @@ public class SlotRestrictedInput extends AppEngSlot {
 
     public boolean isValid(final ItemStack is, final World theWorld) {
         if (this.which == PlacableItemType.VALID_ENCODED_PATTERN_W_OUTPUT) {
-            final ICraftingPatternDetails ap = is.getItem() instanceof ICraftingPatternItem ? ((ICraftingPatternItem) is.getItem()).getPatternForItem(is,
-                    theWorld) : null;
+            final ICraftingPatternDetails ap = is.getItem() instanceof ICraftingPatternItem
+                    ? ((ICraftingPatternItem) is.getItem()).getPatternForItem(is,
+                            theWorld)
+                    : null;
             return ap != null;
         }
         return true;
@@ -162,10 +163,9 @@ public class SlotRestrictedInput extends AppEngSlot {
 
             case INSCRIBER_INPUT:
                 return true;/*
-                 * for (ItemStack is : Inscribe.inputs) if ( Platform.isSameItemPrecise( is, i ) ) return
-                 * true;
-                 * return false;
-                 */
+                             * for (ItemStack is : Inscribe.inputs) if ( Platform.isSameItemPrecise( is, i ) ) return
+                             * true; return false;
+                             */
 
             case METAL_INGOTS:
 
@@ -174,7 +174,7 @@ public class SlotRestrictedInput extends AppEngSlot {
             case VIEW_CELL:
                 return items.viewCell().isSameAs(i);
             case ORE:
-                return appeng.api.AEApi.instance().registries().grinder().getRecipeForInput(i) != null;
+                return AEApi.instance().registries().grinder().getRecipeForInput(i) != null;
             case FUEL:
                 return TileEntityFurnace.getItemBurnTime(i) > 0;
             case POWERED_TOOL:
@@ -186,28 +186,33 @@ public class SlotRestrictedInput extends AppEngSlot {
                 return materials.wirelessBooster().isSameAs(i);
 
             case SPATIAL_STORAGE_CELLS:
-                return i.getItem() instanceof ISpatialStorageCell && ((ISpatialStorageCell) i.getItem()).isSpatialStorage(i);
+                return i.getItem() instanceof ISpatialStorageCell
+                        && ((ISpatialStorageCell) i.getItem()).isSpatialStorage(i);
             case STORAGE_CELLS:
                 return AEApi.instance().registries().cell().isCellHandled(i);
             case WORKBENCH_CELL:
                 return i.getItem() instanceof ICellWorkbenchItem && ((ICellWorkbenchItem) i.getItem()).isEditable(i);
             case STORAGE_COMPONENT:
-                return i.getItem() instanceof IStorageComponent && ((IStorageComponent) i.getItem()).isStorageComponent(i);
+                return i.getItem() instanceof IStorageComponent
+                        && ((IStorageComponent) i.getItem()).isStorageComponent(i);
             case TRASH:
                 if (AEApi.instance().registries().cell().isCellHandled(i)) {
                     return false;
                 }
 
-                return !(i.getItem() instanceof IStorageComponent && ((IStorageComponent) i.getItem()).isStorageComponent(i));
+                return !(i.getItem() instanceof IStorageComponent
+                        && ((IStorageComponent) i.getItem()).isStorageComponent(i));
             case ENCODABLE_ITEM:
-                return i.getItem() instanceof INetworkEncodable || AEApi.instance().registries().wireless().isWirelessTerminal(i);
+                return i.getItem() instanceof INetworkEncodable
+                        || AEApi.instance().registries().wireless().isWirelessTerminal(i);
             case BIOMETRIC_CARD:
                 return i.getItem() instanceof IBiometricCard;
             case UPGRADES:
                 return i.getItem() instanceof IUpgradeModule && ((IUpgradeModule) i.getItem()).getType(i) != null;
             case CARD_QUANTUM:
                 if (AEApi.instance().definitions().materials().cardQuantumLink().maybeItem().isPresent()) {
-                    return AEApi.instance().definitions().materials().cardQuantumLink().maybeItem().get() == i.getItem();
+                    return AEApi.instance().definitions().materials().cardQuantumLink().maybeItem().get() == i
+                            .getItem();
                 }
                 return false;
             default:
@@ -242,7 +247,8 @@ public class SlotRestrictedInput extends AppEngSlot {
             return true;
         }
 
-        for (final String name : new String[]{"Copper", "Tin", "Obsidian", "Iron", "Lead", "Bronze", "Brass", "Nickel", "Aluminium"}) {
+        for (final String name : new String[] { "Copper", "Tin", "Obsidian", "Iron", "Lead", "Bronze", "Brass",
+                "Nickel", "Aluminium" }) {
             for (final ItemStack ingot : OreDictionary.getOres("ingot" + name)) {
                 if (Platform.itemComparisons().isSameItem(i, ingot)) {
                     return true;

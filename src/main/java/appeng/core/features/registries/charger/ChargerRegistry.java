@@ -18,16 +18,17 @@
 
 package appeng.core.features.registries.charger;
 
-
-import appeng.api.features.IChargerRegistry;
-import com.google.common.base.Preconditions;
-import net.minecraft.item.Item;
-
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraft.item.Item;
+
+import appeng.api.features.IChargerRegistry;
 
 public class ChargerRegistry implements IChargerRegistry {
     private static final double DEFAULT_CHARGE_RATE = 160d;

@@ -18,14 +18,12 @@
 
 package appeng.bootstrap;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-
 
 public interface IModelRegistry {
     void registerItemVariants(Item item, ResourceLocation... names);

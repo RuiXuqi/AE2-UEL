@@ -18,6 +18,9 @@
 
 package appeng.me.storage;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
@@ -32,17 +35,14 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.Platform;
 import appeng.util.prioritylist.FuzzyPriorityList;
 import appeng.util.prioritylist.PrecisePriorityList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandler;
-
 
 /**
  * @author DrummerMC
  * @version rv6 - 2018-01-23
  * @since rv6 2018-01-23
  */
-public class BasicCellInventoryHandler<T extends IAEStack<T>> extends MEInventoryHandler<T> implements ICellInventoryHandler<T> {
+public class BasicCellInventoryHandler<T extends IAEStack<T>> extends MEInventoryHandler<T>
+        implements ICellInventoryHandler<T> {
     public BasicCellInventoryHandler(final IMEInventory c, final IStorageChannel<T> channel) {
         super(c, channel);
 

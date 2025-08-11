@@ -18,24 +18,14 @@
 
 package appeng.block;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.implementations.items.IMemoryCard;
-import appeng.api.implementations.items.MemoryCardMessages;
-import appeng.api.implementations.tiles.IColorableTile;
-import appeng.api.util.AEColor;
-import appeng.api.util.AEPartLocation;
-import appeng.api.util.IOrientable;
-import appeng.block.networking.BlockCableBus;
-import appeng.core.sync.GuiBridge;
-import appeng.helpers.ICustomCollision;
-import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
-import appeng.tile.AEBaseInvTile;
-import appeng.tile.AEBaseTile;
-import appeng.tile.networking.TileCableBus;
-import appeng.tile.storage.TileSkyChest;
-import appeng.util.Platform;
-import appeng.util.SettingsFrom;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -58,11 +48,22 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.implementations.items.IMemoryCard;
+import appeng.api.implementations.items.MemoryCardMessages;
+import appeng.api.implementations.tiles.IColorableTile;
+import appeng.api.util.AEColor;
+import appeng.api.util.AEPartLocation;
+import appeng.api.util.IOrientable;
+import appeng.block.networking.BlockCableBus;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.ICustomCollision;
+import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
+import appeng.tile.AEBaseInvTile;
+import appeng.tile.AEBaseTile;
+import appeng.tile.networking.TileCableBus;
+import appeng.tile.storage.TileSkyChest;
+import appeng.util.Platform;
+import appeng.util.SettingsFrom;
 
 public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntityProvider {
 
@@ -94,7 +95,7 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntity
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] {
                 FORWARD,
                 UP
         });
@@ -149,9 +150,12 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntity
             try {
                 return this.tileEntityType.newInstance();
             } catch (final InstantiationException e) {
-                throw new IllegalStateException("Failed to create a new instance of an illegal class " + this.tileEntityType, e);
+                throw new IllegalStateException(
+                        "Failed to create a new instance of an illegal class " + this.tileEntityType, e);
             } catch (final IllegalAccessException e) {
-                throw new IllegalStateException("Failed to create a new instance of " + this.tileEntityType + ", because lack of permissions", e);
+                throw new IllegalStateException(
+                        "Failed to create a new instance of " + this.tileEntityType + ", because lack of permissions",
+                        e);
             }
         }
 
@@ -188,7 +192,8 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntity
     }
 
     @Override
-    public boolean recolorBlock(final World world, final BlockPos pos, final EnumFacing side, final EnumDyeColor color) {
+    public boolean recolorBlock(final World world, final BlockPos pos, final EnumFacing side,
+            final EnumDyeColor color) {
         final TileEntity te = this.getTileEntity(world, pos);
 
         if (te instanceof IColorableTile) {
@@ -219,14 +224,16 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntity
     }
 
     @Override
-    public boolean eventReceived(final IBlockState state, final World worldIn, final BlockPos pos, final int eventID, final int eventParam) {
+    public boolean eventReceived(final IBlockState state, final World worldIn, final BlockPos pos, final int eventID,
+            final int eventParam) {
         super.eventReceived(state, worldIn, pos, eventID, eventParam);
         final TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
     }
 
     @Override
-    public void onBlockPlacedBy(final World w, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack is) {
+    public void onBlockPlacedBy(final World w, final BlockPos pos, final IBlockState state,
+            final EntityLivingBase placer, final ItemStack is) {
         if (is.hasDisplayName()) {
             final TileEntity te = this.getTileEntity(w, pos);
             if (te instanceof AEBaseTile) {
@@ -236,7 +243,8 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntity
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+            EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack heldItem;
         if (player != null && !player.getHeldItem(hand).isEmpty()) {
             heldItem = player.getHeldItem(hand);
@@ -312,9 +320,11 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements ITileEntity
             }
 
             if (heldItem.getItem() instanceof ToolQuartzCuttingKnife && !(this instanceof BlockCableBus)) {
-                if (ForgeEventFactory.onItemUseStart(player, heldItem, 1) <= 0) return false;
+                if (ForgeEventFactory.onItemUseStart(player, heldItem, 1) <= 0)
+                    return false;
                 final AEBaseTile tile = this.getTileEntity(world, pos);
-                if (tile == null) return false;
+                if (tile == null)
+                    return false;
                 Platform.openGUI(player, tile, AEPartLocation.fromFacing(facing), GuiBridge.GUI_RENAMER);
                 return true;
             }

@@ -18,14 +18,8 @@
 
 package appeng.block;
 
+import java.util.List;
 
-import appeng.api.config.AccessRestriction;
-import appeng.api.config.Actionable;
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.implementations.items.IAEItemPowerStorage;
-import appeng.core.Api;
-import appeng.core.localization.Tooltips;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -34,8 +28,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
+import appeng.api.config.AccessRestriction;
+import appeng.api.config.Actionable;
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.implementations.items.IAEItemPowerStorage;
+import appeng.core.Api;
+import appeng.core.localization.Tooltips;
+import appeng.util.Platform;
 
 public class AEBaseItemBlockChargeable extends AEBaseItemBlock implements IAEItemPowerStorage {
 
@@ -45,7 +44,8 @@ public class AEBaseItemBlockChargeable extends AEBaseItemBlock implements IAEIte
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         final NBTTagCompound tag = stack.getTagCompound();
         double internalCurrentPower = 0;
         final double internalMaxPower = this.getMaxEnergyCapacity();
@@ -109,8 +109,7 @@ public class AEBaseItemBlockChargeable extends AEBaseItemBlock implements IAEIte
         final Block blockID = Block.getBlockFromItem(this);
         final IBlockDefinition energyCell = Api.INSTANCE.definitions().blocks().energyCell();
 
-        return energyCell.maybeBlock().map(block ->
-        {
+        return energyCell.maybeBlock().map(block -> {
             if (blockID == block) {
                 return 200000;
             } else {

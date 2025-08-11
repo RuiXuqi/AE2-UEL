@@ -18,23 +18,24 @@
 
 package appeng.integration.modules.theoneprobe;
 
+import java.util.List;
+import java.util.Optional;
 
-import appeng.api.parts.IPart;
-import appeng.core.AppEng;
-import appeng.integration.modules.theoneprobe.part.*;
 import com.google.common.collect.Lists;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.Optional;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoProvider;
+import mcjty.theoneprobe.api.ProbeMode;
 
+import appeng.api.parts.IPart;
+import appeng.core.AppEng;
+import appeng.integration.modules.theoneprobe.part.*;
 
 public final class PartInfoProvider implements IProbeInfoProvider {
     private final List<IPartProbInfoProvider> providers;
@@ -56,7 +57,8 @@ public final class PartInfoProvider implements IProbeInfoProvider {
     }
 
     @Override
-    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+            IBlockState blockState, IProbeHitData data) {
         final TileEntity te = world.getTileEntity(data.getPos());
         final Optional<IPart> maybePart = this.accessor.getMaybePart(te, data);
 

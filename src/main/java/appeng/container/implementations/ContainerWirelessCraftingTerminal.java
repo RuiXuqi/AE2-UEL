@@ -18,16 +18,6 @@
 
 package appeng.container.implementations;
 
-
-import appeng.container.ContainerNull;
-import appeng.container.slot.SlotCraftingMatrix;
-import appeng.container.slot.SlotCraftingTerm;
-import appeng.helpers.IContainerCraftingPacket;
-import appeng.helpers.WirelessTerminalGuiObject;
-import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.util.Platform;
-import appeng.util.inv.InvOperation;
-import appeng.util.inv.WrapperInvItemHandler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -38,6 +28,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
+import appeng.container.ContainerNull;
+import appeng.container.slot.SlotCraftingMatrix;
+import appeng.container.slot.SlotCraftingTerm;
+import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.WirelessTerminalGuiObject;
+import appeng.tile.inventory.AppEngInternalInventory;
+import appeng.util.Platform;
+import appeng.util.inv.InvOperation;
+import appeng.util.inv.WrapperInvItemHandler;
 
 public class ContainerWirelessCraftingTerminal extends ContainerMEPortableTerminal implements IContainerCraftingPacket {
 
@@ -56,12 +55,15 @@ public class ContainerWirelessCraftingTerminal extends ContainerMEPortableTermin
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotCraftingMatrix(this, crafting, x + y * 3, 37 + x * 18, -72 + y * 18));
+                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotCraftingMatrix(this, crafting,
+                        x + y * 3, 37 + x * 18, -72 + y * 18));
             }
         }
 
-        this.addSlotToContainer(this.outputSlot = new SlotCraftingTerm(this.getPlayerInv().player, this.getActionSource(), this
-                .getPowerSource(), this.wirelessTerminalGUIObject, crafting, crafting, this.output, 131, -72 + 18, this));
+        this.addSlotToContainer(this.outputSlot = new SlotCraftingTerm(this.getPlayerInv().player,
+                this.getActionSource(), this
+                        .getPowerSource(),
+                this.wirelessTerminalGUIObject, crafting, crafting, this.output, 131, -72 + 18, this));
 
         this.onCraftMatrixChanged(new WrapperInvItemHandler(crafting));
     }
@@ -86,7 +88,7 @@ public class ContainerWirelessCraftingTerminal extends ContainerMEPortableTermin
 
             this.outputSlot.putStack(craftingResult);
         }
-        
+
         this.saveChanges();
     }
 
@@ -111,7 +113,8 @@ public class ContainerWirelessCraftingTerminal extends ContainerMEPortableTermin
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == craftingGrid) {
             saveChanges();
         }

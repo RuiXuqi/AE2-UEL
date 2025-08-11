@@ -18,6 +18,12 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.Settings;
 import appeng.client.gui.AEBaseGui;
@@ -29,12 +35,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.tile.misc.TileCondenser;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 public class GuiCondenser extends AEBaseGui {
 
@@ -63,10 +63,12 @@ public class GuiCondenser extends AEBaseGui {
     public void initGui() {
         super.initGui();
 
-        this.pb = new GuiProgressBar(this.cvc, "guis/condenser.png", 120 + this.guiLeft, 25 + this.guiTop, 178, 25, 6, 18, Direction.VERTICAL, GuiText.StoredEnergy
-                .getLocal());
+        this.pb = new GuiProgressBar(this.cvc, "guis/condenser.png", 120 + this.guiLeft, 25 + this.guiTop, 178, 25, 6,
+                18, Direction.VERTICAL, GuiText.StoredEnergy
+                        .getLocal());
 
-        this.mode = new GuiImgButton(128 + this.guiLeft, 52 + this.guiTop, Settings.CONDENSER_OUTPUT, this.cvc.getOutput());
+        this.mode = new GuiImgButton(128 + this.guiLeft, 52 + this.guiTop, Settings.CONDENSER_OUTPUT,
+                this.cvc.getOutput());
 
         this.buttonList.add(this.pb);
         this.buttonList.add(this.mode);

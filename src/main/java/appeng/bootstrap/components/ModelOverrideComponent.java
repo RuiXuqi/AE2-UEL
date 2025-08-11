@@ -18,9 +18,13 @@
 
 package appeng.bootstrap.components;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
 
-import appeng.core.AppEng;
 import com.google.common.collect.Sets;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.registry.IRegistry;
@@ -31,11 +35,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
-
+import appeng.core.AppEng;
 
 public class ModelOverrideComponent implements IPreInitComponent {
 
@@ -44,7 +44,8 @@ public class ModelOverrideComponent implements IPreInitComponent {
     // Maps from resource path to customizer
     private final Map<String, BiFunction<ModelResourceLocation, IBakedModel, IBakedModel>> customizer = new HashMap<>();
 
-    public void addOverride(String resourcePath, BiFunction<ModelResourceLocation, IBakedModel, IBakedModel> customizer) {
+    public void addOverride(String resourcePath,
+            BiFunction<ModelResourceLocation, IBakedModel, IBakedModel> customizer) {
         this.customizer.put(resourcePath, customizer);
     }
 
@@ -72,7 +73,8 @@ public class ModelOverrideComponent implements IPreInitComponent {
                 continue;
             }
 
-            BiFunction<ModelResourceLocation, IBakedModel, IBakedModel> customizer = this.customizer.get(location.getPath());
+            BiFunction<ModelResourceLocation, IBakedModel, IBakedModel> customizer = this.customizer
+                    .get(location.getPath());
             if (customizer != null) {
                 IBakedModel newModel = customizer.apply(location, orgModel);
 

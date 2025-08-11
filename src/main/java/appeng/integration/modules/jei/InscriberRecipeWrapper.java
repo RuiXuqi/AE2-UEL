@@ -18,16 +18,16 @@
 
 package appeng.integration.modules.jei;
 
-
-import appeng.api.features.IInscriberRecipe;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
+import mezz.jei.api.recipe.IRecipeWrapper;
+
+import appeng.api.features.IInscriberRecipe;
 
 class InscriberRecipeWrapper implements IRecipeWrapper {
 

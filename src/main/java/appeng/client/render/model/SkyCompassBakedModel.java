@@ -18,10 +18,14 @@
 
 package appeng.client.render.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import appeng.block.misc.BlockSkyCompass;
-import appeng.hooks.CompassManager;
-import appeng.hooks.CompassResult;
+import javax.annotation.Nullable;
+import javax.vecmath.AxisAngle4f;
+import javax.vecmath.Matrix4f;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -38,13 +42,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import javax.vecmath.AxisAngle4f;
-import javax.vecmath.Matrix4f;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import appeng.block.misc.BlockSkyCompass;
+import appeng.hooks.CompassManager;
+import appeng.hooks.CompassResult;
 
 /**
  * This baked model combines the quads of a compass base and the quads of a compass pointer, which will be rotated
@@ -135,19 +135,20 @@ public class SkyCompassBakedModel implements IBakedModel {
     public ItemOverrideList getOverrides() {
         /*
          * This handles setting the rotation of the compass when being held in hand. If it's not held in hand, it'll
-         * animate using the
-         * spinning animation.
+         * animate using the spinning animation.
          */
         return new ItemOverrideList(Collections.emptyList()) {
 
             @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
+                    EntityLivingBase entity) {
                 if (world != null && entity instanceof EntityPlayerSP) {
                     EntityPlayer player = (EntityPlayer) entity;
 
                     float offRads = (float) (player.rotationYaw / 180.0f * (float) Math.PI + Math.PI);
 
-                    SkyCompassBakedModel.this.fallbackRotation = offRads + getAnimatedRotation(player.getPosition(), true);
+                    SkyCompassBakedModel.this.fallbackRotation = offRads
+                            + getAnimatedRotation(player.getPosition(), true);
                 } else {
                     SkyCompassBakedModel.this.fallbackRotation = getAnimatedRotation(null, false);
                 }
@@ -171,7 +172,8 @@ public class SkyCompassBakedModel implements IBakedModel {
             if (prefetch) {
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
-                        CompassManager.INSTANCE.getCompassDirection(0, pos.getX() + i - 1, pos.getY(), pos.getZ() + j - 1);
+                        CompassManager.INSTANCE.getCompassDirection(0, pos.getX() + i - 1, pos.getY(),
+                                pos.getZ() + j - 1);
                     }
                 }
             }

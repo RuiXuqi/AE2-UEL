@@ -18,14 +18,13 @@
 
 package appeng.me.helpers;
 
-
-import appeng.api.storage.data.IAEStack;
-import com.google.common.collect.Multimap;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.Multimap;
+
+import appeng.api.storage.data.IAEStack;
 
 public class GenericInterestManager<T> {
 

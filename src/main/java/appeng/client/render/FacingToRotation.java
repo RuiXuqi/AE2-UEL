@@ -18,14 +18,12 @@
 
 package appeng.client.render;
 
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.model.TRSRTransformation;
-
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
-
 
 /**
  * TODO: Removed useless stuff.
@@ -78,7 +76,8 @@ public enum FacingToRotation {
     FacingToRotation(Vector3f rot) {
         this.rot = rot;
         this.mat = TRSRTransformation
-                .toVecmath(new org.lwjgl.util.vector.Matrix4f().rotate((float) Math.toRadians(rot.x), new org.lwjgl.util.vector.Vector3f(1, 0, 0))
+                .toVecmath(new org.lwjgl.util.vector.Matrix4f()
+                        .rotate((float) Math.toRadians(rot.x), new org.lwjgl.util.vector.Vector3f(1, 0, 0))
                         .rotate((float) Math.toRadians(rot.y), new org.lwjgl.util.vector.Vector3f(0, 1, 0))
                         .rotate((float) Math.toRadians(rot.z), new org.lwjgl.util.vector.Vector3f(0, 0, 1)));
     }

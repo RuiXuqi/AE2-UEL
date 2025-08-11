@@ -18,9 +18,7 @@
 
 package appeng.core.stats;
 
-
 import appeng.bootstrap.ICriterionTriggerRegistry;
-
 
 public class AdvancementTriggers {
     private final AppEngAdvancementTrigger networkApprentice = new AppEngAdvancementTrigger("network_apprentice");

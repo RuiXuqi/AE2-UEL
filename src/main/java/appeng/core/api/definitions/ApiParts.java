@@ -18,7 +18,6 @@
 
 package appeng.core.api.definitions;
 
-
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.definitions.IParts;
 import appeng.api.exceptions.MissingDefinitionException;
@@ -32,7 +31,6 @@ import appeng.core.features.registries.PartModels;
 import appeng.items.parts.ItemPart;
 import appeng.items.parts.ItemPartRendering;
 import appeng.items.parts.PartType;
-
 
 /**
  * Internal implementation for the API parts
@@ -110,47 +108,77 @@ public final class ApiParts implements IParts {
         // this.lumenCableDense = Optional.absent(); // has yet to be implemented, no PartType defined for it yet
         this.quartzFiber = new DamagedItemDefinition("part.quartz_fiber", itemPart.createPart(PartType.QUARTZ_FIBER));
         this.toggleBus = new DamagedItemDefinition("part.toggle_bus", itemPart.createPart(PartType.TOGGLE_BUS));
-        this.invertedToggleBus = new DamagedItemDefinition("part.toggle_bus.inverted", itemPart.createPart(PartType.INVERTED_TOGGLE_BUS));
+        this.invertedToggleBus = new DamagedItemDefinition("part.toggle_bus.inverted",
+                itemPart.createPart(PartType.INVERTED_TOGGLE_BUS));
         this.storageBus = new DamagedItemDefinition("part.bus.storage", itemPart.createPart(PartType.STORAGE_BUS));
-        this.oreDictStorageBus = new DamagedItemDefinition("part.bus.oredict_storage", itemPart.createPart(PartType.OREDICT_STORAGE_BUS));
+        this.oreDictStorageBus = new DamagedItemDefinition("part.bus.oredict_storage",
+                itemPart.createPart(PartType.OREDICT_STORAGE_BUS));
         this.importBus = new DamagedItemDefinition("part.bus.import", itemPart.createPart(PartType.IMPORT_BUS));
         this.exportBus = new DamagedItemDefinition("part.bus.export", itemPart.createPart(PartType.EXPORT_BUS));
         this.iface = new DamagedItemDefinition("part.interface", itemPart.createPart(PartType.INTERFACE));
-        this.fluidIface = new DamagedItemDefinition("part.fluid_interface", itemPart.createPart(PartType.FLUID_INTERFACE));
-        this.levelEmitter = new DamagedItemDefinition("part.level_emitter", itemPart.createPart(PartType.LEVEL_EMITTER));
-        this.fluidLevelEmitter = new DamagedItemDefinition("part.fluid_level_emitter", itemPart.createPart(PartType.FLUID_LEVEL_EMITTER));
-        this.annihilationPlane = new DamagedItemDefinition("part.plane.annihilation", itemPart.createPart(PartType.ANNIHILATION_PLANE));
-        this.identityAnnihilationPlane = new DamagedItemDefinition("part.plane.annihiliation.identity", itemPart.createPart(PartType.IDENTITY_ANNIHILATION_PLANE));
-        this.fluidAnnihilationPlane = new DamagedItemDefinition("part.plane.fluid_annihilation", itemPart.createPart(PartType.FLUID_ANNIHILATION_PLANE));
-        this.formationPlane = new DamagedItemDefinition("part.plane.formation", itemPart.createPart(PartType.FORMATION_PLANE));
-        this.fluidFormationPlane = new DamagedItemDefinition("part.plane.fluid_formation", itemPart.createPart(PartType.FLUID_FORMATION_PLANE));
+        this.fluidIface = new DamagedItemDefinition("part.fluid_interface",
+                itemPart.createPart(PartType.FLUID_INTERFACE));
+        this.levelEmitter = new DamagedItemDefinition("part.level_emitter",
+                itemPart.createPart(PartType.LEVEL_EMITTER));
+        this.fluidLevelEmitter = new DamagedItemDefinition("part.fluid_level_emitter",
+                itemPart.createPart(PartType.FLUID_LEVEL_EMITTER));
+        this.annihilationPlane = new DamagedItemDefinition("part.plane.annihilation",
+                itemPart.createPart(PartType.ANNIHILATION_PLANE));
+        this.identityAnnihilationPlane = new DamagedItemDefinition("part.plane.annihiliation.identity",
+                itemPart.createPart(PartType.IDENTITY_ANNIHILATION_PLANE));
+        this.fluidAnnihilationPlane = new DamagedItemDefinition("part.plane.fluid_annihilation",
+                itemPart.createPart(PartType.FLUID_ANNIHILATION_PLANE));
+        this.formationPlane = new DamagedItemDefinition("part.plane.formation",
+                itemPart.createPart(PartType.FORMATION_PLANE));
+        this.fluidFormationPlane = new DamagedItemDefinition("part.plane.fluid_formation",
+                itemPart.createPart(PartType.FLUID_FORMATION_PLANE));
         this.p2PTunnelME = new DamagedItemDefinition("part.tunnel.me", itemPart.createPart(PartType.P2P_TUNNEL_ME));
-        this.p2PTunnelRedstone = new DamagedItemDefinition("part.tunnel.redstone", itemPart.createPart(PartType.P2P_TUNNEL_REDSTONE));
-        this.p2PTunnelItems = new DamagedItemDefinition("part.tunnel.item", itemPart.createPart(PartType.P2P_TUNNEL_ITEMS));
-        this.p2PTunnelFluids = new DamagedItemDefinition("part.tunnel.fluid", itemPart.createPart(PartType.P2P_TUNNEL_FLUIDS));
+        this.p2PTunnelRedstone = new DamagedItemDefinition("part.tunnel.redstone",
+                itemPart.createPart(PartType.P2P_TUNNEL_REDSTONE));
+        this.p2PTunnelItems = new DamagedItemDefinition("part.tunnel.item",
+                itemPart.createPart(PartType.P2P_TUNNEL_ITEMS));
+        this.p2PTunnelFluids = new DamagedItemDefinition("part.tunnel.fluid",
+                itemPart.createPart(PartType.P2P_TUNNEL_FLUIDS));
         this.p2PTunnelEU = new DamagedItemDefinition("part.tunnel.eu", itemPart.createPart(PartType.P2P_TUNNEL_IC2));
         this.p2PTunnelFE = new DamagedItemDefinition("part.tunnel.fe", itemPart.createPart(PartType.P2P_TUNNEL_FE));
-        this.p2PTunnelGTEU = new DamagedItemDefinition("part.tunnel.gteu", itemPart.createPart(PartType.P2P_TUNNEL_GTEU));
-        this.p2PTunnelLight = new DamagedItemDefinition("part.tunnel.light", itemPart.createPart(PartType.P2P_TUNNEL_LIGHT));
+        this.p2PTunnelGTEU = new DamagedItemDefinition("part.tunnel.gteu",
+                itemPart.createPart(PartType.P2P_TUNNEL_GTEU));
+        this.p2PTunnelLight = new DamagedItemDefinition("part.tunnel.light",
+                itemPart.createPart(PartType.P2P_TUNNEL_LIGHT));
         // this.p2PTunnelOpenComputers = new DamagedItemDefinition( itemMultiPart.createPart(
         // PartType.P2PTunnelOpenComputers ) );
         this.cableAnchor = new DamagedItemDefinition("part.cable_anchor", itemPart.createPart(PartType.CABLE_ANCHOR));
         this.monitor = new DamagedItemDefinition("part.monitor", itemPart.createPart(PartType.MONITOR));
-        this.semiDarkMonitor = new DamagedItemDefinition("part.monitor.semi_dark", itemPart.createPart(PartType.SEMI_DARK_MONITOR));
+        this.semiDarkMonitor = new DamagedItemDefinition("part.monitor.semi_dark",
+                itemPart.createPart(PartType.SEMI_DARK_MONITOR));
         this.darkMonitor = new DamagedItemDefinition("part.monitor.dark", itemPart.createPart(PartType.DARK_MONITOR));
-        this.interfaceTerminal = new DamagedItemDefinition("part.terminal.interface", itemPart.createPart(PartType.INTERFACE_TERMINAL));
-        this.patternTerminal = new DamagedItemDefinition("part.terminal.pattern", itemPart.createPart(PartType.PATTERN_TERMINAL));
-        this.expandedProcessingPatternTerminal = new DamagedItemDefinition("part.terminal.expanded_processing_pattern", itemPart.createPart(PartType.EXPANDED_PROCESSING_PATTERN_TERMINAL));
-        this.interfaceConfigurationTerminal = new DamagedItemDefinition("part.terminal.interface_configuration_terminal", itemPart.createPart(PartType.INTERFACE_CONFIGURATION_TERMINAL));
-        this.fluidInterfaceConfigurationTerminal = new DamagedItemDefinition("part.terminal.fluid_interface_configuration_terminal", itemPart.createPart(PartType.FLUID_INTERFACE_CONFIGURATION_TERMINAL));
-        this.craftingTerminal = new DamagedItemDefinition("part.terminal.crafting", itemPart.createPart(PartType.CRAFTING_TERMINAL));
+        this.interfaceTerminal = new DamagedItemDefinition("part.terminal.interface",
+                itemPart.createPart(PartType.INTERFACE_TERMINAL));
+        this.patternTerminal = new DamagedItemDefinition("part.terminal.pattern",
+                itemPart.createPart(PartType.PATTERN_TERMINAL));
+        this.expandedProcessingPatternTerminal = new DamagedItemDefinition("part.terminal.expanded_processing_pattern",
+                itemPart.createPart(PartType.EXPANDED_PROCESSING_PATTERN_TERMINAL));
+        this.interfaceConfigurationTerminal = new DamagedItemDefinition(
+                "part.terminal.interface_configuration_terminal",
+                itemPart.createPart(PartType.INTERFACE_CONFIGURATION_TERMINAL));
+        this.fluidInterfaceConfigurationTerminal = new DamagedItemDefinition(
+                "part.terminal.fluid_interface_configuration_terminal",
+                itemPart.createPart(PartType.FLUID_INTERFACE_CONFIGURATION_TERMINAL));
+        this.craftingTerminal = new DamagedItemDefinition("part.terminal.crafting",
+                itemPart.createPart(PartType.CRAFTING_TERMINAL));
         this.terminal = new DamagedItemDefinition("part.terminal", itemPart.createPart(PartType.TERMINAL));
-        this.storageMonitor = new DamagedItemDefinition("part.monitor.storage", itemPart.createPart(PartType.STORAGE_MONITOR));
-        this.conversionMonitor = new DamagedItemDefinition("part.monitor.conversion", itemPart.createPart(PartType.CONVERSION_MONITOR));
-        this.fluidImportBus = new DamagedItemDefinition("part.bus.import.fluid", itemPart.createPart(PartType.FLUID_IMPORT_BUS));
-        this.fluidExportBus = new DamagedItemDefinition("part.bus.export.fluid", itemPart.createPart(PartType.FLUID_EXPORT_BUS));
-        this.fluidTerminal = new DamagedItemDefinition("part.terminal.fluid", itemPart.createPart(PartType.FLUID_TERMINAL));
-        this.fluidStorageBus = new DamagedItemDefinition("part.bus.storage.fluid", itemPart.createPart(PartType.FLUID_STORAGE_BUS));
+        this.storageMonitor = new DamagedItemDefinition("part.monitor.storage",
+                itemPart.createPart(PartType.STORAGE_MONITOR));
+        this.conversionMonitor = new DamagedItemDefinition("part.monitor.conversion",
+                itemPart.createPart(PartType.CONVERSION_MONITOR));
+        this.fluidImportBus = new DamagedItemDefinition("part.bus.import.fluid",
+                itemPart.createPart(PartType.FLUID_IMPORT_BUS));
+        this.fluidExportBus = new DamagedItemDefinition("part.bus.export.fluid",
+                itemPart.createPart(PartType.FLUID_EXPORT_BUS));
+        this.fluidTerminal = new DamagedItemDefinition("part.terminal.fluid",
+                itemPart.createPart(PartType.FLUID_TERMINAL));
+        this.fluidStorageBus = new DamagedItemDefinition("part.bus.storage.fluid",
+                itemPart.createPart(PartType.FLUID_STORAGE_BUS));
     }
 
     private static AEColoredItemDefinition constructColoredDefinition(final ItemPart target, final PartType type) {
@@ -319,11 +347,7 @@ public final class ApiParts implements IParts {
     }
 
     /*
-     * @Override
-     * public IItemDefinition p2PTunnelOpenComputers()
-     * {
-     * return this.p2PTunnelOpenComputers;
-     * }
+     * @Override public IItemDefinition p2PTunnelOpenComputers() { return this.p2PTunnelOpenComputers; }
      */
 
     @Override

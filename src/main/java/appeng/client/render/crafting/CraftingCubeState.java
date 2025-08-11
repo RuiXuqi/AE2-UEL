@@ -18,11 +18,9 @@
 
 package appeng.client.render.crafting;
 
-
-import net.minecraft.util.EnumFacing;
-
 import java.util.EnumSet;
 
+import net.minecraft.util.EnumFacing;
 
 /**
  * Transports the rendering state for a block of a crafting cube.

@@ -18,11 +18,10 @@
 
 package appeng.facade;
 
-
-import appeng.api.util.AEPartLocation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
+import appeng.api.util.AEPartLocation;
 
 public interface IFacadeItem {
 

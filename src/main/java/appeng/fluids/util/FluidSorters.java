@@ -18,13 +18,11 @@
 
 package appeng.fluids.util;
 
+import java.util.Comparator;
 
 import appeng.api.config.SortDir;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.Platform;
-
-import java.util.Comparator;
-
 
 /**
  * @author BrockWS
@@ -34,8 +32,7 @@ import java.util.Comparator;
 public class FluidSorters {
     private static SortDir Direction = SortDir.ASCENDING;
 
-    public static final Comparator<IAEFluidStack> CONFIG_BASED_SORT_BY_NAME = (o1, o2) ->
-    {
+    public static final Comparator<IAEFluidStack> CONFIG_BASED_SORT_BY_NAME = (o1, o2) -> {
         if (getDirection() == SortDir.ASCENDING) {
             return Platform.getFluidDisplayName(o1).compareToIgnoreCase(Platform.getFluidDisplayName(o2));
         }
@@ -64,8 +61,7 @@ public class FluidSorters {
         }
     };
 
-    public static final Comparator<IAEFluidStack> CONFIG_BASED_SORT_BY_SIZE = (o1, o2) ->
-    {
+    public static final Comparator<IAEFluidStack> CONFIG_BASED_SORT_BY_SIZE = (o1, o2) -> {
         if (getDirection() == SortDir.ASCENDING) {
             return Long.compare(o2.getStackSize(), o1.getStackSize());
         }

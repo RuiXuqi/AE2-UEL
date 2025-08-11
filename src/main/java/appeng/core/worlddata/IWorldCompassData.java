@@ -18,9 +18,7 @@
 
 package appeng.core.worlddata;
 
-
 import appeng.services.CompassService;
-
 
 /**
  * @author thatsIch

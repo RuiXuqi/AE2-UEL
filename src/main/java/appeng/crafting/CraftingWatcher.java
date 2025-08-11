@@ -18,16 +18,14 @@
 
 package appeng.crafting;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import appeng.api.networking.crafting.ICraftingWatcher;
 import appeng.api.networking.crafting.ICraftingWatcherHost;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.cache.CraftingGridCache;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 
 /**
  * Maintain my interests, and a global watch list, they should always be fully synchronized.

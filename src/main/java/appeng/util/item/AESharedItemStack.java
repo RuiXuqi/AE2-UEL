@@ -18,11 +18,11 @@
 
 package appeng.util.item;
 
-import com.google.common.base.Preconditions;
-import net.minecraft.item.ItemStack;
-
 import java.util.Objects;
 
+import com.google.common.base.Preconditions;
+
+import net.minecraft.item.ItemStack;
 
 final class AESharedItemStack {
 
@@ -81,7 +81,8 @@ final class AESharedItemStack {
     }
 
     private int makeHashCode() {
-        return Objects.hash(this.itemStack.getItem(), this.itemDamage, this.itemStack.hasTagCompound() ? this.itemStack.getTagCompound() : 0);
+        return Objects.hash(this.itemStack.getItem(), this.itemDamage,
+                this.itemStack.hasTagCompound() ? this.itemStack.getTagCompound() : 0);
     }
 
 }

@@ -18,10 +18,15 @@
 
 package appeng.client.render.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.function.Function;
 
-import appeng.block.storage.DriveSlotState;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -31,18 +36,14 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.function.Function;
-
+import appeng.block.storage.DriveSlotState;
 
 public class DriveModel implements IModel {
 
     private static final ResourceLocation MODEL_BASE = new ResourceLocation("appliedenergistics2:block/drive_base");
 
-    private static final Map<DriveSlotState, ResourceLocation> MODELS_CELLS = ImmutableMap.<DriveSlotState, ResourceLocation>builder()
+    private static final Map<DriveSlotState, ResourceLocation> MODELS_CELLS = ImmutableMap
+            .<DriveSlotState, ResourceLocation>builder()
             .put(DriveSlotState.EMPTY, new ResourceLocation("appliedenergistics2:block/drive_cell_empty"))
             .put(DriveSlotState.OFFLINE, new ResourceLocation("appliedenergistics2:block/drive_cell_off"))
             .put(DriveSlotState.ONLINE, new ResourceLocation("appliedenergistics2:block/drive_cell_on"))
@@ -62,7 +63,8 @@ public class DriveModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         EnumMap<DriveSlotState, IBakedModel> cellModels = new EnumMap<>(DriveSlotState.class);
 
         // Load the base model and the model for each cell state.

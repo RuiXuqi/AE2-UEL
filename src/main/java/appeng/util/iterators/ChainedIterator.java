@@ -18,9 +18,7 @@
 
 package appeng.util.iterators;
 
-
 import java.util.Iterator;
-
 
 public final class ChainedIterator<T> implements Iterator<T> {
     private final T[] list;

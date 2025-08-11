@@ -18,13 +18,8 @@
 
 package appeng.block.storage;
 
+import javax.annotation.Nullable;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.client.UnlistedProperty;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.storage.TileDrive;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -40,13 +35,17 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.client.UnlistedProperty;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.storage.TileDrive;
+import appeng.util.Platform;
 
 public class BlockDrive extends AEBaseTileBlock {
 
-    public static final UnlistedProperty<DriveSlotsState> SLOTS_STATE = new UnlistedProperty<>("drive_slots_state", DriveSlotsState.class);
+    public static final UnlistedProperty<DriveSlotsState> SLOTS_STATE = new UnlistedProperty<>("drive_slots_state",
+            DriveSlotsState.class);
 
     public BlockDrive() {
         super(Material.IRON);
@@ -59,7 +58,7 @@ public class BlockDrive extends AEBaseTileBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] {
                 SLOTS_STATE,
                 FORWARD,
                 UP
@@ -70,11 +69,14 @@ public class BlockDrive extends AEBaseTileBlock {
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileDrive te = this.getTileEntity(world, pos);
         IExtendedBlockState extState = (IExtendedBlockState) super.getExtendedState(state, world, pos);
-        return extState.withProperty(SLOTS_STATE, te == null ? DriveSlotsState.createEmpty(10) : DriveSlotsState.fromChestOrDrive(te));
+        return extState.withProperty(SLOTS_STATE,
+                te == null ? DriveSlotsState.createEmpty(10) : DriveSlotsState.fromChestOrDrive(te));
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (p.isSneaking()) {
             return false;
         }

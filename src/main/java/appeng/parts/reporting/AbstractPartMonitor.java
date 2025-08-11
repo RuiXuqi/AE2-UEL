@@ -18,6 +18,23 @@
 
 package appeng.parts.reporting;
 
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.parts.IPartStorageMonitor;
@@ -45,23 +62,6 @@ import appeng.util.IWideReadableNumberConverter;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.io.IOException;
-
 
 /**
  * A basic subclass for any item monitor like display with an item icon and an amount.
@@ -74,7 +74,8 @@ import java.io.IOException;
  * @version rv3
  * @since rv3
  */
-public abstract class AbstractPartMonitor extends AbstractPartDisplay implements IPartStorageMonitor, IStackWatcherHost {
+public abstract class AbstractPartMonitor extends AbstractPartDisplay
+        implements IPartStorageMonitor, IStackWatcherHost {
     private static final IWideReadableNumberConverter NUMBER_CONVERTER = ReadableNumberConverter.INSTANCE;
 
     private IAEItemStack configuredItem;
@@ -127,7 +128,7 @@ public abstract class AbstractPartMonitor extends AbstractPartDisplay implements
         super.writeToStream(data);
 
         data.writeBoolean(this.isLocked);
-        //is configured
+        // is configured
         data.writeBoolean(this.configuredItem != null);
         data.writeBoolean(this.configuredFluid != null);
         if (this.configuredItem != null) {
@@ -181,7 +182,8 @@ public abstract class AbstractPartMonitor extends AbstractPartDisplay implements
             FluidStack fluidInTank = null;
 
             if (eq.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                IFluidHandlerItem fluidHandlerItem = (eq.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+                IFluidHandlerItem fluidHandlerItem = (eq
+                        .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
                 fluidInTank = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
             }
 
@@ -244,14 +246,16 @@ public abstract class AbstractPartMonitor extends AbstractPartDisplay implements
                 }
 
                 this.updateReportingValue(
-                        this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
+                        this.getProxy().getStorage()
+                                .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
             } else if (this.configuredFluid != null) {
                 if (this.myWatcher != null) {
                     this.myWatcher.add(this.configuredFluid);
                 }
 
                 this.updateReportingValue(
-                        this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)));
+                        this.getProxy().getStorage().getInventory(
+                                AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class)));
             }
         } catch (final GridAccessException e) {
             // >.>
@@ -282,7 +286,8 @@ public abstract class AbstractPartMonitor extends AbstractPartDisplay implements
     @SideOnly(Side.CLIENT)
     public void renderDynamic(double x, double y, double z, float partialTicks, int destroyStage) {
 
-        if ((this.getClientFlags() & (PartPanel.POWERED_FLAG | PartPanel.CHANNEL_FLAG)) != (PartPanel.POWERED_FLAG | PartPanel.CHANNEL_FLAG)) {
+        if ((this.getClientFlags() & (PartPanel.POWERED_FLAG | PartPanel.CHANNEL_FLAG)) != (PartPanel.POWERED_FLAG
+                | PartPanel.CHANNEL_FLAG)) {
             return;
         }
 
@@ -347,7 +352,8 @@ public abstract class AbstractPartMonitor extends AbstractPartDisplay implements
     }
 
     @Override
-    public void onStackChange(IItemList<?> o, IAEStack<?> fullStack, IAEStack<?> diffStack, IActionSource src, IStorageChannel<?> chan) {
+    public void onStackChange(IItemList<?> o, IAEStack<?> fullStack, IAEStack<?> diffStack, IActionSource src,
+            IStorageChannel<?> chan) {
         this.configuredAmount = fullStack.getStackSize();
 
         if (this.configuredItem != null) {
@@ -363,7 +369,8 @@ public abstract class AbstractPartMonitor extends AbstractPartDisplay implements
         return false;
     }
 
-    protected IPartModel selectModel(IPartModel off, IPartModel on, IPartModel hasChannel, IPartModel lockedOff, IPartModel lockedOn, IPartModel lockedHasChannel) {
+    protected IPartModel selectModel(IPartModel off, IPartModel on, IPartModel hasChannel, IPartModel lockedOff,
+            IPartModel lockedOn, IPartModel lockedHasChannel) {
         if (this.isActive()) {
             if (this.isLocked()) {
                 return lockedHasChannel;

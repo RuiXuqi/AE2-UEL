@@ -18,6 +18,9 @@
 
 package appeng.fluids.items;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.storage.IStorageChannel;
@@ -27,10 +30,6 @@ import appeng.fluids.helper.FluidCellConfig;
 import appeng.items.materials.MaterialType;
 import appeng.items.storage.AbstractStorageCell;
 import appeng.util.InventoryAdaptor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
 
 /**
  * @author DrummerMC
@@ -95,8 +94,7 @@ public final class BasicFluidStorageCell extends AbstractStorageCell<IAEFluidSta
 
     @Override
     protected void dropEmptyStorageCellCase(final InventoryAdaptor ia, final EntityPlayer player) {
-        AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1).ifPresent(is ->
-        {
+        AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1).ifPresent(is -> {
             final ItemStack extraA = ia.addItems(is);
             if (!extraA.isEmpty()) {
                 player.dropItem(extraA, false);

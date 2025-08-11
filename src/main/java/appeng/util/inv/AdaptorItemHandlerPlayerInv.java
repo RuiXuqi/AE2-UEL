@@ -18,12 +18,11 @@
 
 package appeng.util.inv;
 
-
-import appeng.util.Platform;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
+import appeng.util.Platform;
 
 public class AdaptorItemHandlerPlayerInv extends AdaptorItemHandler {
     public AdaptorItemHandlerPlayerInv(final EntityPlayer playerInv) {

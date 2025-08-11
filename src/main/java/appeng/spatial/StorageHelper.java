@@ -18,11 +18,9 @@
 
 package appeng.spatial;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.util.WorldCoord;
-import appeng.core.AppEng;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -34,9 +32,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ITeleporter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.util.WorldCoord;
+import appeng.core.AppEng;
+import appeng.util.Platform;
 
 public class StorageHelper {
 
@@ -111,7 +110,8 @@ public class StorageHelper {
         return entity;
     }
 
-    private void transverseEdges(final int minX, final int minY, final int minZ, final int maxX, final int maxY, final int maxZ, final ISpatialVisitor visitor) {
+    private void transverseEdges(final int minX, final int minY, final int minZ, final int maxX, final int maxY,
+            final int maxZ, final ISpatialVisitor visitor) {
         for (int y = minY; y < maxY; y++) {
             for (int z = minZ; z < maxZ; z++) {
                 visitor.visit(new BlockPos(minX, y, z));
@@ -134,21 +134,27 @@ public class StorageHelper {
         }
     }
 
-    public void swapRegions(final World srcWorld, final int srcX, final int srcY, final int srcZ, final World dstWorld, final int dstX, final int dstY, final int dstZ, final int scaleX, final int scaleY, final int scaleZ) {
+    public void swapRegions(final World srcWorld, final int srcX, final int srcY, final int srcZ, final World dstWorld,
+            final int dstX, final int dstY, final int dstZ, final int scaleX, final int scaleY, final int scaleZ) {
         AEApi.instance()
                 .definitions()
                 .blocks()
                 .matrixFrame()
                 .maybeBlock()
                 .ifPresent(matrixFrameBlock -> this.transverseEdges(dstX - 1, dstY - 1, dstZ - 1,
-                        dstX + scaleX + 1, dstY + scaleY + 1, dstZ + scaleZ + 1, new WrapInMatrixFrame(matrixFrameBlock.getDefaultState(), dstWorld)));
+                        dstX + scaleX + 1, dstY + scaleY + 1, dstZ + scaleZ + 1,
+                        new WrapInMatrixFrame(matrixFrameBlock.getDefaultState(), dstWorld)));
 
-        final AxisAlignedBB srcBox = new AxisAlignedBB(srcX, srcY, srcZ, srcX + scaleX + 1, srcY + scaleY + 1, srcZ + scaleZ + 1);
+        final AxisAlignedBB srcBox = new AxisAlignedBB(srcX, srcY, srcZ, srcX + scaleX + 1, srcY + scaleY + 1,
+                srcZ + scaleZ + 1);
 
-        final AxisAlignedBB dstBox = new AxisAlignedBB(dstX, dstY, dstZ, dstX + scaleX + 1, dstY + scaleY + 1, dstZ + scaleZ + 1);
+        final AxisAlignedBB dstBox = new AxisAlignedBB(dstX, dstY, dstZ, dstX + scaleX + 1, dstY + scaleY + 1,
+                dstZ + scaleZ + 1);
 
-        final CachedPlane cDst = new CachedPlane(dstWorld, dstX, dstY, dstZ, dstX + scaleX, dstY + scaleY, dstZ + scaleZ);
-        final CachedPlane cSrc = new CachedPlane(srcWorld, srcX, srcY, srcZ, srcX + scaleX, srcY + scaleY, srcZ + scaleZ);
+        final CachedPlane cDst = new CachedPlane(dstWorld, dstX, dstY, dstZ, dstX + scaleX, dstY + scaleY,
+                dstZ + scaleZ);
+        final CachedPlane cSrc = new CachedPlane(srcWorld, srcX, srcY, srcZ, srcX + scaleX, srcY + scaleY,
+                srcZ + scaleZ);
 
         // do nearly all the work... swaps blocks, tiles, and block ticks
         cSrc.swap(cDst);
@@ -157,11 +163,13 @@ public class StorageHelper {
         final List<Entity> dstE = dstWorld.getEntitiesWithinAABB(Entity.class, dstBox);
 
         for (final Entity e : dstE) {
-            this.teleportEntity(e, new TelDestination(srcWorld, srcBox, e.posX, e.posY, e.posZ, -dstX + srcX, -dstY + srcY, -dstZ + srcZ));
+            this.teleportEntity(e, new TelDestination(srcWorld, srcBox, e.posX, e.posY, e.posZ, -dstX + srcX,
+                    -dstY + srcY, -dstZ + srcZ));
         }
 
         for (final Entity e : srcE) {
-            this.teleportEntity(e, new TelDestination(dstWorld, dstBox, e.posX, e.posY, e.posZ, -srcX + dstX, -srcY + dstY, -srcZ + dstZ));
+            this.teleportEntity(e, new TelDestination(dstWorld, dstBox, e.posX, e.posY, e.posZ, -srcX + dstX,
+                    -srcY + dstY, -srcZ + dstZ));
         }
 
         for (final WorldCoord wc : cDst.getUpdates()) {
@@ -172,17 +180,19 @@ public class StorageHelper {
             cSrc.getWorld().notifyNeighborsOfStateChange(wc.getPos(), Platform.AIR_BLOCK, true);
         }
 
-        this.transverseEdges(srcX - 1, srcY - 1, srcZ - 1, srcX + scaleX + 1, srcY + scaleY + 1, srcZ + scaleZ + 1, new TriggerUpdates(srcWorld));
-        this.transverseEdges(dstX - 1, dstY - 1, dstZ - 1, dstX + scaleX + 1, dstY + scaleY + 1, dstZ + scaleZ + 1, new TriggerUpdates(dstWorld));
+        this.transverseEdges(srcX - 1, srcY - 1, srcZ - 1, srcX + scaleX + 1, srcY + scaleY + 1, srcZ + scaleZ + 1,
+                new TriggerUpdates(srcWorld));
+        this.transverseEdges(dstX - 1, dstY - 1, dstZ - 1, dstX + scaleX + 1, dstY + scaleY + 1, dstZ + scaleZ + 1,
+                new TriggerUpdates(dstWorld));
 
-        this.transverseEdges(srcX, srcY, srcZ, srcX + scaleX, srcY + scaleY, srcZ + scaleZ, new TriggerUpdates(srcWorld));
-        this.transverseEdges(dstX, dstY, dstZ, dstX + scaleX, dstY + scaleY, dstZ + scaleZ, new TriggerUpdates(dstWorld));
+        this.transverseEdges(srcX, srcY, srcZ, srcX + scaleX, srcY + scaleY, srcZ + scaleZ,
+                new TriggerUpdates(srcWorld));
+        this.transverseEdges(dstX, dstY, dstZ, dstX + scaleX, dstY + scaleY, dstZ + scaleZ,
+                new TriggerUpdates(dstWorld));
 
         /*
          * IChunkProvider cp = destination.getChunkProvider(); if ( cp instanceof ChunkProviderServer ) {
-         * ChunkProviderServer
-         * srv = (ChunkProviderServer) cp; srv.unloadAllChunks(); }
-         * cp.unloadQueuedChunks();
+         * ChunkProviderServer srv = (ChunkProviderServer) cp; srv.unloadAllChunks(); } cp.unloadQueuedChunks();
          */
 
     }
@@ -225,7 +235,8 @@ public class StorageHelper {
         private final double y;
         private final double z;
 
-        TelDestination(final World dimension, final AxisAlignedBB srcBox, final double x, final double y, final double z, final int tileX, final int tileY, final int tileZ) {
+        TelDestination(final World dimension, final AxisAlignedBB srcBox, final double x, final double y,
+                final double z, final int tileX, final int tileY, final int tileZ) {
             this.dim = dimension;
             this.x = Math.min(srcBox.maxX - 0.5, Math.max(srcBox.minX + 0.5, x + tileX));
             this.y = Math.min(srcBox.maxY - 0.5, Math.max(srcBox.minY + 0.5, y + tileY));
@@ -243,7 +254,8 @@ public class StorageHelper {
 
         @Override
         public void placeEntity(World world, Entity entity, float yaw) {
-            entity.setLocationAndAngles(this.destination.x, this.destination.y, this.destination.z, yaw, entity.rotationPitch);
+            entity.setLocationAndAngles(this.destination.x, this.destination.y, this.destination.z, yaw,
+                    entity.rotationPitch);
             entity.motionX = entity.motionY = entity.motionZ = 0.0D;
         }
     }

@@ -18,6 +18,12 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.LockCraftingMode;
 import appeng.api.config.Settings;
@@ -33,12 +39,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.core.sync.packets.PacketSwitchGuis;
 import appeng.helpers.IInterfaceHost;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 public class GuiInterface extends GuiUpgradeable {
 
@@ -61,7 +61,8 @@ public class GuiInterface extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender);
+        this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(),
+                this.itemRender);
         this.buttonList.add(this.priority);
 
         this.BlockMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.BLOCK, YesNo.NO);
@@ -70,7 +71,8 @@ public class GuiInterface extends GuiUpgradeable {
         this.UnlockMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 26, Settings.UNLOCK, LockCraftingMode.NONE);
         this.buttonList.add(this.UnlockMode);
 
-        this.interfaceMode = new GuiToggleButton(this.guiLeft - 18, this.guiTop + 44, 84, 85, GuiText.InterfaceTerminal.getLocal(), GuiText.InterfaceTerminalHint.getLocal());
+        this.interfaceMode = new GuiToggleButton(this.guiLeft - 18, this.guiTop + 44, 84, 85,
+                GuiText.InterfaceTerminal.getLocal(), GuiText.InterfaceTerminalHint.getLocal());
         this.buttonList.add(this.interfaceMode);
     }
 
@@ -78,8 +80,8 @@ public class GuiInterface extends GuiUpgradeable {
         if (lockReason != null) {
             labelList.remove(this.lockReason);
         }
-        this.lockReason = new GuiImgLabel(this.fontRenderer, guiLeft + 40, guiTop + 12, Settings.UNLOCK, LockCraftingMode.NONE);
-        this.lockReason.setVisibility(false);
+        this.lockReason = new GuiImgLabel(this.fontRenderer, guiLeft + 40, guiTop + 12, Settings.UNLOCK,
+                LockCraftingMode.NONE);
         labelList.add(lockReason);
     }
 
@@ -91,19 +93,14 @@ public class GuiInterface extends GuiUpgradeable {
 
         if (this.UnlockMode != null) {
             this.UnlockMode.set(((ContainerInterface) this.cvb).getUnlockMode());
-
-            if (this.lockReason != null) {
-                if (this.UnlockMode.getCurrentValue() == LockCraftingMode.NONE) {
-                    this.lockReason.setVisibility(false);
-                } else {
-                    this.lockReason.setVisibility(true);
-                    this.lockReason.set(((ContainerInterface) this.cvb).getCraftingLockedReason());
-                }
-            }
         }
 
         if (this.interfaceMode != null) {
             this.interfaceMode.setState(((ContainerInterface) this.cvb).getInterfaceTerminalMode() == YesNo.YES);
+        }
+
+        if (this.lockReason != null) {
+            this.lockReason.set(((ContainerInterface) this.cvb).getCraftingLockedReason());
         }
 
         this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.Interface.getLocal()), 8, 6, 4210752);

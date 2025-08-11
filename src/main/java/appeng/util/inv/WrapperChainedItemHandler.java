@@ -18,16 +18,16 @@
 
 package appeng.util.inv;
 
+import java.util.ArrayList;
 
-import appeng.util.helpers.ItemHandlerUtil;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-
+import appeng.util.helpers.ItemHandlerUtil;
 
 public class WrapperChainedItemHandler implements IItemHandlerModifiable {
     private IItemHandler[] itemHandler; // the handlers

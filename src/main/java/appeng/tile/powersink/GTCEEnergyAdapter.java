@@ -1,10 +1,11 @@
 package appeng.tile.powersink;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerUnits;
-import gregtech.api.capability.IEnergyContainer;
 import net.minecraft.util.EnumFacing;
 
+import gregtech.api.capability.IEnergyContainer;
+
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerUnits;
 
 public class GTCEEnergyAdapter implements IEnergyContainer {
     private final IExternalPowerSink sink;

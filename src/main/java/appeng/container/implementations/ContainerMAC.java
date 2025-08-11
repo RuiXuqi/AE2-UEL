@@ -18,6 +18,10 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.SecurityPermissions;
@@ -31,11 +35,6 @@ import appeng.container.slot.SlotRestrictedInput;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.tile.crafting.TileMolecularAssembler;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class ContainerMAC extends ContainerUpgradeable implements IProgressProvider {
 
@@ -92,26 +91,32 @@ public class ContainerMAC extends ContainerUpgradeable implements IProgressProvi
         offY = 16;
 
         this.addSlotToContainer(
-                new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_CRAFTING_PATTERN, mac, 10, offX, offY, this.getInventoryPlayer()));
+                new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_CRAFTING_PATTERN, mac, 10, offX,
+                        offY, this.getInventoryPlayer()));
         this.addSlotToContainer(new SlotOutput(mac, 9, offX, offY + 32, -1));
 
         offX = 122;
         offY = 17;
 
         final IItemHandler upgrades = this.getUpgradeable().getInventoryByName("upgrades");
-        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
+        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0,
+                187, 8, this.getInventoryPlayer()))
                 .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 3, 187, 8 + 18 * 3, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 3, 187, 8 + 18 * 3,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 4, 187, 8 + 18 * 4, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 4, 187, 8 + 18 * 4,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
     }
 
@@ -130,7 +135,8 @@ public class ContainerMAC extends ContainerUpgradeable implements IProgressProvi
         this.verifyPermissions(SecurityPermissions.BUILD, false);
 
         if (Platform.isServer()) {
-            this.setRedStoneMode((RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED));
+            this.setRedStoneMode(
+                    (RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED));
         }
 
         this.craftProgress = this.tma.getCraftingProgress();

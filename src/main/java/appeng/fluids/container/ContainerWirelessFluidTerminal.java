@@ -18,13 +18,11 @@
 
 package appeng.fluids.container;
 
-
-import appeng.helpers.WirelessTerminalGuiObject;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import appeng.helpers.WirelessTerminalGuiObject;
 
 public class ContainerWirelessFluidTerminal extends ContainerMEPortableFluidCell {
-
 
     public ContainerWirelessFluidTerminal(final InventoryPlayer ip, final WirelessTerminalGuiObject gui) {
         super(ip, gui);

@@ -18,17 +18,20 @@
 
 package appeng.me;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IMachineSet;
 import appeng.api.networking.events.MENetworkEvent;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.core.AELog;
-
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.Map.Entry;
-
 
 public class NetworkEventBus {
     private static final Collection<Class> READ_CLASSES = new HashSet<>();
@@ -62,11 +65,12 @@ public class NetworkEventBus {
 
                             classEvents.put(listAs, thisEvent);
                         } else {
-                            throw new IllegalStateException("Invalid ME Network Event Subscriber, " + m
-                                    .getName() + "s Parameter must extend MENetworkEvent.");
+                            throw new IllegalStateException("Invalid ME Network Event Subscriber, " + m.getName()
+                                    + "s Parameter must extend MENetworkEvent.");
                         }
                     } else {
-                        throw new IllegalStateException("Invalid ME Network Event Subscriber, " + m.getName() + " must have exactly 1 parameter.");
+                        throw new IllegalStateException("Invalid ME Network Event Subscriber, " + m.getName()
+                                + " must have exactly 1 parameter.");
                     }
                 }
             }

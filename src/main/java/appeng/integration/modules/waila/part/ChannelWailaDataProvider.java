@@ -18,26 +18,25 @@
 
 package appeng.integration.modules.waila.part;
 
+import java.util.List;
 
-import appeng.api.parts.IPart;
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import appeng.core.localization.WailaText;
-import appeng.parts.networking.PartCableSmart;
-import appeng.parts.networking.PartDenseCableSmart;
-import it.unimi.dsi.fastutil.objects.Object2ByteMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import appeng.api.networking.pathing.ChannelMode;
+import appeng.api.parts.IPart;
+import appeng.core.AEConfig;
+import appeng.core.localization.WailaText;
+import appeng.parts.networking.PartCableSmart;
+import appeng.parts.networking.PartDenseCableSmart;
 
 /**
  * Channel-information provider for WAILA
@@ -72,8 +71,9 @@ public final class ChannelWailaDataProvider extends BasePartWailaDataProvider {
      * @return modified tool tip
      */
     @Override
-    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
-        if (!AEConfig.instance().isFeatureEnabled(AEFeature.CHANNELS)) {
+    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+        if (AEConfig.instance().getChannelMode() == ChannelMode.INFINITE) {
             return currentToolTip;
         }
         if (part instanceof PartCableSmart || part instanceof PartDenseCableSmart) {
@@ -82,7 +82,9 @@ public final class ChannelWailaDataProvider extends BasePartWailaDataProvider {
             final int usedChannels = this.getUsedChannels(part, tag, this.cache);
 
             if (usedChannels >= 0) {
-                final int maxChannels = ((part instanceof PartDenseCableSmart) ? AEConfig.instance().getDenseChannelCapacity() : AEConfig.instance().getNormalChannelCapacity());
+                final int maxChannels = ((part instanceof PartDenseCableSmart)
+                        ? AEConfig.instance().getDenseChannelCapacity()
+                        : AEConfig.instance().getNormalChannelCapacity());
 
                 final String formattedToolTip = String.format(WailaText.Channels.getLocal(), usedChannels, maxChannels);
                 currentToolTip.add(formattedToolTip);
@@ -133,7 +135,8 @@ public final class ChannelWailaDataProvider extends BasePartWailaDataProvider {
      * @return tag send to the client
      */
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos) {
         if (part instanceof PartCableSmart || part instanceof PartDenseCableSmart) {
             final NBTTagCompound tempTag = new NBTTagCompound();
 

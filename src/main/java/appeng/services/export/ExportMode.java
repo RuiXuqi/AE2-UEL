@@ -18,7 +18,6 @@
 
 package appeng.services.export;
 
-
 /**
  * Defines the different modes which need to be distinguished upon exporting.
  * <p>

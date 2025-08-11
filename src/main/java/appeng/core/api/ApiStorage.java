@@ -18,6 +18,20 @@
 
 package appeng.core.api;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.crafting.ICraftingLink;
@@ -41,19 +55,6 @@ import appeng.fluids.util.FluidList;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.MutableClassToInstanceMap;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-
 
 public class ApiStorage implements IStorageHelper {
 
@@ -66,7 +67,8 @@ public class ApiStorage implements IStorageHelper {
     }
 
     @Override
-    public <T extends IAEStack<T>, C extends IStorageChannel<T>> void registerStorageChannel(Class<C> channel, C factory) {
+    public <T extends IAEStack<T>, C extends IStorageChannel<T>> void registerStorageChannel(Class<C> channel,
+            C factory) {
         Preconditions.checkNotNull(channel);
         Preconditions.checkNotNull(factory);
         Preconditions.checkArgument(channel.isInstance(factory));
@@ -100,12 +102,14 @@ public class ApiStorage implements IStorageHelper {
     }
 
     @Override
-    public <T extends IAEStack<T>> T poweredInsert(IEnergySource energy, IMEInventory<T> inv, T input, IActionSource src, Actionable mode) {
+    public <T extends IAEStack<T>> T poweredInsert(IEnergySource energy, IMEInventory<T> inv, T input,
+            IActionSource src, Actionable mode) {
         return Platform.poweredInsert(energy, inv, input, src, mode);
     }
 
     @Override
-    public <T extends IAEStack<T>> T poweredExtraction(IEnergySource energy, IMEInventory<T> inv, T request, IActionSource src, Actionable mode) {
+    public <T extends IAEStack<T>> T poweredExtraction(IEnergySource energy, IMEInventory<T> inv, T request,
+            IActionSource src, Actionable mode) {
         return Platform.poweredExtraction(energy, inv, request, src, mode);
     }
 

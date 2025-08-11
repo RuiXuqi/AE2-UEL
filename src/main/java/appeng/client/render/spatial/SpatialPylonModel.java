@@ -18,8 +18,10 @@
 
 package appeng.client.render.spatial;
 
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import appeng.core.AppEng;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -28,10 +30,7 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
+import appeng.core.AppEng;
 
 class SpatialPylonModel implements IModel {
 
@@ -42,11 +41,13 @@ class SpatialPylonModel implements IModel {
 
     @Override
     public Collection<ResourceLocation> getTextures() {
-        return Arrays.stream(SpatialPylonTextureType.values()).map(SpatialPylonModel::getTexturePath).collect(Collectors.toList());
+        return Arrays.stream(SpatialPylonTextureType.values()).map(SpatialPylonModel::getTexturePath)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         Map<SpatialPylonTextureType, TextureAtlasSprite> textures = new EnumMap<>(SpatialPylonTextureType.class);
 
         for (SpatialPylonTextureType type : SpatialPylonTextureType.values()) {

@@ -18,11 +18,6 @@
 
 package appeng.server.subcommands;
 
-
-import appeng.core.AEConfig;
-import appeng.core.AELog;
-import appeng.core.features.AEFeature;
-import appeng.server.ISubCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -30,6 +25,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import appeng.core.AEConfig;
+import appeng.core.AELog;
+import appeng.core.features.AEFeature;
+import appeng.server.ISubCommand;
 
 public class ChunkLogger implements ISubCommand {
 
@@ -48,7 +47,8 @@ public class ChunkLogger implements ISubCommand {
             boolean output = false;
             for (final StackTraceElement e : Thread.currentThread().getStackTrace()) {
                 if (output) {
-                    AELog.info("		" + e.getClassName() + '.' + e.getMethodName() + " (" + e.getLineNumber() + ')');
+                    AELog.info(
+                            "		" + e.getClassName() + '.' + e.getMethodName() + " (" + e.getLineNumber() + ')');
                 } else {
                     output = e.getClassName().contains("EventBus") && e.getMethodName().contains("post");
                 }

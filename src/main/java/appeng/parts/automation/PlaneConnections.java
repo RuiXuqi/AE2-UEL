@@ -18,12 +18,10 @@
 
 package appeng.parts.automation;
 
-
-import com.google.common.base.Strings;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Strings;
 
 /**
  * Models in which directions - looking at the front face - a plane (annihilation, formation, etc.) is connected to
@@ -91,7 +89,8 @@ public final class PlaneConnections {
     }
 
     private static int getIndex(boolean up, boolean right, boolean down, boolean left) {
-        return (up ? BITMASK_UP : 0) + (right ? BITMASK_RIGHT : 0) + (left ? BITMASK_LEFT : 0) + (down ? BITMASK_DOWN : 0);
+        return (up ? BITMASK_UP : 0) + (right ? BITMASK_RIGHT : 0) + (left ? BITMASK_LEFT : 0)
+                + (down ? BITMASK_DOWN : 0);
     }
 
     // Returns a suffix that expresses the connection states as a string

@@ -18,17 +18,16 @@
 
 package appeng.util.helpers;
 
+import javax.annotation.Nonnull;
 
-import appeng.api.config.FuzzyMode;
-import appeng.util.item.OreHelper;
-import appeng.util.item.OreReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.Nonnull;
-
+import appeng.api.config.FuzzyMode;
+import appeng.util.item.OreHelper;
+import appeng.util.item.OreReference;
 
 /**
  * A helper class for comparing {@link Item}, {@link ItemStack} or NBT
@@ -38,8 +37,8 @@ public class ItemComparisonHelper {
     /**
      * Compare the two {@link ItemStack}s based on the same {@link Item} and damage value.
      * <p>
-     * In case of the item being damageable, only the {@link Item} will be considered.
-     * If not it will also compare both damage values.
+     * In case of the item being damageable, only the {@link Item} will be considered. If not it will also compare both
+     * damage values.
      * <p>
      * Ignores NBT.
      *
@@ -58,8 +57,8 @@ public class ItemComparisonHelper {
     /**
      * Compares two {@link ItemStack} and their NBT tag for equality.
      * <p>
-     * Use this when a precise check is required and the same item is required.
-     * Not just something with different NBT tags.
+     * Use this when a precise check is required and the same item is required. Not just something with different NBT
+     * tags.
      *
      * @return true, if both are identical.
      */
@@ -68,9 +67,8 @@ public class ItemComparisonHelper {
     }
 
     /**
-     * Similar to {@link ItemComparisonHelper#isEqualItem(ItemStack, ItemStack)},
-     * but it can further check, if both match the same {@link FuzzyMode}
-     * or are considered equal by the {@link OreDictionary}
+     * Similar to {@link ItemComparisonHelper#isEqualItem(ItemStack, ItemStack)}, but it can further check, if both
+     * match the same {@link FuzzyMode} or are considered equal by the {@link OreDictionary}
      *
      * @param mode how to compare the two {@link ItemStack}s
      * @return true, if both are matching the mode or considered equal by the {@link OreDictionary}

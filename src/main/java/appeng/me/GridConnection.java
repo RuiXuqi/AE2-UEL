@@ -18,6 +18,7 @@
 
 package appeng.me;
 
+import java.util.Arrays;
 
 import appeng.api.exceptions.ExistingConnectionException;
 import appeng.api.exceptions.FailedConnectionException;
@@ -27,6 +28,7 @@ import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
+import appeng.api.networking.pathing.ChannelMode;
 import appeng.api.networking.pathing.IPathingGrid;
 import appeng.api.util.AEPartLocation;
 import appeng.api.util.DimensionalCoord;
@@ -38,16 +40,18 @@ import appeng.me.pathfinding.IPathItem;
 import appeng.util.Platform;
 import appeng.util.ReadOnlyCollection;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-
-
 public class GridConnection implements IGridConnection, IPathItem {
 
     private static final String EXISTING_CONNECTION_MESSAGE = "Connection between node [machine=%s, %s] and [machine=%s, %s] on [%s] already exists.";
 
     private static final MENetworkChannelsChanged EVENT = new MENetworkChannelsChanged();
-    private int usedChannels = 0;
+    /**
+     * Will be modified during pathing and should not be exposed outside of that purpose.
+     */
+    int usedChannels = 0;
+    /**
+     * Finalized version of {@link #usedChannels} once pathing is done.
+     */
     private int lastUsedChannels = 0;
     private Object visitorIterationNumber = null;
     private GridNode sideA;
@@ -103,12 +107,12 @@ public class GridConnection implements IGridConnection, IPathItem {
     }
 
     @Override
-    public IGridNode a() {
+    public GridNode a() {
         return this.sideA;
     }
 
     @Override
-    public IGridNode b() {
+    public GridNode b() {
         return this.sideB;
     }
 
@@ -119,22 +123,22 @@ public class GridConnection implements IGridConnection, IPathItem {
 
     @Override
     public int getUsedChannels() {
-        return usedChannels;
+        return lastUsedChannels;
     }
 
     @Override
-    public IPathItem getControllerRoute() {
-        if (this.sideA.getFlags().contains(GridFlags.CANNOT_CARRY)) {
-            return null;
-        }
+    public void setAdHocChannels(int channels) {
+        this.usedChannels = channels;
+    }
+
+    @Override
+    public GridNode getControllerRoute() {
         return this.sideA;
     }
 
     @Override
-    public void setControllerRoute(final IPathItem fast, final boolean zeroOut) {
-        if (zeroOut) {
-            this.lastUsedChannels = 0;
-        }
+    public void setControllerRoute(IPathItem fast) {
+        this.usedChannels = 0;
 
         if (this.sideB == fast) {
             final GridNode tmp = this.sideA;
@@ -145,29 +149,37 @@ public class GridConnection implements IGridConnection, IPathItem {
     }
 
     @Override
-    public boolean canSupportMoreChannels() {
-        return this.getLastUsedChannels() < AEConfig.instance().getDenseChannelCapacity(); // max, PERIOD.
+    public int getMaxChannels() {
+        var mode = sideB.getGrid().getPathingService().getChannelMode();
+        if (mode == ChannelMode.INFINITE) {
+            return Integer.MAX_VALUE;
+        }
+        return 32 * mode.getCableCapacityFactor();
     }
 
     @Override
     public IReadOnlyCollection<IPathItem> getPossibleOptions() {
-        return new ReadOnlyCollection<>(Arrays.asList((IPathItem) this.a(), (IPathItem) this.b()));
+        return new ReadOnlyCollection<>(Arrays.asList(this.a(), this.b()));
     }
 
     @Override
-    public void incrementChannelCount(final int usedChannels) {
-        this.lastUsedChannels += usedChannels;
+    public boolean hasFlag(GridFlags flag) {
+        return false;
     }
 
-    @Override
-    public EnumSet<GridFlags> getFlags() {
-        return EnumSet.noneOf(GridFlags.class);
+    public int propagateChannelsUpwards() {
+        if (this.sideB.getControllerRoute() == this) { // Check that we are in B's route
+            this.usedChannels = this.sideB.usedChannels;
+        } else {
+            this.usedChannels = 0;
+        }
+        return this.usedChannels;
     }
 
     @Override
     public void finalizeChannels() {
-        if (this.getUsedChannels() != this.getLastUsedChannels()) {
-            this.usedChannels = this.lastUsedChannels;
+        if (this.lastUsedChannels != this.usedChannels) {
+            this.lastUsedChannels = this.usedChannels;
 
             if (this.sideA.getInternalGrid() != null) {
                 this.sideA.getInternalGrid().postEventTo(this.sideA, EVENT);
@@ -179,10 +191,6 @@ public class GridConnection implements IGridConnection, IPathItem {
         }
     }
 
-    private int getLastUsedChannels() {
-        return lastUsedChannels;
-    }
-
     Object getVisitorIterationNumber() {
         return this.visitorIterationNumber;
     }
@@ -191,7 +199,8 @@ public class GridConnection implements IGridConnection, IPathItem {
         this.visitorIterationNumber = visitorIterationNumber;
     }
 
-    public static GridConnection create(final IGridNode aNode, final IGridNode bNode, final AEPartLocation fromAtoB) throws FailedConnectionException {
+    public static GridConnection create(final IGridNode aNode, final IGridNode bNode, final AEPartLocation fromAtoB)
+            throws FailedConnectionException {
         if (aNode == null || bNode == null) {
             throw new NullNodeConnectionException();
         }
@@ -205,8 +214,8 @@ public class GridConnection implements IGridConnection, IPathItem {
             final String aCoordinates = a.getGridBlock().getLocation().toString();
             final String bCoordinates = b.getGridBlock().getLocation().toString();
 
-            throw new ExistingConnectionException(String.format(EXISTING_CONNECTION_MESSAGE, aMachineClass, aCoordinates, bMachineClass, bCoordinates,
-                    fromAtoB));
+            throw new ExistingConnectionException(String.format(EXISTING_CONNECTION_MESSAGE, aMachineClass,
+                    aCoordinates, bMachineClass, bCoordinates, fromAtoB));
         }
 
         if (!Platform.securityCheck(a, b)) {
@@ -214,8 +223,10 @@ public class GridConnection implements IGridConnection, IPathItem {
                 final DimensionalCoord aCoordinates = a.getGridBlock().getLocation();
                 final DimensionalCoord bCoordinates = b.getGridBlock().getLocation();
 
-                AELog.info("Security audit 1 failed at [%s] belonging to player [id=%d]", aCoordinates.toString(), a.getPlayerID());
-                AELog.info("Security audit 2 failed at [%s] belonging to player [id=%d]", bCoordinates.toString(), b.getPlayerID());
+                AELog.info("Security audit 1 failed at [%s] belonging to player [id=%d]", aCoordinates.toString(),
+                        a.getPlayerID());
+                AELog.info("Security audit 2 failed at [%s] belonging to player [id=%d]", bCoordinates.toString(),
+                        b.getPlayerID());
             }
 
             throw new SecurityConnectionException();

@@ -18,18 +18,18 @@
 
 package appeng.client.me;
 
+import javax.annotation.Nonnull;
 
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.container.interfaces.ISpecialSlotIngredient;
-import appeng.fluids.container.slots.IMEFluidSlot;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.container.interfaces.ISpecialSlotIngredient;
+import appeng.fluids.container.slots.IMEFluidSlot;
 
 /**
  * @author BrockWS

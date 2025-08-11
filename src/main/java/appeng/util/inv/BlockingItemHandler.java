@@ -1,14 +1,15 @@
 package appeng.util.inv;
 
-import appeng.helpers.NonBlockingItems;
-import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import java.util.Iterator;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.Iterator;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
+import appeng.helpers.NonBlockingItems;
 
 public class BlockingItemHandler extends BlockingInventoryAdaptor {
     protected final IItemHandler itemHandler;

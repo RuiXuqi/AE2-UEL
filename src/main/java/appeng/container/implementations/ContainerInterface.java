@@ -18,6 +18,7 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.*;
 import appeng.api.util.IConfigManager;
@@ -26,8 +27,6 @@ import appeng.container.slot.*;
 import appeng.helpers.DualityInterface;
 import appeng.helpers.IInterfaceHost;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerInterface extends ContainerUpgradeable implements IOptionalSlotHost {
 
@@ -55,8 +54,11 @@ public class ContainerInterface extends ContainerUpgradeable implements IOptiona
 
         for (int row = 0; row < 4; ++row) {
             for (int x = 0; x < 9; x++) {
-                this.addSlotToContainer(new OptionalSlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN, this.myDuality
-                        .getPatterns(), this, x + row * 9, 8 + 18 * x, 97 + (18 * row), row, this.getInventoryPlayer()).setStackLimit(1));
+                this.addSlotToContainer(new OptionalSlotRestrictedInput(
+                        SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN, this.myDuality
+                                .getPatterns(),
+                        this, x + row * 9, 8 + 18 * x, 97 + (18 * row), row, this.getInventoryPlayer())
+                        .setStackLimit(1));
             }
         }
 
@@ -98,7 +100,7 @@ public class ContainerInterface extends ContainerUpgradeable implements IOptiona
             this.myDuality.dropExcessPatterns();
         }
 
-        if (Platform.isServer()){
+        if (Platform.isServer()) {
             lockReason = myDuality.getCraftingLockedReason();
         }
         super.detectAndSendChanges();
@@ -118,9 +120,13 @@ public class ContainerInterface extends ContainerUpgradeable implements IOptiona
         this.setInterfaceTerminalMode((YesNo) cm.getSetting(Settings.INTERFACE_TERMINAL));
     }
 
-    public LockCraftingMode getUnlockMode() {return this.lMode;}
+    public LockCraftingMode getUnlockMode() {
+        return this.lMode;
+    }
 
-    public void setUnlockMode(final LockCraftingMode mode) {this.lMode = mode;}
+    public void setUnlockMode(final LockCraftingMode mode) {
+        this.lMode = mode;
+    }
 
     public YesNo getBlockingMode() {
         return this.bMode;
@@ -145,4 +151,5 @@ public class ContainerInterface extends ContainerUpgradeable implements IOptiona
     public LockCraftingMode getCraftingLockedReason() {
         return lockReason;
     }
+
 }

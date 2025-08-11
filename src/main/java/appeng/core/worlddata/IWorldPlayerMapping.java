@@ -18,11 +18,10 @@
 
 package appeng.core.worlddata;
 
-
-import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 
 /**
  * @author thatsIch
@@ -31,9 +30,7 @@ import java.util.UUID;
  */
 public interface IWorldPlayerMapping {
     /**
-     * Tries to retrieve the UUID of a player.
-     * Might not be stored inside of the map.
-     * Should not happen though.
+     * Tries to retrieve the UUID of a player. Might not be stored inside of the map. Should not happen though.
      *
      * @param id ID of the to be searched player
      * @return maybe the UUID of the searched player

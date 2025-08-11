@@ -18,6 +18,23 @@
 
 package appeng.integration.modules.jei;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import mezz.jei.api.IJeiRuntime;
+import mezz.jei.api.IModPlugin;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.config.Constants;
 
 import appeng.api.AEApi;
 import appeng.api.config.CondenserOutput;
@@ -33,24 +50,6 @@ import appeng.core.features.AEFeature;
 import appeng.core.localization.GuiText;
 import appeng.integration.Integrations;
 import appeng.items.parts.ItemFacade;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import mezz.jei.api.IJeiRuntime;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.config.Constants;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 
 @mezz.jei.api.JEIPlugin
 public class JEIPlugin implements IModPlugin {
@@ -85,11 +84,19 @@ public class JEIPlugin implements IModPlugin {
         this.registerDescriptions(definitions, registry);
 
         // Allow recipe transfer from JEI to crafting and pattern terminal
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new RecipeTransferHandler<>(ContainerCraftingTerm.class), VanillaRecipeCategoryUid.CRAFTING);
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new RecipeTransferHandler<>(ContainerWirelessCraftingTerminal.class), VanillaRecipeCategoryUid.CRAFTING);
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new RecipeTransferHandler<>(ContainerPatternTerm.class), Constants.UNIVERSAL_RECIPE_TRANSFER_UID);
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new RecipeTransferHandler<>(ContainerExpandedProcessingPatternTerm.class), Constants.UNIVERSAL_RECIPE_TRANSFER_UID);
-        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new RecipeTransferHandler<>(ContainerWirelessPatternTerminal.class), Constants.UNIVERSAL_RECIPE_TRANSFER_UID);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                new RecipeTransferHandler<>(ContainerCraftingTerm.class), VanillaRecipeCategoryUid.CRAFTING);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                new RecipeTransferHandler<>(ContainerWirelessCraftingTerminal.class),
+                VanillaRecipeCategoryUid.CRAFTING);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                new RecipeTransferHandler<>(ContainerPatternTerm.class), Constants.UNIVERSAL_RECIPE_TRANSFER_UID);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                new RecipeTransferHandler<>(ContainerExpandedProcessingPatternTerm.class),
+                Constants.UNIVERSAL_RECIPE_TRANSFER_UID);
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(
+                new RecipeTransferHandler<>(ContainerWirelessPatternTerminal.class),
+                Constants.UNIVERSAL_RECIPE_TRANSFER_UID);
 
         aeGuiHandler = new AEGuiHandler();
         registry.addAdvancedGuiHandlers(aeGuiHandler);
@@ -122,15 +129,19 @@ public class JEIPlugin implements IModPlugin {
         }
 
         if (AEConfig.instance().isFeatureEnabled(AEFeature.IN_WORLD_PURIFICATION)) {
-            this.addDescription(registry, materials.purifiedCertusQuartzCrystal(), GuiText.inWorldPurificationCertus.getLocal());
-            this.addDescription(registry, materials.purifiedNetherQuartzCrystal(), GuiText.inWorldPurificationNether.getLocal());
-            this.addDescription(registry, materials.purifiedFluixCrystal(), GuiText.inWorldPurificationFluix.getLocal());
+            this.addDescription(registry, materials.purifiedCertusQuartzCrystal(),
+                    GuiText.inWorldPurificationCertus.getLocal());
+            this.addDescription(registry, materials.purifiedNetherQuartzCrystal(),
+                    GuiText.inWorldPurificationNether.getLocal());
+            this.addDescription(registry, materials.purifiedFluixCrystal(),
+                    GuiText.inWorldPurificationFluix.getLocal());
         }
 
     }
 
     private void addDescription(IModRegistry registry, IItemDefinition itemDefinition, String message) {
-        itemDefinition.maybeStack(1).ifPresent(itemStack -> registry.addIngredientInfo(itemStack, ItemStack.class, message));
+        itemDefinition.maybeStack(1)
+                .ifPresent(itemStack -> registry.addIngredientInfo(itemStack, ItemStack.class, message));
     }
 
     private void registerGrinderRecipes(IDefinitions definitions, IModRegistry registry) {
@@ -142,7 +153,8 @@ public class JEIPlugin implements IModPlugin {
         }
 
         registry.handleRecipes(IGrinderRecipe.class, new GrinderRecipeHandler(), GrinderRecipeCategory.UID);
-        registry.addRecipes(Lists.newArrayList(AEApi.instance().registries().grinder().getRecipes()), GrinderRecipeCategory.UID);
+        registry.addRecipes(Lists.newArrayList(AEApi.instance().registries().grinder().getRecipes()),
+                GrinderRecipeCategory.UID);
         registry.addRecipeCatalyst(grindstone, GrinderRecipeCategory.UID);
     }
 
@@ -165,7 +177,8 @@ public class JEIPlugin implements IModPlugin {
 
         if (!matterBall.isEmpty() || !singularity.isEmpty()) {
             registry.addRecipeCatalyst(condenser, CondenserCategory.UID);
-            registry.handleRecipes(CondenserOutput.class, new CondenserOutputHandler(registry.getJeiHelpers().getGuiHelper(), matterBall, singularity),
+            registry.handleRecipes(CondenserOutput.class,
+                    new CondenserOutputHandler(registry.getJeiHelpers().getGuiHelper(), matterBall, singularity),
                     CondenserCategory.UID);
         }
     }
@@ -174,12 +187,12 @@ public class JEIPlugin implements IModPlugin {
         registry.handleRecipes(IInscriberRecipe.class, new InscriberRecipeHandler(), InscriberRecipeCategory.UID);
 
         // Register the inscriber as the crafting item for the inscription category
-        definitions.blocks().inscriber().maybeStack(1).ifPresent(inscriber ->
-        {
+        definitions.blocks().inscriber().maybeStack(1).ifPresent(inscriber -> {
             registry.addRecipeCatalyst(inscriber, InscriberRecipeCategory.UID);
         });
 
-        List<IInscriberRecipe> inscriberRecipes = new ArrayList<>(AEApi.instance().registries().inscriber().getRecipes());
+        List<IInscriberRecipe> inscriberRecipes = new ArrayList<>(
+                AEApi.instance().registries().inscriber().getRecipes());
         registry.addRecipes(inscriberRecipes, InscriberRecipeCategory.UID);
     }
 
@@ -187,17 +200,10 @@ public class JEIPlugin implements IModPlugin {
     private void registerFacadeRecipe(IDefinitions definitions, IModRegistry registry) {
         Optional<Item> itemFacade = definitions.items().facade().maybeItem();
         Optional<ItemStack> cableAnchor = definitions.parts().cableAnchor().maybeStack(1);
-        if (itemFacade.isPresent()) {
-            var facade = (ItemFacade)itemFacade.get();
-            if (cableAnchor.isPresent() && AEConfig.instance().isFeatureEnabled(AEFeature.ENABLE_FACADE_CRAFTING)){
-                registry.addRecipeRegistryPlugin(new FacadeRegistryPlugin(facade, cableAnchor.get()));
-            }
-
-            // Hide facades from JEI/HEI except for the first found.
-            var list = NonNullList.<ItemStack>create();
-            facade.getSubItems(Objects.requireNonNull(facade.getCreativeTab()), list);
-            list.stream().skip(1)
-                    .forEach(registry.getJeiHelpers().getIngredientBlacklist()::addIngredientToBlacklist);
+        if (itemFacade.isPresent() && cableAnchor.isPresent()
+                && AEConfig.instance().isFeatureEnabled(AEFeature.ENABLE_FACADE_CRAFTING)) {
+            registry.addRecipeRegistryPlugin(
+                    new FacadeRegistryPlugin((ItemFacade) itemFacade.get(), cableAnchor.get()));
         }
     }
 

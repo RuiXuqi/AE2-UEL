@@ -18,20 +18,20 @@
 
 package appeng.core.worlddata;
 
-
-import appeng.services.CompassService;
-import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import appeng.services.CompassService;
 
 /**
  * @author thatsIch
  * @version rv3 - 30.05.2015
  * @since rv3 30.05.2015
  */
-final class CompassData implements IWorldCompassData, IOnWorldStoppable {
+final class CompassData implements IWorldCompassData {
     @Nonnull
     private final CompassService service;
 
@@ -47,8 +47,4 @@ final class CompassData implements IWorldCompassData, IOnWorldStoppable {
         return this.service;
     }
 
-    @Override
-    public void onWorldStop() {
-        this.service.kill();
-    }
 }

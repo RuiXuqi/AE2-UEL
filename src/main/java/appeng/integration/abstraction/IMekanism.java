@@ -18,10 +18,9 @@
 
 package appeng.integration.abstraction;
 
-
-import appeng.integration.IIntegrationModule;
 import net.minecraft.item.ItemStack;
 
+import appeng.integration.IIntegrationModule;
 
 public interface IMekanism extends IIntegrationModule {
 

@@ -18,6 +18,12 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.Settings;
 import appeng.client.gui.AEBaseGui;
@@ -27,12 +33,6 @@ import appeng.core.AEConfig;
 import appeng.core.localization.GuiText;
 import appeng.tile.networking.TileWireless;
 import appeng.util.Platform;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 public class GuiWireless extends AEBaseGui {
 
@@ -59,7 +59,8 @@ public class GuiWireless extends AEBaseGui {
     public void initGui() {
         super.initGui();
 
-        this.units = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.POWER_UNITS, AEConfig.instance().selectedPowerUnit());
+        this.units = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.POWER_UNITS,
+                AEConfig.instance().selectedPowerUnit());
         this.buttonList.add(this.units);
     }
 
@@ -72,9 +73,11 @@ public class GuiWireless extends AEBaseGui {
 
         if (cw.getRange() > 0) {
             final String firstMessage = GuiText.Range.getLocal() + ": " + (cw.getRange() / 10.0) + " m";
-            final String secondMessage = GuiText.PowerUsageRate.getLocal() + ": " + Platform.formatPowerLong(cw.getDrain(), true);
+            final String secondMessage = GuiText.PowerUsageRate.getLocal() + ": "
+                    + Platform.formatPowerLong(cw.getDrain(), true);
 
-            final int strWidth = Math.max(this.fontRenderer.getStringWidth(firstMessage), this.fontRenderer.getStringWidth(secondMessage));
+            final int strWidth = Math.max(this.fontRenderer.getStringWidth(firstMessage),
+                    this.fontRenderer.getStringWidth(secondMessage));
             final int cOffset = (this.xSize / 2) - (strWidth / 2);
             this.fontRenderer.drawString(firstMessage, cOffset, 20, 4210752);
             this.fontRenderer.drawString(secondMessage, cOffset, 20 + 12, 4210752);

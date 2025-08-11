@@ -18,22 +18,8 @@
 
 package appeng.items.tools.powered;
 
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.config.*;
-import appeng.api.features.IWirelessTermHandler;
-import appeng.api.util.IConfigManager;
-import appeng.core.AEConfig;
-import appeng.core.localization.GuiText;
-import appeng.core.sync.GuiBridge;
-import appeng.items.contents.CellConfig;
-import appeng.items.contents.CellUpgrades;
-import appeng.items.materials.ItemMaterial;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
-import appeng.util.ConfigManager;
-import appeng.util.Platform;
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,7 +40,28 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemStackHandler;
 
-import java.util.List;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+
+import appeng.api.AEApi;
+import appeng.api.config.Actionable;
+import appeng.api.config.FuzzyMode;
+import appeng.api.config.Settings;
+import appeng.api.config.SortDir;
+import appeng.api.config.SortOrder;
+import appeng.api.config.Upgrades;
+import appeng.api.config.ViewItems;
+import appeng.api.features.IWirelessTermHandler;
+import appeng.api.util.IConfigManager;
+import appeng.core.AEConfig;
+import appeng.core.localization.GuiText;
+import appeng.core.sync.GuiBridge;
+import appeng.items.contents.CellConfig;
+import appeng.items.contents.CellUpgrades;
+import appeng.items.materials.ItemMaterial;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.util.ConfigManager;
+import appeng.util.Platform;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles")
 
@@ -80,7 +87,8 @@ public class ToolWirelessTerminal extends AEBasePoweredItem implements IWireless
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         super.addCheckedInformation(stack, world, lines, advancedTooltips);
 
         if (stack.hasTagCompound()) {
@@ -116,8 +124,7 @@ public class ToolWirelessTerminal extends AEBasePoweredItem implements IWireless
 
     @Override
     public IConfigManager getConfigManager(final ItemStack target) {
-        final ConfigManager out = new ConfigManager((manager, settingName, newValue) ->
-        {
+        final ConfigManager out = new ConfigManager((manager, settingName, newValue) -> {
             final NBTTagCompound data = Platform.openNbtData(target);
             manager.writeToNBT(data);
         });
@@ -206,8 +213,7 @@ public class ToolWirelessTerminal extends AEBasePoweredItem implements IWireless
                         List<EntityItem> ei = worldIn.getEntitiesWithinAABB(EntityItem.class,
                                 new AxisAlignedBB(
                                         entityIn.posX - 5, entityIn.posY - 5, entityIn.posZ - 5,
-                                        entityIn.posX + 5, entityIn.posY + 5, entityIn.posZ + 5
-                                ));
+                                        entityIn.posX + 5, entityIn.posY + 5, entityIn.posZ + 5));
                         boolean emptyFilter = true;
                         for (EntityItem i : ei) {
                             if (i.isDead) {
@@ -219,14 +225,16 @@ public class ToolWirelessTerminal extends AEBasePoweredItem implements IWireless
                                 continue;
                             }
 
-                            if (i.getThrower() != null && i.getThrower().equals(entityIn.getName()) && i.cannotPickup()) {
+                            if (i.getThrower() != null && i.getThrower().equals(entityIn.getName())
+                                    && i.cannotPickup()) {
                                 continue;
                             }
 
                             boolean matched = false;
                             for (int ss = 0; ss < c.getSlots(); ss++) {
                                 ItemStack filter = c.getStackInSlot(ss);
-                                if (filter.isEmpty()) continue;
+                                if (filter.isEmpty())
+                                    continue;
                                 emptyFilter = false;
                                 if (isFuzzy) {
                                     if (Platform.itemComparisons().isFuzzyEqualItem(filter, i.getItem(), fz)) {

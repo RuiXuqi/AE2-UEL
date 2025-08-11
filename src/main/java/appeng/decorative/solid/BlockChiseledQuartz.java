@@ -18,10 +18,9 @@
 
 package appeng.decorative.solid;
 
-
-import appeng.block.AEDecorativeBlock;
 import net.minecraft.block.material.Material;
 
+import appeng.block.AEDecorativeBlock;
 
 public final class BlockChiseledQuartz extends AEDecorativeBlock {
     public BlockChiseledQuartz() {

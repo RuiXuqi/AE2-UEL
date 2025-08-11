@@ -18,7 +18,6 @@
 
 package appeng.hooks;
 
-
 public class CompassResult {
 
     private final boolean hasResult;

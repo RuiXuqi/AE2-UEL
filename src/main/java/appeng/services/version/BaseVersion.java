@@ -18,12 +18,10 @@
 
 package appeng.services.version;
 
-
-import com.google.common.base.Preconditions;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
+import com.google.common.base.Preconditions;
 
 /**
  * Base version of {@link Version}.

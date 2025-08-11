@@ -18,7 +18,6 @@
 
 package appeng.integration;
 
-
 public interface IIntegrationModule {
 
     default boolean isEnabled() {

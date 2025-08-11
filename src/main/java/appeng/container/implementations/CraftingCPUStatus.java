@@ -1,15 +1,18 @@
 package appeng.container.implementations;
 
+import java.io.*;
+
+import javax.annotation.Nullable;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.ItemSorters;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nullable;
-import java.io.*;
 
 public class CraftingCPUStatus implements Comparable<CraftingCPUStatus> {
 

@@ -18,10 +18,9 @@
 
 package appeng.parts.networking;
 
-
-import appeng.helpers.Reflected;
 import net.minecraft.item.ItemStack;
 
+import appeng.helpers.Reflected;
 
 public class PartCableGlass extends PartCable {
     @Reflected

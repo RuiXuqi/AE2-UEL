@@ -18,9 +18,21 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.*;
+
+import com.google.common.base.Joiner;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
-import appeng.api.features.IWirelessTermHandler;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
@@ -40,20 +52,6 @@ import appeng.parts.reporting.PartExpandedProcessingPatternTerminal;
 import appeng.parts.reporting.PartPatternTerminal;
 import appeng.parts.reporting.PartTerminal;
 import appeng.util.Platform;
-import com.google.common.base.Joiner;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 
 public class GuiCraftConfirm extends AEBaseGui {
 
@@ -61,11 +59,16 @@ public class GuiCraftConfirm extends AEBaseGui {
 
     private final int rows = 5;
 
-    private final IItemList<IAEItemStack> storage = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-    private final IItemList<IAEItemStack> pending = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-    private final IItemList<IAEItemStack> missing = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> storage = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> pending = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> missing = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
 
     private final List<IAEItemStack> visual = new ArrayList<>();
+    private final Map<IAEItemStack, Long> craftingRounds = new HashMap<>();
+    private final Map<IAEItemStack, Double> materialRatios = new HashMap<>();
 
     private GuiBridge OriginalGui;
     private GuiButton cancel;
@@ -86,7 +89,8 @@ public class GuiCraftConfirm extends AEBaseGui {
 
         if (te instanceof WirelessTerminalGuiObject) {
             ItemStack itemStack = ((WirelessTerminalGuiObject) te).getItemStack();
-            this.OriginalGui = (GuiBridge) AEApi.instance().registries().wireless().getWirelessTerminalHandler(itemStack).getGuiHandler(itemStack);
+            this.OriginalGui = (GuiBridge) AEApi.instance().registries().wireless()
+                    .getWirelessTerminalHandler(itemStack).getGuiHandler(itemStack);
         }
 
         if (te instanceof PartTerminal) {
@@ -114,17 +118,20 @@ public class GuiCraftConfirm extends AEBaseGui {
     public void initGui() {
         super.initGui();
 
-        this.start = new GuiButton(0, this.guiLeft + 162, this.guiTop + this.ySize - 25, 50, 20, GuiText.Start.getLocal());
+        this.start = new GuiButton(0, this.guiLeft + 162, this.guiTop + this.ySize - 25, 50, 20,
+                GuiText.Start.getLocal());
         this.start.enabled = false;
         this.buttonList.add(this.start);
 
-        this.selectCPU = new GuiButton(0, this.guiLeft + (219 - 180) / 2, this.guiTop + this.ySize - 68, 180, 20, GuiText.CraftingCPU
-                .getLocal() + ": " + GuiText.Automatic);
+        this.selectCPU = new GuiButton(0, this.guiLeft + (219 - 180) / 2, this.guiTop + this.ySize - 68, 180, 20,
+                GuiText.CraftingCPU
+                        .getLocal() + ": " + GuiText.Automatic);
         this.selectCPU.enabled = false;
         this.buttonList.add(this.selectCPU);
 
         if (this.OriginalGui != null) {
-            this.cancel = new GuiButton(0, this.guiLeft + 6, this.guiTop + this.ySize - 25, 50, 20, GuiText.Cancel.getLocal());
+            this.cancel = new GuiButton(0, this.guiLeft + 6, this.guiTop + this.ySize - 25, 50, 20,
+                    GuiText.Cancel.getLocal());
         }
 
         this.buttonList.add(this.cancel);
@@ -194,7 +201,8 @@ public class GuiCraftConfirm extends AEBaseGui {
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         final long BytesUsed = this.ccc.getUsedBytes();
         final String byteUsed = NumberFormat.getInstance().format(BytesUsed);
-        final String Add = BytesUsed > 0 ? (byteUsed + ' ' + GuiText.BytesUsed.getLocal()) : GuiText.CalculatingWait.getLocal();
+        final String Add = BytesUsed > 0 ? (byteUsed + ' ' + GuiText.BytesUsed.getLocal())
+                : GuiText.CalculatingWait.getLocal();
         this.fontRenderer.drawString(GuiText.CraftingPlan.getLocal() + " - " + Add, 8, 7, 4210752);
 
         String dsp = null;
@@ -202,8 +210,10 @@ public class GuiCraftConfirm extends AEBaseGui {
         if (this.isSimulation()) {
             dsp = GuiText.Simulation.getLocal();
         } else {
-            dsp = this.ccc.getCpuAvailableBytes() > 0 ? (GuiText.Bytes.getLocal() + ": " + this.ccc.getCpuAvailableBytes() + " : " + GuiText.CoProcessors
-                    .getLocal() + ": " + this.ccc.getCpuCoProcessors()) : GuiText.Bytes.getLocal() + ": N/A : " + GuiText.CoProcessors.getLocal() + ": N/A";
+            dsp = this.ccc.getCpuAvailableBytes() > 0
+                    ? (GuiText.Bytes.getLocal() + ": " + this.ccc.getCpuAvailableBytes() + " : " + GuiText.CoProcessors
+                            .getLocal() + ": " + this.ccc.getCpuCoProcessors())
+                    : GuiText.Bytes.getLocal() + ": N/A : " + GuiText.CoProcessors.getLocal() + ": N/A";
         }
 
         final int offset = (219 - this.fontRenderer.getStringWidth(dsp)) / 2;
@@ -246,6 +256,10 @@ public class GuiCraftConfirm extends AEBaseGui {
                 if (pendingStack != null && pendingStack.getStackSize() > 0) {
                     lines++;
                 }
+                if (materialRatios.containsKey(refStack))
+                    lines++;
+                if (craftingRounds.containsKey(refStack))
+                    lines++;
 
                 final int negY = ((lines - 1) * 5) / 2;
                 int downY = 0;
@@ -261,7 +275,8 @@ public class GuiCraftConfirm extends AEBaseGui {
 
                     str = GuiText.FromStorage.getLocal() + ": " + str;
                     final int w = 4 + this.fontRenderer.getStringWidth(str);
-                    this.fontRenderer.drawString(str, (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
+                    this.fontRenderer.drawString(str,
+                            (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
                     if (this.tooltip == z - viewStart) {
@@ -269,6 +284,23 @@ public class GuiCraftConfirm extends AEBaseGui {
                     }
 
                     downY += 5;
+
+                    Double ratio = this.materialRatios.get(refStack);
+                    if (ratio != null && ratio > 0) {
+                        double usedPercent = ratio * 100;
+                        String ratioStr;
+                        if (usedPercent < 0.01) {
+                            ratioStr = GuiText.MaterialUsagePercentage.getLocal() + ": <0.01%";
+                        } else {
+                            ratioStr = String.format("%s: %.2f%%", GuiText.MaterialUsagePercentage.getLocal(),
+                                    usedPercent);
+                        }
+                        final int wRatio = 4 + this.fontRenderer.getStringWidth(ratioStr);
+                        this.fontRenderer.drawString(ratioStr,
+                                (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (wRatio * 0.5)) * 2),
+                                (y * offY + yo + 6 - negY + downY) * 2, 4210752);
+                        downY += 5;
+                    }
                 }
 
                 boolean red = false;
@@ -283,7 +315,8 @@ public class GuiCraftConfirm extends AEBaseGui {
 
                     str = GuiText.Missing.getLocal() + ": " + str;
                     final int w = 4 + this.fontRenderer.getStringWidth(str);
-                    this.fontRenderer.drawString(str, (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
+                    this.fontRenderer.drawString(str,
+                            (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
                     if (this.tooltip == z - viewStart) {
@@ -305,11 +338,24 @@ public class GuiCraftConfirm extends AEBaseGui {
 
                     str = GuiText.ToCraft.getLocal() + ": " + str;
                     final int w = 4 + this.fontRenderer.getStringWidth(str);
-                    this.fontRenderer.drawString(str, (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
+                    this.fontRenderer.drawString(str,
+                            (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
                     if (this.tooltip == z - viewStart) {
                         lineList.add(GuiText.ToCraft.getLocal() + ": " + pendingStack.getStackSize());
+                    }
+
+                    downY += 5;
+
+                    Long rounds = this.craftingRounds.get(refStack);
+                    if (rounds != null && rounds > 0) {
+                        String roundsStr = String.format("%s: %d", GuiText.PatternExecutionCount.getLocal(), rounds);
+                        final int wRounds = 4 + this.fontRenderer.getStringWidth(roundsStr);
+                        this.fontRenderer.drawString(roundsStr,
+                                (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (wRounds * 0.5)) * 2),
+                                (y * offY + yo + 6 - negY + downY) * 2, 4210752);
+                        downY += 5;
                     }
                 }
 
@@ -321,6 +367,26 @@ public class GuiCraftConfirm extends AEBaseGui {
 
                 if (this.tooltip == z - viewStart) {
                     dspToolTip = Platform.getItemDisplayName(refStack);
+
+                    Double ratio = this.materialRatios.get(refStack);
+                    if (ratio != null && ratio > 0) {
+                        double usedPercent = ratio * 100;
+                        String ratioDisplay;
+                        if (usedPercent < 0.01) {
+                            ratioDisplay = GuiText.MaterialUsagePercentage.getLocal() + ": <0.01%";
+                        } else {
+                            ratioDisplay = String.format("%s: %.2f%%", GuiText.MaterialUsagePercentage.getLocal(),
+                                    usedPercent);
+                        }
+                        lineList.add(ratioDisplay);
+                    }
+
+                    Long rounds = this.craftingRounds.get(refStack);
+                    if (rounds != null && rounds > 0) {
+                        lineList.add(String.format("%s: %d",
+                                GuiText.PatternExecutionCount.getLocal(),
+                                rounds));
+                    }
 
                     if (lineList.size() > 0) {
                         dspToolTip = dspToolTip + '\n' + Joiner.on("\n").join(lineList);
@@ -385,6 +451,14 @@ public class GuiCraftConfirm extends AEBaseGui {
                     this.handleInput(this.missing, l);
                 }
                 break;
+
+            case 3:
+                this.handleCraftingRounds(list);
+                break;
+
+            case 4:
+                this.handleMaterialRatios(list);
+                break;
         }
 
         for (final IAEItemStack l : list) {
@@ -399,6 +473,23 @@ public class GuiCraftConfirm extends AEBaseGui {
         }
 
         this.setScrollBar();
+    }
+
+    private void handleMaterialRatios(List<IAEItemStack> itemStacks) {
+        for (final IAEItemStack stack : itemStacks) {
+            double ratio = stack.getStackSize() / 10000.0;
+            IAEItemStack key = stack.copy();
+            key.setStackSize(1);
+            this.materialRatios.put(key, ratio);
+        }
+    }
+
+    private void handleCraftingRounds(List<IAEItemStack> list) {
+        this.craftingRounds.clear();
+        for (IAEItemStack stack : list) {
+            IAEItemStack key = stack.copy().reset();
+            this.craftingRounds.put(key, stack.getStackSize());
+        }
     }
 
     private void handleInput(final IItemList<IAEItemStack> s, final IAEItemStack l) {
@@ -483,7 +574,8 @@ public class GuiCraftConfirm extends AEBaseGui {
 
         if (btn == this.selectCPU) {
             try {
-                NetworkHandler.instance().sendToServer(new PacketValueConfig("Terminal.Cpu", backwards ? "Prev" : "Next"));
+                NetworkHandler.instance()
+                        .sendToServer(new PacketValueConfig("Terminal.Cpu", backwards ? "Prev" : "Next"));
             } catch (final IOException e) {
                 AELog.debug(e);
             }

@@ -18,11 +18,12 @@
 
 package appeng.client.render;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
-import appeng.client.render.cablebus.FacadeBuilder;
-import appeng.items.parts.ItemFacade;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -33,16 +34,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 
+import appeng.client.render.cablebus.FacadeBuilder;
+import appeng.items.parts.ItemFacade;
 
 /**
  * This baked model class is used as a dispatcher to redirect the renderer to the *real* model that should be used based
- * on the item stack.
- * A custom Item Override List is used to accomplish this.
+ * on the item stack. A custom Item Override List is used to accomplish this.
  */
 public class FacadeDispatcherBakedModel extends DelegateBakedModel {
     private final VertexFormat format;
@@ -75,7 +75,8 @@ public class FacadeDispatcherBakedModel extends DelegateBakedModel {
     public ItemOverrideList getOverrides() {
         return new ItemOverrideList(Collections.emptyList()) {
             @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
+                    EntityLivingBase entity) {
                 if (!(stack.getItem() instanceof ItemFacade)) {
                     return originalModel;
                 }
@@ -84,10 +85,12 @@ public class FacadeDispatcherBakedModel extends DelegateBakedModel {
 
                 ItemStack textureItem = itemFacade.getTextureItem(stack);
 
-                int hash = Objects.hash(textureItem.getItem().getRegistryName(), textureItem.getMetadata(), textureItem.getTagCompound());
+                int hash = Objects.hash(textureItem.getItem().getRegistryName(), textureItem.getMetadata(),
+                        textureItem.getTagCompound());
                 FacadeBakedItemModel model = FacadeDispatcherBakedModel.this.cache.get(hash);
                 if (model == null) {
-                    model = new FacadeBakedItemModel(FacadeDispatcherBakedModel.this.getBaseModel(), textureItem, FacadeDispatcherBakedModel.this.facadeBuilder);
+                    model = new FacadeBakedItemModel(FacadeDispatcherBakedModel.this.getBaseModel(), textureItem,
+                            FacadeDispatcherBakedModel.this.facadeBuilder);
                     FacadeDispatcherBakedModel.this.cache.put(hash, model);
                 }
 

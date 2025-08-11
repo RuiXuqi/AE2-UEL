@@ -18,6 +18,13 @@
 
 package appeng.container.implementations;
 
+import java.io.IOException;
+import java.util.*;
+
+import com.google.common.collect.ImmutableSet;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
@@ -28,13 +35,6 @@ import appeng.core.AELog;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketCraftingCPUsUpdate;
 import appeng.util.Platform;
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-
-import java.io.IOException;
-import java.util.*;
-
 
 public class ContainerCraftingStatus extends ContainerCraftingCPU {
 
@@ -57,47 +57,24 @@ public class ContainerCraftingStatus extends ContainerCraftingCPU {
             final ICraftingGrid cc = network.getCache(ICraftingGrid.class);
             final ImmutableSet<ICraftingCPU> cpuSet = cc.getCpus();
 
-			/*int matches = 0;
-			boolean changed = false;
-			for( final ICraftingCPU c : cpuSet )
-			{
-				boolean found = false;
-				for( final CraftingCPURecord ccr : this.cpus )
-				{
-					if( ccr.getCpu() == c )
-					{
-						found = true;
-					}
-				}
-
-				final boolean matched = this.cpuMatches( c );
-
-				if( matched )
-				{
-					matches++;
-				}
-
-				if( found == !matched )
-				{
-					changed = true;
-				}
-			}
-
-			if( changed || this.cpus.size() != matches )
-			{
-				this.cpus.clear();
-				for( final ICraftingCPU c : cpuSet )
-				{
-					if( this.cpuMatches( c ) )
-					{
-						this.cpus.add( new CraftingCPURecord( c.getAvailableStorage(), c.getCoProcessors(), c ) );
-					}
-				}
-
-				this.sendCPUs();
-			}
-
-			this.noCPU = this.cpus.isEmpty(); */
+            /*
+             * int matches = 0; boolean changed = false; for( final ICraftingCPU c : cpuSet ) { boolean found = false;
+             * for( final CraftingCPURecord ccr : this.cpus ) { if( ccr.getCpu() == c ) { found = true; } }
+             * 
+             * final boolean matched = this.cpuMatches( c );
+             * 
+             * if( matched ) { matches++; }
+             * 
+             * if( found == !matched ) { changed = true; } }
+             * 
+             * if( changed || this.cpus.size() != matches ) { this.cpus.clear(); for( final ICraftingCPU c : cpuSet ) {
+             * if( this.cpuMatches( c ) ) { this.cpus.add( new CraftingCPURecord( c.getAvailableStorage(),
+             * c.getCoProcessors(), c ) ); } }
+             * 
+             * this.sendCPUs(); }
+             * 
+             * this.noCPU = this.cpus.isEmpty();
+             */
 
             // Update at least once a second
             ++lastUpdate;
@@ -108,7 +85,6 @@ public class ContainerCraftingStatus extends ContainerCraftingCPU {
                 sendCPUs();
             }
         }
-
 
         // Clear selection if CPU is no longer in list
         if (selectedCpuSerial != -1) {
@@ -169,7 +145,6 @@ public class ContainerCraftingStatus extends ContainerCraftingCPU {
             }
         }
     }
-
 
     public void selectCPU(int serial) {
         if (Platform.isServer()) {

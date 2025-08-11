@@ -18,13 +18,11 @@
 
 package appeng.fluids.util;
 
+import java.util.*;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IItemList;
-
-import java.util.*;
-
 
 public final class FluidList implements IItemList<IAEFluidStack> {
 

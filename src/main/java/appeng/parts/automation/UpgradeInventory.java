@@ -18,6 +18,13 @@
 
 package appeng.parts.automation;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.items.IUpgradeModule;
@@ -26,14 +33,6 @@ import appeng.util.Platform;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.filter.IAEItemFilter;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-
 
 public abstract class UpgradeInventory extends AppEngInternalInventory implements IAEAppEngInventory {
     private final IAEAppEngInventory parent;
@@ -147,7 +146,8 @@ public abstract class UpgradeInventory extends AppEngInternalInventory implement
         this.speedUpgrades = Math.min(this.speedUpgrades, this.getMaxInstalled(Upgrades.SPEED));
         this.inverterUpgrades = Math.min(this.inverterUpgrades, this.getMaxInstalled(Upgrades.INVERTER));
         this.craftingUpgrades = Math.min(this.craftingUpgrades, this.getMaxInstalled(Upgrades.CRAFTING));
-        this.patternExpansionUpgrades = Math.min(this.patternExpansionUpgrades, this.getMaxInstalled(Upgrades.PATTERN_EXPANSION));
+        this.patternExpansionUpgrades = Math.min(this.patternExpansionUpgrades,
+                this.getMaxInstalled(Upgrades.PATTERN_EXPANSION));
         this.magnetUpgrades = Math.min(this.magnetUpgrades, this.getMaxInstalled(Upgrades.MAGNET));
         this.quantumUpgrades = Math.min(this.quantumUpgrades, this.getMaxInstalled(Upgrades.QUANTUM_LINK));
         this.stickyUpgrades = Math.min(this.stickyUpgrades, this.getMaxInstalled(Upgrades.STICKY));
@@ -167,7 +167,8 @@ public abstract class UpgradeInventory extends AppEngInternalInventory implement
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         this.cached = false;
         if (this.parent != null && Platform.isServer()) {
             this.parent.onChangeInventory(inv, slot, mc, removedStack, newStack);

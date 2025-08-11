@@ -18,9 +18,8 @@
 
 package appeng.container.slot;
 
+import javax.annotation.Nonnull;
 
-import appeng.container.AEBaseContainer;
-import appeng.util.helpers.ItemHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -30,8 +29,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
-
+import appeng.container.AEBaseContainer;
+import appeng.util.helpers.ItemHandlerUtil;
 
 public class AppEngSlot extends Slot {
     private static final IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
@@ -94,7 +93,6 @@ public class AppEngSlot extends Slot {
         if (this.itemHandler.getSlots() <= this.getSlotIndex()) {
             return ItemStack.EMPTY;
         }
-
 
         if (this.isDisplay()) {
             this.setDisplay(false);
@@ -161,7 +159,6 @@ public class AppEngSlot extends Slot {
         if (this.isSlotEnabled()) {
             var draggedStack = par1EntityPlayer.inventory.getItemStack();
             ItemStack slotStack = this.getStack();
-
 
             if (!draggedStack.isEmpty()) {
                 if (draggedStack.isItemEqual(slotStack)) {

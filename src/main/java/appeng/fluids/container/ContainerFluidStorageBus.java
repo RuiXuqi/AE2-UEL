@@ -18,6 +18,10 @@
 
 package appeng.fluids.container;
 
+import java.util.Iterator;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -31,11 +35,6 @@ import appeng.fluids.parts.PartFluidStorageBus;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.util.Platform;
 import appeng.util.iterators.NullIterator;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.Iterator;
-
 
 /**
  * @author BrockWS
@@ -65,19 +64,24 @@ public class ContainerFluidStorageBus extends ContainerFluidConfigurable {
     @Override
     protected void setupConfig() {
         final IItemHandler upgrades = this.getUpgradeable().getInventoryByName("upgrades");
-        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
+        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0,
+                187, 8, this.getInventoryPlayer()))
                 .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 3, 187, 8 + 18 * 3, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 3, 187, 8 + 18 * 3,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 4, 187, 8 + 18 * 4, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 4, 187, 8 + 18 * 4,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
     }
 
@@ -110,8 +114,10 @@ public class ContainerFluidStorageBus extends ContainerFluidConfigurable {
 
         if (Platform.isServer()) {
             this.setFuzzyMode((FuzzyMode) this.getUpgradeable().getConfigManager().getSetting(Settings.FUZZY_MODE));
-            this.setReadWriteMode((AccessRestriction) this.getUpgradeable().getConfigManager().getSetting(Settings.ACCESS));
-            this.setStorageFilter((StorageFilter) this.getUpgradeable().getConfigManager().getSetting(Settings.STORAGE_FILTER));
+            this.setReadWriteMode(
+                    (AccessRestriction) this.getUpgradeable().getConfigManager().getSetting(Settings.ACCESS));
+            this.setStorageFilter(
+                    (StorageFilter) this.getUpgradeable().getConfigManager().getSetting(Settings.STORAGE_FILTER));
         }
 
         this.standardDetectAndSendChanges();
@@ -140,7 +146,8 @@ public class ContainerFluidStorageBus extends ContainerFluidConfigurable {
         Iterator<IAEFluidStack> i = new NullIterator<>();
         if (cellInv != null) {
             final IItemList<IAEFluidStack> list = cellInv
-                    .getAvailableItems(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList());
+                    .getAvailableItems(
+                            AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList());
             i = list.iterator();
         }
 

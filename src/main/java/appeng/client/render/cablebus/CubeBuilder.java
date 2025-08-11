@@ -18,9 +18,15 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.List;
 
-import appeng.client.render.VertexFormats;
+import javax.vecmath.Vector4f;
+
 import com.google.common.base.Preconditions;
+
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -29,12 +35,7 @@ import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 
-import javax.vecmath.Vector4f;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.List;
-
+import appeng.client.render.VertexFormats;
 
 /**
  * Builds the quads for a cube.
@@ -188,7 +189,8 @@ public class CubeBuilder {
         this.output.add(builder.build());
     }
 
-    private UvVector getDefaultUv(EnumFacing face, TextureAtlasSprite texture, float x1, float y1, float z1, float x2, float y2, float z2) {
+    private UvVector getDefaultUv(EnumFacing face, TextureAtlasSprite texture, float x1, float y1, float z1, float x2,
+            float y2, float z2) {
 
         UvVector uv = new UvVector();
 
@@ -234,7 +236,8 @@ public class CubeBuilder {
         return uv;
     }
 
-    private UvVector getStandardUv(EnumFacing face, TextureAtlasSprite texture, float x1, float y1, float z1, float x2, float y2, float z2) {
+    private UvVector getStandardUv(EnumFacing face, TextureAtlasSprite texture, float x1, float y1, float z1, float x2,
+            float y2, float z2) {
         UvVector uv = new UvVector();
         switch (face) {
             case DOWN:
@@ -278,7 +281,8 @@ public class CubeBuilder {
     }
 
     // uv.u1, uv.v1
-    private void putVertexTL(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z, UvVector uv) {
+    private void putVertexTL(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z,
+            UvVector uv) {
         float u, v;
 
         switch (this.uvRotations[face.ordinal()]) {
@@ -305,7 +309,8 @@ public class CubeBuilder {
     }
 
     // uv.u2, uv.v1
-    private void putVertexTR(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z, UvVector uv) {
+    private void putVertexTR(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z,
+            UvVector uv) {
         float u, v;
 
         switch (this.uvRotations[face.ordinal()]) {
@@ -331,7 +336,8 @@ public class CubeBuilder {
     }
 
     // uv.u2, uv.v2
-    private void putVertexBR(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z, UvVector uv) {
+    private void putVertexBR(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z,
+            UvVector uv) {
 
         float u;
         float v;
@@ -360,7 +366,8 @@ public class CubeBuilder {
     }
 
     // uv.u1, uv.v2
-    private void putVertexBL(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z, UvVector uv) {
+    private void putVertexBL(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z,
+            UvVector uv) {
 
         float u;
         float v;
@@ -388,7 +395,8 @@ public class CubeBuilder {
         this.putVertex(builder, face, x, y, z, u, v);
     }
 
-    private void putVertex(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z, float u, float v) {
+    private void putVertex(UnpackedBakedQuad.Builder builder, EnumFacing face, float x, float y, float z, float u,
+            float v) {
         VertexFormat format = builder.getVertexFormat();
 
         for (int i = 0; i < format.getElementCount(); i++) {
@@ -432,7 +440,8 @@ public class CubeBuilder {
         }
     }
 
-    public void setTextures(TextureAtlasSprite up, TextureAtlasSprite down, TextureAtlasSprite north, TextureAtlasSprite south, TextureAtlasSprite east, TextureAtlasSprite west) {
+    public void setTextures(TextureAtlasSprite up, TextureAtlasSprite down, TextureAtlasSprite north,
+            TextureAtlasSprite south, TextureAtlasSprite east, TextureAtlasSprite west) {
         this.textures.put(EnumFacing.UP, up);
         this.textures.put(EnumFacing.DOWN, down);
         this.textures.put(EnumFacing.NORTH, north);
@@ -483,8 +492,7 @@ public class CubeBuilder {
     }
 
     /**
-     * CubeBuilder uses UV optimized for cables by default.
-     * This switches to standard UV coordinates.
+     * CubeBuilder uses UV optimized for cables by default. This switches to standard UV coordinates.
      */
     public void useStandardUV() {
         this.useStandardUV = true;

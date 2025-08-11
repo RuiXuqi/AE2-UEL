@@ -18,8 +18,6 @@
 
 package appeng.core.sync.network;
 
-
-import appeng.core.sync.AppEngPacket;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.ThreadQuickExitException;
@@ -30,6 +28,7 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketE
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
+import appeng.core.sync.AppEngPacket;
 
 public class NetworkHandler {
     public static NetworkHandler instance;

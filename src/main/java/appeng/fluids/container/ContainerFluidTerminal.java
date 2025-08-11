@@ -18,6 +18,19 @@
 
 package appeng.fluids.container;
 
+import java.io.IOException;
+import java.nio.BufferOverflowException;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -54,29 +67,18 @@ import appeng.me.helpers.ChannelPowerSrc;
 import appeng.util.ConfigManager;
 import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.nio.BufferOverflowException;
-
 
 /**
  * @author BrockWS
  * @version rv6 - 12/05/2018
  * @since rv6 12/05/2018
  */
-public class ContainerFluidTerminal extends AEBaseContainer implements IConfigManagerHost, IConfigurableObject, IMEMonitorHandlerReceiver<IAEFluidStack> {
+public class ContainerFluidTerminal extends AEBaseContainer
+        implements IConfigManagerHost, IConfigurableObject, IMEMonitorHandlerReceiver<IAEFluidStack> {
     private final IConfigManager clientCM;
     private final IMEMonitor<IAEFluidStack> monitor;
-    private final IItemList<IAEFluidStack> fluids = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+    private final IItemList<IAEFluidStack> fluids = AEApi.instance().storage()
+            .getStorageChannel(IFluidStorageChannel.class).createList();
     @GuiSync(99)
     public boolean hasPower = false;
     private final ITerminalHost terminal;
@@ -96,7 +98,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
         this.clientCM.registerSetting(Settings.VIEW_MODE, ViewItems.ALL);
         if (Platform.isServer()) {
             this.serverCM = terminal.getConfigManager();
-            this.monitor = terminal.getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
+            this.monitor = terminal
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
 
             if (this.monitor != null) {
                 this.monitor.addListener(this, null);
@@ -134,7 +137,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
     }
 
     @Override
-    public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change, IActionSource actionSource) {
+    public void postChange(IBaseMonitor<IAEFluidStack> monitor, Iterable<IAEFluidStack> change,
+            IActionSource actionSource) {
         for (final IAEFluidStack is : change) {
             this.fluids.add(is);
         }
@@ -219,7 +223,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
     @Override
     public void detectAndSendChanges() {
         if (Platform.isServer()) {
-            if (this.monitor != this.terminal.getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class))) {
+            if (this.monitor != this.terminal
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class))) {
                 this.setValidContainer(false);
             }
 
@@ -232,7 +237,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                     for (final IContainerListener crafter : this.listeners) {
                         if (crafter instanceof EntityPlayerMP) {
                             try {
-                                NetworkHandler.instance().sendTo(new PacketValueConfig(set.name(), sideLocal.name()), (EntityPlayerMP) crafter);
+                                NetworkHandler.instance().sendTo(new PacketValueConfig(set.name(), sideLocal.name()),
+                                        (EntityPlayerMP) crafter);
                             } catch (final IOException e) {
                                 AELog.debug(e);
                             }
@@ -282,7 +288,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
             return ItemStack.EMPTY;
         }
         EntityPlayerMP player = (EntityPlayerMP) p;
-        if (this.inventorySlots.get(idx) instanceof SlotPlayerInv || this.inventorySlots.get(idx) instanceof SlotPlayerHotBar) {
+        if (this.inventorySlots.get(idx) instanceof SlotPlayerInv
+                || this.inventorySlots.get(idx) instanceof SlotPlayerHotBar) {
             final AppEngSlot clickSlot = (AppEngSlot) this.inventorySlots.get(idx); // require AE SLots!
             ItemStack itemStack = clickSlot.getStack();
 
@@ -306,7 +313,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 }
 
                 // Check if we can push into the system
-                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
+                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
 
                 if (notStorable != null && notStorable.getStackSize() > 0) {
                     final int toStore = (int) (extract.amount - notStorable.getStackSize());
@@ -323,10 +331,12 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 final FluidStack drained = fh.drain(extract, true);
                 extract.amount = drained.amount;
 
-                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource());
+                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource());
 
                 if (notInserted != null && notInserted.getStackSize() > 0) {
-                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE, this.getActionSource());
+                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE,
+                            this.getActionSource());
                     if (spill != null && spill.getStackSize() > 0) {
                         fh.fill(spill.getFluidStack(), true);
                     }
@@ -374,7 +384,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 fh = FluidUtil.getFluidHandler(copiedFluidContainer);
 
                 // Check if we can pull out of the system
-                final IAEFluidStack canPull = Platform.poweredExtraction(this.getPowerSource(), this.monitor, stack.setStackSize(amountAllowed), this.getActionSource(), Actionable.SIMULATE);
+                final IAEFluidStack canPull = Platform.poweredExtraction(this.getPowerSource(), this.monitor,
+                        stack.setStackSize(amountAllowed), this.getActionSource(), Actionable.SIMULATE);
                 if (canPull == null || canPull.getStackSize() < 1) {
                     return;
                 }
@@ -386,7 +397,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 }
 
                 // Now actually pull out of the system
-                final IAEFluidStack pulled = Platform.poweredExtraction(this.getPowerSource(), this.monitor, stack.setStackSize(canFill), this.getActionSource());
+                final IAEFluidStack pulled = Platform.poweredExtraction(this.getPowerSource(), this.monitor,
+                        stack.setStackSize(canFill), this.getActionSource());
                 if (pulled == null || pulled.getStackSize() < 1) {
                     // Something went wrong
                     AELog.error("Unable to pull fluid out of the ME system even though the simulation said yes ");
@@ -397,7 +409,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 final int used = fh.fill(pulled.getFluidStack(), true);
 
                 if (used != canFill) {
-                    AELog.error("Fluid item [%s] reported a different possible amount than it actually accepted.", held.getDisplayName());
+                    AELog.error("Fluid item [%s] reported a different possible amount than it actually accepted.",
+                            held.getDisplayName());
                 }
 
                 if (held.getCount() == 1) {
@@ -425,7 +438,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 }
 
                 // Check if we can push into the system
-                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
+                final IAEFluidStack notStorable = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource(), Actionable.SIMULATE);
 
                 if (notStorable != null && notStorable.getStackSize() > 0) {
                     final int toStore = (int) (extract.amount - notStorable.getStackSize());
@@ -442,10 +456,12 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
                 final FluidStack drained = fh.drain(extract, true);
                 extract.amount = drained.amount;
 
-                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor, AEFluidStack.fromFluidStack(extract), this.getActionSource());
+                final IAEFluidStack notInserted = Platform.poweredInsert(this.getPowerSource(), this.monitor,
+                        AEFluidStack.fromFluidStack(extract), this.getActionSource());
 
                 if (notInserted != null && notInserted.getStackSize() > 0) {
-                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE, this.getActionSource());
+                    IAEFluidStack spill = this.monitor.injectItems(notInserted, Actionable.MODULATE,
+                            this.getActionSource());
                     if (spill != null && spill.getStackSize() > 0) {
                         fh.fill(spill.getFluidStack(), true);
                     }
@@ -471,7 +487,8 @@ public class ContainerFluidTerminal extends AEBaseContainer implements IConfigMa
             } else if (this.getPowerSource() instanceof IEnergyGrid) {
                 this.setPowered(((IEnergyGrid) this.getPowerSource()).isNetworkPowered());
             } else {
-                this.setPowered(this.getPowerSource().extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.CONFIG) > 0.8);
+                this.setPowered(
+                        this.getPowerSource().extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.CONFIG) > 0.8);
             }
         } catch (final Exception ignore) {
             // :P

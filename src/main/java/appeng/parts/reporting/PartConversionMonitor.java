@@ -18,6 +18,21 @@
 
 package appeng.parts.reporting;
 
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -39,22 +54,6 @@ import appeng.parts.PartModel;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
-
-import java.util.Collections;
-import java.util.List;
-
 
 public class PartConversionMonitor extends AbstractPartMonitor {
 
@@ -63,16 +62,19 @@ public class PartConversionMonitor extends AbstractPartMonitor {
     @PartModels
     public static final ResourceLocation MODEL_ON = new ResourceLocation(AppEng.MOD_ID, "part/conversion_monitor_on");
     @PartModels
-    public static final ResourceLocation MODEL_LOCKED_OFF = new ResourceLocation(AppEng.MOD_ID, "part/conversion_monitor_locked_off");
+    public static final ResourceLocation MODEL_LOCKED_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/conversion_monitor_locked_off");
     @PartModels
-    public static final ResourceLocation MODEL_LOCKED_ON = new ResourceLocation(AppEng.MOD_ID, "part/conversion_monitor_locked_on");
+    public static final ResourceLocation MODEL_LOCKED_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/conversion_monitor_locked_on");
 
     public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_OFF, MODEL_STATUS_OFF);
     public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
     public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_HAS_CHANNEL);
     public static final IPartModel MODELS_LOCKED_OFF = new PartModel(MODEL_BASE, MODEL_LOCKED_OFF, MODEL_STATUS_OFF);
     public static final IPartModel MODELS_LOCKED_ON = new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_ON);
-    public static final IPartModel MODELS_LOCKED_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_HAS_CHANNEL);
+    public static final IPartModel MODELS_LOCKED_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_LOCKED_ON,
+            MODEL_STATUS_HAS_CHANNEL);
 
     @Reflected
     public PartConversionMonitor(final ItemStack is) {
@@ -96,14 +98,16 @@ public class PartConversionMonitor extends AbstractPartMonitor {
         final ItemStack eq = player.getHeldItem(hand);
         FluidStack fluidInTank = null;
         if (eq.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-            IFluidHandlerItem fluidHandlerItem = (eq.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null));
+            IFluidHandlerItem fluidHandlerItem = (eq.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY,
+                    null));
             fluidInTank = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
         }
 
         if (this.isLocked()) {
             if (eq.isEmpty()) {
                 this.insertItem(player, hand, true);
-            } else if (Platform.isWrench(player, eq, this.getLocation().getPos()) && (this.getDisplayed() == null || !this.getDisplayed().equals(eq))) {
+            } else if (Platform.isWrench(player, eq, this.getLocation().getPos())
+                    && (this.getDisplayed() == null || !this.getDisplayed().equals(eq))) {
                 // wrench it
                 return super.onPartActivate(player, hand, pos);
             } else if (fluidInTank != null && fluidInTank.amount > 0) {
@@ -115,7 +119,7 @@ public class PartConversionMonitor extends AbstractPartMonitor {
             }
         }
 
-        //If its a fluid container, grab its fluidstack. if its empty pass its itemstack;
+        // If its a fluid container, grab its fluidstack. if its empty pass its itemstack;
 
         if (fluidInTank != null && fluidInTank.amount > 0) {
             if (getDisplayed() instanceof IAEItemStack || getDisplayed() == null) {
@@ -194,9 +198,11 @@ public class PartConversionMonitor extends AbstractPartMonitor {
                             final ItemStack canExtract = inv.extractItem(x, targetStack.getCount(), true);
                             if (!canExtract.isEmpty()) {
                                 input.setStackSize(canExtract.getCount());
-                                final IAEItemStack failedToInsert = Platform.poweredInsert(energy, cell, input, new PlayerSource(player, this));
+                                final IAEItemStack failedToInsert = Platform.poweredInsert(energy, cell, input,
+                                        new PlayerSource(player, this));
                                 inv.extractItem(x,
-                                        failedToInsert == null ? canExtract.getCount() : canExtract.getCount() - (int) failedToInsert.getStackSize(),
+                                        failedToInsert == null ? canExtract.getCount()
+                                                : canExtract.getCount() - (int) failedToInsert.getStackSize(),
                                         false);
                             }
                         }
@@ -204,7 +210,8 @@ public class PartConversionMonitor extends AbstractPartMonitor {
                 }
             } else {
                 final IAEItemStack input = AEItemStack.fromItemStack(player.getHeldItem(hand));
-                final IAEItemStack failedToInsert = Platform.poweredInsert(energy, cell, input, new PlayerSource(player, this));
+                final IAEItemStack failedToInsert = Platform.poweredInsert(energy, cell, input,
+                        new PlayerSource(player, this));
                 player.setHeldItem(hand, failedToInsert == null ? ItemStack.EMPTY : failedToInsert.createItemStack());
             }
         } catch (final GridAccessException e) {
@@ -230,7 +237,8 @@ public class PartConversionMonitor extends AbstractPartMonitor {
 
                 input.setStackSize(count);
 
-                final IAEItemStack retrieved = Platform.poweredExtraction(energy, cell, input, new PlayerSource(player, this));
+                final IAEItemStack retrieved = Platform.poweredExtraction(energy, cell, input,
+                        new PlayerSource(player, this));
                 if (retrieved != null) {
                     ItemStack newItems = retrieved.createItemStack();
                     final InventoryAdaptor adaptor = InventoryAdaptor.getAdaptor(player);
@@ -277,7 +285,8 @@ public class PartConversionMonitor extends AbstractPartMonitor {
                     .getStorage()
                     .getInventory(
                             AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
-            final IAEFluidStack notStorable = Platform.poweredInsert(energy, cell, AEFluidStack.fromFluidStack(extract), new PlayerSource(player, this), Actionable.SIMULATE);
+            final IAEFluidStack notStorable = Platform.poweredInsert(energy, cell, AEFluidStack.fromFluidStack(extract),
+                    new PlayerSource(player, this), Actionable.SIMULATE);
 
             if (notStorable != null && notStorable.getStackSize() > 0) {
                 final int toStore = (int) (extract.amount - notStorable.getStackSize());
@@ -294,10 +303,12 @@ public class PartConversionMonitor extends AbstractPartMonitor {
             final FluidStack drained = fh.drain(extract, true);
             extract.amount = drained.amount;
 
-            final IAEFluidStack notInserted = Platform.poweredInsert(energy, cell, AEFluidStack.fromFluidStack(extract), new PlayerSource(player, this));
+            final IAEFluidStack notInserted = Platform.poweredInsert(energy, cell, AEFluidStack.fromFluidStack(extract),
+                    new PlayerSource(player, this));
 
             if (notInserted != null && notInserted.getStackSize() > 0) {
-                AELog.error("Fluid item [%s] reported a different possible amount to drain than it actually provided.", held.getDisplayName());
+                AELog.error("Fluid item [%s] reported a different possible amount to drain than it actually provided.",
+                        held.getDisplayName());
             }
 
             player.setHeldItem(hand, fh.getContainer());
@@ -333,7 +344,8 @@ public class PartConversionMonitor extends AbstractPartMonitor {
                     .getStorage()
                     .getInventory(
                             AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class));
-            final IAEFluidStack canPull = Platform.poweredExtraction(energy, cell, stack, new PlayerSource(player, this), Actionable.SIMULATE);
+            final IAEFluidStack canPull = Platform.poweredExtraction(energy, cell, stack,
+                    new PlayerSource(player, this), Actionable.SIMULATE);
             if (canPull == null || canPull.getStackSize() < 1) {
                 return;
             }
@@ -346,7 +358,8 @@ public class PartConversionMonitor extends AbstractPartMonitor {
 
             // Now actually pull out of the system
             stack.setStackSize(canFill);
-            final IAEFluidStack pulled = Platform.poweredExtraction(energy, cell, stack, new PlayerSource(player, this));
+            final IAEFluidStack pulled = Platform.poweredExtraction(energy, cell, stack,
+                    new PlayerSource(player, this));
             if (pulled == null || pulled.getStackSize() < 1) {
                 // Something went wrong
                 AELog.error("Unable to pull fluid out of the ME system even though the simulation said yes ");
@@ -357,7 +370,8 @@ public class PartConversionMonitor extends AbstractPartMonitor {
             final int used = fh.fill(pulled.getFluidStack(), true);
 
             if (used != canFill) {
-                AELog.error("Fluid item [%s] reported a different possible amount than it actually accepted.", held.getDisplayName());
+                AELog.error("Fluid item [%s] reported a different possible amount than it actually accepted.",
+                        held.getDisplayName());
             }
             player.setHeldItem(hand, fh.getContainer());
         } catch (GridAccessException e) {

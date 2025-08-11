@@ -18,6 +18,17 @@
 
 package appeng.tile.misc;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -44,17 +55,6 @@ import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.filter.IAEItemFilter;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-
 
 public class TileCharger extends AENetworkPowerTile implements ICrankable, IGridTickable {
     private static final int POWER_MAXIMUM_AMOUNT = 1600;
@@ -125,7 +125,8 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
             if (materials.certusQuartzCrystal().isSameAs(myItem)) {
                 this.extractAEPower(this.getInternalMaxPower(), Actionable.MODULATE, PowerMultiplier.CONFIG);
 
-                materials.certusQuartzCrystalCharged().maybeStack(myItem.getCount()).ifPresent(charged -> this.inv.setStackInSlot(0, charged));
+                materials.certusQuartzCrystalCharged().maybeStack(myItem.getCount())
+                        .ifPresent(charged -> this.inv.setStackInSlot(0, charged));
             }
         }
     }
@@ -141,7 +142,8 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         try {
             this.getProxy().getTick().wakeDevice(this.getProxy().getNode());
         } catch (final GridAccessException e) {
@@ -162,7 +164,10 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
             if (!held.isEmpty()) {
                 if (AEConfig.instance().isFeatureEnabled(AEFeature.CERTUS)) {
                     final IMaterials materials = AEApi.instance().definitions().materials();
-                    if (AEItemStack.fromItemStack(held).sameOre(AEItemStack.fromItemStack(materials.certusQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY))) || Platform.isChargeable(held)) {
+                    if (AEItemStack.fromItemStack(held)
+                            .sameOre(AEItemStack.fromItemStack(
+                                    materials.certusQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY)))
+                            || Platform.isChargeable(held)) {
                         held = player.inventory.decrStackSize(player.inventory.currentItem, 1);
                         this.inv.setStackInSlot(0, held);
                     }
@@ -199,14 +204,16 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
                 if (ps.getAEMaxPower(myItem) > ps.getAECurrentPower(myItem)) {
                     final double chargeRate = AEApi.instance().registries().charger().getChargeRate(myItem.getItem());
 
-                    double extractedAmount = this.extractAEPower(chargeRate, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                    double extractedAmount = this.extractAEPower(chargeRate, Actionable.MODULATE,
+                            PowerMultiplier.CONFIG);
 
                     final double missingChargeRate = chargeRate - extractedAmount;
                     final double missingAEPower = ps.getAEMaxPower(myItem) - ps.getAECurrentPower(myItem);
                     final double toExtract = Math.min(missingChargeRate, missingAEPower);
 
                     try {
-                        extractedAmount += this.getProxy().getEnergy().extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.ONE);
+                        extractedAmount += this.getProxy().getEnergy().extractAEPower(toExtract, Actionable.MODULATE,
+                                PowerMultiplier.ONE);
                     } catch (GridAccessException e1) {
                         // Ignore.
                     }
@@ -219,12 +226,16 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
                         changed = true;
                     }
                 }
-            } else if (this.getInternalCurrentPower() > POWER_THRESHOLD && (materials.certusQuartzCrystal().isSameAs(myItem) || AEItemStack.fromItemStack(myItem).sameOre(AEItemStack.fromItemStack(materials.certusQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY))))) {
+            } else if (this.getInternalCurrentPower() > POWER_THRESHOLD
+                    && (materials.certusQuartzCrystal().isSameAs(myItem)
+                            || AEItemStack.fromItemStack(myItem).sameOre(AEItemStack.fromItemStack(
+                                    materials.certusQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY))))) {
                 if (Platform.getRandomFloat() > 0.8f) // simulate wait
                 {
                     this.extractAEPower(this.getInternalMaxPower(), Actionable.MODULATE, PowerMultiplier.CONFIG);
 
-                    materials.certusQuartzCrystalCharged().maybeStack(myItem.getCount()).ifPresent(charged -> this.inv.setStackInSlot(0, charged));
+                    materials.certusQuartzCrystalCharged().maybeStack(myItem.getCount())
+                            .ifPresent(charged -> this.inv.setStackInSlot(0, charged));
 
                     changed = true;
                 }
@@ -235,7 +246,8 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
         if (this.getInternalCurrentPower() < POWER_THRESHOLD) {
             try {
                 final double toExtract = Math.min(800.0, this.getInternalMaxPower() - this.getInternalCurrentPower());
-                final double extracted = this.getProxy().getEnergy().extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.ONE);
+                final double extracted = this.getProxy().getEnergy().extractAEPower(toExtract, Actionable.MODULATE,
+                        PowerMultiplier.ONE);
 
                 this.injectExternalPower(PowerUnits.AE, extracted, Actionable.MODULATE);
             } catch (final GridAccessException e) {
@@ -255,7 +267,10 @@ public class TileCharger extends AENetworkPowerTile implements ICrankable, IGrid
     private class ChargerInvFilter implements IAEItemFilter {
         @Override
         public boolean allowInsert(IItemHandler inv, final int i, final ItemStack itemstack) {
-            return AEItemStack.fromItemStack(itemstack).sameOre(AEItemStack.fromItemStack(AEApi.instance().definitions().materials().certusQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY))) || Platform.isChargeable(itemstack);
+            return AEItemStack
+                    .fromItemStack(itemstack).sameOre(AEItemStack.fromItemStack(AEApi.instance().definitions()
+                            .materials().certusQuartzCrystal().maybeStack(1).orElse(ItemStack.EMPTY)))
+                    || Platform.isChargeable(itemstack);
         }
 
         @Override

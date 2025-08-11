@@ -18,68 +18,62 @@
 
 package appeng.me.cluster.implementations;
 
+import java.util.Iterator;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCraftingCpuChange;
 import appeng.api.util.AEPartLocation;
-import appeng.api.util.WorldCoord;
-import appeng.me.cluster.IAECluster;
 import appeng.me.cluster.IAEMultiBlock;
 import appeng.me.cluster.MBCalculator;
 import appeng.tile.crafting.TileCraftingTile;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
-import java.util.Iterator;
+public class CraftingCPUCalculator extends MBCalculator<TileCraftingTile, CraftingCPUCluster> {
 
-
-public class CraftingCPUCalculator extends MBCalculator {
-
-    private final TileCraftingTile tqb;
-
-    public CraftingCPUCalculator(final IAEMultiBlock t) {
+    public CraftingCPUCalculator(final TileCraftingTile t) {
         super(t);
-        this.tqb = (TileCraftingTile) t;
     }
 
     @Override
-    public boolean checkMultiblockScale(final WorldCoord min, final WorldCoord max) {
-        if (max.x - min.x > 16) {
+    public boolean checkMultiblockScale(final BlockPos min, final BlockPos max) {
+        if (max.getX() - min.getX() > 16) {
             return false;
         }
 
-        if (max.y - min.y > 16) {
+        if (max.getY() - min.getY() > 16) {
             return false;
         }
 
-        return max.z - min.z <= 16;
+        if (max.getZ() - min.getZ() > 16) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
-    public IAECluster createCluster(final World w, final WorldCoord min, final WorldCoord max) {
+    public CraftingCPUCluster createCluster(final World w, final BlockPos min, final BlockPos max) {
         return new CraftingCPUCluster(min, max);
     }
 
     @Override
-    public boolean verifyInternalStructure(final World w, final WorldCoord min, final WorldCoord max) {
+    public boolean verifyInternalStructure(final World w, final BlockPos min, final BlockPos max) {
         boolean storage = false;
 
-        for (int x = min.x; x <= max.x; x++) {
-            for (int y = min.y; y <= max.y; y++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    final IAEMultiBlock te = (IAEMultiBlock) w.getTileEntity(new BlockPos(x, y, z));
+        for (BlockPos blockPos : BlockPos.getAllInBoxMutable(min, max)) {
+            final IAEMultiBlock<?> te = (IAEMultiBlock<?>) w.getTileEntity(blockPos);
 
-                    if (!te.isValid()) {
-                        return false;
-                    }
+            if (te == null || !te.isValid()) {
+                return false;
+            }
 
-                    if (!storage && te instanceof TileCraftingTile) {
-                        storage = ((TileCraftingTile) te).getStorageBytes() > 0;
-                    }
-                }
+            if (!storage && te instanceof TileCraftingTile) {
+                storage = ((TileCraftingTile) te).getStorageBytes() > 0;
             }
         }
 
@@ -87,27 +81,16 @@ public class CraftingCPUCalculator extends MBCalculator {
     }
 
     @Override
-    public void disconnect() {
-        this.tqb.disconnect(true);
-    }
-
-    @Override
-    public void updateTiles(final IAECluster cl, final World w, final WorldCoord min, final WorldCoord max) {
-        final CraftingCPUCluster c = (CraftingCPUCluster) cl;
-
-        for (int x = min.x; x <= max.x; x++) {
-            for (int y = min.y; y <= max.y; y++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    final TileCraftingTile te = (TileCraftingTile) w.getTileEntity(new BlockPos(x, y, z));
-                    te.updateStatus(c);
-                    c.addTile(te);
-                }
-            }
+    public void updateTiles(final CraftingCPUCluster c, final World w, final BlockPos min, final BlockPos max) {
+        for (BlockPos blockPos : BlockPos.getAllInBoxMutable(min, max)) {
+            final TileCraftingTile te = (TileCraftingTile) w.getTileEntity(blockPos);
+            te.updateStatus(c);
+            c.addTile(te);
         }
 
         c.done();
 
-        final Iterator<IGridHost> i = c.getTiles();
+        final Iterator<TileCraftingTile> i = c.getTiles();
         while (i.hasNext()) {
             final IGridHost gh = i.next();
             final IGridNode n = gh.getGridNode(AEPartLocation.INTERNAL);

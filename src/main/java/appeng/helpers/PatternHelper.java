@@ -18,14 +18,10 @@
 
 package appeng.helpers;
 
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
 
-import appeng.api.AEApi;
-import appeng.api.networking.crafting.ICraftingPatternDetails;
-import appeng.api.storage.channels.IItemStorageChannel;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.container.ContainerNull;
-import appeng.util.Platform;
-import appeng.util.item.AEItemStack;
+import java.util.*;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,10 +34,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
-import java.util.*;
-
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-
+import appeng.api.AEApi;
+import appeng.api.networking.crafting.ICraftingPatternDetails;
+import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.container.ContainerNull;
+import appeng.util.Platform;
+import appeng.util.item.AEItemStack;
 
 public class PatternHelper implements ICraftingPatternDetails, Comparable<PatternHelper> {
 
@@ -114,7 +113,8 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
 
             if (this.standardRecipe != null) {
                 this.correctOutput = this.standardRecipe.getCraftingResult(this.crafting);
-                out.add(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(this.correctOutput));
+                out.add(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                        .createStack(this.correctOutput));
             } else {
                 throw new IllegalStateException("No pattern here!");
             }
@@ -232,7 +232,8 @@ public class PatternHelper implements ICraftingPatternDetails, Comparable<Patter
         this.testFrame.setInventorySlotContents(slotIndex, i);
 
         // If we cannot substitute, the items must match exactly
-        if ((!(i.getItem().isDamageable() || Platform.isGTDamageableItem(i.getItem())) && !canSubstitute) && slotIndex < inputs.length) {
+        if ((!(i.getItem().isDamageable() || Platform.isGTDamageableItem(i.getItem())) && !canSubstitute)
+                && slotIndex < inputs.length) {
             if (!inputs[slotIndex].isSameType(i)) {
                 this.markItemAs(slotIndex, i, TestStatus.DECLINE);
                 return false;

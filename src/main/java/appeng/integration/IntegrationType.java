@@ -18,14 +18,12 @@
 
 package appeng.integration;
 
-
 import appeng.integration.modules.crafttweaker.CTModule;
 import appeng.integration.modules.ic2.IC2Module;
 import appeng.integration.modules.inventorytweaks.InventoryTweaksModule;
 import appeng.integration.modules.jei.JEIModule;
 import appeng.integration.modules.theoneprobe.TheOneProbeModule;
 import appeng.integration.modules.waila.WailaModule;
-
 
 public enum IntegrationType {
     IC2(IntegrationSide.BOTH, "Industrial Craft 2", "ic2") {

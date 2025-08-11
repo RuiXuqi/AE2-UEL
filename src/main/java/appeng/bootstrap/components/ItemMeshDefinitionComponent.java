@@ -18,18 +18,17 @@
 
 package appeng.bootstrap.components;
 
+import javax.annotation.Nonnull;
 
-import appeng.bootstrap.IModelRegistry;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.relauncher.Side;
 
-import javax.annotation.Nonnull;
-
+import appeng.bootstrap.IModelRegistry;
 
 /**
- * Registers a custom item mesh definition that can be used to dynamically determine the item model based on
- * item stack properties.
+ * Registers a custom item mesh definition that can be used to dynamically determine the item model based on item stack
+ * properties.
  */
 public class ItemMeshDefinitionComponent implements IModelRegistrationComponent {
 

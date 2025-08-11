@@ -18,11 +18,6 @@
 
 package appeng.decorative.solid;
 
-
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.block.AEBaseBlock;
-import appeng.helpers.MetaRotation;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -31,9 +26,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.block.AEBaseBlock;
+import appeng.helpers.MetaRotation;
 
 public class BlockQuartzPillar extends AEBaseBlock implements IOrientableBlock {
-    public static final PropertyEnum<EnumFacing.Axis> AXIS_ORIENTATION = PropertyEnum.create("axis", EnumFacing.Axis.class);
+    public static final PropertyEnum<EnumFacing.Axis> AXIS_ORIENTATION = PropertyEnum.create("axis",
+            EnumFacing.Axis.class);
 
     public BlockQuartzPillar() {
         super(Material.ROCK);
@@ -55,7 +55,7 @@ public class BlockQuartzPillar extends AEBaseBlock implements IOrientableBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{AXIS_ORIENTATION};
+        return new IProperty[] { AXIS_ORIENTATION };
     }
 
     @Override

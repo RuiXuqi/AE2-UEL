@@ -18,18 +18,9 @@
 
 package appeng.items.parts;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.exceptions.MissingDefinitionException;
-import appeng.api.parts.IAlphaPassItem;
-import appeng.api.parts.IFacadePart;
-import appeng.api.parts.IPartHost;
-import appeng.api.util.AEPartLocation;
-import appeng.core.AELog;
-import appeng.core.FacadeConfig;
-import appeng.facade.FacadePart;
-import appeng.facade.IFacadeItem;
-import appeng.items.AEBaseItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,9 +37,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.exceptions.MissingDefinitionException;
+import appeng.api.parts.IAlphaPassItem;
+import appeng.api.parts.IFacadePart;
+import appeng.api.parts.IPartHost;
+import appeng.api.util.AEPartLocation;
+import appeng.core.AELog;
+import appeng.core.FacadeConfig;
+import appeng.facade.FacadePart;
+import appeng.facade.IFacadeItem;
+import appeng.items.AEBaseItem;
 
 public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassItem {
 
@@ -62,7 +61,8 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if (stack.getItem() != this) {
             return EnumActionResult.PASS;
@@ -293,7 +293,8 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
         try {
             return block.getStateFromMeta(metadata);
         } catch (Exception e) {
-            AELog.warn("Block %s has broken getStateFromMeta method for meta %d", block.getRegistryName().toString(), baseItemStack.getItemDamage());
+            AELog.warn("Block %s has broken getStateFromMeta method for meta %d", block.getRegistryName().toString(),
+                    baseItemStack.getItemDamage());
             return Blocks.GLASS.getDefaultState();
         }
     }
@@ -317,7 +318,8 @@ public class ItemFacade extends AEBaseItem implements IFacadeItem, IAlphaPassIte
                 .items()
                 .facade()
                 .maybeStack(1)
-                .orElseThrow(() -> new MissingDefinitionException("Tried to create a facade, while facades are being deactivated."));
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to create a facade, while facades are being deactivated."));
 
         // Convert back to a registry name...
         Item item = Item.REGISTRY.getObjectById(ids[0]);

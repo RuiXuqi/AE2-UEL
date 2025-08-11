@@ -18,14 +18,8 @@
 
 package appeng.block.crafting;
 
+import java.util.EnumSet;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.client.UnlistedProperty;
-import appeng.client.render.crafting.CraftingCubeState;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.crafting.TileCraftingTile;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -43,14 +37,19 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.client.UnlistedProperty;
+import appeng.client.render.crafting.CraftingCubeState;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.crafting.TileCraftingTile;
+import appeng.util.Platform;
 
 public class BlockCraftingUnit extends AEBaseTileBlock {
     public static final PropertyBool FORMED = PropertyBool.create("formed");
     public static final PropertyBool POWERED = PropertyBool.create("powered");
-    public static final UnlistedProperty<CraftingCubeState> STATE = new UnlistedProperty<>("state", CraftingCubeState.class);
+    public static final UnlistedProperty<CraftingCubeState> STATE = new UnlistedProperty<>("state",
+            CraftingCubeState.class);
 
     public final CraftingUnitType type;
 
@@ -62,7 +61,7 @@ public class BlockCraftingUnit extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{POWERED, FORMED};
+        return new IProperty[] { POWERED, FORMED };
     }
 
     @Override
@@ -88,7 +87,7 @@ public class BlockCraftingUnit extends AEBaseTileBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{STATE});
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] { STATE });
     }
 
     @Override
@@ -104,10 +103,15 @@ public class BlockCraftingUnit extends AEBaseTileBlock {
     }
 
     @Override
-    public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn, final BlockPos fromPos) {
+    public void neighborChanged(final IBlockState state, final World worldIn, final BlockPos pos, final Block blockIn,
+            final BlockPos fromPos) {
         final TileCraftingTile cp = this.getTileEntity(worldIn, pos);
         if (cp != null) {
-            cp.updateMultiBlock();
+            cp.updateMultiBlock(fromPos);
+
+            if (worldIn.isRemote) {
+                worldIn.markBlockRangeForRenderUpdate(pos, pos);
+            }
         }
     }
 
@@ -127,7 +131,8 @@ public class BlockCraftingUnit extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onBlockActivated(final World w, final BlockPos pos, final IBlockState state, final EntityPlayer p, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(final World w, final BlockPos pos, final IBlockState state, final EntityPlayer p,
+            final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
         final TileCraftingTile tg = this.getTileEntity(w, pos);
 
         if (tg != null && !p.isSneaking() && tg.isFormed() && tg.isActive()) {

@@ -18,12 +18,6 @@
 
 package appeng.items.tools.quartz;
 
-
-import appeng.api.implementations.items.IAEWrench;
-import appeng.api.util.DimensionalCoord;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
-import cofh.api.item.IToolHammer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,6 +31,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional.Interface;
 
+import cofh.api.item.IToolHammer;
+
+import appeng.api.implementations.items.IAEWrench;
+import appeng.api.util.DimensionalCoord;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 // TODO BC Integration
 //@Interface( iface = "buildcraft.api.tools.IToolWrench", iname = IntegrationType.BuildCraftCore )
@@ -49,7 +49,8 @@ public class ToolQuartzWrench extends AEBaseItem implements IAEWrench, IToolHamm
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
         final Block b = world.getBlockState(pos).getBlock();
         if (b != null && !player.isSneaking() && Platform.hasPermissions(new DimensionalCoord(world, pos), player)) {
             if (Platform.isClient()) {
@@ -67,7 +68,8 @@ public class ToolQuartzWrench extends AEBaseItem implements IAEWrench, IToolHamm
     }
 
     @Override
-    public boolean doesSneakBypassUse(final ItemStack itemstack, final IBlockAccess world, final BlockPos pos, final EntityPlayer player) {
+    public boolean doesSneakBypassUse(final ItemStack itemstack, final IBlockAccess world, final BlockPos pos,
+            final EntityPlayer player) {
         return true;
     }
 
@@ -99,15 +101,8 @@ public class ToolQuartzWrench extends AEBaseItem implements IAEWrench, IToolHamm
 
     // TODO: BC Wrench Integration
     /*
-     * @Override
-     * public boolean canWrench( EntityPlayer player, int x, int y, int z )
-     * {
-     * return true;
-     * }
-     * @Override
-     * public void wrenchUsed( EntityPlayer player, int x, int y, int z )
-     * {
-     * player.swingItem();
-     * }
+     * @Override public boolean canWrench( EntityPlayer player, int x, int y, int z ) { return true; }
+     * 
+     * @Override public void wrenchUsed( EntityPlayer player, int x, int y, int z ) { player.swingItem(); }
      */
 }

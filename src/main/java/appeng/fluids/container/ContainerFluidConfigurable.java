@@ -1,5 +1,13 @@
 package appeng.fluids.container;
 
+import java.util.Collections;
+import java.util.Map;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 
 import appeng.api.config.Upgrades;
 import appeng.api.implementations.IUpgradeableHost;
@@ -9,15 +17,6 @@ import appeng.fluids.helper.FluidSyncHelper;
 import appeng.fluids.util.AEFluidStack;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-
-import java.util.Collections;
-import java.util.Map;
-
 
 public abstract class ContainerFluidConfigurable extends ContainerUpgradeable implements IFluidSyncContainer {
     private FluidSyncHelper sync = null;

@@ -18,18 +18,17 @@
 
 package appeng.client.render.effects;
 
-
-import appeng.api.storage.data.IAEItemStack;
-import appeng.client.EffectType;
-import appeng.core.AppEng;
-import appeng.entity.EntityFloatingItem;
-import appeng.entity.ICanDie;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import appeng.api.storage.data.IAEItemStack;
+import appeng.client.EffectType;
+import appeng.core.AppEng;
+import appeng.entity.EntityFloatingItem;
+import appeng.entity.ICanDie;
 
 public class AssemblerFX extends Particle implements ICanDie {
 
@@ -37,7 +36,8 @@ public class AssemblerFX extends Particle implements ICanDie {
     private final float speed;
     private float time = 0;
 
-    public AssemblerFX(final World w, final double x, final double y, final double z, final double r, final double g, final double b, final float speed, final IAEItemStack is) {
+    public AssemblerFX(final World w, final double x, final double y, final double z, final double r, final double g,
+            final double b, final float speed, final IAEItemStack is) {
         super(w, x, y, z, r, g, b);
         this.motionX = 0;
         this.motionY = 0;
@@ -85,7 +85,8 @@ public class AssemblerFX extends Particle implements ICanDie {
     }
 
     @Override
-    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float l, final float rX, final float rY, final float rZ, final float rYZ, final float rXY) {
+    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float l,
+            final float rX, final float rY, final float rZ, final float rYZ, final float rXY) {
         this.time += l;
         if (this.time > 4.0) {
             this.time -= 4.0;

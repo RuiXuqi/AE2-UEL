@@ -18,10 +18,8 @@
 
 package appeng.integration.modules.waila.part;
 
+import java.util.List;
 
-import appeng.api.parts.IPart;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,12 +27,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import appeng.api.parts.IPart;
 
 /**
- * An abstraction layer of the {@link appeng.integration.modules.waila.part.IPartWailaDataProvider} for
- * {@link appeng.api.parts.IPart}.
+ * An abstraction layer of the {@link IPartWailaDataProvider} for {@link IPart}.
  *
  * @author thatsIch
  * @version rv2
@@ -43,11 +42,15 @@ import java.util.List;
 public interface IPartWailaDataProvider {
     ItemStack getWailaStack(IPart part, IWailaConfigHandler config, ItemStack partStack);
 
-    List<String> getWailaHead(IPart part, List<String> currentToolTip, IWailaDataAccessor accessor, IWailaConfigHandler config);
+    List<String> getWailaHead(IPart part, List<String> currentToolTip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config);
 
-    List<String> getWailaBody(IPart part, List<String> currentToolTip, IWailaDataAccessor accessor, IWailaConfigHandler config);
+    List<String> getWailaBody(IPart part, List<String> currentToolTip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config);
 
-    List<String> getWailaTail(IPart part, List<String> currentToolTip, IWailaDataAccessor accessor, IWailaConfigHandler config);
+    List<String> getWailaTail(IPart part, List<String> currentToolTip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config);
 
-    NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world, BlockPos pos);
+    NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos);
 }

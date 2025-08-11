@@ -18,11 +18,10 @@
 
 package appeng.parts.automation;
 
+import net.minecraft.item.ItemStack;
 
 import appeng.api.config.Upgrades;
 import appeng.util.inv.IAEAppEngInventory;
-import net.minecraft.item.ItemStack;
-
 
 public class StackUpgradeInventory extends UpgradeInventory {
     private final ItemStack stack;

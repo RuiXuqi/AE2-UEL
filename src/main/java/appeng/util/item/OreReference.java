@@ -18,13 +18,12 @@
 
 package appeng.util.item;
 
+import java.util.*;
 
-import appeng.api.storage.data.IAEItemStack;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
-
+import appeng.api.storage.data.IAEItemStack;
 
 public class OreReference {
 

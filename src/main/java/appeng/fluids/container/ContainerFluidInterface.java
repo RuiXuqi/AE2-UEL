@@ -18,6 +18,19 @@
 
 package appeng.fluids.container;
 
+import java.util.Collections;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.config.Upgrades;
@@ -31,26 +44,10 @@ import appeng.fluids.helper.FluidSyncHelper;
 import appeng.fluids.helper.IFluidInterfaceHost;
 import appeng.fluids.util.AEFluidInventory;
 import appeng.fluids.util.AEFluidStack;
-import appeng.fluids.util.IAEFluidInventory;
 import appeng.fluids.util.IAEFluidTank;
 import appeng.helpers.InventoryAction;
 import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import org.lwjgl.input.Mouse;
-
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.Map;
-
 
 public class ContainerFluidInterface extends ContainerFluidConfigurable implements IConfigManagerHost {
     private final DualityFluidInterface myDuality;
@@ -105,7 +102,8 @@ public class ContainerFluidInterface extends ContainerFluidConfigurable implemen
         super.onUpdate(field, oldValue, newValue);
         if (Platform.isClient() && field.equals("capacityUpgrades")) {
             this.capacityUpgrades = (int) newValue;
-            ((AEFluidInventory) this.myDuality.getTanks()).setCapacity((int) (Math.pow(4, this.capacityUpgrades + 1) * Fluid.BUCKET_VOLUME));
+            ((AEFluidInventory) this.myDuality.getTanks())
+                    .setCapacity((int) (Math.pow(4, this.capacityUpgrades + 1) * Fluid.BUCKET_VOLUME));
         }
     }
 
@@ -165,7 +163,8 @@ public class ContainerFluidInterface extends ContainerFluidConfigurable implemen
                 copiedFluidContainer.setCount(1);
                 fh = FluidUtil.getFluidHandler(copiedFluidContainer);
 
-                FluidStack extractableFluid = this.myDuality.getTanks().drain(stack.setStackSize(amountAllowed).getFluidStack(), false);
+                FluidStack extractableFluid = this.myDuality.getTanks()
+                        .drain(stack.setStackSize(amountAllowed).getFluidStack(), false);
                 if (extractableFluid == null || extractableFluid.amount == 0) {
                     break;
                 }
@@ -192,7 +191,8 @@ public class ContainerFluidInterface extends ContainerFluidConfigurable implemen
                 copiedFluidContainer.setCount(1);
                 fh = FluidUtil.getFluidHandler(copiedFluidContainer);
 
-                FluidStack drainable = fh.drain(this.myDuality.getTanks().getTankProperties()[slot].getCapacity(), false);
+                FluidStack drainable = fh.drain(this.myDuality.getTanks().getTankProperties()[slot].getCapacity(),
+                        false);
                 if (drainable != null) {
                     fh.drain(drainable, true);
                     this.myDuality.getTanks().fill(drainable, true);
@@ -216,7 +216,8 @@ public class ContainerFluidInterface extends ContainerFluidConfigurable implemen
             if (stack == null && this.clientRequestedTargetFluid == null) {
                 return;
             }
-            if (stack != null && this.clientRequestedTargetFluid != null && stack.getFluidStack().isFluidEqual(this.clientRequestedTargetFluid.getFluidStack())) {
+            if (stack != null && this.clientRequestedTargetFluid != null
+                    && stack.getFluidStack().isFluidEqual(this.clientRequestedTargetFluid.getFluidStack())) {
                 return;
             }
             NetworkHandler.instance().sendToServer(new PacketTargetFluidStack((AEFluidStack) stack));

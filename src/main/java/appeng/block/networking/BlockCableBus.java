@@ -18,31 +18,12 @@
 
 package appeng.block.networking;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
 
-import appeng.api.parts.IFacadeContainer;
-import appeng.api.parts.IFacadePart;
-import appeng.api.parts.PartItemStack;
-import appeng.api.parts.SelectedPart;
-import appeng.api.util.AEColor;
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.client.UnlistedProperty;
-import appeng.client.render.cablebus.CableBusBakedModel;
-import appeng.client.render.cablebus.CableBusRenderState;
-import appeng.client.render.cablebus.FacadeRenderState;
-import appeng.core.AppEng;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.PacketCableBusLandingParticle;
-import appeng.core.sync.packets.PacketClick;
-import appeng.helpers.AEGlassMaterial;
-import appeng.integration.abstraction.IAEFacade;
-import appeng.parts.ICableBusContainer;
-import appeng.parts.NullCableBusContainer;
-import appeng.tile.AEBaseTile;
-import appeng.tile.networking.CableBusTESR;
-import appeng.tile.networking.TileCableBus;
-import appeng.tile.networking.TileCableBusTESR;
-import appeng.util.Platform;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -82,15 +63,35 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-
+import appeng.api.parts.IFacadeContainer;
+import appeng.api.parts.IFacadePart;
+import appeng.api.parts.PartItemStack;
+import appeng.api.parts.SelectedPart;
+import appeng.api.util.AEColor;
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.client.UnlistedProperty;
+import appeng.client.render.cablebus.CableBusBakedModel;
+import appeng.client.render.cablebus.CableBusRenderState;
+import appeng.client.render.cablebus.FacadeRenderState;
+import appeng.core.AppEng;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PacketCableBusLandingParticle;
+import appeng.core.sync.packets.PacketClick;
+import appeng.helpers.AEGlassMaterial;
+import appeng.integration.abstraction.IAEFacade;
+import appeng.parts.ICableBusContainer;
+import appeng.parts.NullCableBusContainer;
+import appeng.tile.AEBaseTile;
+import appeng.tile.networking.CableBusTESR;
+import appeng.tile.networking.TileCableBus;
+import appeng.tile.networking.TileCableBusTESR;
+import appeng.util.Platform;
 
 public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
 
-    public static final UnlistedProperty<CableBusRenderState> RENDER_STATE_PROPERTY = new UnlistedProperty<>("cable_bus_render_state", CableBusRenderState.class);
+    public static final UnlistedProperty<CableBusRenderState> RENDER_STATE_PROPERTY = new UnlistedProperty<>(
+            "cable_bus_render_state", CableBusRenderState.class);
 
     private static final ICableBusContainer NULL_CABLE_BUS = new NullCableBusContainer();
 
@@ -112,7 +113,7 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[]{RENDER_STATE_PROPERTY});
+        return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { RENDER_STATE_PROPERTY });
     }
 
     @Override
@@ -156,7 +157,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     }
 
     @Override
-    public int getStrongPower(final IBlockState state, final IBlockAccess w, final BlockPos pos, final EnumFacing side) {
+    public int getStrongPower(final IBlockState state, final IBlockAccess w, final BlockPos pos,
+            final EnumFacing side) {
         return this.cb(w, pos).isProvidingStrongPower(side.getOpposite()); // TODO:
         // IS
         // OPPOSITE!?
@@ -171,12 +173,14 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     }
 
     @Override
-    public boolean isLadder(final IBlockState state, final IBlockAccess world, final BlockPos pos, final EntityLivingBase entity) {
+    public boolean isLadder(final IBlockState state, final IBlockAccess world, final BlockPos pos,
+            final EntityLivingBase entity) {
         return this.cb(world, pos).isLadder(entity);
     }
 
     @Override
-    public boolean isSideSolid(final IBlockState state, final IBlockAccess w, final BlockPos pos, final EnumFacing side) {
+    public boolean isSideSolid(final IBlockState state, final IBlockAccess w, final BlockPos pos,
+            final EnumFacing side) {
         return this.cb(w, pos).isSolidOnSide(side);
     }
 
@@ -186,7 +190,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     }
 
     @Override
-    public boolean removedByPlayer(final IBlockState state, final World world, final BlockPos pos, final EntityPlayer player, final boolean willHarvest) {
+    public boolean removedByPlayer(final IBlockState state, final World world, final BlockPos pos,
+            final EntityPlayer player, final boolean willHarvest) {
         if (player.capabilities.isCreativeMode) {
             final AEBaseTile tile = this.getTileEntity(world, pos);
             if (tile != null) {
@@ -198,7 +203,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     }
 
     @Override
-    public boolean canConnectRedstone(final IBlockState state, final IBlockAccess w, final BlockPos pos, EnumFacing side) {
+    public boolean canConnectRedstone(final IBlockState state, final IBlockAccess w, final BlockPos pos,
+            EnumFacing side) {
         if (side == null) {
             side = EnumFacing.UP;
         }
@@ -207,7 +213,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     }
 
     @Override
-    public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+    public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world,
+            final BlockPos pos, final EntityPlayer player) {
         final Vec3d v3 = target.hitVec.subtract(pos.getX(), pos.getY(), pos.getZ());
         final SelectedPart sp = this.cb(world, pos).selectPart(v3);
 
@@ -222,7 +229,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(final IBlockState state, final World world, final RayTraceResult target, final ParticleManager effectRenderer) {
+    public boolean addHitEffects(final IBlockState state, final World world, final RayTraceResult target,
+            final ParticleManager effectRenderer) {
 
         // Half the particle rate. Since we're spawning concentrated on a specific spot,
         // our particle effect otherwise looks too strong
@@ -233,7 +241,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
         ICableBusContainer cb = this.cb(world, target.getBlockPos());
 
         // Our built-in model has the actual baked sprites we need
-        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(this.getDefaultState());
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher()
+                .getModelForState(this.getDefaultState());
 
         // We cannot add the effect if we don't have the model
         if (!(model instanceof CableBusBakedModel)) {
@@ -251,7 +260,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
             double y = target.hitVec.y;
             double z = target.hitVec.z;
 
-            Particle fx = new DestroyFX(world, x, y, z, 0.0D, 0.0D, 0.0D, state).setBlockPos(target.getBlockPos()).multipleParticleScaleBy(0.8F);
+            Particle fx = new DestroyFX(world, x, y, z, 0.0D, 0.0D, 0.0D, state).setBlockPos(target.getBlockPos())
+                    .multipleParticleScaleBy(0.8F);
             fx.setParticleTexture(texture);
             effectRenderer.addEffect(fx);
         }
@@ -265,7 +275,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
         ICableBusContainer cb = this.cb(world, pos);
 
         // Our built-in model has the actual baked sprites we need
-        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(this.getDefaultState());
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher()
+                .getModelForState(this.getDefaultState());
 
         // We cannot add the effect if we dont have the model
         if (!(model instanceof CableBusBakedModel)) {
@@ -289,8 +300,10 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
                         final double d0 = pos.getX() + (j + 0.5D) / 4.0D;
                         final double d1 = pos.getY() + (k + 0.5D) / 4.0D;
                         final double d2 = pos.getZ() + (l + 0.5D) / 4.0D;
-                        final ParticleDigging particle = new DestroyFX(world, d0, d1, d2, d0 - pos.getX() - 0.5D, d1 - pos
-                                .getY() - 0.5D, d2 - pos.getZ() - 0.5D, this.getDefaultState()).setBlockPos(pos);
+                        final ParticleDigging particle = new DestroyFX(world, d0, d1, d2, d0 - pos.getX() - 0.5D,
+                                d1 - pos
+                                        .getY() - 0.5D,
+                                d2 - pos.getZ() - 0.5D, this.getDefaultState()).setBlockPos(pos);
 
                         particle.setParticleTexture(texture);
                         effectRenderer.addEffect(particle);
@@ -313,7 +326,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     @SideOnly(Side.CLIENT)
     private void addRunningParticle(World world, BlockPos pos, Entity entity) {
         final ICableBusContainer cb = this.cb(world, pos);
-        final IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(this.getDefaultState());
+        final IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher()
+                .getModelForState(this.getDefaultState());
 
         if (!(model instanceof CableBusBakedModel cableBusModel)) {
             return;
@@ -326,29 +340,35 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
             final double d1 = entity.getEntityBoundingBox().minY + 0.1f;
             final double d2 = entity.posZ + (world.rand.nextFloat() - 0.5f) * entity.width;
 
-            final ParticleDigging particle = new DestroyFX(world, d0, d1, d2, -entity.motionX * 4.0f, 1.5f, -entity.motionZ * 4.0f, this.getDefaultState()).setBlockPos(pos);
+            final ParticleDigging particle = new DestroyFX(world, d0, d1, d2, -entity.motionX * 4.0f, 1.5f,
+                    -entity.motionZ * 4.0f, this.getDefaultState()).setBlockPos(pos);
             particle.setParticleTexture(texture);
             Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         }
     }
 
     @Override
-    public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
+    public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState iblockstate,
+            EntityLivingBase entity, int numberOfParticles) {
         // for reasons only notch can explain, this method is only called on the server, so we have to sync
         // a packet to all tracking players for landing particle effects
         if (!world.isRemote) {
-            final PacketCableBusLandingParticle packet = new PacketCableBusLandingParticle(pos, entity, numberOfParticles);
-            final NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32);
+            final PacketCableBusLandingParticle packet = new PacketCableBusLandingParticle(pos, entity,
+                    numberOfParticles);
+            final NetworkRegistry.TargetPoint point = new NetworkRegistry.TargetPoint(world.provider.getDimension(),
+                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32);
             NetworkHandler.instance().sendToAllTracking(packet, point);
         }
         return true;
     }
 
     @SideOnly(Side.CLIENT)
-    public void addLandingParticle(BlockPos pos, double entityX, double entityY, double entityZ, int numberOfParticles) {
+    public void addLandingParticle(BlockPos pos, double entityX, double entityY, double entityZ,
+            int numberOfParticles) {
         final World world = Minecraft.getMinecraft().world;
         final ICableBusContainer cb = this.cb(world, pos);
-        final IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(this.getDefaultState());
+        final IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher()
+                .getModelForState(this.getDefaultState());
 
         if (!(model instanceof CableBusBakedModel cableBusModel)) {
             return;
@@ -367,7 +387,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
                     final double d1 = world.rand.nextGaussian() * speed;
                     final double d2 = world.rand.nextGaussian() * speed;
 
-                    final ParticleDigging particle = new DestroyFX(world, entityX, entityY, entityZ, d0, d1, d2, this.getDefaultState()).setBlockPos(pos);
+                    final ParticleDigging particle = new DestroyFX(world, entityX, entityY, entityZ, d0, d1, d2,
+                            this.getDefaultState()).setBlockPos(pos);
                     particle.setParticleTexture(texture);
                     Minecraft.getMinecraft().effectRenderer.addEffect(particle);
                 }
@@ -426,7 +447,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
                 if (this.cb(worldIn, pos).clicked(playerIn, EnumHand.MAIN_HAND, hitVec)) {
                     NetworkHandler.instance()
                             .sendToServer(
-                                    new PacketClick(pos, rtr.sideHit, (float) hitVec.x, (float) hitVec.y, (float) hitVec.z, EnumHand.MAIN_HAND, true));
+                                    new PacketClick(pos, rtr.sideHit, (float) hitVec.x, (float) hitVec.y,
+                                            (float) hitVec.z, EnumHand.MAIN_HAND, true));
                 }
             }
         }
@@ -437,16 +459,20 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         return this.cb(w, pos).activate(player, hand, new Vec3d(hitX, hitY, hitZ));
     }
 
     @Override
-    public boolean recolorBlock(final World world, final BlockPos pos, final EnumFacing side, final EnumDyeColor color) {
+    public boolean recolorBlock(final World world, final BlockPos pos, final EnumFacing side,
+            final EnumDyeColor color) {
         return this.recolorBlock(world, pos, side, color, null);
     }
 
-    public boolean recolorBlock(final World world, final BlockPos pos, final EnumFacing side, final EnumDyeColor color, final EntityPlayer who) {
+    public boolean recolorBlock(final World world, final BlockPos pos, final EnumFacing side, final EnumDyeColor color,
+            final EntityPlayer who) {
         try {
             return this.cb(world, pos).recolourBlock(side, AEColor.values()[color.ordinal()], who);
         } catch (final Throwable ignored) {
@@ -472,7 +498,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
 
     @SideOnly(Side.CLIENT)
     private static void setupTesr() {
-        GameRegistry.registerTileEntity(TileCableBusTESR.class, AppEng.MOD_ID.toLowerCase() + ":" + "ClientOnly_TESR_CableBus");
+        GameRegistry.registerTileEntity(TileCableBusTESR.class,
+                AppEng.MOD_ID.toLowerCase() + ":" + "ClientOnly_TESR_CableBus");
         ClientRegistry.bindTileEntitySpecialRenderer(TileCableBusTESR.class, new CableBusTESR());
     }
 
@@ -522,7 +549,8 @@ public class BlockCableBus extends AEBaseTileBlock implements IAEFacade {
     // Helper to get access to the protected constructor
     @SideOnly(Side.CLIENT)
     private static class DestroyFX extends ParticleDigging {
-        DestroyFX(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, IBlockState state) {
+        DestroyFX(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn,
+                double zSpeedIn, IBlockState state) {
             super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
         }
     }

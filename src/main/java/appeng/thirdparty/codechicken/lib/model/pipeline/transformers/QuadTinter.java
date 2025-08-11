@@ -18,16 +18,14 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline.transformers;
 
+import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
 import appeng.thirdparty.codechicken.lib.model.Quad.Vertex;
 import appeng.thirdparty.codechicken.lib.model.pipeline.IPipelineElementFactory;
 import appeng.thirdparty.codechicken.lib.model.pipeline.QuadTransformer;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-
 
 /**
- * This transformer tints quads..
- * Feed it the output of BlockColors.colorMultiplier.
+ * This transformer tints quads.. Feed it the output of BlockColors.colorMultiplier.
  *
  * @author covers1624
  */

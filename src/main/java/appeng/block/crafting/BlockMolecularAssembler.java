@@ -18,12 +18,6 @@
 
 package appeng.block.crafting;
 
-
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.crafting.TileMolecularAssembler;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -38,8 +32,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.crafting.TileMolecularAssembler;
+import appeng.util.Platform;
 
 public class BlockMolecularAssembler extends AEBaseTileBlock {
 
@@ -54,7 +51,7 @@ public class BlockMolecularAssembler extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{POWERED};
+        return new IProperty[] { POWERED };
     }
 
     @Override
@@ -69,8 +66,8 @@ public class BlockMolecularAssembler extends AEBaseTileBlock {
     }
 
     /**
-     * NOTE: This is only used to determine how to render an item being held in hand.
-     * For determining block rendering, the method below is used (canRenderInLayer).
+     * NOTE: This is only used to determine how to render an item being held in hand. For determining block rendering,
+     * the method below is used (canRenderInLayer).
      */
     @SideOnly(Side.CLIENT)
     @Override
@@ -90,7 +87,8 @@ public class BlockMolecularAssembler extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onBlockActivated(final World w, final BlockPos pos, final IBlockState state, final EntityPlayer p, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(final World w, final BlockPos pos, final IBlockState state, final EntityPlayer p,
+            final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
         final TileMolecularAssembler tg = this.getTileEntity(w, pos);
         if (tg != null && !p.isSneaking()) {
             Platform.openGUI(p, tg, AEPartLocation.fromFacing(side), GuiBridge.GUI_MAC);

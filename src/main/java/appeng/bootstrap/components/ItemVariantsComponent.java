@@ -18,14 +18,13 @@
 
 package appeng.bootstrap.components;
 
+import java.util.Collection;
 
-import appeng.bootstrap.IModelRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.Collection;
-
+import appeng.bootstrap.IModelRegistry;
 
 public class ItemVariantsComponent implements IModelRegistrationComponent {
 

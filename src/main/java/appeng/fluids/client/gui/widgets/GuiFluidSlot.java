@@ -1,13 +1,7 @@
 package appeng.fluids.client.gui.widgets;
 
+import java.util.Collections;
 
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.client.gui.widgets.GuiCustomSlot;
-import appeng.container.slot.IJEITargetSlot;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.PacketFluidSlot;
-import appeng.fluids.util.AEFluidStack;
-import appeng.fluids.util.IAEFluidTank;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,8 +13,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import java.util.Collections;
-
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.client.gui.widgets.GuiCustomSlot;
+import appeng.container.slot.IJEITargetSlot;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PacketFluidSlot;
+import appeng.fluids.util.AEFluidStack;
+import appeng.fluids.util.IAEFluidTank;
 
 public class GuiFluidSlot extends GuiCustomSlot implements IJEITargetSlot {
     private final IAEFluidTank fluids;
@@ -56,7 +55,8 @@ public class GuiFluidSlot extends GuiCustomSlot implements IJEITargetSlot {
     @Override
     public boolean canClick(final EntityPlayer player) {
         final ItemStack mouseStack = player.inventory.getItemStack();
-        return mouseStack.isEmpty() || mouseStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+        return mouseStack.isEmpty()
+                || mouseStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
     }
 
     @Override
@@ -91,7 +91,8 @@ public class GuiFluidSlot extends GuiCustomSlot implements IJEITargetSlot {
 
     public void setFluidStack(final IAEFluidStack stack) {
         this.fluids.setFluidInSlot(this.slot, stack);
-        NetworkHandler.instance().sendToServer(new PacketFluidSlot(Collections.singletonMap(this.getId(), this.getFluidStack())));
+        NetworkHandler.instance()
+                .sendToServer(new PacketFluidSlot(Collections.singletonMap(this.getId(), this.getFluidStack())));
     }
 
     @Override

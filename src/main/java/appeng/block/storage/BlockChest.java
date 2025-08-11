@@ -18,13 +18,8 @@
 
 package appeng.block.storage;
 
+import javax.annotation.Nullable;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.localization.PlayerMessages;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.storage.TileChest;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -38,13 +33,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.localization.PlayerMessages;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.storage.TileChest;
+import appeng.util.Platform;
 
 public class BlockChest extends AEBaseTileBlock {
 
-    private final static PropertyEnum<DriveSlotState> SLOT_STATE = PropertyEnum.create("slot_state", DriveSlotState.class);
+    private final static PropertyEnum<DriveSlotState> SLOT_STATE = PropertyEnum.create("slot_state",
+            DriveSlotState.class);
 
     public BlockChest() {
         super(Material.IRON);
@@ -53,7 +52,7 @@ public class BlockChest extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{SLOT_STATE};
+        return new IProperty[] { SLOT_STATE };
     }
 
     @Override
@@ -82,7 +81,9 @@ public class BlockChest extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         final TileChest tg = this.getTileEntity(w, pos);
         if (tg != null && !p.isSneaking()) {
             if (Platform.isClient()) {

@@ -18,6 +18,12 @@
 
 package appeng.tile.misc;
 
+import java.io.IOException;
+import java.util.EnumSet;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.util.EnumFacing;
 
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.implementations.tiles.ICrystalGrowthAccelerator;
@@ -28,14 +34,9 @@ import appeng.api.util.AEPartLocation;
 import appeng.me.GridAccessException;
 import appeng.tile.grid.AENetworkTile;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.util.EnumFacing;
 
-import java.io.IOException;
-import java.util.EnumSet;
-
-
-public class TileQuartzGrowthAccelerator extends AENetworkTile implements IPowerChannelState, ICrystalGrowthAccelerator {
+public class TileQuartzGrowthAccelerator extends AENetworkTile
+        implements IPowerChannelState, ICrystalGrowthAccelerator {
 
     private boolean hasPower = false;
 

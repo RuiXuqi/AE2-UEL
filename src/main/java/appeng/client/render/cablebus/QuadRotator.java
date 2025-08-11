@@ -18,20 +18,20 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.client.render.FacingToRotation;
-import appeng.core.AELog;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Point3f;
+import javax.vecmath.Vector3f;
+
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.util.EnumFacing;
 
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Point3f;
-import javax.vecmath.Vector3f;
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.client.render.FacingToRotation;
+import appeng.core.AELog;
 
 /**
  * Assuming a default-orientation of forward=NORTH and up=UP, this class rotates a given list of quads to the desired
@@ -87,7 +87,8 @@ public class QuadRotator {
 
         for (int i = 0; i < 4; i++) {
             Point3f pos = new Point3f(Float.intBitsToFloat(newData[i * stride + posIdx]) - 0.5f, Float
-                    .intBitsToFloat(newData[i * stride + posIdx + 1]) - 0.5f, Float.intBitsToFloat(newData[i * stride + posIdx + 2]) - 0.5f);
+                    .intBitsToFloat(newData[i * stride + posIdx + 1]) - 0.5f,
+                    Float.intBitsToFloat(newData[i * stride + posIdx + 2]) - 0.5f);
 
             // Rotate stuff around
             mat.transform(pos);
@@ -101,7 +102,8 @@ public class QuadRotator {
             if (normalIdx != -1) {
                 if (normalType == VertexFormatElement.EnumType.FLOAT) {
                     Vector3f normal = new Vector3f(Float.intBitsToFloat(newData[i * stride + normalIdx]), Float
-                            .intBitsToFloat(newData[i * stride + normalIdx + 1]), Float.intBitsToFloat(newData[i * stride + normalIdx + 2]));
+                            .intBitsToFloat(newData[i * stride + normalIdx + 1]),
+                            Float.intBitsToFloat(newData[i * stride + normalIdx + 2]));
 
                     // Rotate stuff around
                     mat.transform(normal);
@@ -112,8 +114,9 @@ public class QuadRotator {
                     newData[i * stride + normalIdx + 2] = Float.floatToIntBits(normal.getZ());
                 } else if (normalType == VertexFormatElement.EnumType.BYTE) {
                     int idx = i * stride * 4 + normalIdx;
-                    Vector3f normal = new Vector3f(getByte(newData, idx) / 127.0f, getByte(newData, idx + 1) / 127.0f, getByte(newData,
-                            idx + 2) / 127.0f);
+                    Vector3f normal = new Vector3f(getByte(newData, idx) / 127.0f, getByte(newData, idx + 1) / 127.0f,
+                            getByte(newData,
+                                    idx + 2) / 127.0f);
 
                     // Rotate stuff around
                     mat.transform(normal);
@@ -129,7 +132,8 @@ public class QuadRotator {
         }
 
         EnumFacing newFace = rotation.rotate(quad.getFace());
-        return new BakedQuad(newData, quad.getTintIndex(), newFace, quad.getSprite(), quad.shouldApplyDiffuseLighting(), quad.getFormat());
+        return new BakedQuad(newData, quad.getTintIndex(), newFace, quad.getSprite(), quad.shouldApplyDiffuseLighting(),
+                quad.getFormat());
     }
 
     private static int getByte(int[] data, int offset) {

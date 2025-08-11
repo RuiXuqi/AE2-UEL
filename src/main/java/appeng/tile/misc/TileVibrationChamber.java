@@ -18,6 +18,18 @@
 
 package appeng.tile.misc;
 
+import java.io.IOException;
+
+import javax.annotation.Nonnull;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.IGridNode;
@@ -36,17 +48,6 @@ import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.IAEItemFilter;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-
 
 public class TileVibrationChamber extends AENetworkInvTile implements IGridTickable {
     public static final double POWER_PER_TICK = 5;
@@ -117,7 +118,8 @@ public class TileVibrationChamber extends AENetworkInvTile implements IGridTicka
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         if (this.getBurnTime() <= 0) {
             if (this.canEatFuel()) {
                 try {
@@ -149,7 +151,8 @@ public class TileVibrationChamber extends AENetworkInvTile implements IGridTicka
             this.eatFuel();
         }
 
-        return new TickingRequest(TickRates.VibrationChamber.getMin(), TickRates.VibrationChamber.getMax(), this.getBurnTime() <= 0, false);
+        return new TickingRequest(TickRates.VibrationChamber.getMin(), TickRates.VibrationChamber.getMax(),
+                this.getBurnTime() <= 0, false);
     }
 
     @Override

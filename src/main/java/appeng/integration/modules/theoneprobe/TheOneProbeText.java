@@ -18,11 +18,9 @@
 
 package appeng.integration.modules.theoneprobe;
 
-
-import net.minecraft.util.text.translation.I18n;
-
 import java.util.Locale;
 
+import net.minecraft.util.text.translation.I18n;
 
 public enum TheOneProbeText {
     CRAFTING,

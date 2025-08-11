@@ -18,11 +18,10 @@
 
 package appeng.worldgen.meteorite;
 
+import net.minecraft.init.Blocks;
 
 import appeng.api.definitions.IBlockDefinition;
 import appeng.util.Platform;
-import net.minecraft.init.Blocks;
-
 
 public class Fallout {
     private final MeteoriteBlockPutter putter;

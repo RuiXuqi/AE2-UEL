@@ -18,6 +18,9 @@
 
 package appeng.me.storage;
 
+import java.util.Collections;
+
+import com.mojang.authlib.GameProfile;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -34,14 +37,11 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.MEMonitorHandler;
 import appeng.me.helpers.MachineSource;
 import appeng.tile.misc.TileSecurityStation;
-import com.mojang.authlib.GameProfile;
-
-import java.util.Collections;
-
 
 public class SecurityStationInventory implements IMEInventoryHandler<IAEItemStack> {
 
-    private final IItemList<IAEItemStack> storedItems = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> storedItems = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
     private final TileSecurityStation securityTile;
     private final MachineSource src;
 
@@ -60,7 +60,9 @@ public class SecurityStationInventory implements IMEInventoryHandler<IAEItemStac
                     }
 
                     if (securityTile.getProxy().isActive()) {
-                        ((MEMonitorHandler<IAEItemStack>) securityTile.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))).postChangesToListeners(Collections.singletonList(input.copy()), this.src);
+                        ((MEMonitorHandler<IAEItemStack>) securityTile
+                                .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)))
+                                .postChangesToListeners(Collections.singletonList(input.copy()), this.src);
                     }
 
                     this.getStoredItems().add(input);
@@ -75,7 +77,8 @@ public class SecurityStationInventory implements IMEInventoryHandler<IAEItemStac
     private boolean hasPermission(final IActionSource src) {
         if (src.player().isPresent()) {
             try {
-                return this.securityTile.getProxy().getSecurity().hasPermission(src.player().get(), SecurityPermissions.SECURITY);
+                return this.securityTile.getProxy().getSecurity().hasPermission(src.player().get(),
+                        SecurityPermissions.SECURITY);
             } catch (final GridAccessException e) {
                 // :P
             }
@@ -95,7 +98,11 @@ public class SecurityStationInventory implements IMEInventoryHandler<IAEItemStac
                 }
 
                 if (securityTile.getProxy().isActive()) {
-                    ((MEMonitorHandler<IAEItemStack>) securityTile.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))).postChangesToListeners(Collections.singletonList(target.copy().setStackSize(-target.getStackSize())), this.src);
+                    ((MEMonitorHandler<IAEItemStack>) securityTile
+                            .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)))
+                            .postChangesToListeners(
+                                    Collections.singletonList(target.copy().setStackSize(-target.getStackSize())),
+                                    this.src);
                 }
 
                 target.setStackSize(0);

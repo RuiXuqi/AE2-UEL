@@ -18,6 +18,12 @@
 
 package appeng.core.features.registries;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.features.ILocatable;
@@ -25,17 +31,7 @@ import appeng.api.features.IWirelessTermHandler;
 import appeng.api.features.IWirelessTermRegistry;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.GuiBridge;
-import appeng.helpers.WirelessTerminalGuiObject;
 import appeng.util.Platform;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public final class WirelessRegistry implements IWirelessTermRegistry {
     private final List<IWirelessTermHandler> handlers;

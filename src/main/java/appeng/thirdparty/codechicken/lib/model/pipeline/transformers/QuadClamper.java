@@ -18,17 +18,16 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline.transformers;
 
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
 import appeng.thirdparty.codechicken.lib.model.Quad.Vertex;
 import appeng.thirdparty.codechicken.lib.model.pipeline.IPipelineElementFactory;
 import appeng.thirdparty.codechicken.lib.model.pipeline.QuadTransformer;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-
 
 /**
- * This transformer simply clamps the vertices inside the provided box.
- * You probably want to Re-Interpolate the UV's, Color, and Lmap, see {@link QuadReInterpolator}
+ * This transformer simply clamps the vertices inside the provided box. You probably want to Re-Interpolate the UV's,
+ * Color, and Lmap, see {@link QuadReInterpolator}
  *
  * @author covers1624
  */

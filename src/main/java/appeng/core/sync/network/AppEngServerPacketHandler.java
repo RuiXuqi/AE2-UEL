@@ -18,25 +18,25 @@
 
 package appeng.core.sync.network;
 
+import java.lang.reflect.InvocationTargetException;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.PacketThreadUtil;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import appeng.core.AELog;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.AppEngPacketHandlerBase;
 import appeng.core.sync.PacketCallState;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.PacketThreadUtil;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-
-import java.lang.reflect.InvocationTargetException;
-
 
 public final class AppEngServerPacketHandler extends AppEngPacketHandlerBase implements IPacketHandler {
 
     @Override
-    public void onPacketData(final INetworkInfo manager, final INetHandler handler, final FMLProxyPacket packet, final EntityPlayer player) {
+    public void onPacketData(final INetworkInfo manager, final INetHandler handler, final FMLProxyPacket packet,
+            final EntityPlayer player) {
         final ByteBuf stream = packet.payload();
 
         try {

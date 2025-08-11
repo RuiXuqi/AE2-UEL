@@ -18,15 +18,14 @@
 
 package appeng.debug;
 
+import java.util.EnumSet;
+
+import net.minecraft.util.EnumFacing;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AEPartLocation;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.tile.grid.AENetworkTile;
-import net.minecraft.util.EnumFacing;
-
-import java.util.EnumSet;
-
 
 public class TilePhantomNode extends AENetworkTile {
 

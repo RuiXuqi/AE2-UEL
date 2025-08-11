@@ -18,8 +18,11 @@
 
 package appeng.parts.networking;
 
+import static appeng.api.networking.GridFlags.DENSE_CAPACITY;
 
-import appeng.api.networking.GridFlags;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -31,16 +34,13 @@ import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.helpers.Reflected;
 import appeng.util.Platform;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-
 
 public abstract class PartDenseCable extends PartCable {
     @Reflected
     public PartDenseCable(final ItemStack is) {
         super(is);
 
-        this.getProxy().setFlags(GridFlags.DENSE_CAPACITY, GridFlags.PREFERRED);
+        this.getProxy().setFlags(DENSE_CAPACITY);
     }
 
     @Override

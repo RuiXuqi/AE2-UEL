@@ -18,6 +18,13 @@
 
 package appeng.worldgen;
 
+import java.util.Random;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 import appeng.api.features.IWorldGen.WorldGenType;
 import appeng.core.AEConfig;
@@ -27,24 +34,17 @@ import appeng.hooks.TickHandler;
 import appeng.util.IWorldCallable;
 import appeng.util.Platform;
 import appeng.worldgen.meteorite.ChunkOnly;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.fml.common.IWorldGenerator;
-
-import java.util.Random;
-
 
 public final class MeteoriteWorldGen implements IWorldGenerator {
     @Override
-    public void generate(final Random r, final int chunkX, final int chunkZ, final World w, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
+    public void generate(final Random r, final int chunkX, final int chunkZ, final World w,
+            final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
         if (WorldGenRegistry.INSTANCE.isWorldGenEnabled(WorldGenType.METEORITES, w)) {
             final int x = r.nextInt(16) + (chunkX << 4);
             final int z = r.nextInt(16) + (chunkZ << 4);
             final int depth = AEConfig.instance().getMeteoriteMaximumSpawnHeight() + r.nextInt(20);
 
-            TickHandler.INSTANCE.addCallable(w, new MeteoriteSpawn(x, depth, z));
+            TickHandler.instance().addCallable(w, new MeteoriteSpawn(x, depth, z));
         } else {
             WorldData.instance().compassData().service().updateArea(w, chunkX, chunkZ);
         }
@@ -116,7 +116,8 @@ public final class MeteoriteWorldGen implements IWorldGenerator {
                 minSqDist = Math.min(minSqDist, mp.getSqDistance(this.x, this.z));
             }
 
-            final boolean isCluster = (minSqDist < 30 * 30) && Platform.getRandomFloat() < AEConfig.instance().getMeteoriteClusterChance();
+            final boolean isCluster = (minSqDist < 30 * 30)
+                    && Platform.getRandomFloat() < AEConfig.instance().getMeteoriteClusterChance();
 
             if (minSqDist > AEConfig.instance().getMinMeteoriteDistanceSq() || isCluster) {
                 MeteoriteWorldGen.this.tryMeteorite(world, this.depth, this.x, this.z);

@@ -1,3 +1,4 @@
+
 /*
  * This file is part of Applied Energistics 2.
  * Copyright (c) 2013 - 2015, AlgorithmX2, All rights reserved.
@@ -18,9 +19,27 @@
 
 package appeng.me.helpers;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Objects;
+
+import javax.annotation.Nonnull;
+
+import com.mojang.authlib.GameProfile;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 import appeng.api.AEApi;
-import appeng.api.networking.*;
+import appeng.api.networking.GridFlags;
+import appeng.api.networking.GridNotification;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridBlock;
+import appeng.api.networking.IGridCache;
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.energy.IEnergyGrid;
 import appeng.api.networking.events.MENetworkPowerIdleChange;
@@ -38,41 +57,32 @@ import appeng.me.cache.P2PCache;
 import appeng.parts.networking.PartCable;
 import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
-import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-
-import java.util.Collections;
-import java.util.EnumSet;
-
 
 public class AENetworkProxy implements IGridBlock {
 
     private final IGridProxyable gp;
-    private final boolean worldNode;
+    private final boolean isWorldAccessible;
     private final String nbtName; // name
     private AEColor myColor = AEColor.TRANSPARENT;
     private NBTTagCompound data = null; // input
-    private ItemStack myRepInstance = ItemStack.EMPTY;
+    private ItemStack myRepInstance;
     private boolean isReady = false;
     private IGridNode node = null;
-    private EnumSet<EnumFacing> validSides;
+    private EnumSet<EnumFacing> validSides = EnumSet.allOf(EnumFacing.class);
     private EnumSet<GridFlags> flags = EnumSet.noneOf(GridFlags.class);
     private double idleDraw = 1.0;
     private EntityPlayer owner;
 
-    public AENetworkProxy(final IGridProxyable te, final String nbtName, final ItemStack visual, final boolean inWorld) {
-        this.gp = te;
-        this.nbtName = nbtName;
-        this.worldNode = inWorld;
-        this.myRepInstance = visual;
-        this.validSides = EnumSet.allOf(EnumFacing.class);
+    public AENetworkProxy(final IGridProxyable te, final String nbtName, final ItemStack visual,
+            final boolean inWorld) {
+        this.gp = Objects.requireNonNull(te);
+        this.nbtName = Objects.requireNonNull(nbtName);
+        this.isWorldAccessible = inWorld;
+        this.myRepInstance = Objects.requireNonNull(visual);
     }
 
     public void setVisualRepresentation(final ItemStack is) {
-        this.myRepInstance = is;
+        this.myRepInstance = Objects.requireNonNull(is);
     }
 
     public void writeToNBT(final NBTTagCompound tag) {
@@ -90,21 +100,37 @@ public class AENetworkProxy implements IGridBlock {
 
     public void validate() {
         if (this.gp instanceof AEBaseTile) {
-            TickHandler.INSTANCE.addInit((AEBaseTile) this.gp);
+            TickHandler.instance().addInit((AEBaseTile) this.gp);
         }
     }
 
-    public void onChunkUnload() {
+    public void onChunkUnloaded() {
         this.isReady = false;
-        this.invalidate();
+        this.remove();
     }
 
-    public void invalidate() {
+    public void remove() {
         this.isReady = false;
         if (this.node != null) {
             this.node.destroy();
             this.node = null;
         }
+    }
+
+    /**
+     * @deprecated Use {@link #onChunkUnloaded()}
+     */
+    @Deprecated
+    public void onChunkUnload() {
+        this.onChunkUnloaded();
+    }
+
+    /**
+     * @deprecated Use {@link #remove()}
+     */
+    @Deprecated
+    public void invalidate() {
+        this.remove();
     }
 
     public void onReady() {
@@ -138,112 +164,11 @@ public class AENetworkProxy implements IGridBlock {
             this.data = null;
         } else if (this.node != null && this.owner != null) {
             final GameProfile profile = this.owner.getGameProfile();
-            final int playerID = WorldData.instance().playerData().getPlayerID(profile);
+            final int playerID = WorldData.instance().playerData().getMePlayerId(profile);
 
             this.node.setPlayerID(playerID);
             this.owner = null;
         }
-    }
-
-    public IPathingGrid getPath() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-        final IPathingGrid pg = grid.getCache(IPathingGrid.class);
-        if (pg == null) {
-            throw new GridAccessException();
-        }
-        return pg;
-    }
-
-    /**
-     * short cut!
-     *
-     * @return grid of node
-     * @throws GridAccessException of node or grid is null
-     */
-    public IGrid getGrid() throws GridAccessException {
-        if (this.node == null) {
-            throw new GridAccessException();
-        }
-        final IGrid grid = this.node.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-        return grid;
-    }
-
-    public ITickManager getTick() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-        final ITickManager pg = grid.getCache(ITickManager.class);
-        if (pg == null) {
-            throw new GridAccessException();
-        }
-        return pg;
-    }
-
-    public IStorageGrid getStorage() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-
-        final IStorageGrid pg = grid.getCache(IStorageGrid.class);
-
-        if (pg == null) {
-            throw new GridAccessException();
-        }
-
-        return pg;
-    }
-
-    public P2PCache getP2P() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-
-        final P2PCache pg = grid.getCache(P2PCache.class);
-
-        if (pg == null) {
-            throw new GridAccessException();
-        }
-
-        return pg;
-    }
-
-    public ISecurityGrid getSecurity() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-
-        final ISecurityGrid sg = grid.getCache(ISecurityGrid.class);
-
-        if (sg == null) {
-            throw new GridAccessException();
-        }
-
-        return sg;
-    }
-
-    public ICraftingGrid getCrafting() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-
-        final ICraftingGrid sg = grid.getCache(ICraftingGrid.class);
-
-        if (sg == null) {
-            throw new GridAccessException();
-        }
-
-        return sg;
     }
 
     @Override
@@ -252,13 +177,13 @@ public class AENetworkProxy implements IGridBlock {
     }
 
     @Override
-    public EnumSet<GridFlags> getFlags() {
-        return this.flags;
+    public boolean hasFlag(final GridFlags flag) {
+        return flags.contains(flag);
     }
 
     @Override
     public boolean isWorldAccessible() {
-        return this.worldNode;
+        return this.isWorldAccessible;
     }
 
     @Override
@@ -273,14 +198,16 @@ public class AENetworkProxy implements IGridBlock {
 
     @Override
     public void onGridNotification(final GridNotification notification) {
+        if (notification == GridNotification.OWNER_CHANGED) {
+            if (gp != null && !gp.getClass().getName().contains("threng")) {
+                gp.saveChanges();
+            }
+            return;
+        }
+
         if (this.gp instanceof PartCable) {
             ((PartCable) this.gp).markForUpdate();
         }
-    }
-
-    @Override
-    public void setNetworkStatus(final IGrid grid, final int channelsInUse) {
-
     }
 
     @Override
@@ -344,18 +271,6 @@ public class AENetworkProxy implements IGridBlock {
         }
     }
 
-    public IEnergyGrid getEnergy() throws GridAccessException {
-        final IGrid grid = this.getGrid();
-        if (grid == null) {
-            throw new GridAccessException();
-        }
-        final IEnergyGrid eg = grid.getCache(IEnergyGrid.class);
-        if (eg == null) {
-            throw new GridAccessException();
-        }
-        return eg;
-    }
-
     public void setOwner(final EntityPlayer player) {
         this.owner = player;
     }
@@ -365,6 +280,64 @@ public class AENetworkProxy implements IGridBlock {
     }
 
     public void setColor(final AEColor myColor) {
-        this.myColor = myColor;
+        this.myColor = Objects.requireNonNull(myColor);
+    }
+
+    /**
+     * short cut!
+     *
+     * @return grid of node
+     * @throws GridAccessException of node or grid is null
+     */
+    @Nonnull
+    public IGrid getGrid() throws GridAccessException {
+        if (this.node == null) {
+            throw new GridAccessException();
+        }
+        final IGrid grid = this.node.getGrid();
+        if (grid == null) {
+            throw new GridAccessException();
+        }
+        return grid;
+    }
+
+    @Nonnull
+    public IPathingGrid getPath() throws GridAccessException {
+        return this.getGridCache(IPathingGrid.class);
+    }
+
+    @Nonnull
+    public ITickManager getTick() throws GridAccessException {
+        return this.getGridCache(ITickManager.class);
+    }
+
+    @Nonnull
+    public IStorageGrid getStorage() throws GridAccessException {
+        return this.getGridCache(IStorageGrid.class);
+    }
+
+    @Nonnull
+    public P2PCache getP2P() throws GridAccessException {
+        return this.getGridCache(P2PCache.class);
+    }
+
+    @Nonnull
+    public ISecurityGrid getSecurity() throws GridAccessException {
+        return this.getGridCache(ISecurityGrid.class);
+    }
+
+    @Nonnull
+    public ICraftingGrid getCrafting() throws GridAccessException {
+        return this.getGridCache(ICraftingGrid.class);
+    }
+
+    @Nonnull
+    public IEnergyGrid getEnergy() throws GridAccessException {
+        return this.getGridCache(IEnergyGrid.class);
+    }
+
+    @Nonnull
+    private <T extends IGridCache> T getGridCache(Class<T> clazz) throws GridAccessException {
+        return this.getGrid().getCache(clazz);
     }
 }

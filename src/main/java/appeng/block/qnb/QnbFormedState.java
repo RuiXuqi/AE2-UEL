@@ -1,10 +1,8 @@
 package appeng.block.qnb;
 
-
-import net.minecraft.util.EnumFacing;
-
 import java.util.Set;
 
+import net.minecraft.util.EnumFacing;
 
 public class QnbFormedState {
 

@@ -18,11 +18,10 @@
 
 package appeng.block.paint;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Random;
 
-import appeng.block.AEBaseTileBlock;
-import appeng.helpers.Splotch;
-import appeng.tile.misc.TilePaint;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
@@ -44,11 +43,10 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.helpers.Splotch;
+import appeng.tile.misc.TilePaint;
+import appeng.util.Platform;
 
 public class BlockPaint extends AEBaseTileBlock {
 
@@ -64,7 +62,7 @@ public class BlockPaint extends AEBaseTileBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[]{SPLOTCHES});
+        return new ExtendedBlockState(this, new IProperty[0], new IUnlistedProperty[] { SPLOTCHES });
     }
 
     @Override
@@ -117,7 +115,8 @@ public class BlockPaint extends AEBaseTileBlock {
     }
 
     @Override
-    public void dropBlockAsItemWithChance(final World worldIn, final BlockPos pos, final IBlockState state, final float chance, final int fortune) {
+    public void dropBlockAsItemWithChance(final World worldIn, final BlockPos pos, final IBlockState state,
+            final float chance, final int fortune) {
 
     }
 

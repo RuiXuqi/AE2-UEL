@@ -18,29 +18,27 @@
 
 package appeng.core.worlddata;
 
+import java.io.File;
+import java.util.concurrent.ThreadFactory;
 
-import appeng.core.AEConfig;
-import appeng.services.CompassService;
-import appeng.services.compass.CompassThreadFactory;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.ThreadFactory;
-
+import appeng.core.AEConfig;
+import appeng.services.CompassService;
+import appeng.services.compass.CompassThreadFactory;
 
 /**
  * Singleton access to anything related to world-based data.
  * <p>
  * Data will change depending which world is loaded. Will probably not affect SMP at all since only one world is loaded,
- * but SSP more, cause they play on
- * different worlds.
+ * but SSP more, cause they play on different worlds.
  *
  * @author thatsIch
  * @version rv3 - 02.11.2015
@@ -60,9 +58,6 @@ public final class WorldData implements IWorldData {
     private final IWorldCompassData compassData;
     private final IWorldSpawnData spawnData;
 
-    private final List<IOnWorldStartable> startables;
-    private final List<IOnWorldStoppable> stoppables;
-
     private final File ae2directory;
     private final File spawnDirectory;
     private final File compassDirectory;
@@ -80,8 +75,8 @@ public final class WorldData implements IWorldData {
         final File settingsFile = new File(this.ae2directory, SETTING_FILE_NAME);
         this.sharedConfig = new Configuration(settingsFile, AEConfig.VERSION);
 
-        final PlayerData playerData = new PlayerData(this.sharedConfig);
-        final StorageData storageData = new StorageData(this.sharedConfig);
+        final PlayerData playerData = new PlayerData();
+        final StorageData storageData = new StorageData();
 
         final ThreadFactory compassThreadFactory = new CompassThreadFactory();
         final CompassService compassService = new CompassService(this.compassDirectory, compassThreadFactory);
@@ -94,8 +89,6 @@ public final class WorldData implements IWorldData {
         this.compassData = compassData;
         this.spawnData = spawnData;
 
-        this.startables = Lists.newArrayList(playerData, storageData);
-        this.stoppables = Lists.newArrayList(playerData, storageData, compassData);
     }
 
     /**
@@ -118,7 +111,8 @@ public final class WorldData implements IWorldData {
     public static void onServerAboutToStart(MinecraftServer server) {
         File worldDirectory = DimensionManager.getCurrentSaveRootDirectory();
         if (worldDirectory == null) {
-            worldDirectory = server.getActiveAnvilConverter().getSaveLoader(server.getFolderName(), false).getWorldDirectory();
+            worldDirectory = server.getActiveAnvilConverter().getSaveLoader(server.getFolderName(), false)
+                    .getWorldDirectory();
         }
         final WorldData newInstance = new WorldData(worldDirectory);
 
@@ -142,25 +136,16 @@ public final class WorldData implements IWorldData {
             throw new IllegalStateException("Failed to create " + this.spawnDirectory.getAbsolutePath());
         }
 
-        for (final IOnWorldStartable startable : this.startables) {
-            startable.onWorldStart();
-        }
-
-        this.startables.clear();
     }
 
     @Override
     public void onServerStopping() {
-        for (final IOnWorldStoppable stoppable : this.stoppables) {
-            stoppable.onWorldStop();
-        }
+        compassData.service().kill();
     }
 
     @Override
     public void onServerStoppped() {
         Preconditions.checkNotNull(instance);
-
-        this.stoppables.clear();
         instance = null;
     }
 

@@ -18,9 +18,7 @@
 
 package appeng.me.energy;
 
-
 import appeng.api.networking.energy.IEnergyWatcher;
-
 
 public class EnergyThreshold implements Comparable<EnergyThreshold> {
 
@@ -91,6 +89,7 @@ public class EnergyThreshold implements Comparable<EnergyThreshold> {
 
         if (this.watcher == null) {
             return other.watcher == null;
-        } else return this.watcher.equals(other.watcher);
+        } else
+            return this.watcher.equals(other.watcher);
     }
 }

@@ -18,10 +18,8 @@
 
 package appeng.bootstrap;
 
-
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
-
 
 @FunctionalInterface
 public interface ICriterionTriggerRegistry {

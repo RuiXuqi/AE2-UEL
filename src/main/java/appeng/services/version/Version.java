@@ -18,7 +18,6 @@
 
 package appeng.services.version;
 
-
 /**
  * Stores version information, which are easily compared
  */
@@ -39,10 +38,9 @@ public interface Version {
     int build();
 
     /**
-     * A version is never if these criteria are met:
-     * if the current revision is higher than the compared revision OR
-     * if revision are equal and the current channel is higher than the compared channel (Stable > Beta > Alpha) OR
-     * if revision, channel are equal and the build is higher than the compared build
+     * A version is never if these criteria are met: if the current revision is higher than the compared revision OR if
+     * revision are equal and the current channel is higher than the compared channel (Stable > Beta > Alpha) OR if
+     * revision, channel are equal and the build is higher than the compared build
      *
      * @return true if criteria are met
      */

@@ -18,17 +18,16 @@
 
 package appeng.debug;
 
+import java.util.List;
 
-import appeng.block.AEBaseTileBlock;
-import appeng.core.AppEng;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
-import java.util.List;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.core.AppEng;
 
 public class BlockChunkloader extends AEBaseTileBlock implements LoadingCallback {
 

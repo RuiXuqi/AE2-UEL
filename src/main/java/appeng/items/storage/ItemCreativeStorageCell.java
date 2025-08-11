@@ -18,6 +18,14 @@
 
 package appeng.items.storage;
 
+import java.util.List;
+
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -27,15 +35,6 @@ import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.items.AEBaseItem;
 import appeng.items.contents.CellConfig;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.List;
-
 
 public class ItemCreativeStorageCell extends AEBaseItem implements ICellWorkbenchItem {
 
@@ -70,7 +69,8 @@ public class ItemCreativeStorageCell extends AEBaseItem implements ICellWorkbenc
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         final IMEInventoryHandler<?> inventory = AEApi.instance()
                 .registries()
                 .cell()

@@ -18,13 +18,12 @@
 
 package appeng.core.features.registries;
 
+import java.util.HashSet;
 
-import appeng.api.features.IWorldGen;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 
-import java.util.HashSet;
-
+import appeng.api.features.IWorldGen;
 
 public final class WorldGenRegistry implements IWorldGen {
 
@@ -83,7 +82,8 @@ public final class WorldGenRegistry implements IWorldGen {
 
         final boolean isBadProvider = this.types[type.ordinal()].badProviders.contains(w.provider.getClass());
         final boolean isBadDimension = this.types[type.ordinal()].badDimensions.contains(w.provider.getDimension());
-        final boolean isGoodDimension = this.types[type.ordinal()].enabledDimensions.contains(w.provider.getDimension());
+        final boolean isGoodDimension = this.types[type.ordinal()].enabledDimensions
+                .contains(w.provider.getDimension());
 
         if (isBadProvider || isBadDimension) {
             return false;

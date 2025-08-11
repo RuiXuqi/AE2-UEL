@@ -18,11 +18,8 @@
 
 package appeng.parts.p2p;
 
+import java.util.List;
 
-import appeng.api.parts.IPartModel;
-import appeng.items.parts.PartModels;
-import appeng.me.GridAccessException;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
@@ -33,8 +30,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
-
+import appeng.api.parts.IPartModel;
+import appeng.items.parts.PartModels;
+import appeng.me.GridAccessException;
+import appeng.util.Platform;
 
 public class PartP2PRedstone extends PartP2PTunnel<PartP2PRedstone> {
 

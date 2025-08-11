@@ -18,11 +18,10 @@
 
 package appeng.integration.modules.jei;
 
-
-import appeng.api.features.IInscriberRecipe;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapperFactory;
 
+import appeng.api.features.IInscriberRecipe;
 
 class InscriberRecipeHandler implements IRecipeWrapperFactory<IInscriberRecipe> {
     @Override

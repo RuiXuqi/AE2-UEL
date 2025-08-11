@@ -18,6 +18,7 @@
 
 package appeng.items;
 
+import java.util.List;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,9 +28,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
 
 public abstract class AEBaseItem extends Item {
 
@@ -46,7 +44,8 @@ public abstract class AEBaseItem extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("unchecked")
-    public final void addInformation(final ItemStack stack, final World world, final List lines, final ITooltipFlag advancedTooltips) {
+    public final void addInformation(final ItemStack stack, final World world, final List lines,
+            final ITooltipFlag advancedTooltips) {
         this.addCheckedInformation(stack, world, lines, advancedTooltips);
     }
 
@@ -58,7 +57,8 @@ public abstract class AEBaseItem extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    protected void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    protected void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         super.addInformation(stack, world, lines, advancedTooltips);
     }
 

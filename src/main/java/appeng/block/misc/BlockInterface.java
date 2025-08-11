@@ -18,13 +18,8 @@
 
 package appeng.block.misc;
 
+import javax.annotation.Nullable;
 
-import appeng.api.util.AEPartLocation;
-import appeng.api.util.IOrientable;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.sync.GuiBridge;
-import appeng.tile.misc.TileInterface;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -39,8 +34,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
+import appeng.api.util.AEPartLocation;
+import appeng.api.util.IOrientable;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.sync.GuiBridge;
+import appeng.tile.misc.TileInterface;
+import appeng.util.Platform;
 
 public class BlockInterface extends AEBaseTileBlock {
 
@@ -52,7 +51,7 @@ public class BlockInterface extends AEBaseTileBlock {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{OMNIDIRECTIONAL};
+        return new IProperty[] { OMNIDIRECTIONAL };
     }
 
     @Override
@@ -69,7 +68,9 @@ public class BlockInterface extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (p.isSneaking()) {
             return false;
         }

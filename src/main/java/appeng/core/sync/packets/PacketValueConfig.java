@@ -18,6 +18,20 @@
 
 package appeng.core.sync.packets;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.Settings;
@@ -32,20 +46,6 @@ import appeng.core.sync.network.INetworkInfo;
 import appeng.fluids.container.ContainerFluidLevelEmitter;
 import appeng.fluids.container.ContainerFluidStorageBus;
 import appeng.helpers.IMouseWheelItem;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 
 public class PacketValueConfig extends AppEngPacket {
 
@@ -54,7 +54,8 @@ public class PacketValueConfig extends AppEngPacket {
 
     // automatic.
     public PacketValueConfig(final ByteBuf stream) throws IOException {
-        final DataInputStream dis = new DataInputStream(this.getPacketByteArray(stream, stream.readerIndex(), stream.readableBytes()));
+        final DataInputStream dis = new DataInputStream(
+                this.getPacketByteArray(stream, stream.readerIndex(), stream.readableBytes()));
         this.Name = dis.readUTF();
         this.Value = dis.readUTF();
         // dis.close();
@@ -84,13 +85,18 @@ public class PacketValueConfig extends AppEngPacket {
     public void serverPacketData(final INetworkInfo manager, final AppEngPacket packet, final EntityPlayer player) {
         final Container c = player.openContainer;
 
-        if (this.Name.equals("Item") && ((!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.MAIN_HAND)
-                .getItem() instanceof IMouseWheelItem) || (!player.getHeldItem(EnumHand.OFF_HAND)
-                .isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof IMouseWheelItem))) {
+        if (this.Name.equals("Item")
+                && ((!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.MAIN_HAND)
+                        .getItem() instanceof IMouseWheelItem)
+                        || (!player.getHeldItem(EnumHand.OFF_HAND)
+                                .isEmpty()
+                                && player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof IMouseWheelItem))) {
             final EnumHand hand;
-            if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty() && player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof IMouseWheelItem) {
+            if (!player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()
+                    && player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof IMouseWheelItem) {
                 hand = EnumHand.MAIN_HAND;
-            } else if (!player.getHeldItem(EnumHand.OFF_HAND).isEmpty() && player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof IMouseWheelItem) {
+            } else if (!player.getHeldItem(EnumHand.OFF_HAND).isEmpty()
+                    && player.getHeldItem(EnumHand.OFF_HAND).getItem() instanceof IMouseWheelItem) {
                 hand = EnumHand.OFF_HAND;
             } else {
                 return;

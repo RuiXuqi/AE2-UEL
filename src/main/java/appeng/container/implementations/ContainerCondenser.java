@@ -18,6 +18,10 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.CondenserOutput;
 import appeng.api.config.Settings;
@@ -28,11 +32,6 @@ import appeng.container.slot.SlotOutput;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.misc.TileCondenser;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class ContainerCondenser extends AEBaseContainer implements IProgressProvider {
 
@@ -51,10 +50,12 @@ public class ContainerCondenser extends AEBaseContainer implements IProgressProv
 
         IItemHandler inv = condenser.getInternalInventory();
 
-        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.TRASH, inv, 0, 51, 52, ip));
+        this.addSlotToContainer(
+                new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.TRASH, inv, 0, 51, 52, ip));
         this.addSlotToContainer(new SlotOutput(inv, 1, 105, 52, -1));
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_COMPONENT, inv, 2, 101, 26, ip)).setStackLimit(1));
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_COMPONENT, inv, 2, 101, 26, ip))
+                        .setStackLimit(1));
 
         this.bindPlayerInventory(ip, 0, 197 - /* height of player inventory */82);
     }

@@ -18,9 +18,13 @@
 
 package appeng.client.render.crafting;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
 
-import appeng.block.crafting.BlockCraftingUnit;
-import appeng.client.render.cablebus.CubeBuilder;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -31,17 +35,13 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-
+import appeng.block.crafting.BlockCraftingUnit;
+import appeng.client.render.cablebus.CubeBuilder;
 
 /**
- * The base model for baked models used by components of the crafting cube multi-block in it's formed state.
- * Primarily this base class handles adding the "ring" that frames the multi-block structure and delegates
- * rendering of the "inner" part of each block to the subclasses of this class.
+ * The base model for baked models used by components of the crafting cube multi-block in it's formed state. Primarily
+ * this base class handles adding the "ring" that frames the multi-block structure and delegates rendering of the
+ * "inner" part of each block to the subclasses of this class.
  */
 abstract class CraftingCubeBakedModel implements IBakedModel {
 
@@ -53,7 +53,8 @@ abstract class CraftingCubeBakedModel implements IBakedModel {
 
     private final TextureAtlasSprite ringVer;
 
-    CraftingCubeBakedModel(VertexFormat format, TextureAtlasSprite ringCorner, TextureAtlasSprite ringHor, TextureAtlasSprite ringVer) {
+    CraftingCubeBakedModel(VertexFormat format, TextureAtlasSprite ringCorner, TextureAtlasSprite ringHor,
+            TextureAtlasSprite ringVer) {
         this.format = format;
         this.ringCorner = ringCorner;
         this.ringHor = ringHor;
@@ -131,7 +132,8 @@ abstract class CraftingCubeBakedModel implements IBakedModel {
             }
 
             // Select the horizontal or vertical ring texture depending on which side we're filling in
-            if ((side.getAxis() != EnumFacing.Axis.Y) && (a == EnumFacing.NORTH || a == EnumFacing.EAST || a == EnumFacing.WEST || a == EnumFacing.SOUTH)) {
+            if ((side.getAxis() != EnumFacing.Axis.Y) && (a == EnumFacing.NORTH || a == EnumFacing.EAST
+                    || a == EnumFacing.WEST || a == EnumFacing.SOUTH)) {
                 builder.setTexture(this.ringVer);
             } else if (side.getAxis() == EnumFacing.Axis.Y && (a == EnumFacing.EAST || a == EnumFacing.WEST)) {
                 builder.setTexture(this.ringVer);
@@ -212,7 +214,8 @@ abstract class CraftingCubeBakedModel implements IBakedModel {
     /**
      * Adds a 3x3x3 corner cap to the cube builder if there are no adjacent crafting cubes on that corner.
      */
-    private void addCornerCap(CubeBuilder builder, EnumSet<EnumFacing> connections, EnumFacing side, EnumFacing down, EnumFacing west, EnumFacing north) {
+    private void addCornerCap(CubeBuilder builder, EnumSet<EnumFacing> connections, EnumFacing side, EnumFacing down,
+            EnumFacing west, EnumFacing north) {
         if (connections.contains(down) || connections.contains(west) || connections.contains(north)) {
             return;
         }
@@ -247,7 +250,8 @@ abstract class CraftingCubeBakedModel implements IBakedModel {
         return cubeState.getConnections();
     }
 
-    protected abstract void addInnerCube(EnumFacing facing, IBlockState state, CubeBuilder builder, float x1, float y1, float z1, float x2, float y2, float z2);
+    protected abstract void addInnerCube(EnumFacing facing, IBlockState state, CubeBuilder builder, float x1, float y1,
+            float z1, float x2, float y2, float z2);
 
     @Override
     public boolean isAmbientOcclusion() {

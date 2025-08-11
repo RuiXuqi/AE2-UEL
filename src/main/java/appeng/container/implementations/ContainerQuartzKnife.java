@@ -18,14 +18,8 @@
 
 package appeng.container.implementations;
 
+import javax.annotation.Nonnull;
 
-import appeng.api.AEApi;
-import appeng.container.AEBaseContainer;
-import appeng.container.slot.SlotOutput;
-import appeng.container.slot.SlotRestrictedInput;
-import appeng.items.contents.QuartzKnifeObj;
-import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.util.Platform;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,8 +28,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
-
+import appeng.api.AEApi;
+import appeng.container.AEBaseContainer;
+import appeng.container.slot.SlotOutput;
+import appeng.container.slot.SlotRestrictedInput;
+import appeng.items.contents.QuartzKnifeObj;
+import appeng.tile.inventory.AppEngInternalInventory;
+import appeng.util.Platform;
 
 public class ContainerQuartzKnife extends AEBaseContainer {
 
@@ -48,7 +47,8 @@ public class ContainerQuartzKnife extends AEBaseContainer {
         super(ip, null, null);
         this.toolInv = te;
 
-        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.METAL_INGOTS, this.inSlot, 0, 94, 44, ip));
+        this.addSlotToContainer(
+                new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.METAL_INGOTS, this.inSlot, 0, 94, 44, ip));
         this.addSlotToContainer(new QuartzKniveSlot(this.inSlot, 0, 134, 44, -1));
 
         this.lockPlayerInventorySlot(ip.currentItem);
@@ -67,7 +67,8 @@ public class ContainerQuartzKnife extends AEBaseContainer {
         if (currentItem != this.toolInv.getItemStack()) {
             if (!currentItem.isEmpty()) {
                 if (ItemStack.areItemsEqual(this.toolInv.getItemStack(), currentItem)) {
-                    this.getPlayerInv().setInventorySlotContents(this.getPlayerInv().currentItem, this.toolInv.getItemStack());
+                    this.getPlayerInv().setInventorySlotContents(this.getPlayerInv().currentItem,
+                            this.toolInv.getItemStack());
                 } else {
                     this.setValidContainer(false);
                 }
@@ -101,8 +102,7 @@ public class ContainerQuartzKnife extends AEBaseContainer {
 
             if (SlotRestrictedInput.isMetalIngot(input)) {
                 if (ContainerQuartzKnife.this.myName.length() > 0) {
-                    return AEApi.instance().definitions().materials().namePress().maybeStack(1).map(namePressStack ->
-                    {
+                    return AEApi.instance().definitions().materials().namePress().maybeStack(1).map(namePressStack -> {
                         final NBTTagCompound compound = Platform.openNbtData(namePressStack);
                         compound.setString("InscribeName", ContainerQuartzKnife.this.myName);
 
@@ -139,8 +139,10 @@ public class ContainerQuartzKnife extends AEBaseContainer {
 
                     if (item.getCount() == 0) {
                         ContainerQuartzKnife.this.getPlayerInv()
-                                .setInventorySlotContents(ContainerQuartzKnife.this.getPlayerInv().currentItem, ItemStack.EMPTY);
-                        MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(ContainerQuartzKnife.this.getPlayerInv().player, before, null));
+                                .setInventorySlotContents(ContainerQuartzKnife.this.getPlayerInv().currentItem,
+                                        ItemStack.EMPTY);
+                        MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(
+                                ContainerQuartzKnife.this.getPlayerInv().player, before, null));
                     }
 
                     ContainerQuartzKnife.this.detectAndSendChanges();

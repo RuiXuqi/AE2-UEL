@@ -1,11 +1,12 @@
 package appeng.client.render.cablebus;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import appeng.api.parts.IPartBakedModel;
-import appeng.api.util.AEColor;
-import appeng.util.Platform;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -14,10 +15,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
+import appeng.api.parts.IPartBakedModel;
+import appeng.api.util.AEColor;
+import appeng.util.Platform;
 
 public class P2PTunnelFrequencyBakedModel implements IBakedModel, IPartBakedModel {
     private final VertexFormat format;
@@ -25,11 +25,11 @@ public class P2PTunnelFrequencyBakedModel implements IBakedModel, IPartBakedMode
 
     private final static Cache<Long, List<BakedQuad>> modelCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
-    private static final int[][] QUAD_OFFSETS = new int[][]{
-            {4, 10, 2},
-            {10, 10, 2},
-            {4, 4, 2},
-            {10, 4, 2}
+    private static final int[][] QUAD_OFFSETS = new int[][] {
+            { 4, 10, 2 },
+            { 10, 10, 2 },
+            { 4, 4, 2 },
+            { 10, 4, 2 }
     };
 
     public P2PTunnelFrequencyBakedModel(final VertexFormat format, final TextureAtlasSprite texture) {
@@ -40,8 +40,7 @@ public class P2PTunnelFrequencyBakedModel implements IBakedModel, IPartBakedMode
     @Override
     public List<BakedQuad> getPartQuads(Long partFlags, long rand) {
         try {
-            return modelCache.get(partFlags, () ->
-            {
+            return modelCache.get(partFlags, () -> {
                 short frequency = 0;
                 boolean active = false;
                 if (partFlags != null) {
@@ -85,7 +84,8 @@ public class P2PTunnelFrequencyBakedModel implements IBakedModel, IPartBakedMode
                 final int startx = j % 2;
                 final int starty = 1 - j / 2;
 
-                cb.addCube(offs[0] + startx, offs[1] + starty, offs[2], offs[0] + startx + 1, offs[1] + starty + 1, offs[2] + 1);
+                cb.addCube(offs[0] + startx, offs[1] + starty, offs[2], offs[0] + startx + 1, offs[1] + starty + 1,
+                        offs[2] + 1);
             }
 
         }

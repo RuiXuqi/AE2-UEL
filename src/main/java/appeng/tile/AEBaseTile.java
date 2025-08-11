@@ -18,6 +18,30 @@
 
 package appeng.tile;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.util.ICommonTile;
@@ -34,30 +58,6 @@ import appeng.hooks.TickHandler;
 import appeng.tile.inventory.AppEngInternalAEInventory;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, ICustomNameObject {
 
@@ -72,7 +72,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
     private boolean markDirtyQueued = false;
 
     @Override
-    public boolean shouldRefresh(final World world, final BlockPos pos, final IBlockState oldState, final IBlockState newSate) {
+    public boolean shouldRefresh(final World world, final BlockPos pos, final IBlockState oldState,
+            final IBlockState newSate) {
         return newSate.getBlock() != oldState.getBlock(); // state doesn't change tile entities in AE2.
     }
 
@@ -163,8 +164,8 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
     }
 
     /**
-     * This builds a tag with the actual data that should be sent to the client for update syncs.
-     * If the tile entity doesn't need update syncs, it returns null.
+     * This builds a tag with the actual data that should be sent to the client for update syncs. If the tile entity
+     * doesn't need update syncs, it returns null.
      */
     private NBTTagCompound writeUpdateData() {
         final NBTTagCompound data = new NBTTagCompound();
@@ -406,7 +407,7 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
             }
         }
 
-        return output.isEmpty()? null : output;
+        return output.isEmpty() ? null : output;
     }
 
     @Override
@@ -442,7 +443,7 @@ public class AEBaseTile extends TileEntity implements IOrientable, ICommonTile, 
         // Serverside is only queued once per tick to avoid costly operations
         this.world.markChunkDirty(this.pos, this);
         if (!this.markDirtyQueued) {
-            TickHandler.INSTANCE.addCallable(null, this::markDirtyAtEndOfTick);
+            TickHandler.instance().addCallable(null, this::markDirtyAtEndOfTick);
             this.markDirtyQueued = true;
         }
     }

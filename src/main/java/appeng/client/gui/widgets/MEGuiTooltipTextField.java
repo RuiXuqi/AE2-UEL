@@ -1,17 +1,16 @@
 package appeng.client.gui.widgets;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
-import org.lwjgl.input.Keyboard;
 
 /**
- * Different implementation of a text field that wraps instead of extends
- * MC's {@link GuiTextField}. This is necessary because of deobfuscated name
- * collision between {@link ITooltip} and GuiTextField, which would cause
- * crashes in an obfuscated environment. Additionally, since we are not extending that
- * class, we can construct this object differently and allow its position to be
- * mutable like most other widgets.
+ * Different implementation of a text field that wraps instead of extends MC's {@link GuiTextField}. This is necessary
+ * because of deobfuscated name collision between {@link ITooltip} and GuiTextField, which would cause crashes in an
+ * obfuscated environment. Additionally, since we are not extending that class, we can construct this object differently
+ * and allow its position to be mutable like most other widgets.
  */
 public class MEGuiTooltipTextField implements ITooltip {
 
@@ -64,7 +63,8 @@ public class MEGuiTooltipTextField implements ITooltip {
         field.height = this.h - PADDING * 2;
     }
 
-    public void onTextChange(final String oldText) {}
+    public void onTextChange(final String oldText) {
+    }
 
     public void mouseClicked(final int xPos, final int yPos, final int button) {
 

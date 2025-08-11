@@ -18,6 +18,25 @@
 
 package appeng.tile.misc;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.google.common.collect.Lists;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -52,23 +71,6 @@ import appeng.util.inv.WrapperChainedItemHandler;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.IAEItemFilter;
 import appeng.util.item.AEItemStack;
-import com.google.common.collect.Lists;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-
 
 /**
  * @author AlgorithmX2
@@ -86,9 +88,9 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
     private boolean smash;
     private int finalStep;
     private long clientStart;
-    private final AppEngInternalInventory topItemHandler = new AppEngInternalInventory(this, 1, 1);
-    private final AppEngInternalInventory bottomItemHandler = new AppEngInternalInventory(this, 1, 1);
-    private final AppEngInternalInventory sideItemHandler = new AppEngInternalInventory(this, 2, 1);
+    private final AppEngInternalInventory topItemHandler = new AppEngInternalInventory(this, 1, 64);
+    private final AppEngInternalInventory bottomItemHandler = new AppEngInternalInventory(this, 1, 64);
+    private final AppEngInternalInventory sideItemHandler = new AppEngInternalInventory(this, 2, 64);
 
     private final IItemHandler topItemHandlerExtern;
     private final IItemHandler bottomItemHandlerExtern;
@@ -96,7 +98,8 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
 
     private IInscriberRecipe cachedTask = null;
 
-    private final IItemHandlerModifiable inv = new WrapperChainedItemHandler(this.topItemHandler, this.bottomItemHandler, this.sideItemHandler);
+    private final IItemHandlerModifiable inv = new WrapperChainedItemHandler(this.topItemHandler,
+            this.bottomItemHandler, this.sideItemHandler);
 
     public TileInscriber() {
         this.getProxy().setValidSides(EnumSet.noneOf(EnumFacing.class));
@@ -214,7 +217,8 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         try {
             if (slot == 0) {
                 this.setProcessingTime(0);
@@ -250,49 +254,43 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
     @Nullable
     public IInscriberRecipe getTask() {
         if (this.cachedTask == null) {
-            this.cachedTask = this.getTask(this.sideItemHandler.getStackInSlot(0), this.topItemHandler.getStackInSlot(0),
+            this.cachedTask = this.getTask(this.sideItemHandler.getStackInSlot(0),
+                    this.topItemHandler.getStackInSlot(0),
                     this.bottomItemHandler.getStackInSlot(0));
         }
         return this.cachedTask;
     }
 
     @Nullable
-    private IInscriberRecipe getTask(final ItemStack input, final ItemStack plateA, final ItemStack plateB) {
-        if (input.isEmpty() || input.getCount() > 1) {
+    private IInscriberRecipe getTask(ItemStack input, ItemStack plateA, ItemStack plateB) {
+        if (input.isEmpty())
             return null;
-        }
-
-        if (!plateA.isEmpty() && plateA.getCount() > 1) {
-            return null;
-        }
-
-        if (!plateB.isEmpty() && plateB.getCount() > 1) {
-            return null;
-        }
 
         final IComparableDefinition namePress = AEApi.instance().definitions().materials().namePress();
         final boolean isNameA = namePress.isSameAs(plateA);
         final boolean isNameB = namePress.isSameAs(plateB);
 
-        if ((isNameA && isNameB) || isNameA && plateB.isEmpty()) {
-            return this.makeNamePressRecipe(input, plateA, plateB);
-        } else if (plateA.isEmpty() && isNameB) {
-            return this.makeNamePressRecipe(input, plateB, plateA);
+        if ((isNameA && plateA.getCount() > 1) || (isNameB && plateB.getCount() > 1)) {
+            return null;
         }
 
         for (final IInscriberRecipe recipe : AEApi.instance().registries().inscriber().getRecipes()) {
 
             // Check if plateA matches any item in the list of top components of the recipe
             final boolean matchA = plateA.isEmpty() && recipe.getTopInputs().isEmpty() ||
-                    recipe.getTopInputs().stream().anyMatch(topItem -> Platform.itemComparisons().isSameItem(plateA, topItem)) &&
+                    recipe.getTopInputs().stream()
+                            .anyMatch(topItem -> Platform.itemComparisons().isSameItem(plateA, topItem)) &&
                             (plateB.isEmpty() && recipe.getBottomInputs().isEmpty() ||
-                                    recipe.getBottomInputs().stream().anyMatch(bottomItem -> Platform.itemComparisons().isSameItem(plateB, bottomItem)));
+                                    recipe.getBottomInputs().stream().anyMatch(
+                                            bottomItem -> Platform.itemComparisons().isSameItem(plateB, bottomItem)));
 
             // Check if plateB matches any item in the list of top components of the recipe
             final boolean matchB = plateB.isEmpty() && recipe.getTopInputs().isEmpty() ||
-                    recipe.getTopInputs().stream().anyMatch(topItem -> Platform.itemComparisons().isSameItem(plateB, topItem)) &&
+                    recipe.getTopInputs().stream()
+                            .anyMatch(topItem -> Platform.itemComparisons().isSameItem(plateB, topItem)) &&
                             (plateA.isEmpty() && recipe.getBottomInputs().isEmpty() ||
-                                    recipe.getBottomInputs().stream().anyMatch(bottomItem -> Platform.itemComparisons().isSameItem(plateA, bottomItem)));
+                                    recipe.getBottomInputs().stream().anyMatch(
+                                            bottomItem -> Platform.itemComparisons().isSameItem(plateA, bottomItem)));
 
             // If either matchA or matchB is true, iterate through the recipe's inputs
             if (matchA || matchB) {
@@ -319,10 +317,10 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
                     if (this.sideItemHandler.insertItem(1, outputCopy, false).isEmpty()) {
                         this.setProcessingTime(0);
                         if (out.getProcessType() == InscriberProcessType.PRESS) {
-                            this.topItemHandler.setStackInSlot(0, ItemStack.EMPTY);
-                            this.bottomItemHandler.setStackInSlot(0, ItemStack.EMPTY);
+                            this.topItemHandler.extractItem(0, 1, false);
+                            this.bottomItemHandler.extractItem(0, 1, false);
                         }
-                        this.sideItemHandler.setStackInSlot(0, ItemStack.EMPTY);
+                        this.sideItemHandler.extractItem(0, 1, false);
                     }
                 }
                 this.saveChanges();
@@ -504,24 +502,19 @@ public class TileInscriber extends AENetworkPowerTile implements IGridTickable, 
         @Override
         public boolean allowInsert(IItemHandler inv, int slot, ItemStack stack) {
             // output slot
-            if (slot == 1) {
+            if (slot == 1)
                 return false;
-            }
-
-            if (TileInscriber.this.isSmash()) {
+            if (TileInscriber.this.isSmash())
                 return false;
-            }
 
             if (inv == TileInscriber.this.topItemHandler || inv == TileInscriber.this.bottomItemHandler) {
                 if (AEApi.instance().definitions().materials().namePress().isSameAs(stack)) {
-                    return true;
+                    ItemStack existing = inv.getStackInSlot(slot);
+                    return existing.isEmpty() ||
+                            (existing.getCount() < 1 &&
+                                    ItemStack.areItemsEqual(existing, stack));
                 }
-                for (final ItemStack optionals : AEApi.instance().registries().inscriber().getOptionals()) {
-                    if (Platform.itemComparisons().isSameItem(stack, optionals)) {
-                        return true;
-                    }
-                }
-                return false;
+                return true;
             }
             return true;
         }

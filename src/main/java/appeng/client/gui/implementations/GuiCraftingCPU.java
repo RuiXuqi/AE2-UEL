@@ -18,6 +18,20 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Joiner;
+
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.SortDir;
@@ -38,19 +52,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.util.Platform;
 import appeng.util.ReadableNumberConverter;
-import com.google.common.base.Joiner;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.apache.commons.lang3.time.DurationFormatUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 
 public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
     private static final int GUI_HEIGHT = 184;
@@ -80,9 +81,12 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
 
     private final ContainerCraftingCPU craftingCpu;
 
-    private IItemList<IAEItemStack> storage = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-    private IItemList<IAEItemStack> active = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-    private IItemList<IAEItemStack> pending = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private IItemList<IAEItemStack> storage = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+            .createList();
+    private IItemList<IAEItemStack> active = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+            .createList();
+    private IItemList<IAEItemStack> pending = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+            .createList();
 
     private List<IAEItemStack> visual = new ArrayList<>();
     private GuiButton cancel;
@@ -127,8 +131,9 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
     public void initGui() {
         super.initGui();
         this.setScrollBar();
-        this.cancel = new GuiButton(0, this.guiLeft + CANCEL_LEFT_OFFSET, this.guiTop + this.ySize - CANCEL_TOP_OFFSET, CANCEL_WIDTH, CANCEL_HEIGHT, GuiText.Cancel
-                .getLocal());
+        this.cancel = new GuiButton(0, this.guiLeft + CANCEL_LEFT_OFFSET, this.guiTop + this.ySize - CANCEL_TOP_OFFSET,
+                CANCEL_WIDTH, CANCEL_HEIGHT, GuiText.Cancel
+                        .getLocal());
         this.buttonList.add(this.cancel);
     }
 
@@ -178,8 +183,10 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
         String title = this.getGuiDisplayName(GuiText.CraftingStatus.getLocal());
 
         if (this.craftingCpu.getEstimatedTime() > 0 && !this.visual.isEmpty()) {
-            final long etaInMilliseconds = TimeUnit.MILLISECONDS.convert(this.craftingCpu.getEstimatedTime(), TimeUnit.NANOSECONDS);
-            final String etaTimeText = DurationFormatUtils.formatDuration(etaInMilliseconds, GuiText.ETAFormat.getLocal());
+            final long etaInMilliseconds = TimeUnit.MILLISECONDS.convert(this.craftingCpu.getEstimatedTime(),
+                    TimeUnit.NANOSECONDS);
+            final String etaTimeText = DurationFormatUtils.formatDuration(etaInMilliseconds,
+                    GuiText.ETAFormat.getLocal());
             title += " - " + etaTimeText;
         }
 
@@ -225,7 +232,8 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                 }
 
                 if (AEConfig.instance().isUseColoredCraftingStatus() && (active || scheduled)) {
-                    final int bgColor = (active ? AEColor.GREEN.blackVariant : AEColor.YELLOW.blackVariant) | BACKGROUND_ALPHA;
+                    final int bgColor = (active ? AEColor.GREEN.blackVariant : AEColor.YELLOW.blackVariant)
+                            | BACKGROUND_ALPHA;
                     final int startX = (x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET) * 2;
                     final int startY = ((y * offY + ITEMSTACK_TOP_OFFSET) - 3) * 2;
                     drawRect(startX, startY, startX + (SECTION_LENGTH * 2), startY + (offY * 2) - 2, bgColor);
@@ -235,9 +243,12 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                 int downY = 0;
 
                 if (stored != null && stored.getStackSize() > 0) {
-                    final String str = GuiText.Stored.getLocal() + ": " + converter.toWideReadableForm(stored.getStackSize());
+                    final String str = GuiText.Stored.getLocal() + ": "
+                            + converter.toWideReadableForm(stored.getStackSize());
                     final int w = 4 + this.fontRenderer.getStringWidth(str);
-                    this.fontRenderer.drawString(str, (int) ((x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET + SECTION_LENGTH - 19 - (w * 0.5)) * 2),
+                    this.fontRenderer.drawString(str,
+                            (int) ((x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET + SECTION_LENGTH - 19 - (w * 0.5))
+                                    * 2),
                             (y * offY + ITEMSTACK_TOP_OFFSET + 6 - negY + downY) * 2, TEXT_COLOR);
 
                     if (this.tooltip == z - viewStart) {
@@ -248,10 +259,13 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                 }
 
                 if (activeStack != null && activeStack.getStackSize() > 0) {
-                    final String str = GuiText.Crafting.getLocal() + ": " + converter.toWideReadableForm(activeStack.getStackSize());
+                    final String str = GuiText.Crafting.getLocal() + ": "
+                            + converter.toWideReadableForm(activeStack.getStackSize());
                     final int w = 4 + this.fontRenderer.getStringWidth(str);
 
-                    this.fontRenderer.drawString(str, (int) ((x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET + SECTION_LENGTH - 19 - (w * 0.5)) * 2),
+                    this.fontRenderer.drawString(str,
+                            (int) ((x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET + SECTION_LENGTH - 19 - (w * 0.5))
+                                    * 2),
                             (y * offY + ITEMSTACK_TOP_OFFSET + 6 - negY + downY) * 2, TEXT_COLOR);
 
                     if (this.tooltip == z - viewStart) {
@@ -262,10 +276,13 @@ public class GuiCraftingCPU extends AEBaseGui implements ISortSource {
                 }
 
                 if (pendingStack != null && pendingStack.getStackSize() > 0) {
-                    final String str = GuiText.Scheduled.getLocal() + ": " + converter.toWideReadableForm(pendingStack.getStackSize());
+                    final String str = GuiText.Scheduled.getLocal() + ": "
+                            + converter.toWideReadableForm(pendingStack.getStackSize());
                     final int w = 4 + this.fontRenderer.getStringWidth(str);
 
-                    this.fontRenderer.drawString(str, (int) ((x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET + SECTION_LENGTH - 19 - (w * 0.5)) * 2),
+                    this.fontRenderer.drawString(str,
+                            (int) ((x * (1 + SECTION_LENGTH) + ITEMSTACK_LEFT_OFFSET + SECTION_LENGTH - 19 - (w * 0.5))
+                                    * 2),
                             (y * offY + ITEMSTACK_TOP_OFFSET + 6 - negY + downY) * 2, TEXT_COLOR);
 
                     if (this.tooltip == z - viewStart) {

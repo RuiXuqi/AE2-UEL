@@ -18,6 +18,11 @@
 
 package appeng.core.sync.packets;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 import appeng.api.config.Settings;
 import appeng.api.util.IConfigManager;
@@ -27,11 +32,6 @@ import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.helpers.Reflected;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-
 
 public final class PacketConfigButton extends AppEngPacket {
     private final Settings option;
@@ -65,7 +65,8 @@ public final class PacketConfigButton extends AppEngPacket {
             final AEBaseContainer baseContainer = (AEBaseContainer) sender.openContainer;
             if (baseContainer.getTarget() instanceof IConfigurableObject) {
                 final IConfigManager cm = ((IConfigurableObject) baseContainer.getTarget()).getConfigManager();
-                final Enum<?> newState = Platform.rotateEnum(cm.getSetting(this.option), this.rotationDirection, this.option.getPossibleValues());
+                final Enum<?> newState = Platform.rotateEnum(cm.getSetting(this.option), this.rotationDirection,
+                        this.option.getPossibleValues());
                 cm.putSetting(this.option, newState);
             }
         }

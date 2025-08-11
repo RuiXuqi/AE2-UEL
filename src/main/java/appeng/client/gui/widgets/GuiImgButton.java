@@ -18,19 +18,18 @@
 
 package appeng.client.gui.widgets;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
-import appeng.api.config.*;
-import appeng.core.localization.ButtonToolTips;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
+import appeng.api.config.*;
+import appeng.core.localization.ButtonToolTips;
 
 public class GuiImgButton extends GuiButton implements ITooltip {
     private static final Pattern COMPILE = Pattern.compile("%s");
@@ -53,123 +52,207 @@ public class GuiImgButton extends GuiButton implements ITooltip {
 
         if (appearances == null) {
             appearances = new HashMap<>();
-            this.registerApp(16 * 7, Settings.CONDENSER_OUTPUT, CondenserOutput.TRASH, ButtonToolTips.CondenserOutput, ButtonToolTips.Trash);
-            this.registerApp(16 * 7 + 1, Settings.CONDENSER_OUTPUT, CondenserOutput.MATTER_BALLS, ButtonToolTips.CondenserOutput, ButtonToolTips.MatterBalls);
-            this.registerApp(16 * 7 + 2, Settings.CONDENSER_OUTPUT, CondenserOutput.SINGULARITY, ButtonToolTips.CondenserOutput, ButtonToolTips.Singularity);
+            this.registerApp(16 * 7, Settings.CONDENSER_OUTPUT, CondenserOutput.TRASH, ButtonToolTips.CondenserOutput,
+                    ButtonToolTips.Trash);
+            this.registerApp(16 * 7 + 1, Settings.CONDENSER_OUTPUT, CondenserOutput.MATTER_BALLS,
+                    ButtonToolTips.CondenserOutput, ButtonToolTips.MatterBalls);
+            this.registerApp(16 * 7 + 2, Settings.CONDENSER_OUTPUT, CondenserOutput.SINGULARITY,
+                    ButtonToolTips.CondenserOutput, ButtonToolTips.Singularity);
 
-            this.registerApp(16 * 9 + 1, Settings.ACCESS, AccessRestriction.READ, ButtonToolTips.IOMode, ButtonToolTips.Read);
-            this.registerApp(16 * 9, Settings.ACCESS, AccessRestriction.WRITE, ButtonToolTips.IOMode, ButtonToolTips.Write);
-            this.registerApp(16 * 9 + 2, Settings.ACCESS, AccessRestriction.READ_WRITE, ButtonToolTips.IOMode, ButtonToolTips.ReadWrite);
+            this.registerApp(16 * 9 + 1, Settings.ACCESS, AccessRestriction.READ, ButtonToolTips.IOMode,
+                    ButtonToolTips.Read);
+            this.registerApp(16 * 9, Settings.ACCESS, AccessRestriction.WRITE, ButtonToolTips.IOMode,
+                    ButtonToolTips.Write);
+            this.registerApp(16 * 9 + 2, Settings.ACCESS, AccessRestriction.READ_WRITE, ButtonToolTips.IOMode,
+                    ButtonToolTips.ReadWrite);
 
-            this.registerApp(16 * 10, Settings.POWER_UNITS, PowerUnits.AE, ButtonToolTips.PowerUnits, PowerUnits.AE.unlocalizedName);
-            this.registerApp(16 * 10 + 1, Settings.POWER_UNITS, PowerUnits.EU, ButtonToolTips.PowerUnits, PowerUnits.EU.unlocalizedName);
-            this.registerApp(16 * 10 + 4, Settings.POWER_UNITS, PowerUnits.RF, ButtonToolTips.PowerUnits, PowerUnits.RF.unlocalizedName);
-            this.registerApp(16 * 10 + 1, Settings.POWER_UNITS, PowerUnits.GTEU, ButtonToolTips.PowerUnits, PowerUnits.EU.unlocalizedName);
+            this.registerApp(16 * 10, Settings.POWER_UNITS, PowerUnits.AE, ButtonToolTips.PowerUnits,
+                    PowerUnits.AE.unlocalizedName);
+            this.registerApp(16 * 10 + 1, Settings.POWER_UNITS, PowerUnits.EU, ButtonToolTips.PowerUnits,
+                    PowerUnits.EU.unlocalizedName);
+            this.registerApp(16 * 10 + 4, Settings.POWER_UNITS, PowerUnits.RF, ButtonToolTips.PowerUnits,
+                    PowerUnits.RF.unlocalizedName);
+            this.registerApp(16 * 10 + 1, Settings.POWER_UNITS, PowerUnits.GTEU, ButtonToolTips.PowerUnits,
+                    PowerUnits.EU.unlocalizedName);
 
-            this.registerApp(3, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE, ButtonToolTips.RedstoneMode, ButtonToolTips.AlwaysActive);
-            this.registerApp(0, Settings.REDSTONE_CONTROLLED, RedstoneMode.LOW_SIGNAL, ButtonToolTips.RedstoneMode, ButtonToolTips.ActiveWithoutSignal);
-            this.registerApp(1, Settings.REDSTONE_CONTROLLED, RedstoneMode.HIGH_SIGNAL, ButtonToolTips.RedstoneMode, ButtonToolTips.ActiveWithSignal);
-            this.registerApp(2, Settings.REDSTONE_CONTROLLED, RedstoneMode.SIGNAL_PULSE, ButtonToolTips.RedstoneMode, ButtonToolTips.ActiveOnPulse);
+            this.registerApp(3, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE, ButtonToolTips.RedstoneMode,
+                    ButtonToolTips.AlwaysActive);
+            this.registerApp(0, Settings.REDSTONE_CONTROLLED, RedstoneMode.LOW_SIGNAL, ButtonToolTips.RedstoneMode,
+                    ButtonToolTips.ActiveWithoutSignal);
+            this.registerApp(1, Settings.REDSTONE_CONTROLLED, RedstoneMode.HIGH_SIGNAL, ButtonToolTips.RedstoneMode,
+                    ButtonToolTips.ActiveWithSignal);
+            this.registerApp(2, Settings.REDSTONE_CONTROLLED, RedstoneMode.SIGNAL_PULSE, ButtonToolTips.RedstoneMode,
+                    ButtonToolTips.ActiveOnPulse);
 
-            this.registerApp(0, Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL, ButtonToolTips.RedstoneMode, ButtonToolTips.EmitLevelsBelow);
-            this.registerApp(1, Settings.REDSTONE_EMITTER, RedstoneMode.HIGH_SIGNAL, ButtonToolTips.RedstoneMode, ButtonToolTips.EmitLevelAbove);
+            this.registerApp(0, Settings.REDSTONE_EMITTER, RedstoneMode.LOW_SIGNAL, ButtonToolTips.RedstoneMode,
+                    ButtonToolTips.EmitLevelsBelow);
+            this.registerApp(1, Settings.REDSTONE_EMITTER, RedstoneMode.HIGH_SIGNAL, ButtonToolTips.RedstoneMode,
+                    ButtonToolTips.EmitLevelAbove);
 
-            this.registerApp(51, Settings.OPERATION_MODE, OperationMode.FILL, ButtonToolTips.TransferDirection, ButtonToolTips.TransferToStorageCell);
-            this.registerApp(50, Settings.OPERATION_MODE, OperationMode.EMPTY, ButtonToolTips.TransferDirection, ButtonToolTips.TransferToNetwork);
+            this.registerApp(51, Settings.OPERATION_MODE, OperationMode.FILL, ButtonToolTips.TransferDirection,
+                    ButtonToolTips.TransferToStorageCell);
+            this.registerApp(50, Settings.OPERATION_MODE, OperationMode.EMPTY, ButtonToolTips.TransferDirection,
+                    ButtonToolTips.TransferToNetwork);
 
-            this.registerApp(51, Settings.IO_DIRECTION, RelativeDirection.LEFT, ButtonToolTips.TransferDirection, ButtonToolTips.TransferToStorageCell);
-            this.registerApp(50, Settings.IO_DIRECTION, RelativeDirection.RIGHT, ButtonToolTips.TransferDirection, ButtonToolTips.TransferToNetwork);
+            this.registerApp(51, Settings.IO_DIRECTION, RelativeDirection.LEFT, ButtonToolTips.TransferDirection,
+                    ButtonToolTips.TransferToStorageCell);
+            this.registerApp(50, Settings.IO_DIRECTION, RelativeDirection.RIGHT, ButtonToolTips.TransferDirection,
+                    ButtonToolTips.TransferToNetwork);
 
-            this.registerApp(48, Settings.SORT_DIRECTION, SortDir.ASCENDING, ButtonToolTips.SortOrder, ButtonToolTips.ToggleSortDirection);
-            this.registerApp(49, Settings.SORT_DIRECTION, SortDir.DESCENDING, ButtonToolTips.SortOrder, ButtonToolTips.ToggleSortDirection);
+            this.registerApp(48, Settings.SORT_DIRECTION, SortDir.ASCENDING, ButtonToolTips.SortOrder,
+                    ButtonToolTips.ToggleSortDirection);
+            this.registerApp(49, Settings.SORT_DIRECTION, SortDir.DESCENDING, ButtonToolTips.SortOrder,
+                    ButtonToolTips.ToggleSortDirection);
 
-            this.registerApp(16 * 2 + 3, Settings.SEARCH_MODE, SearchBoxMode.AUTOSEARCH, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_Auto);
-            this.registerApp(16 * 2 + 4, Settings.SEARCH_MODE, SearchBoxMode.MANUAL_SEARCH, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_Standard);
-            this.registerApp(16 * 2 + 5, Settings.SEARCH_MODE, SearchBoxMode.JEI_AUTOSEARCH, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIAuto);
-            this.registerApp(16 * 2 + 6, Settings.SEARCH_MODE, SearchBoxMode.JEI_MANUAL_SEARCH, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIStandard);
-            this.registerApp(16 * 2 + 7, Settings.SEARCH_MODE, SearchBoxMode.AUTOSEARCH_KEEP, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_AutoKeep);
-            this.registerApp(16 * 2 + 8, Settings.SEARCH_MODE, SearchBoxMode.MANUAL_SEARCH_KEEP, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_StandardKeep);
-            this.registerApp(16 * 2 + 9, Settings.SEARCH_MODE, SearchBoxMode.JEI_AUTOSEARCH_KEEP, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIAutoKeep);
-            this.registerApp(16 * 2 + 10, Settings.SEARCH_MODE, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP, ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIStandardKeep);
+            this.registerApp(16 * 2 + 3, Settings.SEARCH_MODE, SearchBoxMode.AUTOSEARCH, ButtonToolTips.SearchMode,
+                    ButtonToolTips.SearchMode_Auto);
+            this.registerApp(16 * 2 + 4, Settings.SEARCH_MODE, SearchBoxMode.MANUAL_SEARCH, ButtonToolTips.SearchMode,
+                    ButtonToolTips.SearchMode_Standard);
+            this.registerApp(16 * 2 + 5, Settings.SEARCH_MODE, SearchBoxMode.JEI_AUTOSEARCH, ButtonToolTips.SearchMode,
+                    ButtonToolTips.SearchMode_JEIAuto);
+            this.registerApp(16 * 2 + 6, Settings.SEARCH_MODE, SearchBoxMode.JEI_MANUAL_SEARCH,
+                    ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIStandard);
+            this.registerApp(16 * 2 + 7, Settings.SEARCH_MODE, SearchBoxMode.AUTOSEARCH_KEEP, ButtonToolTips.SearchMode,
+                    ButtonToolTips.SearchMode_AutoKeep);
+            this.registerApp(16 * 2 + 8, Settings.SEARCH_MODE, SearchBoxMode.MANUAL_SEARCH_KEEP,
+                    ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_StandardKeep);
+            this.registerApp(16 * 2 + 9, Settings.SEARCH_MODE, SearchBoxMode.JEI_AUTOSEARCH_KEEP,
+                    ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIAutoKeep);
+            this.registerApp(16 * 2 + 10, Settings.SEARCH_MODE, SearchBoxMode.JEI_MANUAL_SEARCH_KEEP,
+                    ButtonToolTips.SearchMode, ButtonToolTips.SearchMode_JEIStandardKeep);
 
-            this.registerApp(16 * 5 + 3, Settings.LEVEL_TYPE, LevelType.ENERGY_LEVEL, ButtonToolTips.LevelType, ButtonToolTips.LevelType_Energy);
-            this.registerApp(16 * 4 + 3, Settings.LEVEL_TYPE, LevelType.ITEM_LEVEL, ButtonToolTips.LevelType, ButtonToolTips.LevelType_Item);
+            this.registerApp(16 * 5 + 3, Settings.LEVEL_TYPE, LevelType.ENERGY_LEVEL, ButtonToolTips.LevelType,
+                    ButtonToolTips.LevelType_Energy);
+            this.registerApp(16 * 4 + 3, Settings.LEVEL_TYPE, LevelType.ITEM_LEVEL, ButtonToolTips.LevelType,
+                    ButtonToolTips.LevelType_Item);
 
-            this.registerApp(16 * 13, Settings.TERMINAL_STYLE, TerminalStyle.TALL, ButtonToolTips.TerminalStyle, ButtonToolTips.TerminalStyle_Tall);
-            this.registerApp(16 * 13 + 1, Settings.TERMINAL_STYLE, TerminalStyle.SMALL, ButtonToolTips.TerminalStyle, ButtonToolTips.TerminalStyle_Small);
-            this.registerApp(16 * 13 + 2, Settings.TERMINAL_STYLE, TerminalStyle.FULL, ButtonToolTips.TerminalStyle, ButtonToolTips.TerminalStyle_Full);
+            this.registerApp(16 * 13, Settings.TERMINAL_STYLE, TerminalStyle.TALL, ButtonToolTips.TerminalStyle,
+                    ButtonToolTips.TerminalStyle_Tall);
+            this.registerApp(16 * 13 + 1, Settings.TERMINAL_STYLE, TerminalStyle.SMALL, ButtonToolTips.TerminalStyle,
+                    ButtonToolTips.TerminalStyle_Small);
+            this.registerApp(16 * 13 + 2, Settings.TERMINAL_STYLE, TerminalStyle.FULL, ButtonToolTips.TerminalStyle,
+                    ButtonToolTips.TerminalStyle_Full);
 
             this.registerApp(64, Settings.SORT_BY, SortOrder.NAME, ButtonToolTips.SortBy, ButtonToolTips.ItemName);
-            this.registerApp(65, Settings.SORT_BY, SortOrder.AMOUNT, ButtonToolTips.SortBy, ButtonToolTips.NumberOfItems);
-            this.registerApp(68, Settings.SORT_BY, SortOrder.INVTWEAKS, ButtonToolTips.SortBy, ButtonToolTips.InventoryTweaks);
+            this.registerApp(65, Settings.SORT_BY, SortOrder.AMOUNT, ButtonToolTips.SortBy,
+                    ButtonToolTips.NumberOfItems);
+            this.registerApp(68, Settings.SORT_BY, SortOrder.INVTWEAKS, ButtonToolTips.SortBy,
+                    ButtonToolTips.InventoryTweaks);
             this.registerApp(69, Settings.SORT_BY, SortOrder.MOD, ButtonToolTips.SortBy, ButtonToolTips.Mod);
 
-            this.registerApp(66, Settings.ACTIONS, ActionItems.WRENCH, ButtonToolTips.PartitionStorage, ButtonToolTips.PartitionStorageHint);
-            this.registerApp(6, Settings.ACTIONS, ActionItems.CLOSE, ButtonToolTips.Clear, ButtonToolTips.ClearSettings);
+            this.registerApp(66, Settings.ACTIONS, ActionItems.WRENCH, ButtonToolTips.PartitionStorage,
+                    ButtonToolTips.PartitionStorageHint);
+            this.registerApp(6, Settings.ACTIONS, ActionItems.CLOSE, ButtonToolTips.Clear,
+                    ButtonToolTips.ClearSettings);
             this.registerApp(6, Settings.ACTIONS, ActionItems.STASH, ButtonToolTips.Stash, ButtonToolTips.StashDesc);
 
-            this.registerApp(6 + 4 * 16, Settings.ACTIONS, ActionItems.MULTIPLY_BY_TWO, ButtonToolTips.MultiplyByTwo, ButtonToolTips.MultiplyByTwoDesc);
-            this.registerApp(7 + 4 * 16, Settings.ACTIONS, ActionItems.MULTIPLY_BY_THREE, ButtonToolTips.MultiplyByThree, ButtonToolTips.MultiplyByThreeDesc);
-            this.registerApp(8 + 4 * 16, Settings.ACTIONS, ActionItems.INCREASE_BY_ONE, ButtonToolTips.IncreaseByOne, ButtonToolTips.IncreaseByOneDesc);
-            this.registerApp(9 + 4 * 16, Settings.ACTIONS, ActionItems.DIVIDE_BY_TWO, ButtonToolTips.DivideByTwo, ButtonToolTips.DivideByTwoDesc);
-            this.registerApp(10 + 4 * 16, Settings.ACTIONS, ActionItems.DIVIDE_BY_THREE, ButtonToolTips.DivideByThree, ButtonToolTips.DivideByThreeDesc);
-            this.registerApp(11 + 4 * 16, Settings.ACTIONS, ActionItems.DECREASE_BY_ONE, ButtonToolTips.DecreaseByOne, ButtonToolTips.DecreaseByOneDesc);
-            this.registerApp(12 + 4 * 16, Settings.ACTIONS, ActionItems.MAX_COUNT, ButtonToolTips.MaxCount, ButtonToolTips.MaxCountDesc);
+            this.registerApp(6 + 4 * 16, Settings.ACTIONS, ActionItems.MULTIPLY_BY_TWO, ButtonToolTips.MultiplyByTwo,
+                    ButtonToolTips.MultiplyByTwoDesc);
+            this.registerApp(7 + 4 * 16, Settings.ACTIONS, ActionItems.MULTIPLY_BY_THREE,
+                    ButtonToolTips.MultiplyByThree, ButtonToolTips.MultiplyByThreeDesc);
+            this.registerApp(8 + 4 * 16, Settings.ACTIONS, ActionItems.INCREASE_BY_ONE, ButtonToolTips.IncreaseByOne,
+                    ButtonToolTips.IncreaseByOneDesc);
+            this.registerApp(9 + 4 * 16, Settings.ACTIONS, ActionItems.DIVIDE_BY_TWO, ButtonToolTips.DivideByTwo,
+                    ButtonToolTips.DivideByTwoDesc);
+            this.registerApp(10 + 4 * 16, Settings.ACTIONS, ActionItems.DIVIDE_BY_THREE, ButtonToolTips.DivideByThree,
+                    ButtonToolTips.DivideByThreeDesc);
+            this.registerApp(11 + 4 * 16, Settings.ACTIONS, ActionItems.DECREASE_BY_ONE, ButtonToolTips.DecreaseByOne,
+                    ButtonToolTips.DecreaseByOneDesc);
+            this.registerApp(12 + 4 * 16, Settings.ACTIONS, ActionItems.MAX_COUNT, ButtonToolTips.MaxCount,
+                    ButtonToolTips.MaxCountDesc);
 
-            this.registerApp(6 + 5 * 16, Settings.ACTIONS, ActionItems.MOLECULAR_ASSEMBLERS_ON, ButtonToolTips.ToggleMolecularAssemblers, ButtonToolTips.ToggleMolecularAssemblersOnDesc);
-            this.registerApp(7 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_FULL_INTERFACES_ON, ButtonToolTips.ToggleShowFullInterfaces, ButtonToolTips.ToggleShowFullInterfacesOnDesc);
-            this.registerApp(8 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_FULL_INTERFACES_OFF, ButtonToolTips.ToggleShowFullInterfaces, ButtonToolTips.ToggleShowFullInterfacesOffDesc);
-            this.registerApp(9 + 5 * 16, Settings.ACTIONS, ActionItems.MOLECULAR_ASSEMBLERS_OFF, ButtonToolTips.ToggleMolecularAssemblers, ButtonToolTips.ToggleMolecularAssemblersOffDesc);
-            this.registerApp(6 + 6 * 16, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE, ButtonToolTips.HighlightInterface, "");
-            this.registerApp(4 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_OFF, ButtonToolTips.ToggleShowOnlyInvalidInterface, ButtonToolTips.ToggleShowOnlyInvalidInterfaceOffDesc);
-            this.registerApp(5 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_ON, ButtonToolTips.ToggleShowOnlyInvalidInterface, ButtonToolTips.ToggleShowOnlyInvalidInterfaceOnDesc);
+            this.registerApp(6 + 5 * 16, Settings.ACTIONS, ActionItems.MOLECULAR_ASSEMBLERS_ON,
+                    ButtonToolTips.ToggleMolecularAssemblers, ButtonToolTips.ToggleMolecularAssemblersOnDesc);
+            this.registerApp(7 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_FULL_INTERFACES_ON,
+                    ButtonToolTips.ToggleShowFullInterfaces, ButtonToolTips.ToggleShowFullInterfacesOnDesc);
+            this.registerApp(8 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_FULL_INTERFACES_OFF,
+                    ButtonToolTips.ToggleShowFullInterfaces, ButtonToolTips.ToggleShowFullInterfacesOffDesc);
+            this.registerApp(9 + 5 * 16, Settings.ACTIONS, ActionItems.MOLECULAR_ASSEMBLERS_OFF,
+                    ButtonToolTips.ToggleMolecularAssemblers, ButtonToolTips.ToggleMolecularAssemblersOffDesc);
+            this.registerApp(6 + 6 * 16, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE,
+                    ButtonToolTips.HighlightInterface, "");
+            this.registerApp(4 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_OFF,
+                    ButtonToolTips.ToggleShowOnlyInvalidInterface,
+                    ButtonToolTips.ToggleShowOnlyInvalidInterfaceOffDesc);
+            this.registerApp(5 + 5 * 16, Settings.ACTIONS, ActionItems.TOGGLE_SHOW_ONLY_INVALID_PATTERNS_ON,
+                    ButtonToolTips.ToggleShowOnlyInvalidInterface, ButtonToolTips.ToggleShowOnlyInvalidInterfaceOnDesc);
 
-            this.registerApp(8, Settings.ACTIONS, ActionItems.ENCODE, ButtonToolTips.Encode, ButtonToolTips.EncodeDescription);
-            this.registerApp(4 + 3 * 16, Settings.ACTIONS, ItemSubstitution.ENABLED, ButtonToolTips.Substitutions, ButtonToolTips.SubstitutionsDescEnabled);
-            this.registerApp(7 + 3 * 16, Settings.ACTIONS, ItemSubstitution.DISABLED, ButtonToolTips.Substitutions, ButtonToolTips.SubstitutionsDescDisabled);
+            this.registerApp(8, Settings.ACTIONS, ActionItems.ENCODE, ButtonToolTips.Encode,
+                    ButtonToolTips.EncodeDescription);
+            this.registerApp(4 + 3 * 16, Settings.ACTIONS, ItemSubstitution.ENABLED, ButtonToolTips.Substitutions,
+                    ButtonToolTips.SubstitutionsDescEnabled);
+            this.registerApp(7 + 3 * 16, Settings.ACTIONS, ItemSubstitution.DISABLED, ButtonToolTips.Substitutions,
+                    ButtonToolTips.SubstitutionsDescDisabled);
 
             this.registerApp(16, Settings.VIEW_MODE, ViewItems.STORED, ButtonToolTips.View, ButtonToolTips.StoredItems);
-            this.registerApp(18, Settings.VIEW_MODE, ViewItems.ALL, ButtonToolTips.View, ButtonToolTips.StoredCraftable);
-            this.registerApp(19, Settings.VIEW_MODE, ViewItems.CRAFTABLE, ButtonToolTips.View, ButtonToolTips.Craftable);
+            this.registerApp(18, Settings.VIEW_MODE, ViewItems.ALL, ButtonToolTips.View,
+                    ButtonToolTips.StoredCraftable);
+            this.registerApp(19, Settings.VIEW_MODE, ViewItems.CRAFTABLE, ButtonToolTips.View,
+                    ButtonToolTips.Craftable);
 
-            this.registerApp(16 * 6, Settings.FUZZY_MODE, FuzzyMode.PERCENT_25, ButtonToolTips.FuzzyMode, ButtonToolTips.FZPercent_25);
-            this.registerApp(16 * 6 + 1, Settings.FUZZY_MODE, FuzzyMode.PERCENT_50, ButtonToolTips.FuzzyMode, ButtonToolTips.FZPercent_50);
-            this.registerApp(16 * 6 + 2, Settings.FUZZY_MODE, FuzzyMode.PERCENT_75, ButtonToolTips.FuzzyMode, ButtonToolTips.FZPercent_75);
-            this.registerApp(16 * 6 + 3, Settings.FUZZY_MODE, FuzzyMode.PERCENT_99, ButtonToolTips.FuzzyMode, ButtonToolTips.FZPercent_99);
-            this.registerApp(16 * 6 + 4, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL, ButtonToolTips.FuzzyMode, ButtonToolTips.FZIgnoreAll);
+            this.registerApp(16 * 6, Settings.FUZZY_MODE, FuzzyMode.PERCENT_25, ButtonToolTips.FuzzyMode,
+                    ButtonToolTips.FZPercent_25);
+            this.registerApp(16 * 6 + 1, Settings.FUZZY_MODE, FuzzyMode.PERCENT_50, ButtonToolTips.FuzzyMode,
+                    ButtonToolTips.FZPercent_50);
+            this.registerApp(16 * 6 + 2, Settings.FUZZY_MODE, FuzzyMode.PERCENT_75, ButtonToolTips.FuzzyMode,
+                    ButtonToolTips.FZPercent_75);
+            this.registerApp(16 * 6 + 3, Settings.FUZZY_MODE, FuzzyMode.PERCENT_99, ButtonToolTips.FuzzyMode,
+                    ButtonToolTips.FZPercent_99);
+            this.registerApp(16 * 6 + 4, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL, ButtonToolTips.FuzzyMode,
+                    ButtonToolTips.FZIgnoreAll);
 
-            this.registerApp(80, Settings.FULLNESS_MODE, FullnessMode.EMPTY, ButtonToolTips.OperationMode, ButtonToolTips.MoveWhenEmpty);
-            this.registerApp(81, Settings.FULLNESS_MODE, FullnessMode.HALF, ButtonToolTips.OperationMode, ButtonToolTips.MoveWhenWorkIsDone);
-            this.registerApp(82, Settings.FULLNESS_MODE, FullnessMode.FULL, ButtonToolTips.OperationMode, ButtonToolTips.MoveWhenFull);
+            this.registerApp(80, Settings.FULLNESS_MODE, FullnessMode.EMPTY, ButtonToolTips.OperationMode,
+                    ButtonToolTips.MoveWhenEmpty);
+            this.registerApp(81, Settings.FULLNESS_MODE, FullnessMode.HALF, ButtonToolTips.OperationMode,
+                    ButtonToolTips.MoveWhenWorkIsDone);
+            this.registerApp(82, Settings.FULLNESS_MODE, FullnessMode.FULL, ButtonToolTips.OperationMode,
+                    ButtonToolTips.MoveWhenFull);
 
-            this.registerApp(16 + 5, Settings.BLOCK, YesNo.YES, ButtonToolTips.InterfaceBlockingMode, ButtonToolTips.Blocking);
-            this.registerApp(16 + 4, Settings.BLOCK, YesNo.NO, ButtonToolTips.InterfaceBlockingMode, ButtonToolTips.NonBlocking);
+            this.registerApp(16 + 5, Settings.BLOCK, YesNo.YES, ButtonToolTips.InterfaceBlockingMode,
+                    ButtonToolTips.Blocking);
+            this.registerApp(16 + 4, Settings.BLOCK, YesNo.NO, ButtonToolTips.InterfaceBlockingMode,
+                    ButtonToolTips.NonBlocking);
 
             this.registerApp(16 + 3, Settings.CRAFT_ONLY, YesNo.YES, ButtonToolTips.Craft, ButtonToolTips.CraftOnly);
             this.registerApp(16 + 2, Settings.CRAFT_ONLY, YesNo.NO, ButtonToolTips.Craft, ButtonToolTips.CraftEither);
 
-            this.registerApp(16 * 11 + 2, Settings.CRAFT_VIA_REDSTONE, YesNo.YES, ButtonToolTips.EmitterMode, ButtonToolTips.CraftViaRedstone);
-            this.registerApp(16 * 11 + 1, Settings.CRAFT_VIA_REDSTONE, YesNo.NO, ButtonToolTips.EmitterMode, ButtonToolTips.EmitWhenCrafting);
+            this.registerApp(16 * 11 + 2, Settings.CRAFT_VIA_REDSTONE, YesNo.YES, ButtonToolTips.EmitterMode,
+                    ButtonToolTips.CraftViaRedstone);
+            this.registerApp(16 * 11 + 1, Settings.CRAFT_VIA_REDSTONE, YesNo.NO, ButtonToolTips.EmitterMode,
+                    ButtonToolTips.EmitWhenCrafting);
 
-            this.registerApp(16 * 3 + 5, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY, ButtonToolTips.ReportInaccessibleItems, ButtonToolTips.ReportInaccessibleItemsNo);
-            this.registerApp(16 * 3 + 6, Settings.STORAGE_FILTER, StorageFilter.NONE, ButtonToolTips.ReportInaccessibleItems, ButtonToolTips.ReportInaccessibleItemsYes);
+            this.registerApp(16 * 3 + 5, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY,
+                    ButtonToolTips.ReportInaccessibleItems, ButtonToolTips.ReportInaccessibleItemsNo);
+            this.registerApp(16 * 3 + 6, Settings.STORAGE_FILTER, StorageFilter.NONE,
+                    ButtonToolTips.ReportInaccessibleItems, ButtonToolTips.ReportInaccessibleItemsYes);
 
-            this.registerApp(16 * 14, Settings.PLACE_BLOCK, YesNo.YES, ButtonToolTips.BlockPlacement, ButtonToolTips.BlockPlacementYes);
-            this.registerApp(16 * 14 + 1, Settings.PLACE_BLOCK, YesNo.NO, ButtonToolTips.BlockPlacement, ButtonToolTips.BlockPlacementNo);
+            this.registerApp(16 * 14, Settings.PLACE_BLOCK, YesNo.YES, ButtonToolTips.BlockPlacement,
+                    ButtonToolTips.BlockPlacementYes);
+            this.registerApp(16 * 14 + 1, Settings.PLACE_BLOCK, YesNo.NO, ButtonToolTips.BlockPlacement,
+                    ButtonToolTips.BlockPlacementNo);
 
-            this.registerApp(16 * 15, Settings.SCHEDULING_MODE, SchedulingMode.DEFAULT, ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeDefault);
-            this.registerApp(16 * 15 + 1, Settings.SCHEDULING_MODE, SchedulingMode.ROUNDROBIN, ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeRoundRobin);
-            this.registerApp(16 * 15 + 2, Settings.SCHEDULING_MODE, SchedulingMode.RANDOM, ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeRandom);
+            this.registerApp(16 * 15, Settings.SCHEDULING_MODE, SchedulingMode.DEFAULT, ButtonToolTips.SchedulingMode,
+                    ButtonToolTips.SchedulingModeDefault);
+            this.registerApp(16 * 15 + 1, Settings.SCHEDULING_MODE, SchedulingMode.ROUNDROBIN,
+                    ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeRoundRobin);
+            this.registerApp(16 * 15 + 2, Settings.SCHEDULING_MODE, SchedulingMode.RANDOM,
+                    ButtonToolTips.SchedulingMode, ButtonToolTips.SchedulingModeRandom);
 
-            this.registerApp(10, Settings.UNLOCK,LockCraftingMode.NONE,ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingModeNone);
-            this.registerApp(7, Settings.UNLOCK,LockCraftingMode.LOCK_UNTIL_RESULT,ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingUntilResultReturned);
-            this.registerApp(0, Settings.UNLOCK, LockCraftingMode.LOCK_WHILE_LOW, ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingWhileRedstoneLow);
-            this.registerApp(1, Settings.UNLOCK, LockCraftingMode.LOCK_WHILE_HIGH, ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingWhileRedstoneHigh);
-            this.registerApp(2, Settings.UNLOCK, LockCraftingMode.LOCK_UNTIL_PULSE, ButtonToolTips.LockCraftingMode, ButtonToolTips.LockCraftingUntilRedstonePulse);
+            this.registerApp(10, Settings.UNLOCK, LockCraftingMode.NONE, ButtonToolTips.LockCraftingMode,
+                    ButtonToolTips.LockCraftingModeNone);
+            this.registerApp(7, Settings.UNLOCK, LockCraftingMode.LOCK_UNTIL_RESULT, ButtonToolTips.LockCraftingMode,
+                    ButtonToolTips.LockCraftingUntilResultReturned);
+            this.registerApp(0, Settings.UNLOCK, LockCraftingMode.LOCK_WHILE_LOW, ButtonToolTips.LockCraftingMode,
+                    ButtonToolTips.LockCraftingWhileRedstoneLow);
+            this.registerApp(1, Settings.UNLOCK, LockCraftingMode.LOCK_WHILE_HIGH, ButtonToolTips.LockCraftingMode,
+                    ButtonToolTips.LockCraftingWhileRedstoneHigh);
+            this.registerApp(2, Settings.UNLOCK, LockCraftingMode.LOCK_UNTIL_PULSE, ButtonToolTips.LockCraftingMode,
+                    ButtonToolTips.LockCraftingUntilRedstonePulse);
         }
     }
 
-    private void registerApp(final int iconIndex, final Settings setting, final Enum val, final ButtonToolTips title, final Object hint) {
+    private void registerApp(final int iconIndex, final Settings setting, final Enum val, final ButtonToolTips title,
+            final Object hint) {
         final ButtonAppearance a = new ButtonAppearance();
         a.displayName = title.getUnlocalized();
         a.displayValue = (String) (hint instanceof String ? hint : ((ButtonToolTips) hint).getUnlocalized());
@@ -201,8 +284,10 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                     GlStateManager.color(0.5f, 0.5f, 0.5f, 1.0f);
                 }
 
-                par1Minecraft.renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
-                this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
+                par1Minecraft.renderEngine
+                        .bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
+                this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width
+                        && par3 < this.y + this.height;
 
                 final int uv_y = (int) Math.floor(iconIndex / 16);
                 final int uv_x = iconIndex - uv_y * 16;
@@ -219,8 +304,10 @@ public class GuiImgButton extends GuiButton implements ITooltip {
                     GlStateManager.color(0.5f, 0.5f, 0.5f, 1.0f);
                 }
 
-                par1Minecraft.renderEngine.bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
-                this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
+                par1Minecraft.renderEngine
+                        .bindTexture(new ResourceLocation("appliedenergistics2", "textures/guis/states.png"));
+                this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width
+                        && par3 < this.y + this.height;
 
                 final int uv_y = (int) Math.floor(iconIndex / 16);
                 final int uv_x = iconIndex - uv_y * 16;
@@ -258,7 +345,8 @@ public class GuiImgButton extends GuiButton implements ITooltip {
         String displayValue = null;
 
         if (this.buttonSetting != null && this.currentValue != null) {
-            final ButtonAppearance buttonAppearance = appearances.get(new EnumPair(this.buttonSetting, this.currentValue));
+            final ButtonAppearance buttonAppearance = appearances
+                    .get(new EnumPair(this.buttonSetting, this.currentValue));
             if (buttonAppearance == null) {
                 return "No Such Message";
             }

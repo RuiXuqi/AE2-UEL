@@ -18,10 +18,17 @@
 
 package appeng.client.render.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
-import appeng.decorative.solid.BlockQuartzGlass;
-import appeng.decorative.solid.GlassState;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Strings;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -36,14 +43,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
-import java.util.stream.IntStream;
-
+import appeng.decorative.solid.BlockQuartzGlass;
+import appeng.decorative.solid.GlassState;
 
 class GlassBakedModel implements IBakedModel {
 
@@ -74,7 +75,7 @@ class GlassBakedModel implements IBakedModel {
     private final VertexFormat vertexFormat;
 
     public GlassBakedModel(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        this.glassTextures = new TextureAtlasSprite[]{
+        this.glassTextures = new TextureAtlasSprite[] {
                 bakedTextureGetter.apply(TEXTURE_A),
                 bakedTextureGetter.apply(TEXTURE_B),
                 bakedTextureGetter.apply(TEXTURE_C),
@@ -126,14 +127,12 @@ class GlassBakedModel implements IBakedModel {
         quads.add(this.createQuad(side, corners, glassTexture, u, v));
 
         /*
-         * This needs some explanation:
-         * The bit-field contains 4-bits, one for each direction that a frame may be drawn.
-         * Converted to a number, the bit-field is then used as an index into the list of
-         * frame textures, which have been created in such a way that their filenames
-         * indicate, in which directions they contain borders.
-         * i.e. bitmask = 0101 means a border should be drawn up and down (in terms of u,v space).
-         * Converted to a number, this bitmask is 5. So the texture at index 5 is used.
-         * That texture had "0101" in its filename to indicate this.
+         * This needs some explanation: The bit-field contains 4-bits, one for each direction that a frame may be drawn.
+         * Converted to a number, the bit-field is then used as an index into the list of frame textures, which have
+         * been created in such a way that their filenames indicate, in which directions they contain borders. i.e.
+         * bitmask = 0101 means a border should be drawn up and down (in terms of u,v space). Converted to a number,
+         * this bitmask is 5. So the texture at index 5 is used. That texture had "0101" in its filename to indicate
+         * this.
          */
         final int edgeBitmask = makeBitmask(glassState, side);
         final TextureAtlasSprite sideSprite = this.frameTextures[edgeBitmask];
@@ -167,7 +166,8 @@ class GlassBakedModel implements IBakedModel {
         }
     }
 
-    private static int makeBitmask(GlassState state, EnumFacing up, EnumFacing right, EnumFacing down, EnumFacing left) {
+    private static int makeBitmask(GlassState state, EnumFacing up, EnumFacing right, EnumFacing down,
+            EnumFacing left) {
 
         int bitmask = 0;
 
@@ -186,11 +186,14 @@ class GlassBakedModel implements IBakedModel {
         return bitmask;
     }
 
-    private BakedQuad createQuad(EnumFacing side, List<Vec3d> corners, TextureAtlasSprite sprite, float uOffset, float vOffset) {
-        return this.createQuad(side, corners.get(0), corners.get(1), corners.get(2), corners.get(3), sprite, uOffset, vOffset);
+    private BakedQuad createQuad(EnumFacing side, List<Vec3d> corners, TextureAtlasSprite sprite, float uOffset,
+            float vOffset) {
+        return this.createQuad(side, corners.get(0), corners.get(1), corners.get(2), corners.get(3), sprite, uOffset,
+                vOffset);
     }
 
-    private BakedQuad createQuad(EnumFacing side, Vec3d c1, Vec3d c2, Vec3d c3, Vec3d c4, TextureAtlasSprite sprite, float uOffset, float vOffset) {
+    private BakedQuad createQuad(EnumFacing side, Vec3d c1, Vec3d c2, Vec3d c3, Vec3d c4, TextureAtlasSprite sprite,
+            float uOffset, float vOffset) {
         Vec3d normal = new Vec3d(side.getDirectionVec());
 
         // Apply the u,v shift.
@@ -211,10 +214,10 @@ class GlassBakedModel implements IBakedModel {
 
     /*
      * This method is as complicated as it is, because the order in which we push data into the vertexbuffer actually
-     * has to be precisely the order
-     * in which the vertex elements had been declared in the vertex format.
+     * has to be precisely the order in which the vertex elements had been declared in the vertex format.
      */
-    private void putVertex(UnpackedBakedQuad.Builder builder, Vec3d normal, double x, double y, double z, TextureAtlasSprite sprite, float u, float v) {
+    private void putVertex(UnpackedBakedQuad.Builder builder, Vec3d normal, double x, double y, double z,
+            TextureAtlasSprite sprite, float u, float v) {
         for (int e = 0; e < this.vertexFormat.getElementCount(); e++) {
             switch (this.vertexFormat.getElement(e).getUsage()) {
                 case POSITION:

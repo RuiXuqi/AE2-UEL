@@ -18,18 +18,19 @@
 
 package appeng.items.misc;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.util.AEColor;
 import appeng.bootstrap.IItemRendering;
 import appeng.bootstrap.ItemRenderingCustomizer;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemStack;
-
 
 public class ItemPaintBallRendering extends ItemRenderingCustomizer {
 
-    private static final ModelResourceLocation MODEL_NORMAL = new ModelResourceLocation("appliedenergistics2:paint_ball");
-    private static final ModelResourceLocation MODEL_SHIMMER = new ModelResourceLocation("appliedenergistics2:paint_ball_shimmer");
+    private static final ModelResourceLocation MODEL_NORMAL = new ModelResourceLocation(
+            "appliedenergistics2:paint_ball");
+    private static final ModelResourceLocation MODEL_SHIMMER = new ModelResourceLocation(
+            "appliedenergistics2:paint_ball_shimmer");
 
     @Override
     public void customize(IItemRendering rendering) {

@@ -18,6 +18,7 @@
 
 package appeng.recipes;
 
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
@@ -34,8 +35,6 @@ import appeng.items.materials.MaterialType;
 import appeng.items.misc.ItemCrystalSeed;
 import appeng.items.parts.ItemPart;
 import appeng.items.parts.PartType;
-import net.minecraft.item.ItemStack;
-
 
 public class AEItemResolver implements ISubItemResolver {
 

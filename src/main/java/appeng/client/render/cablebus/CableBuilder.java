@@ -18,20 +18,19 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.*;
+import java.util.function.Function;
 
-import appeng.api.util.AECableType;
-import appeng.api.util.AEColor;
-import appeng.core.AppEng;
-import appeng.core.AEConfig;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.*;
-import java.util.function.Function;
-
+import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
 
 /**
  * A helper class that builds quads for cable connections.
@@ -143,7 +142,8 @@ class CableBuilder {
         }
     }
 
-    public void addGlassConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType, boolean cableBusAdjacent, List<BakedQuad> quadsOut) {
+    public void addGlassConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType,
+            boolean cableBusAdjacent, List<BakedQuad> quadsOut) {
         CubeBuilder cubeBuilder = new CubeBuilder(this.format, quadsOut);
 
         // We render all faces except the one on the connection side
@@ -208,7 +208,8 @@ class CableBuilder {
         }
     }
 
-    public void addConstrainedGlassConnection(EnumFacing facing, AEColor cableColor, int distanceFromEdge, List<BakedQuad> quadsOut) {
+    public void addConstrainedGlassConnection(EnumFacing facing, AEColor cableColor, int distanceFromEdge,
+            List<BakedQuad> quadsOut) {
 
         // Glass connections reach only 6 voxels from the edge
         if (distanceFromEdge >= 6) {
@@ -242,7 +243,8 @@ class CableBuilder {
         }
     }
 
-    public void addCoveredConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType, boolean cableBusAdjacent, List<BakedQuad> quadsOut) {
+    public void addCoveredConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType,
+            boolean cableBusAdjacent, List<BakedQuad> quadsOut) {
 
         CubeBuilder cubeBuilder = new CubeBuilder(this.format, quadsOut);
 
@@ -298,7 +300,8 @@ class CableBuilder {
         }
     }
 
-    public void addConstrainedCoveredConnection(EnumFacing facing, AEColor cableColor, int distanceFromEdge, List<BakedQuad> quadsOut) {
+    public void addConstrainedCoveredConnection(EnumFacing facing, AEColor cableColor, int distanceFromEdge,
+            List<BakedQuad> quadsOut) {
         // The core of a covered cable reaches up to 5 voxels from the block edge, so
         // drawing a connection can only occur from there onwards
         if (distanceFromEdge >= 5) {
@@ -314,7 +317,8 @@ class CableBuilder {
 
     }
 
-    public void addSmartConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType, boolean cableBusAdjacent, int channels, List<BakedQuad> quadsOut) {
+    public void addSmartConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType,
+            boolean cableBusAdjacent, int channels, List<BakedQuad> quadsOut) {
         if (connectionType == AECableType.COVERED || connectionType == AECableType.GLASS) {
             this.addCoveredConnection(facing, cableColor, connectionType, cableBusAdjacent, quadsOut);
             return;
@@ -328,8 +332,10 @@ class CableBuilder {
         TextureAtlasSprite texture = this.connectionTextures.get(AECableType.SMART).get(cableColor);
         cubeBuilder.setTexture(texture);
 
-        TextureAtlasSprite oddChannel = this.smartCableTextures.getOddTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
-        TextureAtlasSprite evenChannel = this.smartCableTextures.getEvenTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
+        TextureAtlasSprite oddChannel = this.smartCableTextures
+                .getOddTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
+        TextureAtlasSprite evenChannel = this.smartCableTextures
+                .getEvenTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
 
         // Thin part of connector, here to prevent the color of the channels
         // from leaking into it
@@ -355,7 +361,6 @@ class CableBuilder {
             cubeBuilder.setTexture(texture);
         }
 
-
         // Render the channel indicators brightly lit at night
         cubeBuilder.setRenderFullBright(true);
 
@@ -368,7 +373,8 @@ class CableBuilder {
         addCoveredCableSizedCube(facing, cubeBuilder);
     }
 
-    public void addStraightSmartConnection(EnumFacing facing, AEColor cableColor, int channels, List<BakedQuad> quadsOut) {
+    public void addStraightSmartConnection(EnumFacing facing, AEColor cableColor, int channels,
+            List<BakedQuad> quadsOut) {
         CubeBuilder cubeBuilder = new CubeBuilder(this.format, quadsOut);
 
         TextureAtlasSprite texture = this.connectionTextures.get(AECableType.SMART).get(cableColor);
@@ -378,8 +384,10 @@ class CableBuilder {
 
         addStraightCoveredCableSizedCube(facing, cubeBuilder);
 
-        TextureAtlasSprite oddChannel = this.smartCableTextures.getOddTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
-        TextureAtlasSprite evenChannel = this.smartCableTextures.getEvenTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
+        TextureAtlasSprite oddChannel = this.smartCableTextures
+                .getOddTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
+        TextureAtlasSprite evenChannel = this.smartCableTextures
+                .getEvenTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
 
         // Render the channel indicators brightly lit at night
         cubeBuilder.setRenderFullBright(true);
@@ -393,7 +401,8 @@ class CableBuilder {
         addStraightCoveredCableSizedCube(facing, cubeBuilder);
     }
 
-    public void addConstrainedSmartConnection(EnumFacing facing, AEColor cableColor, int distanceFromEdge, int channels, List<BakedQuad> quadsOut) {
+    public void addConstrainedSmartConnection(EnumFacing facing, AEColor cableColor, int distanceFromEdge, int channels,
+            List<BakedQuad> quadsOut) {
         // Same as with covered cables, the smart cable's core extends up to 5 voxels away from the edge.
         // Drawing a connection to any point before that point is fruitless
         if (distanceFromEdge >= 5) {
@@ -407,8 +416,10 @@ class CableBuilder {
 
         addCoveredCableSizedCube(facing, distanceFromEdge, cubeBuilder);
 
-        TextureAtlasSprite oddChannel = this.smartCableTextures.getOddTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
-        TextureAtlasSprite evenChannel = this.smartCableTextures.getEvenTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
+        TextureAtlasSprite oddChannel = this.smartCableTextures
+                .getOddTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
+        TextureAtlasSprite evenChannel = this.smartCableTextures
+                .getEvenTextureForChannels((int) (channels / (AEConfig.instance().getNormalChannelCapacity() / 8)));
 
         // Render the channel indicators brightly lit at night
         cubeBuilder.setRenderFullBright(true);
@@ -422,9 +433,11 @@ class CableBuilder {
         addCoveredCableSizedCube(facing, distanceFromEdge, cubeBuilder);
     }
 
-    public void addDenseCoveredConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType, boolean cableBusAdjacent, List<BakedQuad> quadsOut) {
+    public void addDenseCoveredConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType,
+            boolean cableBusAdjacent, List<BakedQuad> quadsOut) {
         // Dense cables only render their connections as dense if the adjacent blocks actually wants that
-        if (connectionType == AECableType.COVERED || connectionType == AECableType.SMART || connectionType == AECableType.GLASS) {
+        if (connectionType == AECableType.COVERED || connectionType == AECableType.SMART
+                || connectionType == AECableType.GLASS) {
             this.addCoveredConnection(facing, cableColor, connectionType, cableBusAdjacent, quadsOut);
             return;
         }
@@ -444,7 +457,8 @@ class CableBuilder {
         cubeBuilder.setTexture(texture);
     }
 
-    public void addDenseSmartConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType, boolean cableBusAdjacent, int channels, List<BakedQuad> quadsOut) {
+    public void addDenseSmartConnection(EnumFacing facing, AEColor cableColor, AECableType connectionType,
+            boolean cableBusAdjacent, int channels, List<BakedQuad> quadsOut) {
         // Dense cables only render their connections as dense if the adjacent blocks actually wants that
         if (connectionType == AECableType.SMART) {
             this.addSmartConnection(facing, cableColor, connectionType, cableBusAdjacent, channels, quadsOut);
@@ -501,7 +515,8 @@ class CableBuilder {
         addStraightDenseCableSizedCube(facing, cubeBuilder);
     }
 
-    public void addStraightDenseSmartConnection(EnumFacing facing, AEColor cableColor, int channels, List<BakedQuad> quadsOut) {
+    public void addStraightDenseSmartConnection(EnumFacing facing, AEColor cableColor, int channels,
+            List<BakedQuad> quadsOut) {
         CubeBuilder cubeBuilder = new CubeBuilder(this.format, quadsOut);
 
         TextureAtlasSprite texture = this.connectionTextures.get(AECableType.DENSE_SMART).get(cableColor);
@@ -661,9 +676,8 @@ class CableBuilder {
 
     /**
      * This renders a slightly bigger covered cable connection to the specified side. This is used to connect cable
-     * cores with adjacent machines
-     * that do not want to be connected to using a glass cable connection. This applies to most machines (interfaces,
-     * etc.)
+     * cores with adjacent machines that do not want to be connected to using a glass cable connection. This applies to
+     * most machines (interfaces, etc.)
      */
     private void addBigCoveredCableSizedCube(EnumFacing facing, CubeBuilder cubeBuilder) {
         switch (facing) {

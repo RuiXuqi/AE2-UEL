@@ -18,6 +18,14 @@
 
 package appeng.me.cache;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -33,14 +41,6 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.me.storage.ItemWatcher;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
-
 
 public class NetworkMonitor<T extends IAEStack<T>> implements IMEMonitor<T> {
     @Nonnull
@@ -201,9 +201,9 @@ public class NetworkMonitor<T extends IAEStack<T>> implements IMEMonitor<T> {
         this.sendEvent = true;
 
         for (final T change : changes) {
-            //T change = changed;
+            // T change = changed;
             if (!add && change != null) {
-                //change = changed.copy();
+                // change = changed.copy();
                 change.setStackSize(-change.getStackSize());
             }
 

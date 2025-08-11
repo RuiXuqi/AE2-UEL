@@ -18,12 +18,11 @@
 
 package appeng.client.me;
 
-
-import appeng.tile.inventory.AppEngInternalInventory;
-import net.minecraft.util.text.translation.I18n;
-
 import javax.annotation.Nonnull;
 
+import net.minecraft.util.text.translation.I18n;
+
+import appeng.tile.inventory.AppEngInternalInventory;
 
 public class ClientDCInternalInv implements Comparable<ClientDCInternalInv> {
 
@@ -40,7 +39,8 @@ public class ClientDCInternalInv implements Comparable<ClientDCInternalInv> {
         this.sortBy = sortBy;
     }
 
-    public ClientDCInternalInv(final int size, final long id, final long sortBy, final String unlocalizedName, int stackSize) {
+    public ClientDCInternalInv(final int size, final long id, final long sortBy, final String unlocalizedName,
+            int stackSize) {
         this.inventory = new AppEngInternalInventory(null, size, stackSize);
         this.unlocalizedName = unlocalizedName;
         this.id = id;

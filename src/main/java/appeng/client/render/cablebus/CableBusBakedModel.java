@@ -18,16 +18,17 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.*;
+import java.util.Map.Entry;
 
-import appeng.api.parts.IPartBakedModel;
-import appeng.api.parts.IPartModel;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEColor;
-import appeng.block.networking.BlockCableBus;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.Weigher;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -42,11 +43,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
-
+import appeng.api.parts.IPartBakedModel;
+import appeng.api.parts.IPartModel;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.block.networking.BlockCableBus;
 
 public class CableBusBakedModel implements IBakedModel {
 
@@ -62,7 +63,8 @@ public class CableBusBakedModel implements IBakedModel {
 
     private final LoadingCache<CableBusRenderState, List<BakedQuad>> cableModelCache;
 
-    CableBusBakedModel(CableBuilder cableBuilder, FacadeBuilder facadeBuilder, Map<ResourceLocation, IBakedModel> partModels, TextureAtlasSprite particleTexture) {
+    CableBusBakedModel(CableBuilder cableBuilder, FacadeBuilder facadeBuilder,
+            Map<ResourceLocation, IBakedModel> partModels, TextureAtlasSprite particleTexture) {
         this.cableBuilder = cableBuilder;
         this.facadeBuilder = facadeBuilder;
         this.partModels = partModels;
@@ -117,7 +119,8 @@ public class CableBusBakedModel implements IBakedModel {
 
                     List<BakedQuad> partQuads;
                     if (bakedModel instanceof IPartBakedModel) {
-                        partQuads = ((IPartBakedModel) bakedModel).getPartQuads(renderState.getPartFlags().get(facing), rand);
+                        partQuads = ((IPartBakedModel) bakedModel).getPartQuads(renderState.getPartFlags().get(facing),
+                                rand);
                     } else {
                         partQuads = bakedModel.getQuads(state, null, rand);
                     }
@@ -172,7 +175,8 @@ public class CableBusBakedModel implements IBakedModel {
 
         // If the connection is straight, no busses are attached, and no covered core has been forced (in case of glass
         // cables), then render the cable as a simplified straight line.
-        boolean noAttachments = !renderState.getAttachments().values().stream().anyMatch(IPartModel::requireCableConnection);
+        boolean noAttachments = !renderState.getAttachments().values().stream()
+                .anyMatch(IPartModel::requireCableConnection);
         if (noAttachments && isStraightLine(cableType, connectionTypes)) {
             EnumFacing facing = connectionTypes.keySet().iterator().next();
 
@@ -184,13 +188,15 @@ public class CableBusBakedModel implements IBakedModel {
                     this.cableBuilder.addStraightCoveredConnection(facing, cableColor, quadsOut);
                     break;
                 case SMART:
-                    this.cableBuilder.addStraightSmartConnection(facing, cableColor, renderState.getChannelsOnSide().get(facing), quadsOut);
+                    this.cableBuilder.addStraightSmartConnection(facing, cableColor,
+                            renderState.getChannelsOnSide().get(facing), quadsOut);
                     break;
                 case DENSE_COVERED:
                     this.cableBuilder.addStraightDenseCoveredConnection(facing, cableColor, quadsOut);
                     break;
                 case DENSE_SMART:
-                    this.cableBuilder.addStraightDenseSmartConnection(facing, cableColor, renderState.getChannelsOnSide().get(facing), quadsOut);
+                    this.cableBuilder.addStraightDenseSmartConnection(facing, cableColor,
+                            renderState.getChannelsOnSide().get(facing), quadsOut);
                     break;
                 default:
                     break;
@@ -235,19 +241,24 @@ public class CableBusBakedModel implements IBakedModel {
 
             switch (cableType) {
                 case GLASS:
-                    this.cableBuilder.addGlassConnection(facing, cableColor, connectionType, cableBusAdjacent, quadsOut);
+                    this.cableBuilder.addGlassConnection(facing, cableColor, connectionType, cableBusAdjacent,
+                            quadsOut);
                     break;
                 case COVERED:
-                    this.cableBuilder.addCoveredConnection(facing, cableColor, connectionType, cableBusAdjacent, quadsOut);
+                    this.cableBuilder.addCoveredConnection(facing, cableColor, connectionType, cableBusAdjacent,
+                            quadsOut);
                     break;
                 case SMART:
-                    this.cableBuilder.addSmartConnection(facing, cableColor, connectionType, cableBusAdjacent, channels, quadsOut);
+                    this.cableBuilder.addSmartConnection(facing, cableColor, connectionType, cableBusAdjacent, channels,
+                            quadsOut);
                     break;
                 case DENSE_COVERED:
-                    this.cableBuilder.addDenseCoveredConnection(facing, cableColor, connectionType, cableBusAdjacent, quadsOut);
+                    this.cableBuilder.addDenseCoveredConnection(facing, cableColor, connectionType, cableBusAdjacent,
+                            quadsOut);
                     break;
                 case DENSE_SMART:
-                    this.cableBuilder.addDenseSmartConnection(facing, cableColor, connectionType, cableBusAdjacent, channels, quadsOut);
+                    this.cableBuilder.addDenseSmartConnection(facing, cableColor, connectionType, cableBusAdjacent,
+                            channels, quadsOut);
                     break;
                 default:
                     break;

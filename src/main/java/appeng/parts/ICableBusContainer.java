@@ -18,10 +18,9 @@
 
 package appeng.parts;
 
+import java.util.EnumSet;
+import java.util.Random;
 
-import appeng.api.parts.SelectedPart;
-import appeng.api.util.AEColor;
-import appeng.client.render.cablebus.CableBusRenderState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,9 +33,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.EnumSet;
-import java.util.Random;
-
+import appeng.api.parts.SelectedPart;
+import appeng.api.util.AEColor;
+import appeng.client.render.cablebus.CableBusRenderState;
 
 public interface ICableBusContainer {
 

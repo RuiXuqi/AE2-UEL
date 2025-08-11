@@ -18,6 +18,13 @@
 
 package appeng.tile.spatial;
 
+import java.io.IOException;
+import java.util.EnumSet;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -30,14 +37,8 @@ import appeng.me.cluster.implementations.SpatialPylonCluster;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.AENetworkProxyMultiblock;
 import appeng.tile.grid.AENetworkTile;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.util.EnumFacing;
 
-import java.io.IOException;
-import java.util.EnumSet;
-
-
-public class TileSpatialPylon extends AENetworkTile implements IAEMultiBlock {
+public class TileSpatialPylon extends AENetworkTile implements IAEMultiBlock<SpatialPylonCluster> {
 
     public static final int DISPLAY_END_MIN = 0x01;
     public static final int DISPLAY_END_MAX = 0x02;
@@ -76,7 +77,7 @@ public class TileSpatialPylon extends AENetworkTile implements IAEMultiBlock {
     @Override
     public void onReady() {
         super.onReady();
-        this.neighborChanged();
+        this.calc.calculateMultiblock(world, pos);
     }
 
     @Override
@@ -85,8 +86,8 @@ public class TileSpatialPylon extends AENetworkTile implements IAEMultiBlock {
         super.invalidate();
     }
 
-    public void neighborChanged() {
-        this.calc.calculateMultiblock(this.world, this.getLocation());
+    public void neighborChanged(BlockPos changedPos) {
+        this.calc.updateMultiblockAfterNeighborUpdate(this.world, pos, changedPos);
     }
 
     @Override
@@ -119,9 +120,9 @@ public class TileSpatialPylon extends AENetworkTile implements IAEMultiBlock {
         this.displayBits = 0;
 
         if (this.cluster != null) {
-            if (this.cluster.getMin().equals(this.getLocation())) {
+            if (this.cluster.getBoundsMin().equals(this.pos)) {
                 this.displayBits = DISPLAY_END_MIN;
-            } else if (this.cluster.getMax().equals(this.getLocation())) {
+            } else if (this.cluster.getBoundsMax().equals(this.pos)) {
                 this.displayBits = DISPLAY_END_MAX;
             } else {
                 this.displayBits = DISPLAY_MIDDLE;

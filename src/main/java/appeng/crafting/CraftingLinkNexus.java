@@ -18,13 +18,11 @@
 
 package appeng.crafting;
 
-
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingRequester;
 import appeng.me.cache.CraftingGridCache;
-
 
 public class CraftingLinkNexus {
 

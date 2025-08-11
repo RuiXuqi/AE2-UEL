@@ -18,6 +18,23 @@
 
 package appeng.client.gui.implementations;
 
+import java.awt.*;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+
+import mezz.jei.api.gui.IGhostIngredientHandler.Target;
 
 import appeng.api.config.*;
 import appeng.api.implementations.IUpgradeableHost;
@@ -38,21 +55,6 @@ import appeng.helpers.InventoryAction;
 import appeng.parts.automation.PartExportBus;
 import appeng.parts.automation.PartImportBus;
 import appeng.util.item.AEItemStack;
-import mezz.jei.api.gui.IGhostIngredientHandler.Target;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import org.lwjgl.input.Mouse;
-
-import javax.annotation.Nonnull;
-import java.awt.*;
-import java.io.IOException;
-import java.util.List;
-import java.util.*;
-
 
 public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
     protected final Map<Target<?>, Object> mapTargetSlot = new HashMap<>();
@@ -101,10 +103,13 @@ public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
     }
 
     protected void addButtons() {
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.REDSTONE_CONTROLLED,
+                RedstoneMode.IGNORE);
+        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
         this.craftMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.CRAFT_ONLY, YesNo.NO);
-        this.schedulingMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.SCHEDULING_MODE, SchedulingMode.DEFAULT);
+        this.schedulingMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.SCHEDULING_MODE,
+                SchedulingMode.DEFAULT);
 
         this.buttonList.add(this.craftMode);
         this.buttonList.add(this.redstoneMode);
@@ -159,7 +164,8 @@ public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
             this.craftMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.CRAFTING) > 0);
         }
         if (this.schedulingMode != null) {
-            this.schedulingMode.setVisibility(this.bc.getInstalledUpgrades(Upgrades.CAPACITY) > 0 && this.bc instanceof PartExportBus);
+            this.schedulingMode.setVisibility(
+                    this.bc.getInstalledUpgrades(Upgrades.CAPACITY) > 0 && this.bc instanceof PartExportBus);
         }
     }
 
@@ -221,7 +227,8 @@ public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
         List<IJEITargetSlot> slots = new ArrayList<>();
         if (!this.inventorySlots.inventorySlots.isEmpty()) {
             for (Slot slot : this.inventorySlots.inventorySlots) {
-                if (slot instanceof SlotFake && (!itemStack.isEmpty() || this instanceof GuiCellWorkbench && fluidStack != null)) {
+                if (slot instanceof SlotFake
+                        && (!itemStack.isEmpty() || this instanceof GuiCellWorkbench && fluidStack != null)) {
                     slots.add((IJEITargetSlot) slot);
                 }
             }
@@ -241,9 +248,11 @@ public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
                 @Override
                 public Rectangle getArea() {
                     if (slot instanceof SlotFake && ((SlotFake) slot).isSlotEnabled()) {
-                        return new Rectangle(getGuiLeft() + ((SlotFake) slot).xPos, getGuiTop() + ((SlotFake) slot).yPos, 16, 16);
+                        return new Rectangle(getGuiLeft() + ((SlotFake) slot).xPos,
+                                getGuiTop() + ((SlotFake) slot).yPos, 16, 16);
                     } else if (slot instanceof GuiFluidSlot && ((GuiFluidSlot) slot).isSlotEnabled()) {
-                        return new Rectangle(getGuiLeft() + ((GuiFluidSlot) slot).xPos(), getGuiTop() + ((GuiFluidSlot) slot).yPos(), 16, 16);
+                        return new Rectangle(getGuiLeft() + ((GuiFluidSlot) slot).xPos(),
+                                getGuiTop() + ((GuiFluidSlot) slot).yPos(), 16, 16);
                     }
                     return new Rectangle();
                 }
@@ -254,15 +263,19 @@ public class GuiUpgradeable extends AEBaseGui implements IJEIGhostIngredients {
                     try {
                         if (slot instanceof SlotFake && ((SlotFake) slot).isSlotEnabled()) {
                             if (finalItemStack.isEmpty() && finalFluidStack != null) {
-                                p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, slot, AEItemStack.fromItemStack(FluidUtil.getFilledBucket(finalFluidStack)));
+                                p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, slot,
+                                        AEItemStack.fromItemStack(FluidUtil.getFilledBucket(finalFluidStack)));
                             } else if (!finalItemStack.isEmpty()) {
-                                p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, slot, AEItemStack.fromItemStack(finalItemStack));
+                                p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, slot,
+                                        AEItemStack.fromItemStack(finalItemStack));
                             }
                         } else {
                             if (finalFluidStack == null) {
                                 return;
                             }
-                            p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, slot, AEItemStack.fromItemStack(AEFluidStack.fromFluidStack(finalFluidStack).asItemStackRepresentation()));
+                            p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, slot,
+                                    AEItemStack.fromItemStack(
+                                            AEFluidStack.fromFluidStack(finalFluidStack).asItemStackRepresentation()));
                         }
                         NetworkHandler.instance().sendToServer(p);
 

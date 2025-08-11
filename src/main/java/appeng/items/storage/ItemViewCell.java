@@ -18,6 +18,8 @@
 
 package appeng.items.storage;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -36,9 +38,6 @@ import appeng.util.prioritylist.FuzzyPriorityList;
 import appeng.util.prioritylist.IPartitionList;
 import appeng.util.prioritylist.MergedPriorityList;
 import appeng.util.prioritylist.PrecisePriorityList;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class ItemViewCell extends AEBaseItem implements ICellWorkbenchItem {
     public ItemViewCell() {
@@ -56,7 +55,8 @@ public class ItemViewCell extends AEBaseItem implements ICellWorkbenchItem {
             }
 
             if ((currentViewCell.getItem() instanceof ItemViewCell)) {
-                final IItemList<IAEItemStack> priorityList = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+                final IItemList<IAEItemStack> priorityList = AEApi.instance().storage()
+                        .getStorageChannel(IItemStorageChannel.class).createList();
 
                 final ICellWorkbenchItem vc = (ICellWorkbenchItem) currentViewCell.getItem();
                 final IItemHandler upgrades = vc.getUpgradesInventory(currentViewCell);

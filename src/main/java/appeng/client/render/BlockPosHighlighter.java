@@ -7,7 +7,6 @@ public class BlockPosHighlighter {
     private static BlockPos hilightedBlock;
     private static long expireHilight;
 
-
     private static int dimension;
 
     public static void hilightBlock(BlockPos c, long expireHilight, int dimension) {

@@ -18,11 +18,9 @@
 
 package appeng.integration.abstraction;
 
-
-import net.minecraft.util.EnumFacing;
-
 import java.util.Set;
 
+import net.minecraft.util.EnumFacing;
 
 /**
  * Provides an abstraction for the IC2 Basic Sink so it can be stubbed out easily when the integration is disabled, or

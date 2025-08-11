@@ -18,14 +18,14 @@
 
 package appeng.integration.modules.theoneprobe;
 
+import java.util.function.Function;
+
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+
+import mcjty.theoneprobe.api.ITheOneProbe;
 
 import appeng.integration.IIntegrationModule;
 import appeng.integration.modules.theoneprobe.config.AEConfigProvider;
-import mcjty.theoneprobe.api.ITheOneProbe;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-
-import java.util.function.Function;
-
 
 public class TheOneProbeModule implements IIntegrationModule, Function<ITheOneProbe, Void> {
     @Override

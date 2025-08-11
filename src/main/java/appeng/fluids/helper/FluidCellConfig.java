@@ -18,17 +18,16 @@
 
 package appeng.fluids.helper;
 
+import javax.annotation.Nonnull;
 
-import appeng.core.Api;
-import appeng.fluids.items.FluidDummyItem;
-import appeng.items.contents.CellConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
-import javax.annotation.Nonnull;
-
+import appeng.core.Api;
+import appeng.fluids.items.FluidDummyItem;
+import appeng.items.contents.CellConfig;
 
 /**
  * @author DrummerMC

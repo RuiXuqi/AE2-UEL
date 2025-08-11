@@ -18,11 +18,9 @@
 
 package appeng.entity;
 
-
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
 
 public final class EntityFloatingItem extends EntityItem {
 
@@ -30,7 +28,8 @@ public final class EntityFloatingItem extends EntityItem {
     private int superDeath = 0;
     private float progress = 0;
 
-    public EntityFloatingItem(final ICanDie parent, final World world, final double x, final double y, final double z, final ItemStack stack) {
+    public EntityFloatingItem(final ICanDie parent, final World world, final double x, final double y, final double z,
+            final ItemStack stack) {
         super(world, x, y, z, stack);
         this.motionX = this.motionY = this.motionZ = 0.0d;
         this.hoverStart = 0.5f;

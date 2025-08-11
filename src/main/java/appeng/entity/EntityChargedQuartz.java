@@ -18,15 +18,8 @@
 
 package appeng.entity;
 
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IMaterials;
-import appeng.client.EffectType;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
-import appeng.core.features.AEFeature;
-import appeng.helpers.Reflected;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -38,8 +31,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.definitions.IMaterials;
+import appeng.client.EffectType;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
+import appeng.core.features.AEFeature;
+import appeng.helpers.Reflected;
+import appeng.util.Platform;
 
 public final class EntityChargedQuartz extends AEBaseEntityItem {
 
@@ -94,7 +93,8 @@ public final class EntityChargedQuartz extends AEBaseEntityItem {
         final IMaterials materials = AEApi.instance().definitions().materials();
 
         if (materials.certusQuartzCrystalCharged().isSameAs(item)) {
-            final AxisAlignedBB region = new AxisAlignedBB(this.posX - 1, this.posY - 1, this.posZ - 1, this.posX + 1, this.posY + 1, this.posZ + 1);
+            final AxisAlignedBB region = new AxisAlignedBB(this.posX - 1, this.posY - 1, this.posZ - 1, this.posX + 1,
+                    this.posY + 1, this.posZ + 1);
             final List<Entity> l = this.getCheckedEntitiesWithinAABBExcludingEntity(region);
 
             EntityItem redstone = null;
@@ -132,8 +132,7 @@ public final class EntityChargedQuartz extends AEBaseEntityItem {
                     netherQuartz.setDead();
                 }
 
-                materials.fluixCrystal().maybeStack(2).ifPresent(is ->
-                {
+                materials.fluixCrystal().maybeStack(2).ifPresent(is -> {
                     final EntityItem entity = new EntityItem(this.world, this.posX, this.posY, this.posZ, is);
 
                     this.world.spawnEntity(entity);

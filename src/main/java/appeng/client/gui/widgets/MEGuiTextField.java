@@ -18,6 +18,7 @@
 
 package appeng.client.gui.widgets;
 
+import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
@@ -25,14 +26,10 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.input.Keyboard;
-
 
 /**
- * A modified version of the Minecraft text field.
- * You can initialize it over the full element span.
- * The mouse click area is increased to the full element
- * subtracted with the defined padding.
+ * A modified version of the Minecraft text field. You can initialize it over the full element span. The mouse click
+ * area is increased to the full element subtracted with the defined padding.
  * <p>
  * The rendering does pay attention to the size of the '_' caret.
  */
@@ -47,8 +44,7 @@ public class MEGuiTextField extends GuiTextField {
     private int selectionColor = 0xFF00FF00;
 
     /**
-     * Uses the values to instantiate a padded version of a text field.
-     * Pays attention to the '_' caret.
+     * Uses the values to instantiate a padded version of a text field. Pays attention to the '_' caret.
      *
      * @param fontRenderer renderer for the strings
      * @param xPos         absolute left position
@@ -56,8 +52,10 @@ public class MEGuiTextField extends GuiTextField {
      * @param width        absolute width
      * @param height       absolute height
      */
-    public MEGuiTextField(final FontRenderer fontRenderer, final int xPos, final int yPos, final int width, final int height) {
-        super(0, fontRenderer, xPos + PADDING, yPos + PADDING, width - 2 * PADDING - fontRenderer.getCharWidth('_'), height - 2 * PADDING);
+    public MEGuiTextField(final FontRenderer fontRenderer, final int xPos, final int yPos, final int width,
+            final int height) {
+        super(0, fontRenderer, xPos + PADDING, yPos + PADDING, width - 2 * PADDING - fontRenderer.getCharWidth('_'),
+                height - 2 * PADDING);
 
         this._fontPad = fontRenderer.getCharWidth('_');
         this._xPos = xPos;
@@ -105,8 +103,8 @@ public class MEGuiTextField extends GuiTextField {
 
         if (!handled
                 && (keyID == Keyboard.KEY_RETURN
-                || keyID == Keyboard.KEY_NUMPADENTER
-                || keyID == Keyboard.KEY_ESCAPE)) {
+                        || keyID == Keyboard.KEY_NUMPADENTER
+                        || keyID == Keyboard.KEY_ESCAPE)) {
             setFocused(false);
         }
 
@@ -130,10 +128,12 @@ public class MEGuiTextField extends GuiTextField {
     public void drawTextBox() {
         if (this.getVisible()) {
             if (this.isFocused()) {
-                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1, this.y + this.height + PADDING - 1,
+                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1,
+                        this.y + this.height + PADDING - 1,
                         0xFF606060);
             } else {
-                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1, this.y + this.height + PADDING - 1,
+                drawRect(this.x - PADDING + 1, this.y - PADDING + 1, this.x + this.width + this._fontPad + PADDING - 1,
+                        this.y + this.height + PADDING - 1,
                         0xFFA8A8A8);
             }
             super.drawTextBox();

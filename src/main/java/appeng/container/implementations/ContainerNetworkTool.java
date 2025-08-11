@@ -18,17 +18,16 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.implementations.guiobjects.INetworkTool;
 import appeng.container.AEBaseContainer;
 import appeng.container.guisync.GuiSync;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 
 public class ContainerNetworkTool extends AEBaseContainer {
 
@@ -66,7 +65,8 @@ public class ContainerNetworkTool extends AEBaseContainer {
         if (currentItem != this.toolInv.getItemStack()) {
             if (!currentItem.isEmpty()) {
                 if (ItemStack.areItemsEqual(this.toolInv.getItemStack(), currentItem)) {
-                    this.getPlayerInv().setInventorySlotContents(this.getPlayerInv().currentItem, this.toolInv.getItemStack());
+                    this.getPlayerInv().setInventorySlotContents(this.getPlayerInv().currentItem,
+                            this.toolInv.getItemStack());
                 } else {
                     this.setValidContainer(false);
                 }
@@ -87,7 +87,6 @@ public class ContainerNetworkTool extends AEBaseContainer {
     public void onSlotChange(Slot s) {
         super.detectAndSendChanges();
     }
-
 
     public boolean isFacadeMode() {
         return this.facadeMode;

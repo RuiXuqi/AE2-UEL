@@ -18,6 +18,10 @@
 
 package appeng.me.storage;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -33,16 +37,12 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.InventoryAdaptor;
 import appeng.util.inv.ItemSlot;
-import net.minecraft.item.ItemStack;
-
-import java.util.*;
-import java.util.Map.Entry;
-
 
 public class MEMonitorIInventory implements IMEMonitor<IAEItemStack>, ITickingMonitor {
 
     private final InventoryAdaptor adaptor;
-    private IItemList<IAEItemStack> cache = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private IItemList<IAEItemStack> cache = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+            .createList();
 
     private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<>();
     private IActionSource mySource;
@@ -131,7 +131,8 @@ public class MEMonitorIInventory implements IMEMonitor<IAEItemStack>, ITickingMo
 
         final List<IAEItemStack> changes = new ArrayList<>();
 
-        IItemList<IAEItemStack> currentlyOnStorage = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+        IItemList<IAEItemStack> currentlyOnStorage = AEApi.instance().storage()
+                .getStorageChannel(IItemStorageChannel.class).createList();
 
         for (final ItemSlot is : adaptor) {
             if (this.mode == StorageFilter.EXTRACTABLE_ONLY && !is.isExtractable()) {
@@ -166,7 +167,8 @@ public class MEMonitorIInventory implements IMEMonitor<IAEItemStack>, ITickingMo
 
     private void postDifference(final Iterable<IAEItemStack> a) {
         if (a != null) {
-            final Iterator<Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet().iterator();
+            final Iterator<Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet()
+                    .iterator();
             while (i.hasNext()) {
                 final Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> l = i.next();
                 final IMEMonitorHandlerReceiver<IAEItemStack> key = l.getKey();

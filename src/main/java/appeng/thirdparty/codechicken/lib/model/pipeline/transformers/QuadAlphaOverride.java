@@ -18,16 +18,14 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline.transformers;
 
+import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
 import appeng.thirdparty.codechicken.lib.model.Quad.Vertex;
 import appeng.thirdparty.codechicken.lib.model.pipeline.IPipelineElementFactory;
 import appeng.thirdparty.codechicken.lib.model.pipeline.QuadTransformer;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-
 
 /**
- * This transformer simply overrides the alpha of the quad.
- * Only operates if the format has color.
+ * This transformer simply overrides the alpha of the quad. Only operates if the format has color.
  *
  * @author covers1624
  */

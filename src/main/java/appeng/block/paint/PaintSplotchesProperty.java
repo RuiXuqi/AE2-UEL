@@ -1,8 +1,6 @@
 package appeng.block.paint;
 
-
 import net.minecraftforge.common.property.IUnlistedProperty;
-
 
 class PaintSplotchesProperty implements IUnlistedProperty<PaintSplotches> {
 

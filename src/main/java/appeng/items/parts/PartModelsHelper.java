@@ -1,10 +1,5 @@
 package appeng.items.parts;
 
-
-import appeng.api.parts.IPartModel;
-import appeng.core.AELog;
-import net.minecraft.util.ResourceLocation;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.util.ResourceLocation;
+
+import appeng.api.parts.IPartModel;
+import appeng.core.AELog;
 
 /**
  * Helps with the reflection magic needed to gather all models for AE2 cable bus parts.
@@ -30,7 +29,8 @@ class PartModelsHelper {
             }
 
             if (!Modifier.isStatic(field.getModifiers())) {
-                AELog.error("The @PartModels annotation can only be used on static fields or methods. Was seen on: " + field);
+                AELog.error("The @PartModels annotation can only be used on static fields or methods. Was seen on: "
+                        + field);
                 continue;
             }
 
@@ -53,21 +53,26 @@ class PartModelsHelper {
             }
 
             if (!Modifier.isStatic(method.getModifiers())) {
-                AELog.error("The @PartModels annotation can only be used on static fields or methods. Was seen on: " + method);
+                AELog.error("The @PartModels annotation can only be used on static fields or methods. Was seen on: "
+                        + method);
                 continue;
             }
 
             // Check for parameter count
             if (method.getParameters().length != 0) {
-                AELog.error("The @PartModels annotation can only be used on static methods without parameters. Was seen on: " + method);
+                AELog.error(
+                        "The @PartModels annotation can only be used on static methods without parameters. Was seen on: "
+                                + method);
                 continue;
             }
 
             // Make sure we can handle the return type
             Class<?> returnType = method.getReturnType();
-            if (!ResourceLocation.class.isAssignableFrom(returnType) && !Collection.class.isAssignableFrom(returnType)) {
+            if (!ResourceLocation.class.isAssignableFrom(returnType)
+                    && !Collection.class.isAssignableFrom(returnType)) {
                 AELog.error(
-                        "The @PartModels annotation can only be used on static methods that return a ResourceLocation or Collection of " + "ResourceLocations. Was seen on: " + method);
+                        "The @PartModels annotation can only be used on static methods that return a ResourceLocation or Collection of "
+                                + "ResourceLocations. Was seen on: " + method);
                 continue;
             }
 
@@ -104,7 +109,8 @@ class PartModelsHelper {
             Collection values = (Collection) value;
             for (Object candidate : values) {
                 if (!(candidate instanceof IPartModel)) {
-                    AELog.error("List of locations obtained from {} contains a non resource location: {}", source, candidate);
+                    AELog.error("List of locations obtained from {} contains a non resource location: {}", source,
+                            candidate);
                     continue;
                 }
 

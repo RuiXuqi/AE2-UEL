@@ -1,7 +1,9 @@
 package appeng.client.render.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
 
-import appeng.core.AppEng;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -11,10 +13,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Function;
-
+import appeng.core.AppEng;
 
 /**
  * Model wrapper for the memory card item model, which combines a base card layer with a "visual hash" of the part/tile.
@@ -35,7 +34,8 @@ public class MemoryCardModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         TextureAtlasSprite texture = bakedTextureGetter.apply(TEXTURE);
 
         IBakedModel baseModel = this.getBaseModel(state, format, bakedTextureGetter);
@@ -43,7 +43,8 @@ public class MemoryCardModel implements IModel {
         return new MemoryCardBakedModel(format, baseModel, texture);
     }
 
-    private IBakedModel getBaseModel(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    private IBakedModel getBaseModel(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         // Load the base model
         try {
             return ModelLoaderRegistry.getModel(MODEL_BASE).bake(state, format, bakedTextureGetter);

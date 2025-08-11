@@ -18,6 +18,16 @@
 
 package appeng.items.parts;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.util.AEColor;
 import appeng.bootstrap.IItemRendering;
@@ -28,17 +38,6 @@ import appeng.core.AppEng;
 import appeng.core.features.registries.PartModels;
 import appeng.parts.automation.PlaneConnections;
 import appeng.parts.automation.PlaneModel;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 
 public class ItemPartRendering extends ItemRenderingCustomizer {
 
@@ -66,16 +65,24 @@ public class ItemPartRendering extends ItemRenderingCustomizer {
                 .collect(Collectors.toList()));
 
         // Register the built-in models for annihilation planes
-        ResourceLocation annihilationPlaneTexture = new ResourceLocation(AppEng.MOD_ID, "items/part/annihilation_plane");
-        ResourceLocation annihilationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID, "parts/annihilation_plane_on");
-        ResourceLocation fluidAnnihilationPlaneTexture = new ResourceLocation(AppEng.MOD_ID, "items/part/fluid_annihilation_plane");
-        ResourceLocation fluidAnnihilationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID, "parts/fluid_annihilation_plane_on");
-        ResourceLocation identityAnnihilationPlaneTexture = new ResourceLocation(AppEng.MOD_ID, "items/part/identity_annihilation_plane");
-        ResourceLocation identityAnnihilationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID, "parts/identity_annihilation_plane_on");
+        ResourceLocation annihilationPlaneTexture = new ResourceLocation(AppEng.MOD_ID,
+                "items/part/annihilation_plane");
+        ResourceLocation annihilationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID,
+                "parts/annihilation_plane_on");
+        ResourceLocation fluidAnnihilationPlaneTexture = new ResourceLocation(AppEng.MOD_ID,
+                "items/part/fluid_annihilation_plane");
+        ResourceLocation fluidAnnihilationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID,
+                "parts/fluid_annihilation_plane_on");
+        ResourceLocation identityAnnihilationPlaneTexture = new ResourceLocation(AppEng.MOD_ID,
+                "items/part/identity_annihilation_plane");
+        ResourceLocation identityAnnihilationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID,
+                "parts/identity_annihilation_plane_on");
         ResourceLocation formationPlaneTexture = new ResourceLocation(AppEng.MOD_ID, "items/part/formation_plane");
         ResourceLocation formationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID, "parts/formation_plane_on");
-        ResourceLocation fluidFormationPlaneTexture = new ResourceLocation(AppEng.MOD_ID, "items/part/fluid_formation_plane");
-        ResourceLocation fluidFormationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID, "parts/fluid_formation_plane_on");
+        ResourceLocation fluidFormationPlaneTexture = new ResourceLocation(AppEng.MOD_ID,
+                "items/part/fluid_formation_plane");
+        ResourceLocation fluidFormationPlaneOnTexture = new ResourceLocation(AppEng.MOD_ID,
+                "parts/fluid_formation_plane_on");
         ResourceLocation sidesTexture = new ResourceLocation(AppEng.MOD_ID, "parts/plane_sides");
         ResourceLocation backTexture = new ResourceLocation(AppEng.MOD_ID, "parts/transition_plane_back");
 
@@ -103,7 +110,8 @@ public class ItemPartRendering extends ItemRenderingCustomizer {
             modelNames.add("part/identity_annihilation_plane_" + connection.getFilenameSuffix());
 
             model = new PlaneModel(identityAnnihilationPlaneOnTexture, sidesTexture, backTexture, connection);
-            rendering.builtInModel("models/part/identity_annihilation_plane_on_" + connection.getFilenameSuffix(), model);
+            rendering.builtInModel("models/part/identity_annihilation_plane_on_" + connection.getFilenameSuffix(),
+                    model);
             modelNames.add("part/identity_annihilation_plane_on_" + connection.getFilenameSuffix());
 
             model = new PlaneModel(formationPlaneTexture, sidesTexture, backTexture, connection);

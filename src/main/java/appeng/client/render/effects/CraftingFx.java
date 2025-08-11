@@ -18,9 +18,6 @@
 
 package appeng.client.render.effects;
 
-
-import appeng.api.util.AEPartLocation;
-import appeng.client.render.textures.ParticleTextures;
 import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -31,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.util.AEPartLocation;
+import appeng.client.render.textures.ParticleTextures;
 
 @SideOnly(Side.CLIENT)
 public class CraftingFx extends ParticleBreaking {
@@ -41,7 +40,8 @@ public class CraftingFx extends ParticleBreaking {
     private final int startBlkY;
     private final int startBlkZ;
 
-    public CraftingFx(final World par1World, final double par2, final double par4, final double par6, final Item par8Item) {
+    public CraftingFx(final World par1World, final double par2, final double par4, final double par6,
+            final Item par8Item) {
         super(par1World, par2, par4, par6, par8Item);
         this.particleGravity = 0;
         this.particleBlue = 1;
@@ -63,7 +63,8 @@ public class CraftingFx extends ParticleBreaking {
     }
 
     @Override
-    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float partialTick, final float x, final float y, final float z, final float rx, final float rz) {
+    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float partialTick,
+            final float x, final float y, final float z, final float rx, final float rz) {
         if (partialTick < 0 || partialTick > 1) {
             return;
         }
@@ -94,22 +95,26 @@ public class CraftingFx extends ParticleBreaking {
             final float f14 = 1.0F;
             par1Tessellator.pos(offX - x * scale - rx * scale, offY - y * scale, offZ - z * scale - rz * scale)
                     .tex(f7, f9)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
             par1Tessellator.pos(offX - x * scale + rx * scale, offY + y * scale, offZ - z * scale + rz * scale)
                     .tex(f7, f8)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
             par1Tessellator.pos(offX + x * scale + rx * scale, offY + y * scale, offZ + z * scale + rz * scale)
                     .tex(f6, f8)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
             par1Tessellator.pos(offX + x * scale - rx * scale, offY - y * scale, offZ + z * scale - rz * scale)
                     .tex(f6, f9)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
         }

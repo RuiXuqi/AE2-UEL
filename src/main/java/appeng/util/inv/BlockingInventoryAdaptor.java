@@ -5,7 +5,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-
 public abstract class BlockingInventoryAdaptor implements Iterable<ItemSlot> {
     public static BlockingInventoryAdaptor getAdaptor(final TileEntity te, final EnumFacing d) {
         if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, d)) {

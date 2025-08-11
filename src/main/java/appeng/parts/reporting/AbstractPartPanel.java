@@ -18,13 +18,12 @@
 
 package appeng.parts.reporting;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.util.AEColor;
 import appeng.core.AppEng;
 import appeng.items.parts.PartModels;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 
 /**
  * A very simple part for emitting light.
@@ -51,8 +50,8 @@ public abstract class AbstractPartPanel extends AbstractPartReporting {
     }
 
     /**
-     * How bright the color the panel should appear. Usually it depends on a {@link AEColor} variant.
-     * This does not affect the actual light level of the part.
+     * How bright the color the panel should appear. Usually it depends on a {@link AEColor} variant. This does not
+     * affect the actual light level of the part.
      *
      * @return the brightness to be used.
      */

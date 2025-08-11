@@ -18,10 +18,8 @@
 
 package appeng.recipes;
 
-
 import appeng.api.recipes.IRecipeHandler;
 import appeng.api.recipes.IRecipeLoader;
-
 
 /**
  * @author AlgorithmX2

@@ -18,19 +18,18 @@
 
 package appeng.fluids.client.render;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.AEConfig;
 import appeng.util.ISlimReadableNumberConverter;
 import appeng.util.IWideReadableNumberConverter;
 import appeng.util.ReadableNumberConverter;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-
 
 /**
  * @author AlgorithmX2
@@ -41,7 +40,7 @@ import java.text.DecimalFormatSymbols;
  */
 public class FluidStackSizeRenderer {
 
-    private static final String[] NUMBER_FORMATS = new String[]{"#.000", "#.00", "#.0", "#"};
+    private static final String[] NUMBER_FORMATS = new String[] { "#.000", "#.00", "#.0", "#" };
 
     private static final ISlimReadableNumberConverter SLIM_CONVERTER = ReadableNumberConverter.INSTANCE;
     private static final IWideReadableNumberConverter WIDE_CONVERTER = ReadableNumberConverter.INSTANCE;
@@ -63,7 +62,8 @@ public class FluidStackSizeRenderer {
                 GlStateManager.disableBlend();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(scaleFactor, scaleFactor, scaleFactor);
-                final int X = (int) (((float) xPos + offset + 16.0f - fontRenderer.getStringWidth(stackSize) * scaleFactor) * inverseScaleFactor);
+                final int X = (int) (((float) xPos + offset + 16.0f
+                        - fontRenderer.getStringWidth(stackSize) * scaleFactor) * inverseScaleFactor);
                 final int Y = (int) (((float) yPos + offset + 16.0f - 7.0f * scaleFactor) * inverseScaleFactor);
                 fontRenderer.drawStringWithShadow(stackSize, X, Y, 16777215);
                 GlStateManager.popMatrix();

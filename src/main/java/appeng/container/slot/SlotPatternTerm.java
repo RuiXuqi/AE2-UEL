@@ -18,6 +18,11 @@
 
 package appeng.container.slot;
 
+import java.io.IOException;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.networking.energy.IEnergySource;
@@ -27,19 +32,16 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.packets.PacketPatternSlot;
 import appeng.helpers.IContainerCraftingPacket;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-
 
 public class SlotPatternTerm extends SlotCraftingTerm {
 
     private final int groupNum;
     private final IOptionalSlotHost host;
 
-    public SlotPatternTerm(final EntityPlayer player, final IActionSource mySrc, final IEnergySource energySrc, final IStorageMonitorable storage, final IItemHandler cMatrix, final IItemHandler secondMatrix, final IItemHandler output, final int x, final int y, final IOptionalSlotHost h, final int groupNumber, final IContainerCraftingPacket c) {
+    public SlotPatternTerm(final EntityPlayer player, final IActionSource mySrc, final IEnergySource energySrc,
+            final IStorageMonitorable storage, final IItemHandler cMatrix, final IItemHandler secondMatrix,
+            final IItemHandler output, final int x, final int y, final IOptionalSlotHost h, final int groupNumber,
+            final IContainerCraftingPacket c) {
         super(player, mySrc, energySrc, storage, cMatrix, secondMatrix, output, x, y, c);
 
         this.host = h;
@@ -48,7 +50,9 @@ public class SlotPatternTerm extends SlotCraftingTerm {
 
     public AppEngPacket getRequest(final boolean shift) throws IOException {
         return new PacketPatternSlot(this
-                .getPattern(), AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(this.getStack()), shift);
+                .getPattern(),
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(this.getStack()),
+                shift);
     }
 
     @Override

@@ -18,17 +18,18 @@
 
 package appeng.core.features.registries.inscriber;
 
+import java.util.*;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.features.IInscriberRecipe;
 import appeng.api.features.IInscriberRecipeBuilder;
 import appeng.api.features.IInscriberRegistry;
 import appeng.api.features.InscriberProcessType;
-import com.google.common.base.Preconditions;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
-import java.util.*;
-
 
 /**
  * @author thatsIch
@@ -91,7 +92,7 @@ public final class InscriberRegistry implements IInscriberRegistry {
 
         boolean changed = false;
 
-        for (final Iterator<IInscriberRecipe> iterator = this.recipes.iterator(); iterator.hasNext(); ) {
+        for (final Iterator<IInscriberRecipe> iterator = this.recipes.iterator(); iterator.hasNext();) {
             final IInscriberRecipe recipe = iterator.next();
             if (recipe.equals(toBeRemovedRecipe)) {
                 changed = true;
@@ -103,8 +104,8 @@ public final class InscriberRegistry implements IInscriberRegistry {
     }
 
     /**
-     * Internal {@link IInscriberRecipeBuilder} implementation.
-     * Needs to be adapted to represent a correct {@link IInscriberRecipe}
+     * Internal {@link IInscriberRecipeBuilder} implementation. Needs to be adapted to represent a correct
+     * {@link IInscriberRecipe}
      */
     private static final class Builder implements IInscriberRecipeBuilder {
         private List<ItemStack> inputs;
@@ -174,7 +175,8 @@ public final class InscriberRegistry implements IInscriberRegistry {
             Preconditions.checkState(this.inputs != null, "Input must be defined.");
             Preconditions.checkState(!this.inputs.isEmpty(), "Input must have a size.");
             Preconditions.checkState(!this.output.isEmpty(), "Output cannot be empty.");
-            Preconditions.checkState(!this.topOptional.isEmpty() || !this.bottomOptional.isEmpty(), "One optional must be defined.");
+            Preconditions.checkState(!this.topOptional.isEmpty() || !this.bottomOptional.isEmpty(),
+                    "One optional must be defined.");
             Preconditions.checkState(this.type != null, "Process type must be defined.");
 
             return new InscriberRecipe(this.inputs, this.output, this.topOptional, this.bottomOptional, this.type);

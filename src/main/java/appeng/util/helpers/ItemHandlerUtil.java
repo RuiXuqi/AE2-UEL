@@ -18,12 +18,10 @@
 
 package appeng.util.helpers;
 
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
 
 public class ItemHandlerUtil {
     private ItemHandlerUtil() {

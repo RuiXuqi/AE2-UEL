@@ -18,12 +18,11 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.storage.TileDrive;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerDrive extends AEBaseContainer {
 
@@ -32,8 +31,10 @@ public class ContainerDrive extends AEBaseContainer {
 
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 2; x++) {
-                this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_CELLS, drive
-                        .getInternalInventory(), x + y * 2, 71 + x * 18, 14 + y * 18, this.getInventoryPlayer()));
+                this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_CELLS,
+                        drive
+                                .getInternalInventory(),
+                        x + y * 2, 71 + x * 18, 14 + y * 18, this.getInventoryPlayer()));
             }
         }
 

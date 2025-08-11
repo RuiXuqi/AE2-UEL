@@ -18,13 +18,8 @@
 
 package appeng.worldgen;
 
+import java.util.Random;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.definitions.IBlocks;
-import appeng.api.features.IWorldGen.WorldGenType;
-import appeng.core.AEConfig;
-import appeng.core.features.registries.WorldGenRegistry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -32,8 +27,12 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-import java.util.Random;
-
+import appeng.api.AEApi;
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.definitions.IBlocks;
+import appeng.api.features.IWorldGen.WorldGenType;
+import appeng.core.AEConfig;
+import appeng.core.features.registries.WorldGenRegistry;
 
 public final class QuartzWorldGen implements IWorldGenerator {
     private final WorldGenMinable oreNormal;
@@ -53,7 +52,8 @@ public final class QuartzWorldGen implements IWorldGenerator {
     }
 
     @Override
-    public void generate(final Random r, final int chunkX, final int chunkZ, final World w, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
+    public void generate(final Random r, final int chunkX, final int chunkZ, final World w,
+            final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
         if (this.oreNormal == null && this.oreCharged == null) {
             return;
         }
@@ -87,6 +87,7 @@ public final class QuartzWorldGen implements IWorldGenerator {
     }
 
     private static boolean shouldGenerate(final boolean isCharged, final World w) {
-        return WorldGenRegistry.INSTANCE.isWorldGenEnabled(isCharged ? WorldGenType.CHARGED_CERTUS_QUARTZ : WorldGenType.CERTUS_QUARTZ, w);
+        return WorldGenRegistry.INSTANCE
+                .isWorldGenEnabled(isCharged ? WorldGenType.CHARGED_CERTUS_QUARTZ : WorldGenType.CERTUS_QUARTZ, w);
     }
 }

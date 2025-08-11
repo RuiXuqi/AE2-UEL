@@ -18,9 +18,7 @@
 
 package appeng.util;
 
-
 import appeng.api.util.IConfigManager;
-
 
 public interface IConfigManagerHost {
 

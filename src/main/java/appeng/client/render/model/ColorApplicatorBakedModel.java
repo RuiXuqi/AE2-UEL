@@ -1,5 +1,15 @@
 package appeng.client.render.model;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.vecmath.Matrix4f;
+
+import com.google.common.collect.ImmutableMap;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -8,26 +18,24 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
+import net.minecraftforge.common.model.TRSRTransformation;
 
 class ColorApplicatorBakedModel implements IBakedModel {
 
     private final IBakedModel baseModel;
 
+    private final ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms;
+
     private final EnumMap<EnumFacing, List<BakedQuad>> quadsBySide;
 
     private final List<BakedQuad> generalQuads;
 
-    ColorApplicatorBakedModel(IBakedModel baseModel, TextureAtlasSprite texDark, TextureAtlasSprite texMedium, TextureAtlasSprite texBright) {
+    ColorApplicatorBakedModel(IBakedModel baseModel,
+            ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> map, TextureAtlasSprite texDark,
+            TextureAtlasSprite texMedium, TextureAtlasSprite texBright) {
         this.baseModel = baseModel;
+        this.transforms = map;
 
         // Put the tint indices in... Since this is an item model, we are ignoring rand
         this.generalQuads = this.fixQuadTint(null, texDark, texMedium, texBright);
@@ -37,7 +45,8 @@ class ColorApplicatorBakedModel implements IBakedModel {
         }
     }
 
-    private List<BakedQuad> fixQuadTint(EnumFacing facing, TextureAtlasSprite texDark, TextureAtlasSprite texMedium, TextureAtlasSprite texBright) {
+    private List<BakedQuad> fixQuadTint(EnumFacing facing, TextureAtlasSprite texDark, TextureAtlasSprite texMedium,
+            TextureAtlasSprite texBright) {
         List<BakedQuad> quads = this.baseModel.getQuads(null, facing, 0);
         List<BakedQuad> result = new ArrayList<>(quads.size());
         for (BakedQuad quad : quads) {
@@ -54,8 +63,9 @@ class ColorApplicatorBakedModel implements IBakedModel {
                 continue;
             }
 
-            BakedQuad newQuad = new BakedQuad(quad.getVertexData(), tint, quad.getFace(), quad.getSprite(), quad.shouldApplyDiffuseLighting(), quad
-                    .getFormat());
+            BakedQuad newQuad = new BakedQuad(quad.getVertexData(), tint, quad.getFace(), quad.getSprite(),
+                    quad.shouldApplyDiffuseLighting(), quad
+                            .getFormat());
             result.add(newQuad);
         }
 
@@ -63,7 +73,7 @@ class ColorApplicatorBakedModel implements IBakedModel {
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         if (side == null) {
             return this.generalQuads;
         }
@@ -86,22 +96,22 @@ class ColorApplicatorBakedModel implements IBakedModel {
     }
 
     @Override
-    public @NotNull TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleTexture() {
         return this.baseModel.getParticleTexture();
     }
 
     @Override
-    public @NotNull ItemCameraTransforms getItemCameraTransforms() {
+    public ItemCameraTransforms getItemCameraTransforms() {
         return this.baseModel.getItemCameraTransforms();
     }
 
     @Override
-    public @NotNull ItemOverrideList getOverrides() {
+    public ItemOverrideList getOverrides() {
         return this.baseModel.getOverrides();
     }
 
     @Override
-    public @NotNull Pair<? extends IBakedModel, Matrix4f> handlePerspective(@NotNull ItemCameraTransforms.TransformType type) {
-        return this.baseModel.handlePerspective(type);
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType type) {
+        return PerspectiveMapWrapper.handlePerspective(this, this.transforms, type);
     }
 }

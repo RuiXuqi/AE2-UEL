@@ -18,10 +18,8 @@
 
 package appeng.block;
 
-
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IUnlistedProperty;
-
 
 public class UnlistedDirection implements IUnlistedProperty<EnumFacing> {
 

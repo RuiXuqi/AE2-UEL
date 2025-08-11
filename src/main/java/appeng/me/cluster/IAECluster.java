@@ -18,17 +18,33 @@
 
 package appeng.me.cluster;
 
+import java.util.Iterator;
+
+import net.minecraft.util.math.BlockPos;
 
 import appeng.api.networking.IGridHost;
 
-import java.util.Iterator;
-
-
 public interface IAECluster {
+
+    /**
+     * The minimum x,y,z position still within the bounds of the cluster.
+     */
+    BlockPos getBoundsMin();
+
+    /**
+     * The maximum x,y,z position still within the bounds of the cluster.
+     */
+    BlockPos getBoundsMax();
 
     void updateStatus(boolean updateGrid);
 
     void destroy();
 
-    Iterator<IGridHost> getTiles();
+    /**
+     * @return True if the cluster has been destroyed, but not yet removed from a tile entity. Usually true during
+     *         destruction.
+     */
+    boolean isDestroyed();
+
+    Iterator<? extends IGridHost> getTiles();
 }

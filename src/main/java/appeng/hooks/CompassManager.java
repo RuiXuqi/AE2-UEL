@@ -18,13 +18,11 @@
 
 package appeng.hooks;
 
-
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.PacketCompassRequest;
-
 import java.util.HashMap;
 import java.util.Iterator;
 
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PacketCompassRequest;
 
 public class CompassManager {
 
@@ -82,8 +80,9 @@ public class CompassManager {
             this.cx = x >> 4;
             this.cdy = y >> 5;
             this.cz = z >> 4;
-            this.hash = ((Integer) this.cx).hashCode() ^ ((Integer) this.cdy).hashCode() ^ ((Integer) this.cz).hashCode() ^ ((Long) attunement)
-                    .hashCode();
+            this.hash = ((Integer) this.cx).hashCode() ^ ((Integer) this.cdy).hashCode()
+                    ^ ((Integer) this.cz).hashCode() ^ ((Long) attunement)
+                            .hashCode();
         }
 
         @Override
@@ -100,7 +99,8 @@ public class CompassManager {
                 return false;
             }
             final CompassRequest other = (CompassRequest) obj;
-            return this.attunement == other.attunement && this.cx == other.cx && this.cdy == other.cdy && this.cz == other.cz;
+            return this.attunement == other.attunement && this.cx == other.cx && this.cdy == other.cdy
+                    && this.cz == other.cz;
         }
     }
 }

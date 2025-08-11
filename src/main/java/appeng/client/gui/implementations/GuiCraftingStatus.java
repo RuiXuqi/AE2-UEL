@@ -22,11 +22,23 @@
 
 package appeng.client.gui.implementations;
 
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.definitions.IParts;
-import appeng.api.features.IWirelessTermHandler;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.gui.widgets.GuiScrollbar;
@@ -34,7 +46,6 @@ import appeng.client.gui.widgets.GuiTabButton;
 import appeng.container.implementations.ContainerCraftingStatus;
 import appeng.container.implementations.CraftingCPUStatus;
 import appeng.core.AELog;
-import appeng.core.features.registries.WirelessRegistry;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.GuiBridge;
 import appeng.core.sync.network.NetworkHandler;
@@ -45,19 +56,6 @@ import appeng.parts.reporting.PartCraftingTerminal;
 import appeng.parts.reporting.PartExpandedProcessingPatternTerminal;
 import appeng.parts.reporting.PartPatternTerminal;
 import appeng.parts.reporting.PartTerminal;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class GuiCraftingStatus extends GuiCraftingCPU {
 
@@ -87,7 +85,8 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
 
         if (target instanceof WirelessTerminalGuiObject) {
             myIcon = ((WirelessTerminalGuiObject) target).getItemStack();
-            this.originalGui = (GuiBridge) AEApi.instance().registries().wireless().getWirelessTerminalHandler(myIcon).getGuiHandler(myIcon);
+            this.originalGui = (GuiBridge) AEApi.instance().registries().wireless().getWirelessTerminalHandler(myIcon)
+                    .getGuiHandler(myIcon);
         }
 
         if (target instanceof PartTerminal) {
@@ -142,7 +141,8 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
 
         if (!this.myIcon.isEmpty()) {
             this.buttonList.add(
-                    this.originalGuiBtn = new GuiTabButton(this.guiLeft + 213, this.guiTop - 4, this.myIcon, this.myIcon.getDisplayName(), this.itemRender));
+                    this.originalGuiBtn = new GuiTabButton(this.guiLeft + 213, this.guiTop - 4, this.myIcon,
+                            this.myIcon.getDisplayName(), this.itemRender));
             this.originalGuiBtn.setHideEdge(13);
         }
     }
@@ -187,7 +187,8 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 }
                 this.bindTexture("guis/cpu_selector.png");
-                this.drawTexturedModalRect(x, y, CPU_TABLE_SLOT_XOFF, CPU_TABLE_SLOT_YOFF, CPU_TABLE_SLOT_WIDTH, CPU_TABLE_SLOT_HEIGHT);
+                this.drawTexturedModalRect(x, y, CPU_TABLE_SLOT_XOFF, CPU_TABLE_SLOT_YOFF, CPU_TABLE_SLOT_WIDTH,
+                        CPU_TABLE_SLOT_HEIGHT);
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
                 String name = cpu.getName();
@@ -299,7 +300,8 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
 
     @Override
     public List<Rectangle> getJEIExclusionArea() {
-        Rectangle craftingCPUArea = new Rectangle(this.guiLeft - CPU_TABLE_WIDTH, this.guiTop, CPU_TABLE_WIDTH, CPU_TABLE_HEIGHT);
+        Rectangle craftingCPUArea = new Rectangle(this.guiLeft - CPU_TABLE_WIDTH, this.guiTop, CPU_TABLE_WIDTH,
+                CPU_TABLE_HEIGHT);
         List<Rectangle> area = new ArrayList<Rectangle>();
         area.add(craftingCPUArea);
         return area;
@@ -315,7 +317,8 @@ public class GuiCraftingStatus extends GuiCraftingCPU {
         CraftingCPUStatus hit = hitCpu(xCoord, yCoord);
         if (hit != null) {
             try {
-                NetworkHandler.instance.sendToServer(new PacketValueConfig("Terminal.Cpu.Set", Integer.toString(hit.getSerial())));
+                NetworkHandler.instance
+                        .sendToServer(new PacketValueConfig("Terminal.Cpu.Set", Integer.toString(hit.getSerial())));
             } catch (final IOException e) {
                 AELog.debug(e);
             }

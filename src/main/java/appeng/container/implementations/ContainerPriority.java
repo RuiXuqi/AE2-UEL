@@ -18,13 +18,6 @@
 
 package appeng.container.implementations;
 
-
-import appeng.api.config.SecurityPermissions;
-import appeng.api.parts.IPart;
-import appeng.container.AEBaseContainer;
-import appeng.container.guisync.GuiSync;
-import appeng.helpers.IPriorityHost;
-import appeng.util.Platform;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -32,6 +25,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.config.SecurityPermissions;
+import appeng.api.parts.IPart;
+import appeng.container.AEBaseContainer;
+import appeng.container.guisync.GuiSync;
+import appeng.helpers.IPriorityHost;
+import appeng.util.Platform;
 
 public class ContainerPriority extends AEBaseContainer {
 

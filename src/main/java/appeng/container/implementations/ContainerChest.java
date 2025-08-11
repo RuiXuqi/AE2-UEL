@@ -18,12 +18,11 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.storage.TileChest;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class ContainerChest extends AEBaseContainer {
 
@@ -33,8 +32,9 @@ public class ContainerChest extends AEBaseContainer {
         super(ip, chest, null);
         this.chest = chest;
 
-        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_CELLS, this.chest.getInternalInventory(), 1, 80, 37, this
-                .getInventoryPlayer()));
+        this.addSlotToContainer(new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_CELLS,
+                this.chest.getInternalInventory(), 1, 80, 37, this
+                        .getInventoryPlayer()));
 
         this.bindPlayerInventory(ip, 0, 166 - /* height of player inventory */82);
     }

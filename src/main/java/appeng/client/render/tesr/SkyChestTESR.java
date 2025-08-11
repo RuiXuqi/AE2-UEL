@@ -18,12 +18,6 @@
 
 package appeng.client.render.tesr;
 
-
-import appeng.block.storage.BlockSkyChest;
-import appeng.block.storage.BlockSkyChest.SkyChestType;
-import appeng.client.render.FacingToRotation;
-import appeng.core.AppEng;
-import appeng.tile.storage.TileSkyChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
@@ -33,12 +27,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.block.storage.BlockSkyChest;
+import appeng.block.storage.BlockSkyChest.SkyChestType;
+import appeng.client.render.FacingToRotation;
+import appeng.core.AppEng;
+import appeng.tile.storage.TileSkyChest;
 
 @SideOnly(Side.CLIENT)
 public class SkyChestTESR extends TileEntitySpecialRenderer<TileSkyChest> {
 
-    private static final ResourceLocation TEXTURE_STONE = new ResourceLocation(AppEng.MOD_ID, "textures/models/skychest.png");
-    private static final ResourceLocation TEXTURE_BLOCK = new ResourceLocation(AppEng.MOD_ID, "textures/models/skyblockchest.png");
+    private static final ResourceLocation TEXTURE_STONE = new ResourceLocation(AppEng.MOD_ID,
+            "textures/models/skychest.png");
+    private static final ResourceLocation TEXTURE_BLOCK = new ResourceLocation(AppEng.MOD_ID,
+            "textures/models/skyblockchest.png");
 
     private final ModelChest simpleChest = new ModelChest();
 
@@ -47,7 +48,8 @@ public class SkyChestTESR extends TileEntitySpecialRenderer<TileSkyChest> {
     }
 
     @Override
-    public void render(TileSkyChest te, double x, double y, double z, float partialTicks, int destroyStage, float p_render_10_) {
+    public void render(TileSkyChest te, double x, double y, double z, float partialTicks, int destroyStage,
+            float p_render_10_) {
         GlStateManager.enableDepth();
         GlStateManager.depthFunc(515);
         GlStateManager.depthMask(true);

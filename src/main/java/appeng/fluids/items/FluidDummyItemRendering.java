@@ -18,12 +18,11 @@
 
 package appeng.fluids.items;
 
+import net.minecraftforge.fluids.FluidStack;
 
 import appeng.bootstrap.IItemRendering;
 import appeng.bootstrap.ItemRenderingCustomizer;
 import appeng.client.render.DummyFluidItemModel;
-import net.minecraftforge.fluids.FluidStack;
-
 
 /**
  * @author DrummerMC

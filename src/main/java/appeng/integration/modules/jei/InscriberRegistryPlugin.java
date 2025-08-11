@@ -18,18 +18,18 @@
 
 package appeng.integration.modules.jei;
 
+import java.util.Collections;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.features.IInscriberRegistry;
+import net.minecraft.item.ItemStack;
+
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeRegistryPlugin;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.item.ItemStack;
 
-import java.util.Collections;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.features.IInscriberRegistry;
 
 /**
  * Exposes the inscriber registry recipes to JEI.

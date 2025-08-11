@@ -18,6 +18,16 @@
 
 package appeng.items.storage;
 
+import java.util.List;
+
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.implementations.TransitionResult;
 import appeng.api.implementations.items.ISpatialStorageCell;
@@ -29,17 +39,6 @@ import appeng.core.localization.GuiText;
 import appeng.items.AEBaseItem;
 import appeng.spatial.StorageHelper;
 import appeng.util.Platform;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
 
 public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorageCell {
     private static final String NBT_CELL_ID_KEY = "StorageCellID";
@@ -56,7 +55,8 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         final int id = this.getStoredDimensionID(stack);
         if (id >= 0) {
             lines.add(GuiText.CellId.getLocal() + ": " + id);
@@ -97,7 +97,8 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
     public WorldCoord getStoredSize(final ItemStack is) {
         if (is.hasTagCompound()) {
             final NBTTagCompound c = is.getTagCompound();
-            return new WorldCoord(c.getInteger(NBT_SIZE_X_KEY), c.getInteger(NBT_SIZE_Y_KEY), c.getInteger(NBT_SIZE_Z_KEY));
+            return new WorldCoord(c.getInteger(NBT_SIZE_X_KEY), c.getInteger(NBT_SIZE_Y_KEY),
+                    c.getInteger(NBT_SIZE_Z_KEY));
         }
         return new WorldCoord(0, 0, 0);
     }
@@ -112,7 +113,8 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
     }
 
     @Override
-    public TransitionResult doSpatialTransition(final ItemStack is, final World w, final WorldCoord min, final WorldCoord max, int playerId) {
+    public TransitionResult doSpatialTransition(final ItemStack is, final World w, final WorldCoord min,
+            final WorldCoord max, int playerId) {
         final int targetX = max.x - min.x - 1;
         final int targetY = max.y - min.y - 1;
         final int targetZ = max.z - min.z - 1;
@@ -137,7 +139,8 @@ public class ItemSpatialStorageCell extends AEBaseItem implements ISpatialStorag
 
                         this.setStorageCell(is, cellid, targetSize);
                         StorageHelper.getInstance()
-                                .swapRegions(w, min.x + 1, min.y + 1, min.z + 1, manager.getWorld(), offset.getX(), offset.getY(),
+                                .swapRegions(w, min.x + 1, min.y + 1, min.z + 1, manager.getWorld(), offset.getX(),
+                                        offset.getY(),
                                         offset.getZ(), targetX - 1, targetY - 1,
                                         targetZ - 1);
 

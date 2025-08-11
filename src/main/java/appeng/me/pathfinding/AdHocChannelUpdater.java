@@ -18,13 +18,11 @@
 
 package appeng.me.pathfinding;
 
-
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridConnectionVisitor;
 import appeng.api.networking.IGridNode;
 import appeng.me.GridConnection;
 import appeng.me.GridNode;
-
 
 public class AdHocChannelUpdater implements IGridConnectionVisitor {
 
@@ -37,8 +35,7 @@ public class AdHocChannelUpdater implements IGridConnectionVisitor {
     @Override
     public boolean visitNode(final IGridNode n) {
         final GridNode gn = (GridNode) n;
-        gn.setControllerRoute(null, true);
-        gn.incrementChannelCount(this.usedChannels);
+        gn.setAdHocChannels(this.usedChannels);
         gn.finalizeChannels();
         return true;
     }
@@ -46,8 +43,7 @@ public class AdHocChannelUpdater implements IGridConnectionVisitor {
     @Override
     public void visitConnection(final IGridConnection gcc) {
         final GridConnection gc = (GridConnection) gcc;
-        gc.setControllerRoute(null, true);
-        gc.incrementChannelCount(this.usedChannels);
+        gc.setAdHocChannels(this.usedChannels);
         gc.finalizeChannels();
     }
 }

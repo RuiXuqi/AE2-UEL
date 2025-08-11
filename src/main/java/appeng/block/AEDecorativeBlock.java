@@ -18,9 +18,7 @@
 
 package appeng.block;
 
-
 import net.minecraft.block.material.Material;
-
 
 public abstract class AEDecorativeBlock extends AEBaseBlock {
     public AEDecorativeBlock(final Material mat) {

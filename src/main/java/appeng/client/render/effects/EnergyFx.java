@@ -18,9 +18,6 @@
 
 package appeng.client.render.effects;
 
-
-import appeng.api.util.AEPartLocation;
-import appeng.client.render.textures.ParticleTextures;
 import net.minecraft.client.particle.ParticleBreaking;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -31,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.util.AEPartLocation;
+import appeng.client.render.textures.ParticleTextures;
 
 @SideOnly(Side.CLIENT)
 public class EnergyFx extends ParticleBreaking {
@@ -41,7 +40,8 @@ public class EnergyFx extends ParticleBreaking {
     private final int startBlkY;
     private final int startBlkZ;
 
-    public EnergyFx(final World par1World, final double par2, final double par4, final double par6, final Item par8Item) {
+    public EnergyFx(final World par1World, final double par2, final double par4, final double par6,
+            final Item par8Item) {
         super(par1World, par2, par4, par6, par8Item);
         this.particleGravity = 0;
         this.particleBlue = 1;
@@ -62,7 +62,8 @@ public class EnergyFx extends ParticleBreaking {
     }
 
     @Override
-    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float partialTicks, final float par3, final float par4, final float par5, final float par6, final float par7) {
+    public void renderParticle(final BufferBuilder par1Tessellator, final Entity p_180434_2_, final float partialTicks,
+            final float par3, final float par4, final float par5, final float par6, final float par7) {
         final float f6 = this.particleTextureIndex.getMinU();
         final float f7 = this.particleTextureIndex.getMaxU();
         final float f8 = this.particleTextureIndex.getMinV();
@@ -85,22 +86,26 @@ public class EnergyFx extends ParticleBreaking {
             final float f14 = 1.0F;
             par1Tessellator.pos(f11 - par3 * f10 - par6 * f10, f12 - par4 * f10, f13 - par5 * f10 - par7 * f10)
                     .tex(f7, f9)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
             par1Tessellator.pos(f11 - par3 * f10 + par6 * f10, f12 + par4 * f10, f13 - par5 * f10 + par7 * f10)
                     .tex(f7, f8)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
             par1Tessellator.pos(f11 + par3 * f10 + par6 * f10, f12 + par4 * f10, f13 + par5 * f10 + par7 * f10)
                     .tex(f6, f8)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
             par1Tessellator.pos(f11 + par3 * f10 - par6 * f10, f12 - par4 * f10, f13 + par5 * f10 - par7 * f10)
                     .tex(f6, f9)
-                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14, this.particleAlpha)
+                    .color(this.particleRed * f14, this.particleGreen * f14, this.particleBlue * f14,
+                            this.particleAlpha)
                     .lightmap(j, k)
                     .endVertex();
         }

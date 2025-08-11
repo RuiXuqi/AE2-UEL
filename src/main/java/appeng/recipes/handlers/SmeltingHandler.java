@@ -1,15 +1,15 @@
 package appeng.recipes.handlers;
 
-
-import appeng.recipes.IAERecipeFactory;
-import appeng.recipes.factories.recipes.PartRecipeFactory;
 import com.google.gson.JsonObject;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import appeng.recipes.IAERecipeFactory;
+import appeng.recipes.factories.recipes.PartRecipeFactory;
 
 public class SmeltingHandler implements IAERecipeFactory {
     @Override

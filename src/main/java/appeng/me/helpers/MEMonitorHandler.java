@@ -23,6 +23,9 @@
 
 package appeng.me.helpers;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -33,11 +36,6 @@ import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
-
 
 /**
  * Common implementation of a simple class that monitors injection/extraction of a inventory to send events to a list of

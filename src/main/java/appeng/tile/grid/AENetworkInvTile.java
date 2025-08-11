@@ -18,6 +18,7 @@
 
 package appeng.tile.grid;
 
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
@@ -25,8 +26,6 @@ import appeng.api.util.AEPartLocation;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.tile.AEBaseInvTile;
-import net.minecraft.nbt.NBTTagCompound;
-
 
 public abstract class AENetworkInvTile extends AEBaseInvTile implements IActionHost, IGridProxyable {
 
@@ -63,7 +62,7 @@ public abstract class AENetworkInvTile extends AEBaseInvTile implements IActionH
     @Override
     public void onChunkUnload() {
         super.onChunkUnload();
-        this.getProxy().onChunkUnload();
+        this.getProxy().onChunkUnloaded();
     }
 
     @Override
@@ -75,7 +74,7 @@ public abstract class AENetworkInvTile extends AEBaseInvTile implements IActionH
     @Override
     public void invalidate() {
         super.invalidate();
-        this.getProxy().invalidate();
+        this.getProxy().remove();
     }
 
     @Override

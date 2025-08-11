@@ -18,7 +18,6 @@
 
 package appeng.block.networking;
 
-
 public class BlockDenseEnergyCell extends BlockEnergyCell {
 
     public BlockDenseEnergyCell() {

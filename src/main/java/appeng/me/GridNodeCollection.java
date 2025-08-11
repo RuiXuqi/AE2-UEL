@@ -18,15 +18,13 @@
 
 package appeng.me;
 
-
-import appeng.api.networking.IGridHost;
-import appeng.api.networking.IGridNode;
-import appeng.api.util.IReadOnlyCollection;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
+import appeng.api.util.IReadOnlyCollection;
 
 public class GridNodeCollection implements IReadOnlyCollection<IGridNode> {
     private final Map<Class<? extends IGridHost>, MachineSet> machines;

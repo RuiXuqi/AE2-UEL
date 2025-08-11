@@ -18,11 +18,6 @@
 
 package appeng.block.spatial;
 
-
-import appeng.block.AEBaseTileBlock;
-import appeng.client.render.spatial.SpatialPylonStateProperty;
-import appeng.helpers.AEGlassMaterial;
-import appeng.tile.spatial.TileSpatialPylon;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -34,8 +29,10 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-import javax.annotation.Nonnull;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.client.render.spatial.SpatialPylonStateProperty;
+import appeng.helpers.AEGlassMaterial;
+import appeng.tile.spatial.TileSpatialPylon;
 
 public class BlockSpatialPylon extends AEBaseTileBlock {
 
@@ -47,7 +44,7 @@ public class BlockSpatialPylon extends AEBaseTileBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{STATE});
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] { STATE });
     }
 
     @Override
@@ -61,7 +58,7 @@ public class BlockSpatialPylon extends AEBaseTileBlock {
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
         final TileSpatialPylon tsp = this.getTileEntity(world, pos);
         if (tsp != null) {
-            tsp.neighborChanged();
+            tsp.neighborChanged(fromPos);
         }
     }
 

@@ -18,9 +18,7 @@
 
 package appeng.fluids.container.slots;
 
-
 import appeng.api.storage.data.IAEFluidStack;
-
 
 /**
  * @author yueh

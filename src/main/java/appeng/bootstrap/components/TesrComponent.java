@@ -18,12 +18,11 @@
 
 package appeng.bootstrap.components;
 
-
-import appeng.tile.AEBaseTile;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import appeng.tile.AEBaseTile;
 
 /**
  * Registers a TESR for a given tile entity class.

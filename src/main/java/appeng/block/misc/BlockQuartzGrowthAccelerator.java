@@ -18,14 +18,8 @@
 
 package appeng.block.misc;
 
+import java.util.Random;
 
-import appeng.api.util.IOrientableBlock;
-import appeng.block.AEBaseTileBlock;
-import appeng.client.render.effects.LightningFX;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
-import appeng.tile.misc.TileQuartzGrowthAccelerator;
-import appeng.util.Platform;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -39,8 +33,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
-
+import appeng.api.util.IOrientableBlock;
+import appeng.block.AEBaseTileBlock;
+import appeng.client.render.effects.LightningFX;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
+import appeng.tile.misc.TileQuartzGrowthAccelerator;
+import appeng.util.Platform;
 
 public class BlockQuartzGrowthAccelerator extends AEBaseTileBlock implements IOrientableBlock {
 
@@ -63,7 +62,7 @@ public class BlockQuartzGrowthAccelerator extends AEBaseTileBlock implements IOr
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{POWERED};
+        return new IProperty[] { POWERED };
     }
 
     @SideOnly(Side.CLIENT)

@@ -18,22 +18,23 @@
 
 package appeng.integration.modules.theoneprobe.part;
 
-
-import appeng.api.implementations.IPowerChannelState;
-import appeng.api.parts.IPart;
-import appeng.integration.modules.theoneprobe.TheOneProbeText;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+
+import appeng.api.implementations.IPowerChannelState;
+import appeng.api.parts.IPart;
+import appeng.integration.modules.theoneprobe.TheOneProbeText;
 
 public class PowerStateInfoProvider implements IPartProbInfoProvider {
 
     @Override
-    public void addProbeInfo(IPart part, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+    public void addProbeInfo(IPart part, ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+            IBlockState blockState, IProbeHitData data) {
         if (part instanceof IPowerChannelState) {
             final IPowerChannelState state = (IPowerChannelState) part;
             final String tooltip = this.getToolTip(state.isActive(), state.isPowered());

@@ -18,8 +18,12 @@
 
 package appeng.debug;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 
-import appeng.tile.AEBaseTile;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,11 +33,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayDeque;
-import java.util.Queue;
-
+import appeng.tile.AEBaseTile;
 
 public class TileItemGen extends AEBaseTile {
 

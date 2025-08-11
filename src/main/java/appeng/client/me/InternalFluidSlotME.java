@@ -18,9 +18,7 @@
 
 package appeng.client.me;
 
-
 import appeng.api.storage.data.IAEFluidStack;
-
 
 /**
  * @author BrockWS

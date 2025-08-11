@@ -18,7 +18,6 @@
 
 package appeng.integration.modules.waila.part;
 
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
 
 /**
  * Tracer for players hitting blocks
@@ -37,8 +35,7 @@ import net.minecraft.world.World;
  */
 public final class Tracer {
     /**
-     * Trace view of players to blocks.
-     * Ignore all which are out of reach.
+     * Trace view of players to blocks. Ignore all which are out of reach.
      *
      * @param world  word of block
      * @param player player viewing block

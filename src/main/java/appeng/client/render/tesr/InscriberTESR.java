@@ -1,11 +1,7 @@
 package appeng.client.render.tesr;
 
+import org.lwjgl.opengl.GL11;
 
-import appeng.api.features.IInscriberRecipe;
-import appeng.client.render.FacingToRotation;
-import appeng.core.AppEng;
-import appeng.tile.AEBaseTile;
-import appeng.tile.misc.TileInscriber;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,8 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.items.IItemHandler;
-import org.lwjgl.opengl.GL11;
 
+import appeng.api.features.IInscriberRecipe;
+import appeng.client.render.FacingToRotation;
+import appeng.core.AppEng;
+import appeng.tile.AEBaseTile;
+import appeng.tile.misc.TileInscriber;
 
 /**
  * Renders the dynamic parts of an inscriber (the presses, the animation and the item being smashed)
@@ -31,12 +31,14 @@ public final class InscriberTESR extends TileEntitySpecialRenderer<TileInscriber
 
     private static final float ITEM_RENDER_SCALE = 1.0f / 1.2f;
 
-    private static final ResourceLocation TEXTURE_INSIDE = new ResourceLocation(AppEng.MOD_ID, "blocks/inscriber_inside");
+    private static final ResourceLocation TEXTURE_INSIDE = new ResourceLocation(AppEng.MOD_ID,
+            "blocks/inscriber_inside");
 
     private static TextureAtlasSprite textureInside;
 
     @Override
-    public void render(final TileInscriber tile, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float p_render_10_) {
+    public void render(final TileInscriber tile, final double x, final double y, final double z,
+            final float partialTicks, final int destroyStage, final float p_render_10_) {
         // render inscriber
 
         GlStateManager.pushMatrix();
@@ -92,28 +94,41 @@ public final class InscriberTESR extends TileEntitySpecialRenderer<TileInscriber
         if (tas != null) {
             // Bottom of Top Stamp
             buffer.pos(TwoPx, middle + press, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(13)).endVertex();
-            buffer.pos(1.0 - TwoPx, middle + press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(13)).endVertex();
-            buffer.pos(1.0 - TwoPx, middle + press, 1.0 - TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(2)).endVertex();
-            buffer.pos(TwoPx, middle + press, 1.0 - TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(2)).endVertex();
+            buffer.pos(1.0 - TwoPx, middle + press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(13))
+                    .endVertex();
+            buffer.pos(1.0 - TwoPx, middle + press, 1.0 - TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(2))
+                    .endVertex();
+            buffer.pos(TwoPx, middle + press, 1.0 - TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(2))
+                    .endVertex();
 
             // Front of Top Stamp
-            buffer.pos(TwoPx, middle + base, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
-            buffer.pos(1.0 - TwoPx, middle + base, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
-            buffer.pos(1.0 - TwoPx, middle + press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3)).endVertex();
+            buffer.pos(TwoPx, middle + base, TwoPx)
+                    .tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
+            buffer.pos(1.0 - TwoPx, middle + base, TwoPx)
+                    .tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
+            buffer.pos(1.0 - TwoPx, middle + press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3))
+                    .endVertex();
             buffer.pos(TwoPx, middle + press, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3)).endVertex();
 
             // Top of Bottom Stamp
             middle -= 2.0f * 0.02f;
-            buffer.pos(1.0 - TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(13)).endVertex();
-            buffer.pos(TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(13)).endVertex();
-            buffer.pos(TwoPx, middle - press, 1.0 - TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(2)).endVertex();
-            buffer.pos(1.0 - TwoPx, middle - press, 1.0 - TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(2)).endVertex();
+            buffer.pos(1.0 - TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(13))
+                    .endVertex();
+            buffer.pos(TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(13))
+                    .endVertex();
+            buffer.pos(TwoPx, middle - press, 1.0 - TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(2))
+                    .endVertex();
+            buffer.pos(1.0 - TwoPx, middle - press, 1.0 - TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(2))
+                    .endVertex();
 
             // Front of Bottom Stamp
-            buffer.pos(1.0 - TwoPx, middle + -base, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
-            buffer.pos(TwoPx, middle - base, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
+            buffer.pos(1.0 - TwoPx, middle + -base, TwoPx)
+                    .tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
+            buffer.pos(TwoPx, middle - base, TwoPx)
+                    .tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3 - 16 * (press - base))).endVertex();
             buffer.pos(TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(14), tas.getInterpolatedV(3)).endVertex();
-            buffer.pos(1.0 - TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3)).endVertex();
+            buffer.pos(1.0 - TwoPx, middle - press, TwoPx).tex(tas.getInterpolatedU(2), tas.getInterpolatedV(3))
+                    .endVertex();
         }
 
         Tessellator.getInstance().draw();
@@ -156,7 +171,8 @@ public final class InscriberTESR extends TileEntitySpecialRenderer<TileInscriber
         GlStateManager.enableRescaleNormal();
     }
 
-    private void renderItem(final ItemStack stack, final float o, final AEBaseTile tile, final double x, final double y, final double z) {
+    private void renderItem(final ItemStack stack, final float o, final AEBaseTile tile, final double x, final double y,
+            final double z) {
         if (!stack.isEmpty()) {
             final ItemStack sis = stack.copy();
 

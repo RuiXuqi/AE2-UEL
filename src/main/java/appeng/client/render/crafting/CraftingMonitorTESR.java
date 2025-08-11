@@ -18,16 +18,15 @@
 
 package appeng.client.render.crafting;
 
-
-import appeng.api.storage.data.IAEItemStack;
-import appeng.client.render.TesrRenderHelper;
-import appeng.tile.crafting.TileCraftingMonitorTile;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.storage.data.IAEItemStack;
+import appeng.client.render.TesrRenderHelper;
+import appeng.tile.crafting.TileCraftingMonitorTile;
 
 /**
  * Renders the item currently being crafted
@@ -36,7 +35,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CraftingMonitorTESR extends TileEntitySpecialRenderer<TileCraftingMonitorTile> {
 
     @Override
-    public void render(TileCraftingMonitorTile te, double x, double y, double z, float partialTicks, int destroyStage, float p_render_10_) {
+    public void render(TileCraftingMonitorTile te, double x, double y, double z, float partialTicks, int destroyStage,
+            float p_render_10_) {
         if (te == null) {
             return;
         }

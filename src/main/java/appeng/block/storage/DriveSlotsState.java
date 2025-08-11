@@ -18,9 +18,7 @@
 
 package appeng.block.storage;
 
-
 import appeng.api.implementations.tiles.IChestOrDrive;
-
 
 /**
  * Contains the full information about what the state of the slots in a BlockDrive is.

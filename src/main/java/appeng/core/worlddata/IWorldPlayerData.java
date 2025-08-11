@@ -18,12 +18,11 @@
 
 package appeng.core.worlddata;
 
-
-import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.player.EntityPlayer;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.mojang.authlib.GameProfile;
 
 /**
  * @author thatsIch
@@ -31,8 +30,15 @@ import javax.annotation.Nullable;
  * @since rv3 30.05.2015
  */
 public interface IWorldPlayerData {
+    /**
+     * Gets the UUID of the Minecraft profile associated with the given ME player id.
+     * 
+     * @param playerID An ME player id.
+     * @return Null if the ME player id is unknown, otherwise the unique id of the Minecraft profile it originates from.
+     */
     @Nullable
-    EntityPlayer getPlayerFromID(int playerID);
+    UUID getProfileId(int playerID);
 
-    int getPlayerID(GameProfile profile);
+    int getMePlayerId(GameProfile profile);
+
 }

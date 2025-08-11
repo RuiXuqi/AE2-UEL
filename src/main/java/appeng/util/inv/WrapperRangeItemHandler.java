@@ -18,14 +18,13 @@
 
 package appeng.util.inv;
 
+import javax.annotation.Nonnull;
 
-import appeng.util.helpers.ItemHandlerUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-import javax.annotation.Nonnull;
-
+import appeng.util.helpers.ItemHandlerUtil;
 
 public class WrapperRangeItemHandler implements IItemHandlerModifiable {
     private final IItemHandler compose;

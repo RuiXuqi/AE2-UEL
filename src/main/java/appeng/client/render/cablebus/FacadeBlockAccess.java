@@ -18,6 +18,7 @@
 
 package appeng.client.render.cablebus;
 
+import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -27,12 +28,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 
-import javax.annotation.Nullable;
-
-
 /**
- * This is used to retrieve the ExtendedState of a block for facade rendering.
- * It fakes the block at BlockPos provided as the IBlockState provided.
+ * This is used to retrieve the ExtendedState of a block for facade rendering. It fakes the block at BlockPos provided
+ * as the IBlockState provided.
  *
  * @author covers1624
  */

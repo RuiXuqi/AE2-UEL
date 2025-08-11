@@ -18,10 +18,8 @@
 
 package appeng.util.inv.filter;
 
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-
 
 public class AEItemFilters {
     public static final IAEItemFilter INSERT_ONLY = new InsertOnlyFilter();

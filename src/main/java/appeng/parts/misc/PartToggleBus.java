@@ -18,9 +18,20 @@
 
 package appeng.parts.misc;
 
+import java.util.EnumSet;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 import appeng.api.AEApi;
 import appeng.api.exceptions.FailedConnectionException;
+import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPartCollisionHelper;
@@ -35,28 +46,20 @@ import appeng.items.parts.PartModels;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.PartBasicState;
 import appeng.parts.PartModel;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-
-import java.util.EnumSet;
-
 
 public class PartToggleBus extends PartBasicState {
 
     @PartModels
     public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID, "part/toggle_bus_base");
     @PartModels
-    public static final ResourceLocation MODEL_STATUS_OFF = new ResourceLocation(AppEng.MOD_ID, "part/toggle_bus_status_off");
+    public static final ResourceLocation MODEL_STATUS_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/toggle_bus_status_off");
     @PartModels
-    public static final ResourceLocation MODEL_STATUS_ON = new ResourceLocation(AppEng.MOD_ID, "part/toggle_bus_status_on");
+    public static final ResourceLocation MODEL_STATUS_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/toggle_bus_status_on");
     @PartModels
-    public static final ResourceLocation MODEL_STATUS_HAS_CHANNEL = new ResourceLocation(AppEng.MOD_ID, "part/toggle_bus_status_has_channel");
+    public static final ResourceLocation MODEL_STATUS_HAS_CHANNEL = new ResourceLocation(AppEng.MOD_ID,
+            "part/toggle_bus_status_has_channel");
 
     public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_STATUS_OFF);
     public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_STATUS_ON);
@@ -73,8 +76,8 @@ public class PartToggleBus extends PartBasicState {
 
         this.getProxy().setIdlePowerUsage(0.0);
         this.getOuterProxy().setIdlePowerUsage(0.0);
-        this.getProxy().setFlags();
-        this.getOuterProxy().setFlags();
+        this.getProxy().setFlags(GridFlags.PREFERRED);
+        this.getOuterProxy().setFlags(GridFlags.PREFERRED);
     }
 
     @Override
@@ -126,7 +129,7 @@ public class PartToggleBus extends PartBasicState {
     @Override
     public void removeFromWorld() {
         super.removeFromWorld();
-        this.getOuterProxy().invalidate();
+        this.getOuterProxy().remove();
     }
 
     @Override
@@ -154,7 +157,8 @@ public class PartToggleBus extends PartBasicState {
     }
 
     @Override
-    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held, final AEPartLocation side) {
+    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held,
+            final AEPartLocation side) {
         super.onPlacement(player, hand, held, side);
         this.getOuterProxy().setOwner(player);
     }
@@ -165,7 +169,8 @@ public class PartToggleBus extends PartBasicState {
             if (this.getProxy().getNode() != null && this.getOuterProxy().getNode() != null) {
                 if (intention) {
                     try {
-                        this.connection = AEApi.instance().grid().createGridConnection(this.getProxy().getNode(), this.getOuterProxy().getNode());
+                        this.connection = AEApi.instance().grid().createGridConnection(this.getProxy().getNode(),
+                                this.getOuterProxy().getNode());
                     } catch (final FailedConnectionException e) {
                         // :(
                         AELog.debug(e);

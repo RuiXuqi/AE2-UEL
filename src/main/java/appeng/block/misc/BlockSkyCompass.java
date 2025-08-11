@@ -18,10 +18,9 @@
 
 package appeng.block.misc;
 
+import java.util.Collections;
+import java.util.List;
 
-import appeng.block.AEBaseTileBlock;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.misc.TileSkyCompass;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -36,9 +35,9 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.PropertyFloat;
 
-import java.util.Collections;
-import java.util.List;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.misc.TileSkyCompass;
 
 public class BlockSkyCompass extends AEBaseTileBlock implements ICustomCollision {
 
@@ -54,11 +53,12 @@ public class BlockSkyCompass extends AEBaseTileBlock implements ICustomCollision
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{FORWARD, UP, ROTATION});
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] { FORWARD, UP, ROTATION });
     }
 
     @Override
-    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward, final EnumFacing up) {
+    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward,
+            final EnumFacing up) {
         final TileSkyCompass sc = this.getTileEntity(w, pos);
         if (sc != null) {
             return false;
@@ -96,7 +96,8 @@ public class BlockSkyCompass extends AEBaseTileBlock implements ICustomCollision
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
         final TileSkyCompass tile = this.getTileEntity(w, pos);
         if (tile != null) {
             final EnumFacing forward = tile.getForward();
@@ -155,7 +156,8 @@ public class BlockSkyCompass extends AEBaseTileBlock implements ICustomCollision
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
 
     }
 

@@ -18,18 +18,18 @@
 
 package appeng.core.features.registries.inscriber;
 
-
-import appeng.api.features.IInscriberRecipe;
-import appeng.api.features.InscriberProcessType;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+
+import appeng.api.features.IInscriberRecipe;
+import appeng.api.features.InscriberProcessType;
 
 /**
  * Basic inscriber recipe
@@ -54,7 +54,9 @@ public class InscriberRecipe implements IInscriberRecipe {
     @Nonnull
     private final InscriberProcessType type;
 
-    InscriberRecipe(@Nonnull final Collection<ItemStack> inputs, @Nonnull final ItemStack output, @Nullable final List<ItemStack> top, @Nullable final List<ItemStack> bot, @Nonnull final InscriberProcessType type) {
+    InscriberRecipe(@Nonnull final Collection<ItemStack> inputs, @Nonnull final ItemStack output,
+            @Nullable final List<ItemStack> top, @Nullable final List<ItemStack> bot,
+            @Nonnull final InscriberProcessType type) {
         this.inputs = new ArrayList<>(inputs.size());
         this.inputs.addAll(inputs);
 
@@ -130,4 +132,5 @@ public class InscriberRecipe implements IInscriberRecipe {
         result = 31 * result + this.type.hashCode();
         return result;
     }
+
 }

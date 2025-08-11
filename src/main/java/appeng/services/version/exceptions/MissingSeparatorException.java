@@ -18,7 +18,6 @@
 
 package appeng.services.version.exceptions;
 
-
 /**
  * Indicates a version without a valid separator.
  * <p>

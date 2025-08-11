@@ -18,7 +18,6 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline.transformers;
 
-
 import appeng.thirdparty.codechicken.lib.math.InterpHelper;
 import appeng.thirdparty.codechicken.lib.model.CachedFormat;
 import appeng.thirdparty.codechicken.lib.model.Quad;
@@ -26,10 +25,9 @@ import appeng.thirdparty.codechicken.lib.model.Quad.Vertex;
 import appeng.thirdparty.codechicken.lib.model.pipeline.IPipelineElementFactory;
 import appeng.thirdparty.codechicken.lib.model.pipeline.QuadTransformer;
 
-
 /**
- * This transformer Re-Interpolates the Color, UV's and LightMaps.
- * Use this after all transformations that translate vertices in the pipeline.
+ * This transformer Re-Interpolates the Color, UV's and LightMaps. Use this after all transformations that translate
+ * vertices in the pipeline.
  * <p>
  * This Transformation can only be used in the BakedPipeline.
  *

@@ -18,13 +18,12 @@
 
 package appeng.container;
 
-
-import appeng.api.parts.IPart;
-import appeng.api.util.AEPartLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import appeng.api.parts.IPart;
+import appeng.api.util.AEPartLocation;
 
 public class ContainerOpenContext {
 

@@ -18,23 +18,22 @@
 
 package appeng.core.sync.packets;
 
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.container.implementations.ContainerPatternEncoder;
-import appeng.container.implementations.ContainerPatternTerm;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-
 
 public class PacketPatternSlot extends AppEngPacket {
 
@@ -67,7 +66,8 @@ public class PacketPatternSlot extends AppEngPacket {
     }
 
     // api
-    public PacketPatternSlot(final IItemHandler pat, final IAEItemStack slotItem, final boolean shift) throws IOException {
+    public PacketPatternSlot(final IItemHandler pat, final IAEItemStack slotItem, final boolean shift)
+            throws IOException {
 
         this.slotItem = slotItem;
         this.shift = shift;
@@ -80,7 +80,8 @@ public class PacketPatternSlot extends AppEngPacket {
 
         this.writeItem(slotItem, data);
         for (int x = 0; x < 9; x++) {
-            this.pattern[x] = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(pat.getStackInSlot(x));
+            this.pattern[x] = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                    .createStack(pat.getStackInSlot(x));
             this.writeItem(this.pattern[x], data);
         }
 

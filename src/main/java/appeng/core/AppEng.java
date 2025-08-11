@@ -18,6 +18,28 @@
 
 package appeng.core;
 
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
+
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import team.chisel.ctm.CTM;
 
 import appeng.api.AEApi;
 import appeng.core.crash.CrashInfo;
@@ -39,26 +61,6 @@ import appeng.services.export.ExportProcess;
 import appeng.services.export.ForgeExportConfig;
 import appeng.services.version.VersionCheckerConfig;
 import appeng.util.Platform;
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import team.chisel.ctm.CTM;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 
 @Mod(modid = AppEng.MOD_ID, acceptedMinecraftVersions = "[1.12.2]", name = AppEng.MOD_NAME, version = AEConfig.VERSION, dependencies = AppEng.MOD_DEPENDENCIES, guiFactory = "appeng.client.gui.config.AEConfigGuiFactory", certificateFingerprint = "dfa4d3ac143316c6f32aa1a1beda1e34d42132e5")
 public final class AppEng {
@@ -70,9 +72,11 @@ public final class AppEng {
 
     public static final String ASSETS = "appliedenergistics2:";
 
-    private static final String FORGE_CURRENT_VERSION = ForgeVersion.majorVersion + "." + ForgeVersion.minorVersion + "." + ForgeVersion.revisionVersion + "." + ForgeVersion.buildVersion;
+    private static final String FORGE_CURRENT_VERSION = ForgeVersion.majorVersion + "." + ForgeVersion.minorVersion
+            + "." + ForgeVersion.revisionVersion + "." + ForgeVersion.buildVersion;
     private static final String FORGE_MAX_VERSION = (ForgeVersion.majorVersion + 1) + ".0.0.0";
-    public static final String MOD_DEPENDENCIES = "required-after:forge@[" + FORGE_CURRENT_VERSION + "," + FORGE_MAX_VERSION + ");" +
+    public static final String MOD_DEPENDENCIES = "required-after:forge@[" + FORGE_CURRENT_VERSION + ","
+            + FORGE_MAX_VERSION + ");" +
             "after:ctm@[" + CTM.VERSION + ",);" +
             "after:itemstages;" +
             "after:recipestages;" +
@@ -191,7 +195,8 @@ public final class AppEng {
 
                 this.startService("AE2 CSV Export", exportProcessThread);
             } else {
-                AELog.info("Disabling item.csv export for custom recipes, since creative tab information is only available on the client.");
+                AELog.info(
+                        "Disabling item.csv export for custom recipes, since creative tab information is only available on the client.");
             }
         }
 
@@ -241,7 +246,7 @@ public final class AppEng {
     @EventHandler
     private void serverStopped(final FMLServerStoppedEvent event) {
         WorldData.instance().onServerStoppped();
-        TickHandler.INSTANCE.shutdown();
+        TickHandler.instance().shutdown();
     }
 
     @EventHandler

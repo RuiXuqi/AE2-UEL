@@ -18,13 +18,8 @@
 
 package appeng.capabilities;
 
-
-import appeng.api.storage.ISpatialDimension;
-import appeng.api.storage.IStorageMonitorableAccessor;
-import appeng.integration.IntegrationRegistry;
-import appeng.integration.IntegrationType;
 import com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository;
-import gregtech.api.capability.IEnergyContainer;
+
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.minecraft.nbt.NBTBase;
@@ -34,6 +29,12 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import gregtech.api.capability.IEnergyContainer;
+
+import appeng.api.storage.ISpatialDimension;
+import appeng.api.storage.IStorageMonitorableAccessor;
+import appeng.integration.IntegrationRegistry;
+import appeng.integration.IntegrationType;
 
 /**
  * Utility class that holds various capabilities, both by AE2 and other Mods.
@@ -61,7 +62,8 @@ public final class Capabilities {
      * Register AE2 provided capabilities.
      */
     public static void register() {
-        CapabilityManager.INSTANCE.register(IStorageMonitorableAccessor.class, createNullStorage(), NullMENetworkAccessor::new);
+        CapabilityManager.INSTANCE.register(IStorageMonitorableAccessor.class, createNullStorage(),
+                NullMENetworkAccessor::new);
         CapabilityManager.INSTANCE.register(ISpatialDimension.class, createNullStorage(), NullSpatialDimension::new);
     }
 

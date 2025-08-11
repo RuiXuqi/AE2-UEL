@@ -18,7 +18,6 @@
 
 package appeng.helpers;
 
-
 public enum InventoryAction {
     // standard vanilla mechanics.
     PICKUP_OR_SET_DOWN,

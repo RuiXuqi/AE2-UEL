@@ -18,16 +18,16 @@
 
 package appeng.integration.modules.jei;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
-import appeng.api.config.CondenserOutput;
-import appeng.core.AppEng;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapperFactory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
+import appeng.api.config.CondenserOutput;
+import appeng.core.AppEng;
 
 class CondenserOutputHandler implements IRecipeWrapperFactory<CondenserOutput> {
 

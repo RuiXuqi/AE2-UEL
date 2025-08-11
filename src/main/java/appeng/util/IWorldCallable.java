@@ -18,12 +18,11 @@
 
 package appeng.util;
 
-
-import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.world.World;
 
 /**
  * An interface similar to {@link Callable}, but allowing to pass the {@link World} when calling.

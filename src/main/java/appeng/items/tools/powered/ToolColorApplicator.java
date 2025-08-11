@@ -18,6 +18,35 @@
 
 package appeng.items.tools.powered;
 
+import java.util.*;
+
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.text.WordUtils;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockStainedGlass;
+import net.minecraft.block.BlockStainedGlassPane;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemSnowball;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -47,36 +76,9 @@ import appeng.me.helpers.BaseActionSource;
 import appeng.tile.misc.TilePaint;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
-import net.minecraft.block.BlockStainedGlass;
-import net.minecraft.block.BlockStainedGlassPane;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemSnowball;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.commons.lang3.text.WordUtils;
 
-import javax.annotation.Nullable;
-import java.util.*;
-
-
-public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCell<IAEItemStack>, IItemGroup, IBlockTool, IMouseWheelItem {
+public class ToolColorApplicator extends AEBasePoweredItem
+        implements IStorageCell<IAEItemStack>, IItemGroup, IBlockTool, IMouseWheelItem {
 
     private static final double POWER_PER_USE = 100;
     private static final Map<Integer, AEColor> ORE_TO_COLOR = new HashMap<>();
@@ -96,7 +98,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer p, World w, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer p, World w, BlockPos pos, EnumHand hand, EnumFacing side, float hitX,
+            float hitY, float hitZ) {
         return this.onItemUse(p.getHeldItem(hand), p, w, pos, hand, side, hitX, hitY, hitZ);
     }
 
@@ -113,8 +116,10 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack is, EntityPlayer p, World w, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (p.isSneaking()) return EnumActionResult.PASS;
+    public EnumActionResult onItemUse(ItemStack is, EntityPlayer p, World w, BlockPos pos, EnumHand hand,
+            EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (p.isSneaking())
+            return EnumActionResult.PASS;
 
         final Block blk = w.getBlockState(pos).getBlock();
 
@@ -122,7 +127,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
 
         final IMEInventory<IAEItemStack> inv = getInventory(is);
         if (inv != null) {
-            final IAEItemStack option = inv.extractItems(AEItemStack.fromItemStack(paintBall), Actionable.SIMULATE, new BaseActionSource());
+            final IAEItemStack option = inv.extractItems(AEItemStack.fromItemStack(paintBall), Actionable.SIMULATE,
+                    new BaseActionSource());
 
             if (option != null) {
                 paintBall = option.createItemStack();
@@ -139,7 +145,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
                 final TileEntity te = w.getTileEntity(pos);
                 // clean cables.
                 if (te instanceof IColorableTile) {
-                    if (this.getAECurrentPower(is) > POWER_PER_USE && ((IColorableTile) te).getColor() != AEColor.TRANSPARENT) {
+                    if (this.getAECurrentPower(is) > POWER_PER_USE
+                            && ((IColorableTile) te).getColor() != AEColor.TRANSPARENT) {
                         if (((IColorableTile) te).recolourBlock(side, AEColor.TRANSPARENT, p)) {
                             consumeItem(is, paintBall, false);
                             return EnumActionResult.SUCCESS;
@@ -150,7 +157,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
                 // clean paint balls..
                 final Block testBlk = w.getBlockState(pos.offset(side)).getBlock();
                 final TileEntity painted = w.getTileEntity(pos.offset(side));
-                if (this.getAECurrentPower(is) > POWER_PER_USE && testBlk instanceof BlockPaint && painted instanceof TilePaint) {
+                if (this.getAECurrentPower(is) > POWER_PER_USE && testBlk instanceof BlockPaint
+                        && painted instanceof TilePaint) {
                     consumeItem(is, paintBall, false);
                     ((TilePaint) painted).cleanSide(side.getOpposite());
                     return EnumActionResult.SUCCESS;
@@ -172,7 +180,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
 
     public boolean consumeColor(ItemStack applicator, AEColor color, boolean simulate) {
         final IMEInventory<IAEItemStack> inv = getInventory(applicator);
-        if (inv == null) return false;
+        if (inv == null)
+            return false;
 
         ItemStack paintItem = null;
         for (final IAEItemStack what : inv.getAvailableItems(getChannel().createList())) {
@@ -191,7 +200,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
 
     public boolean consumeItem(ItemStack applicator, ItemStack paintItem, boolean simulate) {
         final IMEInventory<IAEItemStack> inv = getInventory(applicator);
-        if (inv == null) return false;
+        if (inv == null)
+            return false;
 
         final Actionable mode = simulate ? Actionable.SIMULATE : Actionable.MODULATE;
         boolean success = inv.extractItems(AEItemStack.fromItemStack(paintItem), mode, new BaseActionSource()) != null
@@ -199,7 +209,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
 
         // Clear the color when we run out
         if (success && !simulate && ItemStack.areItemStacksEqual(paintItem, getColor(applicator))) {
-            if (inv.extractItems(AEItemStack.fromItemStack(paintItem), Actionable.SIMULATE, new BaseActionSource()) == null) {
+            if (inv.extractItems(AEItemStack.fromItemStack(paintItem), Actionable.SIMULATE,
+                    new BaseActionSource()) == null) {
                 setColor(applicator, ItemStack.EMPTY);
             }
         }
@@ -213,7 +224,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
         }
 
         final IMEInventory<IAEItemStack> inv = getInventory(applicator);
-        if (inv == null) return false;
+        if (inv == null)
+            return false;
 
         for (IAEItemStack stack : inv.getAvailableItems(getChannel().createList())) {
             ItemStack def = stack.getDefinition();
@@ -305,7 +317,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
                 }
 
                 Collections.sort(list, Comparator.comparingInt(IAEItemStack::getItemDamage));
-                if (list.isEmpty()) return ItemStack.EMPTY;
+                if (list.isEmpty())
+                    return ItemStack.EMPTY;
 
                 IAEItemStack where = list.getFirst();
                 int cycles = 1 + list.size();
@@ -346,7 +359,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
         }
     }
 
-    private boolean recolourBlock(final Block blk, final EnumFacing side, final World w, final BlockPos pos, final EnumFacing orientation, final AEColor newColor, final EntityPlayer p) {
+    private boolean recolourBlock(final Block blk, final EnumFacing side, final World w, final BlockPos pos,
+            final EnumFacing orientation, final AEColor newColor, final EntityPlayer p) {
         final IBlockState state = w.getBlockState(pos);
 
         if (blk instanceof BlockColored) {
@@ -360,7 +374,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
         }
 
         if (blk == Blocks.GLASS) {
-            return w.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, newColor.dye));
+            return w.setBlockState(pos,
+                    Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, newColor.dye));
         }
 
         if (blk == Blocks.STAINED_GLASS) {
@@ -374,7 +389,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
         }
 
         if (blk == Blocks.GLASS_PANE) {
-            return w.setBlockState(pos, Blocks.STAINED_GLASS_PANE.getDefaultState().withProperty(BlockStainedGlassPane.COLOR, newColor.dye));
+            return w.setBlockState(pos, Blocks.STAINED_GLASS_PANE.getDefaultState()
+                    .withProperty(BlockStainedGlassPane.COLOR, newColor.dye));
         }
 
         if (blk == Blocks.STAINED_GLASS_PANE) {
@@ -388,7 +404,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
         }
 
         if (blk == Blocks.HARDENED_CLAY) {
-            return w.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, newColor.dye));
+            return w.setBlockState(pos,
+                    Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, newColor.dye));
         }
 
         if (blk instanceof BlockCableBus) {
@@ -408,7 +425,8 @@ public class ToolColorApplicator extends AEBasePoweredItem implements IStorageCe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         super.addCheckedInformation(stack, world, lines, advancedTooltips);
 
         final ICellInventoryHandler<IAEItemStack> cdi = AEApi.instance()

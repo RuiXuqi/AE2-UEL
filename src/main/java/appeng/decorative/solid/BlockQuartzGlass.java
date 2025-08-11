@@ -18,9 +18,8 @@
 
 package appeng.decorative.solid;
 
+import java.util.EnumSet;
 
-import appeng.block.AEBaseBlock;
-import appeng.helpers.AEGlassMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
@@ -33,9 +32,8 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
-import javax.annotation.Nonnull;
-import java.util.EnumSet;
-
+import appeng.block.AEBaseBlock;
+import appeng.helpers.AEGlassMaterial;
 
 public class BlockQuartzGlass extends AEBaseBlock {
 
@@ -51,7 +49,7 @@ public class BlockQuartzGlass extends AEBaseBlock {
     @Override
     protected BlockStateContainer createBlockState() {
         IProperty[] listedProperties = new IProperty[0];
-        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{GLASS_STATE};
+        IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[] { GLASS_STATE };
         return new ExtendedBlockState(this, listedProperties, unlistedProperties);
     }
 
@@ -83,7 +81,8 @@ public class BlockQuartzGlass extends AEBaseBlock {
     }
 
     @Override
-    public boolean shouldSideBeRendered(final IBlockState state, final IBlockAccess w, final BlockPos pos, final EnumFacing side) {
+    public boolean shouldSideBeRendered(final IBlockState state, final IBlockAccess w, final BlockPos pos,
+            final EnumFacing side) {
         BlockPos adjacentPos = pos.offset(side);
 
         final Material mat = w.getBlockState(adjacentPos).getMaterial();

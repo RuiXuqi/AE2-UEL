@@ -18,17 +18,17 @@
 
 package appeng.core.stats;
 
-
-import appeng.core.AppEng;
-import appeng.items.parts.ItemPart;
-import appeng.items.parts.PartType;
 import com.google.gson.JsonObject;
+
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.advancements.critereon.ItemPredicates;
 
+import appeng.core.AppEng;
+import appeng.items.parts.ItemPart;
+import appeng.items.parts.PartType;
 
 public class PartItemPredicate extends ItemPredicate {
     private final PartType partType;

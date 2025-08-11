@@ -18,9 +18,7 @@
 
 package appeng.util;
 
-
 import java.util.regex.Pattern;
-
 
 /**
  * Regex wrapper for {@link java.util.UUID}s to not rely on try catch
@@ -32,7 +30,7 @@ public final class UUIDMatcher {
     private static final String UUID_REGEX = "[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}";
 
     /**
-     * Pattern which pre-compiles the {@link appeng.util.UUIDMatcher#UUID_REGEX}
+     * Pattern which pre-compiles the {@link UUIDMatcher#UUID_REGEX}
      */
     private static final Pattern PATTERN = Pattern.compile(UUID_REGEX);
 

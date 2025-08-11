@@ -18,6 +18,9 @@
 
 package appeng.me.storage;
 
+import java.util.Collections;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
@@ -28,10 +31,6 @@ import appeng.core.features.registries.cell.CreativeCellHandler;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.MachineSource;
 import appeng.tile.storage.TileDrive;
-import net.minecraft.item.ItemStack;
-
-import java.util.Collections;
-
 
 public class DriveWatcher<T extends IAEStack<T>> extends MEInventoryHandler<T> {
 
@@ -40,7 +39,9 @@ public class DriveWatcher<T extends IAEStack<T>> extends MEInventoryHandler<T> {
     private final ICellHandler handler;
     private final TileDrive drive;
     private final IActionSource source;
-    public DriveWatcher(final ICellInventoryHandler<T> i, final ItemStack is, final ICellHandler han, final TileDrive drive) {
+
+    public DriveWatcher(final ICellInventoryHandler<T> i, final ItemStack is, final ICellHandler han,
+            final TileDrive drive) {
         super(i, i.getChannel());
         this.is = is;
         this.handler = han;
@@ -67,7 +68,10 @@ public class DriveWatcher<T extends IAEStack<T>> extends MEInventoryHandler<T> {
             }
             if (this.drive.getProxy().isActive() && !(handler instanceof CreativeCellHandler)) {
                 try {
-                    this.drive.getProxy().getStorage().postAlterationOfStoredItems(this.getChannel(), Collections.singletonList(input.copy().setStackSize(input.getStackSize() - (remainder == null ? 0 : remainder.getStackSize()))), this.source);
+                    this.drive.getProxy().getStorage().postAlterationOfStoredItems(this.getChannel(),
+                            Collections.singletonList(input.copy().setStackSize(
+                                    input.getStackSize() - (remainder == null ? 0 : remainder.getStackSize()))),
+                            this.source);
                 } catch (GridAccessException e) {
                     e.printStackTrace();
                 }
@@ -90,7 +94,9 @@ public class DriveWatcher<T extends IAEStack<T>> extends MEInventoryHandler<T> {
             }
             if (this.drive.getProxy().isActive() && !(handler instanceof CreativeCellHandler)) {
                 try {
-                    this.drive.getProxy().getStorage().postAlterationOfStoredItems(this.getChannel(), Collections.singletonList(request.copy().setStackSize(-extractable.getStackSize())), this.source);
+                    this.drive.getProxy().getStorage().postAlterationOfStoredItems(this.getChannel(),
+                            Collections.singletonList(request.copy().setStackSize(-extractable.getStackSize())),
+                            this.source);
                 } catch (GridAccessException e) {
                     e.printStackTrace();
                 }

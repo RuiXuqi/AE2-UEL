@@ -18,9 +18,10 @@
 
 package appeng.client.render;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
 
-import appeng.client.render.cablebus.FacadeBuilder;
-import appeng.core.AppEng;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -29,14 +30,12 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Function;
-
+import appeng.client.render.cablebus.FacadeBuilder;
+import appeng.core.AppEng;
 
 /**
- * The model class for facades. Since facades wrap existing models, they don't declare any dependencies here other
- * than the cable anchor.
+ * The model class for facades. Since facades wrap existing models, they don't declare any dependencies here other than
+ * the cable anchor.
  */
 public class FacadeItemModel implements IModel {
     // We use this to get the default item transforms and make our lives easier
@@ -61,7 +60,8 @@ public class FacadeItemModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         IBakedModel bakedBaseModel = this.getBaseModel().bake(state, format, bakedTextureGetter);
         FacadeBuilder facadeBuilder = new FacadeBuilder();
 

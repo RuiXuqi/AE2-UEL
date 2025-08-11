@@ -18,7 +18,6 @@
 
 package appeng.services.export;
 
-
 /**
  * General purpose interface to define an export operation with side effects
  *

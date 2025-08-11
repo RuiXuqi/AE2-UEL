@@ -18,7 +18,6 @@
 
 package appeng.helpers;
 
-
 public interface ICustomNameObject {
 
     String getCustomInventoryName();

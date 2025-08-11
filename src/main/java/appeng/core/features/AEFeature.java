@@ -18,7 +18,6 @@
 
 package appeng.core.features;
 
-
 public enum AEFeature {
     // stuff that has no reason for ever being turned off, or that
     // is just flat out required by tons of
@@ -33,7 +32,8 @@ public enum AEFeature {
     CERTUS_QUARTZ_WORLD_GEN("CertusQuartzWorldGen", Constants.CATEGORY_WORLD),
     METEORITE_WORLD_GEN("MeteoriteWorldGen", Constants.CATEGORY_WORLD),
     DECORATIVE_LIGHTS("DecorativeLights", Constants.CATEGORY_WORLD),
-    DECORATIVE_BLOCKS("DecorativeBlocks", Constants.CATEGORY_WORLD, "Blocks that are not used in any essential recipes, also slabs and stairs."),
+    DECORATIVE_BLOCKS("DecorativeBlocks", Constants.CATEGORY_WORLD,
+            "Blocks that are not used in any essential recipes, also slabs and stairs."),
     SKY_STONE_CHESTS("SkyStoneChests", Constants.CATEGORY_WORLD),
     SPAWN_PRESSES_IN_METEORITES("SpawnPressesInMeteorites", Constants.CATEGORY_WORLD),
     FLOUR("Flour", Constants.CATEGORY_WORLD),
@@ -76,7 +76,6 @@ public enum AEFeature {
     SPATIAL_IO("SpatialIO", Constants.CATEGORY_NETWORK_FEATURES),
     QUANTUM_NETWORK_BRIDGE("QuantumNetworkBridge", Constants.CATEGORY_NETWORK_FEATURES),
     QUANTUM_LINKING_CARD("QuantumLinkingCard", Constants.CATEGORY_NETWORK_FEATURES),
-    CHANNELS("Channels", Constants.CATEGORY_NETWORK_FEATURES),
 
     INTERFACE("Interface", Constants.CATEGORY_NETWORK_BUSES),
     FLUID_INTERFACE("FluidInterface", Constants.CATEGORY_NETWORK_BUSES),

@@ -1,15 +1,14 @@
 package appeng.items.tools;
 
-
-import appeng.bootstrap.IItemRendering;
-import appeng.bootstrap.ItemRenderingCustomizer;
-import appeng.client.render.model.BiometricCardModel;
-import appeng.core.AppEng;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.bootstrap.IItemRendering;
+import appeng.bootstrap.ItemRenderingCustomizer;
+import appeng.client.render.model.BiometricCardModel;
+import appeng.core.AppEng;
 
 public class ToolBiometricCardRendering extends ItemRenderingCustomizer {
 

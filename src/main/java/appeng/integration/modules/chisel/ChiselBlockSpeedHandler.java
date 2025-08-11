@@ -1,6 +1,7 @@
 package appeng.integration.modules.chisel;
 
-import appeng.block.networking.BlockCableBus;
+import static team.chisel.client.handler.BlockSpeedHandler.speedupBlocks;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -14,9 +15,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import team.chisel.common.config.Configurations;
 
-import static team.chisel.client.handler.BlockSpeedHandler.speedupBlocks;
+import appeng.block.networking.BlockCableBus;
 
 @Mod.EventBusSubscriber(Side.CLIENT)
 public class ChiselBlockSpeedHandler {
@@ -27,7 +29,8 @@ public class ChiselBlockSpeedHandler {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void speedupPlayer(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.START && event.side.isClient() && event.player.onGround && event.player instanceof EntityPlayerSP) {
+        if (event.phase == TickEvent.Phase.START && event.side.isClient() && event.player.onGround
+                && event.player instanceof EntityPlayerSP) {
             if (manualInputCheck == null) {
                 manualInputCheck = new MovementInputFromOptions(Minecraft.getMinecraft().gameSettings);
             }
@@ -35,10 +38,12 @@ public class ChiselBlockSpeedHandler {
             BlockPos blockPosBelow = new BlockPos(player.posX, player.posY - (1 / 16D), player.posZ);
             IBlockState below = player.getEntityWorld().getBlockState(blockPosBelow);
             if (below.getBlock() instanceof BlockCableBus) {
-                IBlockState f = ((BlockCableBus) below.getBlock()).getFacadeState(Minecraft.getMinecraft().world, blockPosBelow, EnumFacing.UP);
+                IBlockState f = ((BlockCableBus) below.getBlock()).getFacadeState(Minecraft.getMinecraft().world,
+                        blockPosBelow, EnumFacing.UP);
                 if (speedupBlocks.contains(f.getBlock())) {
                     manualInputCheck.updatePlayerMoveState();
-                    if ((manualInputCheck.moveForward != 0 || manualInputCheck.moveStrafe != 0) && !player.isInWater()) {
+                    if ((manualInputCheck.moveForward != 0 || manualInputCheck.moveStrafe != 0)
+                            && !player.isInWater()) {
                         player.motionX *= Configurations.concreteVelocityMult;
                         player.motionZ *= Configurations.concreteVelocityMult;
                     }

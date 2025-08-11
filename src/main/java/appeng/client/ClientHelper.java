@@ -18,6 +18,34 @@
 
 package appeng.client;
 
+import static appeng.client.KeyBindings.*;
+
+import java.io.IOException;
+import java.util.*;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.ForgeModContainer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 import appeng.api.parts.CableRenderMode;
 import appeng.api.util.AEColor;
@@ -48,34 +76,6 @@ import appeng.hooks.TickHandler.PlayerColor;
 import appeng.items.tools.powered.Terminal;
 import appeng.server.ServerHelper;
 import appeng.util.Platform;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.common.ForgeModContainer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-import java.util.*;
-
-import static appeng.client.KeyBindings.*;
-
 
 public class ClientHelper extends ServerHelper {
     public final static String KEY_CATEGORY = "key.appliedenergistics2.category";
@@ -91,8 +91,10 @@ public class ClientHelper extends ServerHelper {
             ModelLoaderRegistry.registerLoader(UVLModelLoader.INSTANCE);
         }
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityTinyTNTPrimed.class, manager -> new RenderTinyTNTPrimed(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityFloatingItem.class, manager -> new RenderFloatingItem(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTinyTNTPrimed.class,
+                manager -> new RenderTinyTNTPrimed(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFloatingItem.class,
+                manager -> new RenderFloatingItem(manager));
     }
 
     @Override
@@ -108,8 +110,9 @@ public class ClientHelper extends ServerHelper {
             this.keyBindings.add(k.getKeyBinding());
         }
 
-        Api.INSTANCE.definitions().items().encodedPattern().maybeItem().ifPresent(pattern ->
-                Minecraft.getMinecraft().getItemColors().registerItemColorHandler(ItemEncodedPatternBakedModel.PATTERN_ITEM_COLOR_HANDLER, pattern));
+        Api.INSTANCE.definitions().items().encodedPattern().maybeItem()
+                .ifPresent(pattern -> Minecraft.getMinecraft().getItemColors()
+                        .registerItemColorHandler(ItemEncodedPatternBakedModel.PATTERN_ITEM_COLOR_HANDLER, pattern));
     }
 
     @SubscribeEvent
@@ -143,7 +146,8 @@ public class ClientHelper extends ServerHelper {
     }
 
     @Override
-    public void spawnEffect(final EffectType effect, final World world, final double posX, final double posY, final double posZ, final Object o) {
+    public void spawnEffect(final EffectType effect, final World world, final double posX, final double posY,
+            final double posZ, final Object o) {
         if (AEConfig.instance().isEnableEffects()) {
             switch (effect) {
                 case Assembler:
@@ -222,7 +226,7 @@ public class ClientHelper extends ServerHelper {
 
     @SubscribeEvent
     public void postPlayerRender(final RenderLivingEvent.Pre p) {
-        final PlayerColor player = TickHandler.INSTANCE.getPlayerColors().get(p.getEntity().getEntityId());
+        final PlayerColor player = TickHandler.instance().getPlayerColors().get(p.getEntity().getEntityId());
         if (player != null) {
             final AEColor col = player.myColor;
 
@@ -233,7 +237,8 @@ public class ClientHelper extends ServerHelper {
         }
     }
 
-    private void spawnAssembler(final World world, final double posX, final double posY, final double posZ, final Object o) {
+    private void spawnAssembler(final World world, final double posX, final double posY, final double posZ,
+            final Object o) {
         final PacketAssemblerAnimation paa = (PacketAssemblerAnimation) o;
 
         final AssemblerFX fx = new AssemblerFX(world, posX, posY, posZ, 0.0D, 0.0D, 0.0D, paa.rate, paa.is);
@@ -284,8 +289,10 @@ public class ClientHelper extends ServerHelper {
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 
-    private void spawnLightningArc(final World world, final double posX, final double posY, final double posZ, final Vec3d second) {
-        final LightningFX fx = new LightningArcFX(world, posX, posY, posZ, second.x, second.y, second.z, 0.0f, 0.0f, 0.0f);
+    private void spawnLightningArc(final World world, final double posX, final double posY, final double posZ,
+            final Vec3d second) {
+        final LightningFX fx = new LightningArcFX(world, posX, posY, posZ, second.x, second.y, second.z, 0.0f, 0.0f,
+                0.0f);
         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
     }
 
@@ -319,7 +326,8 @@ public class ClientHelper extends ServerHelper {
 
             if (mainHand || offHand) {
                 try {
-                    NetworkHandler.instance().sendToServer(new PacketValueConfig("Item", me.getDwheel() > 0 ? "WheelUp" : "WheelDown"));
+                    NetworkHandler.instance()
+                            .sendToServer(new PacketValueConfig("Item", me.getDwheel() > 0 ? "WheelUp" : "WheelDown"));
                     me.setCanceled(true);
                 } catch (final IOException e) {
                     AELog.debug(e);

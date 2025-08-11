@@ -18,9 +18,16 @@
 
 package appeng.me;
 
+import java.util.*;
+import java.util.Map.Entry;
 
 import appeng.api.AEApi;
-import appeng.api.networking.*;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridCache;
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.IGridStorage;
+import appeng.api.networking.IMachineSet;
 import appeng.api.networking.events.MENetworkEvent;
 import appeng.api.networking.events.MENetworkPostCacheConstruction;
 import appeng.api.util.IReadOnlyCollection;
@@ -28,22 +35,37 @@ import appeng.core.worlddata.WorldData;
 import appeng.hooks.TickHandler;
 import appeng.util.ReadOnlyCollection;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-
 public class Grid implements IGrid {
     private final NetworkEventBus eventBus = new NetworkEventBus();
     private final Map<Class<? extends IGridHost>, MachineSet> machines = new HashMap<>();
-    private final Map<Class<? extends IGridCache>, GridCacheWrapper> caches = new HashMap<>();
+    private final Map<Class<? extends IGridCache>, GridCacheWrapper> caches;
     private GridNode pivot;
     private int priority; // how import is this network?
     private GridStorage myStorage;
 
-    public Grid(final GridNode center) {
-        this.pivot = center;
+    /**
+     * Creates a new grid, sends the necessary events, and registers it to the tickhandler or other objects.
+     *
+     * @param center the pivot point of the new grid
+     * @return
+     */
+    public static Grid create(GridNode center) {
+        Grid grid = new Grid(center);
 
-        final Map<Class<? extends IGridCache>, IGridCache> myCaches = AEApi.instance().registries().gridCache().createCacheInstance(this);
+        grid.postEvent(new MENetworkPostCacheConstruction());
+
+        TickHandler.instance().addNetwork(grid);
+        center.setGrid(grid);
+
+        return grid;
+    }
+
+    private Grid(final GridNode center) {
+        this.pivot = Objects.requireNonNull(center);
+
+        final Map<Class<? extends IGridCache>, IGridCache> myCaches = AEApi.instance().registries().gridCache()
+                .createCacheInstance(this);
+        this.caches = new HashMap<>(myCaches.size());
         for (final Entry<Class<? extends IGridCache>, IGridCache> c : myCaches.entrySet()) {
             final Class<? extends IGridCache> key = c.getKey();
             final IGridCache value = c.getValue();
@@ -52,11 +74,6 @@ public class Grid implements IGrid {
             this.eventBus.readClass(key, valueClass);
             this.caches.put(key, new GridCacheWrapper(value));
         }
-
-        this.postEvent(new MENetworkPostCacheConstruction());
-
-        TickHandler.INSTANCE.addNetwork(this);
-        center.setGrid(this);
     }
 
     int getPriority() {
@@ -103,7 +120,7 @@ public class Grid implements IGrid {
                 this.pivot = (GridNode) n.next();
             } else {
                 this.pivot = null;
-                TickHandler.INSTANCE.removeNetwork(this);
+                TickHandler.instance().removeNetwork(this);
                 this.myStorage.remove();
             }
         }
@@ -178,8 +195,7 @@ public class Grid implements IGrid {
 
     @Override
     public MENetworkEvent postEvent(final MENetworkEvent ev) {
-        final MENetworkEvent ret = this.eventBus.postEvent(this, ev);
-        return ret;
+        return this.eventBus.postEvent(this, ev);
     }
 
     @Override
@@ -206,6 +222,11 @@ public class Grid implements IGrid {
     @Override
     public IReadOnlyCollection<IGridNode> getNodes() {
         return new GridNodeCollection(this.machines);
+    }
+
+    @Override
+    public Iterable<IGridNode> getMachineNodes(Class<?> machineClass) {
+        return this.machines.get(machineClass);
     }
 
     @Override

@@ -18,13 +18,6 @@
 
 package appeng.core.worlddata;
 
-
-import appeng.core.AELog;
-import com.google.common.base.Preconditions;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,6 +25,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+
+import appeng.core.AELog;
 
 /**
  * @author thatsIch
@@ -72,7 +73,8 @@ final class SpawnData implements IWorldSpawnData {
     }
 
     @Override
-    public boolean addNearByMeteorites(final int dim, final int chunkX, final int chunkZ, final NBTTagCompound newData) {
+    public boolean addNearByMeteorites(final int dim, final int chunkX, final int chunkZ,
+            final NBTTagCompound newData) {
         synchronized (SpawnData.class) {
             final NBTTagCompound data = this.loadSpawnData(dim, chunkX, chunkZ);
 

@@ -18,14 +18,12 @@
 
 package appeng.client.me;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.util.text.translation.I18n;
 
 import appeng.fluids.util.AEFluidInventory;
 import appeng.fluids.util.IAEFluidTank;
-import appeng.tile.inventory.AppEngInternalInventory;
-import net.minecraft.util.text.translation.I18n;
-
-import javax.annotation.Nonnull;
-
 
 public class ClientDCInternalFluidInv implements Comparable<ClientDCInternalFluidInv> {
 
@@ -42,7 +40,8 @@ public class ClientDCInternalFluidInv implements Comparable<ClientDCInternalFlui
         this.sortBy = sortBy;
     }
 
-    public ClientDCInternalFluidInv(final int size, final long id, final long sortBy, final String unlocalizedName, int stackSize) {
+    public ClientDCInternalFluidInv(final int size, final long id, final long sortBy, final String unlocalizedName,
+            int stackSize) {
         this.inventory = new AEFluidInventory(null, size, stackSize);
         this.unlocalizedName = unlocalizedName;
         this.id = id;

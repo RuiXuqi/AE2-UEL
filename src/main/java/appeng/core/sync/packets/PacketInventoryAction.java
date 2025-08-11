@@ -18,6 +18,19 @@
 
 package appeng.core.sync.packets;
 
+import java.io.IOException;
+import java.util.Collections;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
@@ -43,19 +56,6 @@ import appeng.util.Platform;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.WrapperRangeItemHandler;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.Collections;
-
 
 public class PacketInventoryAction extends AppEngPacket {
 
@@ -79,7 +79,8 @@ public class PacketInventoryAction extends AppEngPacket {
     }
 
     // api
-    public PacketInventoryAction(final InventoryAction action, final int slot, final IAEItemStack slotItem) throws IOException {
+    public PacketInventoryAction(final InventoryAction action, final int slot, final IAEItemStack slotItem)
+            throws IOException {
         if (Platform.isClient()) {
             throw new IllegalStateException("invalid packet, client cannot post inv actions with stacks.");
         }
@@ -106,7 +107,8 @@ public class PacketInventoryAction extends AppEngPacket {
         this.configureWrite(data);
     }
 
-    public PacketInventoryAction(final InventoryAction action, final IJEITargetSlot slot, final IAEItemStack slotItem) throws IOException {
+    public PacketInventoryAction(final InventoryAction action, final IJEITargetSlot slot, final IAEItemStack slotItem)
+            throws IOException {
 
         this.action = action;
         if (slot instanceof SlotFake) {
@@ -165,7 +167,8 @@ public class PacketInventoryAction extends AppEngPacket {
                 final ContainerOpenContext context = baseContainer.getOpenContext();
                 if (context != null) {
                     final TileEntity te = context.getTile();
-                    Platform.openGUI(sender, te, baseContainer.getOpenContext().getSide(), GuiBridge.GUI_CRAFTING_AMOUNT);
+                    Platform.openGUI(sender, te, baseContainer.getOpenContext().getSide(),
+                            GuiBridge.GUI_CRAFTING_AMOUNT);
 
                     if (sender.openContainer instanceof ContainerCraftAmount) {
                         final ContainerCraftAmount cca = (ContainerCraftAmount) sender.openContainer;
@@ -185,12 +188,15 @@ public class PacketInventoryAction extends AppEngPacket {
                         IAEFluidStack aefs = AEFluidStack.fromNBT(this.slotItem.getDefinition().getTagCompound());
                         if (aefs != null) {
                             aefs.setStackSize(1000);
-                            ((ContainerFluidConfigurable) sender.openContainer).getFluidConfigInventory().setFluidInSlot(this.slot, aefs);
-                            NetworkHandler.instance().sendToServer(new PacketFluidSlot(Collections.singletonMap(this.slot, aefs)));
+                            ((ContainerFluidConfigurable) sender.openContainer).getFluidConfigInventory()
+                                    .setFluidInSlot(this.slot, aefs);
+                            NetworkHandler.instance()
+                                    .sendToServer(new PacketFluidSlot(Collections.singletonMap(this.slot, aefs)));
                         }
                     }
                 } else if (sender.openContainer instanceof ContainerInterfaceConfigurationTerminal) {
-                    ConfigTracker inv = ((ContainerInterfaceConfigurationTerminal) sender.openContainer).getSlotByID(this.id);
+                    ConfigTracker inv = ((ContainerInterfaceConfigurationTerminal) sender.openContainer)
+                            .getSlotByID(this.id);
                     final IItemHandler theSlot = new WrapperRangeItemHandler(inv.getServer(), 0, slot + 1);
 
                     ItemHandlerUtil.setStackInSlot(theSlot, this.slot, this.slotItem.createItemStack());
@@ -201,7 +207,8 @@ public class PacketInventoryAction extends AppEngPacket {
                         if (this.slotItem != null) {
                             senderSlot.putStack(this.slotItem.createItemStack());
                             if (senderSlot.getStack().isEmpty()) {
-                                IAEFluidStack aefs = AEFluidStack.fromNBT(this.slotItem.getDefinition().getTagCompound());
+                                IAEFluidStack aefs = AEFluidStack
+                                        .fromNBT(this.slotItem.getDefinition().getTagCompound());
                                 if (aefs != null) {
                                     FluidStack fluid = aefs.getFluidStack();
                                     senderSlot.putStack(AEFluidStack.fromFluidStack(fluid).asItemStackRepresentation());
@@ -211,7 +218,8 @@ public class PacketInventoryAction extends AppEngPacket {
                             senderSlot.putStack(ItemStack.EMPTY);
                         }
                         try {
-                            NetworkHandler.instance().sendTo(new PacketInventoryAction(InventoryAction.UPDATE_HAND, 0, AEItemStack.fromItemStack(ItemStack.EMPTY)), sender);
+                            NetworkHandler.instance().sendTo(new PacketInventoryAction(InventoryAction.UPDATE_HAND, 0,
+                                    AEItemStack.fromItemStack(ItemStack.EMPTY)), sender);
                         } catch (final IOException e) {
                             AELog.debug(e);
                         }

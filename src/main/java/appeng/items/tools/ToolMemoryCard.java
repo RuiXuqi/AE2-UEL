@@ -18,14 +18,8 @@
 
 package appeng.items.tools;
 
+import java.util.List;
 
-import appeng.api.implementations.items.IMemoryCard;
-import appeng.api.implementations.items.MemoryCardMessages;
-import appeng.api.util.AEColor;
-import appeng.core.localization.GuiText;
-import appeng.core.localization.PlayerMessages;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -42,12 +36,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
+import appeng.api.implementations.items.IMemoryCard;
+import appeng.api.implementations.items.MemoryCardMessages;
+import appeng.api.util.AEColor;
+import appeng.core.localization.GuiText;
+import appeng.core.localization.PlayerMessages;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
 
-    private static final AEColor[] DEFAULT_COLOR_CODE = new AEColor[]{
+    private static final AEColor[] DEFAULT_COLOR_CODE = new AEColor[] {
             AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT,
             AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT,
     };
@@ -58,12 +57,14 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         lines.add(this.getLocalizedName(this.getSettingsName(stack) + ".name", this.getSettingsName(stack)));
 
         final NBTTagCompound data = this.getData(stack);
         if (data.hasKey("tooltip")) {
-            lines.add(I18n.translateToLocal(this.getLocalizedName(data.getString("tooltip") + ".name", data.getString("tooltip"))));
+            lines.add(I18n.translateToLocal(
+                    this.getLocalizedName(data.getString("tooltip") + ".name", data.getString("tooltip"))));
         }
 
         if (data.hasKey("freq")) {
@@ -127,9 +128,11 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
             final int[] frequency = tag.getIntArray("colorCode");
             final AEColor[] colorArray = AEColor.values();
 
-            return new AEColor[]{
-                    colorArray[frequency[0]], colorArray[frequency[1]], colorArray[frequency[2]], colorArray[frequency[3]],
-                    colorArray[frequency[4]], colorArray[frequency[5]], colorArray[frequency[6]], colorArray[frequency[7]],
+            return new AEColor[] {
+                    colorArray[frequency[0]], colorArray[frequency[1]], colorArray[frequency[2]],
+                    colorArray[frequency[3]],
+                    colorArray[frequency[4]], colorArray[frequency[5]], colorArray[frequency[6]],
+                    colorArray[frequency[7]],
             };
         }
 
@@ -163,7 +166,8 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
     }
 
     @Override
-    public EnumActionResult onItemUse(final EntityPlayer player, final World w, final BlockPos pos, final EnumHand hand, final EnumFacing side, final float hx, final float hy, final float hz) {
+    public EnumActionResult onItemUse(final EntityPlayer player, final World w, final BlockPos pos, final EnumHand hand,
+            final EnumFacing side, final float hx, final float hy, final float hz) {
         if (player.isSneaking()) {
             if (!w.isRemote) {
                 this.clearCard(player, w, hand);
@@ -187,7 +191,8 @@ public class ToolMemoryCard extends AEBaseItem implements IMemoryCard {
     }
 
     @Override
-    public boolean doesSneakBypassUse(final ItemStack itemstack, final IBlockAccess world, final BlockPos pos, final EntityPlayer player) {
+    public boolean doesSneakBypassUse(final ItemStack itemstack, final IBlockAccess world, final BlockPos pos,
+            final EntityPlayer player) {
         return true;
     }
 

@@ -18,16 +18,16 @@
 
 package appeng.core.features.registries.cell;
 
-
-import appeng.api.storage.*;
-import appeng.api.storage.data.IAEStack;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Verify;
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Verify;
+
+import net.minecraft.item.ItemStack;
+
+import appeng.api.storage.*;
+import appeng.api.storage.data.IAEStack;
 
 public class CellRegistry implements ICellRegistry {
 
@@ -42,7 +42,8 @@ public class CellRegistry implements ICellRegistry {
     @Override
     public void addCellHandler(final ICellHandler handler) {
         Preconditions.checkNotNull(handler, "Called before FMLInitializationEvent.");
-        Preconditions.checkArgument(!this.handlers.contains(handler), "Tried to register the same handler instance twice.");
+        Preconditions.checkArgument(!this.handlers.contains(handler),
+                "Tried to register the same handler instance twice.");
 
         this.handlers.add(handler);
 
@@ -77,7 +78,8 @@ public class CellRegistry implements ICellRegistry {
     }
 
     @Override
-    public <T extends IAEStack<T>> ICellInventoryHandler<T> getCellInventory(final ItemStack is, final ISaveProvider container, final IStorageChannel<T> chan) {
+    public <T extends IAEStack<T>> ICellInventoryHandler<T> getCellInventory(final ItemStack is,
+            final ISaveProvider container, final IStorageChannel<T> chan) {
         if (is.isEmpty()) {
             return null;
         }

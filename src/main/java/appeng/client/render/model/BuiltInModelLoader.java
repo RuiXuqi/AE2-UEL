@@ -18,17 +18,17 @@
 
 package appeng.client.render.model;
 
+import java.util.Map;
 
-import appeng.core.AppEng;
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 
-import java.util.Map;
-
+import appeng.core.AppEng;
 
 /**
  * Manages built-in models.

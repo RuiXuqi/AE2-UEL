@@ -1,16 +1,18 @@
 package appeng.core.sync.packets;
 
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentString;
+
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.AppEng;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.util.item.AEItemStack;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextComponentString;
-
-import java.io.IOException;
 
 public class PacketInformPlayer extends AppEngPacket {
     private IAEItemStack actualItem = null;
@@ -54,9 +56,15 @@ public class PacketInformPlayer extends AppEngPacket {
         TextComponentString msg = null;
 
         if (this.type == InfoType.PARTIAL_ITEM_EXTRACTION) {
-            AppEng.proxy.getPlayers().get(0).sendStatusMessage(new TextComponentString("System reported " + reportedItem.getStackSize() + " " + reportedItem.getItem().getItemStackDisplayName(reportedItem.getDefinition()) + " available but could only extract " + actualItem.getStackSize()), false);
+            AppEng.proxy.getPlayers().get(0)
+                    .sendStatusMessage(new TextComponentString("System reported " + reportedItem.getStackSize() + " "
+                            + reportedItem.getItem().getItemStackDisplayName(reportedItem.getDefinition())
+                            + " available but could only extract " + actualItem.getStackSize()), false);
         } else if (this.type == InfoType.NO_ITEMS_EXTRACTED) {
-            AppEng.proxy.getPlayers().get(0).sendStatusMessage(new TextComponentString("System reported " + reportedItem.getStackSize() + " " + reportedItem.getItem().getItemStackDisplayName(reportedItem.getDefinition()) + " available but could not extract anything"), false);
+            AppEng.proxy.getPlayers().get(0)
+                    .sendStatusMessage(new TextComponentString("System reported " + reportedItem.getStackSize() + " "
+                            + reportedItem.getItem().getItemStackDisplayName(reportedItem.getDefinition())
+                            + " available but could not extract anything"), false);
         }
     }
 

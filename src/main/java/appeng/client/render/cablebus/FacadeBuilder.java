@@ -18,14 +18,12 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.Function;
 
-import appeng.api.AEApi;
-import appeng.api.util.AEAxisAlignedBB;
-import appeng.parts.misc.PartCableAnchor;
-import appeng.thirdparty.codechicken.lib.model.CachedFormat;
-import appeng.thirdparty.codechicken.lib.model.Quad;
-import appeng.thirdparty.codechicken.lib.model.pipeline.BakedPipeline;
-import appeng.thirdparty.codechicken.lib.model.pipeline.transformers.*;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -42,11 +40,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.function.Function;
-
+import appeng.api.AEApi;
+import appeng.api.util.AEAxisAlignedBB;
+import appeng.parts.misc.PartCableAnchor;
+import appeng.thirdparty.codechicken.lib.model.CachedFormat;
+import appeng.thirdparty.codechicken.lib.model.Quad;
+import appeng.thirdparty.codechicken.lib.model.pipeline.BakedPipeline;
+import appeng.thirdparty.codechicken.lib.model.pipeline.transformers.*;
 
 /**
  * The FacadeBuilder builds for facades..
@@ -58,7 +58,7 @@ public class FacadeBuilder {
     public static final double THICK_THICKNESS = 2D / 16D;
     public static final double THIN_THICKNESS = 1D / 16D;
 
-    public static final AxisAlignedBB[] THICK_FACADE_BOXES = new AxisAlignedBB[]{
+    public static final AxisAlignedBB[] THICK_FACADE_BOXES = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, THICK_THICKNESS, 1.0),
             new AxisAlignedBB(0.0, 1.0 - THICK_THICKNESS, 0.0, 1.0, 1.0, 1.0),
             new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, THICK_THICKNESS),
@@ -67,7 +67,7 @@ public class FacadeBuilder {
             new AxisAlignedBB(1.0 - THICK_THICKNESS, 0.0, 0.0, 1.0, 1.0, 1.0)
     };
 
-    public static final AxisAlignedBB[] THIN_FACADE_BOXES = new AxisAlignedBB[]{
+    public static final AxisAlignedBB[] THIN_FACADE_BOXES = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, THIN_THICKNESS, 1.0),
             new AxisAlignedBB(0.0, 1.0 - THIN_THICKNESS, 0.0, 1.0, 1.0, 1.0),
             new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, THIN_THICKNESS),
@@ -93,7 +93,8 @@ public class FacadeBuilder {
     );
     private final ThreadLocal<Quad> collectors = ThreadLocal.withInitial(Quad::new);
 
-    public void buildFacadeQuads(BlockRenderLayer layer, CableBusRenderState renderState, long rand, List<BakedQuad> quads, Function<ResourceLocation, IBakedModel> modelLookup) {
+    public void buildFacadeQuads(BlockRenderLayer layer, CableBusRenderState renderState, long rand,
+            List<BakedQuad> quads, Function<ResourceLocation, IBakedModel> modelLookup) {
         BakedPipeline pipeline = this.pipelines.get();
         Quad collectorQuad = this.collectors.get();
         boolean transparent = AEApi.instance().partHelper().getCableRenderMode().transparentFacades;
@@ -300,7 +301,8 @@ public class FacadeBuilder {
             collectorQuad.reset(format);
             // If we have a tint index, setup the tinter and enable it.
             if (quad.hasTintIndex()) {
-                tinter.setTint(Minecraft.getMinecraft().getItemColors().colorMultiplier(textureItem, quad.getTintIndex()));
+                tinter.setTint(
+                        Minecraft.getMinecraft().getItemColors().colorMultiplier(textureItem, quad.getTintIndex()));
                 pipeline.enableElement("tinter");
             }
             // Disable elements we don't need for items.
@@ -332,8 +334,7 @@ public class FacadeBuilder {
 
     /**
      * Given the actual facade bounding box, and the bounding boxes of all parts, determine the biggest union of AABB
-     * that intersect with the facade's bounding
-     * box. This AABB will need to be "cut out" when the facade is rendered.
+     * that intersect with the facade's bounding box. This AABB will need to be "cut out" when the facade is rendered.
      */
     @Nullable
     private static AEAxisAlignedBB getCutOutBox(AxisAlignedBB facadeBox, List<AxisAlignedBB> partBoxes) {

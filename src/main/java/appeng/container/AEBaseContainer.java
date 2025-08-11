@@ -18,6 +18,23 @@
 
 package appeng.container;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -54,23 +71,6 @@ import appeng.util.Platform;
 import appeng.util.inv.AdaptorItemHandler;
 import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.item.AEItemStack;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.PlayerInvWrapper;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-
 
 public abstract class AEBaseContainer extends Container {
     private final InventoryPlayer invPlayer;
@@ -93,7 +93,8 @@ public abstract class AEBaseContainer extends Container {
         this(ip, myTile, myPart, null);
     }
 
-    public AEBaseContainer(final InventoryPlayer ip, final TileEntity myTile, final IPart myPart, final IGuiItemObject gio) {
+    public AEBaseContainer(final InventoryPlayer ip, final TileEntity myTile, final IPart myPart,
+            final IGuiItemObject gio) {
         this.invPlayer = ip;
         this.tileEntity = myTile;
         this.part = myPart;
@@ -252,9 +253,11 @@ public abstract class AEBaseContainer extends Container {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 if (this.locked.contains(j + i * 9 + 9)) {
-                    this.addSlotToContainer(new SlotDisabled(ih, j + i * 9 + 9, 8 + j * 18 + offsetX, offsetY + i * 18));
+                    this.addSlotToContainer(
+                            new SlotDisabled(ih, j + i * 9 + 9, 8 + j * 18 + offsetX, offsetY + i * 18));
                 } else {
-                    this.addSlotToContainer(new SlotPlayerInv(ih, j + i * 9 + 9, 8 + j * 18 + offsetX, offsetY + i * 18));
+                    this.addSlotToContainer(
+                            new SlotPlayerInv(ih, j + i * 9 + 9, 8 + j * 18 + offsetX, offsetY + i * 18));
                 }
             }
         }
@@ -276,7 +279,8 @@ public abstract class AEBaseContainer extends Container {
             s.setContainer(this);
             return super.addSlotToContainer(newSlot);
         } else {
-            throw new IllegalArgumentException("Invalid Slot [" + newSlot + "] for AE Container instead of AppEngSlot.");
+            throw new IllegalArgumentException(
+                    "Invalid Slot [" + newSlot + "] for AE Container instead of AppEngSlot.");
         }
     }
 
@@ -285,7 +289,8 @@ public abstract class AEBaseContainer extends Container {
         this.sendCustomName();
 
         if (Platform.isServer()) {
-            if (this.tileEntity != null && this.tileEntity.getWorld().getTileEntity(this.tileEntity.getPos()) != this.tileEntity) {
+            if (this.tileEntity != null
+                    && this.tileEntity.getWorld().getTileEntity(this.tileEntity.getPos()) != this.tileEntity) {
                 this.setValidContainer(false);
             }
 
@@ -312,11 +317,11 @@ public abstract class AEBaseContainer extends Container {
         }
         if (clickSlot != null && clickSlot.getHasStack()) {
             ItemStack tis = clickSlot.getStack();
-  
+
             if (tis.isEmpty()) {
                 return ItemStack.EMPTY;
             }
-            
+
             IItemDefinition expansionCard = AEApi.instance().definitions().materials().cardPatternExpansion();
             ContainerInterface casted;
 
@@ -329,7 +334,9 @@ public abstract class AEBaseContainer extends Container {
                 tis = this.transferStackToContainer(tis);
 
                 if (!tis.isEmpty()) {
-                    if (this instanceof ContainerInterface && expansionCard.isSameAs(tis) && (casted = (ContainerInterface) this).getPatternUpgrades() == casted.availableUpgrades() - 1) {
+                    if (this instanceof ContainerInterface && expansionCard.isSameAs(tis)
+                            && (casted = (ContainerInterface) this).getPatternUpgrades() == casted.availableUpgrades()
+                                    - 1) {
                         return ItemStack.EMPTY; // Don't insert more pattern expansions than maximum useful
                     }
 
@@ -395,21 +402,14 @@ public abstract class AEBaseContainer extends Container {
 
                             if (Platform.itemComparisons().isSameItem(tis, t)) // t.isItemEqual(tis))
                             {
-                                if (d instanceof SlotRestrictedInput && ((SlotRestrictedInput) d).getPlaceableItemType() == PlacableItemType.ENCODED_PATTERN) {
+                                if (d instanceof SlotRestrictedInput && ((SlotRestrictedInput) d)
+                                        .getPlaceableItemType() == PlacableItemType.ENCODED_PATTERN) {
                                     return ItemStack.EMPTY; // don't insert duplicate encoded patterns to interfaces
                                 }
 
-                                final int maxSize;
-                                if (d instanceof SlotOversized slotOversized) {
-                                    maxSize = slotOversized.getSlotStackLimit();
-                                } else {
-                                    maxSize = Math.min(tis.getMaxStackSize(), d.getSlotStackLimit());
-                                }
+                                int maxSize = Math.min(tis.getMaxStackSize(), d.getSlotStackLimit());
 
                                 int placeAble = maxSize - t.getCount();
-                                if (placeAble <= 0) {
-                                    continue;
-                                }
 
                                 if (tis.getCount() < placeAble) {
                                     placeAble = tis.getCount();
@@ -462,12 +462,14 @@ public abstract class AEBaseContainer extends Container {
                                 return ItemStack.EMPTY;
                             } else {
                                 this.updateSlot(d);
-                                
-                                if (
-                                    (d instanceof SlotRestrictedInput && ((SlotRestrictedInput) d).getPlaceableItemType() == PlacableItemType.ENCODED_PATTERN) ||
-                                    (this instanceof ContainerInterface && expansionCard.isSameAs(tis) && (casted = (ContainerInterface) this).getPatternUpgrades() == casted.availableUpgrades() - 1)
-                                    ) {
-                                    break; // Only insert one pattern when shift-clicking into interfaces, and don't insert more pattern expansions than maximum useful
+
+                                if ((d instanceof SlotRestrictedInput && ((SlotRestrictedInput) d)
+                                        .getPlaceableItemType() == PlacableItemType.ENCODED_PATTERN) ||
+                                        (this instanceof ContainerInterface && expansionCard.isSameAs(tis)
+                                                && (casted = (ContainerInterface) this)
+                                                        .getPatternUpgrades() == casted.availableUpgrades() - 1)) {
+                                    break; // Only insert one pattern when shift-clicking into interfaces, and don't
+                                           // insert more pattern expansions than maximum useful
                                 }
                             }
                         }
@@ -631,7 +633,8 @@ public abstract class AEBaseContainer extends Container {
                         ais.setStackSize(ais.getStackSize() - myItem.getCount());
                     }
 
-                    ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais,
+                            this.getActionSource());
                     if (ais != null) {
                         adp.addItems(ais.createItemStack());
                     }
@@ -646,17 +649,21 @@ public abstract class AEBaseContainer extends Container {
                 final ItemStack isg = player.inventory.getItemStack();
 
                 if (!isg.isEmpty() && releaseQty > 0) {
-                    IAEItemStack ais = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(isg);
+                    IAEItemStack ais = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                            .createStack(isg);
                     ais.setStackSize(1);
                     final IAEItemStack extracted = ais.copy();
 
-                    ais = Platform.poweredInsert(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    ais = Platform.poweredInsert(this.getPowerSource(), this.getCellInventory(), ais,
+                            this.getActionSource());
                     if (ais == null) {
-                        final InventoryAdaptor ia = new AdaptorItemHandler(new WrapperCursorItemHandler(player.inventory));
+                        final InventoryAdaptor ia = new AdaptorItemHandler(
+                                new WrapperCursorItemHandler(player.inventory));
 
                         final ItemStack fail = ia.removeItems(1, extracted.getDefinition(), null);
                         if (fail.isEmpty()) {
-                            this.getCellInventory().extractItems(extracted, Actionable.MODULATE, this.getActionSource());
+                            this.getCellInventory().extractItems(extracted, Actionable.MODULATE,
+                                    this.getActionSource());
                         }
 
                         this.updateHeld(player);
@@ -686,9 +693,11 @@ public abstract class AEBaseContainer extends Container {
                     if (liftQty > 0) {
                         IAEItemStack ais = slotItem.copy();
                         ais.setStackSize(1);
-                        ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                        ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais,
+                                this.getActionSource());
                         if (ais != null) {
-                            final InventoryAdaptor ia = new AdaptorItemHandler(new WrapperCursorItemHandler(player.inventory));
+                            final InventoryAdaptor ia = new AdaptorItemHandler(
+                                    new WrapperCursorItemHandler(player.inventory));
 
                             final ItemStack fail = ia.addItems(ais.createItemStack());
                             if (!fail.isEmpty()) {
@@ -709,7 +718,8 @@ public abstract class AEBaseContainer extends Container {
                     if (slotItem != null) {
                         IAEItemStack ais = slotItem.copy();
                         ais.setStackSize(ais.getDefinition().getMaxStackSize());
-                        ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                        ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais,
+                                this.getActionSource());
                         if (ais != null) {
                             player.inventory.setItemStack(ais.createItemStack());
                         } else {
@@ -718,8 +728,10 @@ public abstract class AEBaseContainer extends Container {
                         this.updateHeld(player);
                     }
                 } else {
-                    IAEItemStack ais = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(player.inventory.getItemStack());
-                    ais = Platform.poweredInsert(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    IAEItemStack ais = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                            .createStack(player.inventory.getItemStack());
+                    ais = Platform.poweredInsert(this.getPowerSource(), this.getCellInventory(), ais,
+                            this.getActionSource());
                     if (ais != null) {
                         player.inventory.setItemStack(ais.createItemStack());
                     } else {
@@ -744,7 +756,8 @@ public abstract class AEBaseContainer extends Container {
                         if (ais != null) {
                             final long stackSize = Math.min(maxSize, ais.getStackSize());
                             ais.setStackSize((stackSize + 1) >> 1);
-                            ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                            ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais,
+                                    this.getActionSource());
                         }
 
                         if (ais != null) {
@@ -755,9 +768,11 @@ public abstract class AEBaseContainer extends Container {
                         this.updateHeld(player);
                     }
                 } else {
-                    IAEItemStack ais = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(player.inventory.getItemStack());
+                    IAEItemStack ais = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)
+                            .createStack(player.inventory.getItemStack());
                     ais.setStackSize(1);
-                    ais = Platform.poweredInsert(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                    ais = Platform.poweredInsert(this.getPowerSource(), this.getCellInventory(), ais,
+                            this.getActionSource());
                     if (ais == null) {
                         final ItemStack is = player.inventory.getItemStack();
                         is.setCount(is.getCount() - 1);
@@ -799,7 +814,8 @@ public abstract class AEBaseContainer extends Container {
                             ais.setStackSize(ais.getStackSize() - myItem.getCount());
                         }
 
-                        ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais, this.getActionSource());
+                        ais = Platform.poweredExtraction(this.getPowerSource(), this.getCellInventory(), ais,
+                                this.getActionSource());
                         if (ais != null) {
                             adp.addItems(ais.createItemStack());
                         } else {
@@ -819,7 +835,8 @@ public abstract class AEBaseContainer extends Container {
             try {
                 NetworkHandler.instance()
                         .sendTo(
-                                new PacketInventoryAction(InventoryAction.UPDATE_HAND, 0, AEItemStack.fromItemStack(p.inventory.getItemStack())),
+                                new PacketInventoryAction(InventoryAction.UPDATE_HAND, 0,
+                                        AEItemStack.fromItemStack(p.inventory.getItemStack())),
                                 p);
             } catch (final IOException e) {
                 AELog.debug(e);
@@ -961,13 +978,9 @@ public abstract class AEBaseContainer extends Container {
 
     @Override
     public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, @NotNull EntityPlayer player) {
-        if (slotId >= 0) {
+        if (slotId >= 0 && clickTypeIn == ClickType.PICKUP) {
             final var slot = this.getSlot(slotId);
-            if (slot instanceof SlotDisabled) {
-                return ItemStack.EMPTY;
-            }
-
-            if (slot instanceof AppEngSlot appEngSlot && clickTypeIn == ClickType.PICKUP) {
+            if (slot instanceof AppEngSlot appEngSlot) {
                 var slotStack = slot.getStack();
                 var draggedStack = this.invPlayer.getItemStack();
 
@@ -975,7 +988,9 @@ public abstract class AEBaseContainer extends Container {
                 // Thus, it's possible to underflow the vanilla code when clicking non-empty slots with an item stack.
                 if (!draggedStack.isEmpty()) {
                     if (appEngSlot.isItemValid(draggedStack)) {
-                        if (slotStack.getItem() == draggedStack.getItem() && slotStack.getMetadata() == draggedStack.getMetadata() && ItemStack.areItemStackTagsEqual(slotStack, draggedStack)) {
+                        if (slotStack.getItem() == draggedStack.getItem()
+                                && slotStack.getMetadata() == draggedStack.getMetadata()
+                                && ItemStack.areItemStackTagsEqual(slotStack, draggedStack)) {
                             // Slot size or stack size, whichever is smaller.
                             var maxSize = Math.min(appEngSlot.getSlotStackLimit(), draggedStack.getMaxStackSize());
 

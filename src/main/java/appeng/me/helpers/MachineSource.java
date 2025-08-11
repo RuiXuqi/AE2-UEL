@@ -18,14 +18,13 @@
 
 package appeng.me.helpers;
 
-
-import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.security.IActionSource;
-import net.minecraft.entity.player.EntityPlayer;
-
 import java.util.Objects;
 import java.util.Optional;
 
+import net.minecraft.entity.player.EntityPlayer;
+
+import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.IActionSource;
 
 public class MachineSource implements IActionSource {
 

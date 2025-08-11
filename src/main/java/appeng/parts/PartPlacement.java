@@ -18,10 +18,10 @@
 
 package appeng.parts;
 
-import appeng.api.AEApi;
-import appeng.api.parts.*;
-import appeng.api.util.AEPartLocation;
+import javax.annotation.Nullable;
+
 import com.github.bsideup.jabel.Desugar;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,11 +35,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
-import javax.annotation.Nullable;
+import appeng.api.AEApi;
+import appeng.api.parts.*;
+import appeng.api.util.AEPartLocation;
 
 public class PartPlacement {
 
-    public static EnumActionResult place(final ItemStack held, final BlockPos pos, EnumFacing side, final EntityPlayer player, final EnumHand hand, final World world) {
+    public static EnumActionResult place(final ItemStack held, final BlockPos pos, EnumFacing side,
+            final EntityPlayer player, final EnumHand hand, final World world) {
         if (!(held.getItem() instanceof IPartItem<?>)) {
             return EnumActionResult.PASS;
         }
@@ -72,7 +75,8 @@ public class PartPlacement {
         }
     }
 
-    public static IPart placePart(@Nullable EntityPlayer player, World world, ItemStack partItem, BlockPos pos, EnumFacing side, EnumHand hand) {
+    public static IPart placePart(@Nullable EntityPlayer player, World world, ItemStack partItem, BlockPos pos,
+            EnumFacing side, EnumHand hand) {
         IPartHost host = AEApi.instance().partHelper().getOrPlacePartHost(world, pos, false, player);
         if (host == null) {
             return null;
@@ -87,14 +91,17 @@ public class PartPlacement {
             return null;
         }
 
-        IBlockState multiPartState = AEApi.instance().definitions().blocks().multiPart().maybeBlock().get().getDefaultState();
+        IBlockState multiPartState = AEApi.instance().definitions().blocks().multiPart().maybeBlock().get()
+                .getDefaultState();
         SoundType soundType = multiPartState.getBlock().getSoundType(multiPartState, world, pos, null);
-        world.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
+        world.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS,
+                (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
         return part;
     }
 
     @Nullable
-    public static Placement getPartPlacement(@Nullable EntityPlayer player, World world, ItemStack partStack, BlockPos pos, EnumFacing side) {
+    public static Placement getPartPlacement(@Nullable EntityPlayer player, World world, ItemStack partStack,
+            BlockPos pos, EnumFacing side) {
         if (canPlacePartOnBlock(player, world, partStack, pos, side)) {
             return new Placement(pos, side);
         }
@@ -111,7 +118,8 @@ public class PartPlacement {
         return null;
     }
 
-    public static boolean canPlacePartOnBlock(@Nullable EntityPlayer player, World world, ItemStack partStack, BlockPos pos, EnumFacing side) {
+    public static boolean canPlacePartOnBlock(@Nullable EntityPlayer player, World world, ItemStack partStack,
+            BlockPos pos, EnumFacing side) {
         IPartHost host = AEApi.instance().partHelper().getPartHost(world, pos);
 
         // There is no host at the location, we also cannot place one

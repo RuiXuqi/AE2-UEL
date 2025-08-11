@@ -18,6 +18,22 @@
 
 package appeng.container.implementations;
 
+import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import appeng.api.config.Settings;
 import appeng.api.config.Upgrades;
@@ -48,23 +64,6 @@ import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.WrapperRangeItemHandler;
 import appeng.util.inv.filter.IAEItemFilter;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import static appeng.helpers.ItemStackHelper.stackWriteToNBT;
-
 
 public class ContainerInterfaceTerminal extends AEBaseContainer {
 
@@ -88,7 +87,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
         this.bindPlayerInventory(ip, 0, 0);
     }
 
-    public ContainerInterfaceTerminal(final InventoryPlayer ip, final WirelessTerminalGuiObject guiObject, boolean bindInventory) {
+    public ContainerInterfaceTerminal(final InventoryPlayer ip, final WirelessTerminalGuiObject guiObject,
+            boolean bindInventory) {
         super(ip, guiObject);
 
         if (Platform.isServer()) {
@@ -125,7 +125,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
                 for (final IGridNode gn : this.grid.getMachines(TileInterface.class)) {
                     if (gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if (ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if (ih.getInterfaceDuality().getConfigManager()
+                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -147,7 +148,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
                 for (final IGridNode gn : this.grid.getMachines(PartInterface.class)) {
                     if (gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if (ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if (ih.getInterfaceDuality().getConfigManager()
+                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -183,7 +185,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
 
         if (!this.data.isEmpty()) {
             try {
-                NetworkHandler.instance().sendTo(new PacketCompressedNBT(this.data), (EntityPlayerMP) this.getPlayerInv().player);
+                NetworkHandler.instance().sendTo(new PacketCompressedNBT(this.data),
+                        (EntityPlayerMP) this.getPlayerInv().player);
             } catch (final IOException e) {
                 // :P
             }
@@ -205,12 +208,14 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
                     return;
                 }
 
-                if (!playerSlot.isPlayerSide() || !playerSlot.getHasStack()) return;
+                if (!playerSlot.isPlayerSide() || !playerSlot.getHasStack())
+                    return;
 
                 var itemStack = playerSlot.getStack();
                 if (!itemStack.isEmpty()) {
                     var handler = new WrapperFilteredItemHandler(
-                            new WrapperRangeItemHandler(inv.server, 0, 9 * (inv.numUpgrades + 1)), new PatternSlotFilter());
+                            new WrapperRangeItemHandler(inv.server, 0, 9 * (inv.numUpgrades + 1)),
+                            new PatternSlotFilter());
                     playerSlot.putStack(ItemHandlerHelper.insertItem(handler, itemStack, false));
                     detectAndSendChanges();
                 }
@@ -223,7 +228,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
 
             final InventoryAdaptor playerHand = new AdaptorItemHandler(new WrapperCursorItemHandler(player.inventory));
 
-            final IItemHandler theSlot = new WrapperFilteredItemHandler(new WrapperRangeItemHandler(inv.server, slot, slot + 1), new PatternSlotFilter());
+            final IItemHandler theSlot = new WrapperFilteredItemHandler(
+                    new WrapperRangeItemHandler(inv.server, slot, slot + 1), new PatternSlotFilter());
             final InventoryAdaptor interfaceSlot = new AdaptorItemHandler(theSlot);
 
             IItemHandler interfaceHandler = inv.server;
@@ -233,7 +239,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
                 case PICKUP_OR_SET_DOWN:
                     if (hasItemInHand) {
                         for (int s = 0; s < interfaceHandler.getSlots(); s++) {
-                            if (Platform.itemComparisons().isSameItem(interfaceHandler.getStackInSlot(s), player.inventory.getItemStack())) {
+                            if (Platform.itemComparisons().isSameItem(interfaceHandler.getStackInSlot(s),
+                                    player.inventory.getItemStack())) {
                                 canInsert = false;
                                 break;
                             }
@@ -267,7 +274,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
                 case SPLIT_OR_PLACE_SINGLE:
                     if (hasItemInHand) {
                         for (int s = 0; s < interfaceHandler.getSlots(); s++) {
-                            if (Platform.itemComparisons().isSameItem(interfaceHandler.getStackInSlot(s), player.inventory.getItemStack())) {
+                            if (Platform.itemComparisons().isSameItem(interfaceHandler.getStackInSlot(s),
+                                    player.inventory.getItemStack())) {
                                 canInsert = false;
                                 break;
                             }
@@ -303,7 +311,8 @@ public class ContainerInterfaceTerminal extends AEBaseContainer {
 
                     final InventoryAdaptor playerInvAd = InventoryAdaptor.getAdaptor(player);
                     for (int x = 0; x < inv.server.getSlots(); x++) {
-                        ItemHandlerUtil.setStackInSlot(inv.server, x, playerInvAd.addItems(inv.server.getStackInSlot(x)));
+                        ItemHandlerUtil.setStackInSlot(inv.server, x,
+                                playerInvAd.addItems(inv.server.getStackInSlot(x)));
                     }
 
                     break;

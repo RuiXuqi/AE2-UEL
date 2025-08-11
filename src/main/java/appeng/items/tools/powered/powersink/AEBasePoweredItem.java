@@ -18,13 +18,8 @@
 
 package appeng.items.tools.powered.powersink;
 
+import java.util.List;
 
-import appeng.api.config.AccessRestriction;
-import appeng.api.config.Actionable;
-import appeng.api.implementations.items.IAEItemPowerStorage;
-import appeng.core.localization.Tooltips;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -35,8 +30,12 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
+import appeng.api.config.AccessRestriction;
+import appeng.api.config.Actionable;
+import appeng.api.implementations.items.IAEItemPowerStorage;
+import appeng.core.localization.Tooltips;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 public abstract class AEBasePoweredItem extends AEBaseItem implements IAEItemPowerStorage {
     private static final String CURRENT_POWER_NBT_KEY = "internalCurrentPower";
@@ -54,7 +53,8 @@ public abstract class AEBasePoweredItem extends AEBaseItem implements IAEItemPow
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         final NBTTagCompound tag = stack.getTagCompound();
         double internalCurrentPower = 0;
         final double internalMaxPower = this.getAEMaxPower(stack);

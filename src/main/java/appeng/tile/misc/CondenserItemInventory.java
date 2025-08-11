@@ -18,6 +18,11 @@
 
 package appeng.tile.misc;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -34,12 +39,6 @@ import appeng.me.helpers.BaseActionSource;
 import appeng.me.storage.ITickingMonitor;
 import appeng.util.item.AEItemStack;
 import appeng.util.item.ItemList;
-import net.minecraft.item.ItemStack;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
-
 
 class CondenserItemInventory implements IMEMonitor<IAEItemStack>, ITickingMonitor {
     private final HashMap<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = new HashMap<>();
@@ -67,7 +66,8 @@ class CondenserItemInventory implements IMEMonitor<IAEItemStack>, ITickingMonito
         ItemStack slotItem = this.target.getOutputSlot().getStackInSlot(0);
         if (!slotItem.isEmpty() && request.isSameType(slotItem)) {
             int count = (int) Math.min(request.getStackSize(), Integer.MAX_VALUE);
-            ret = AEItemStack.fromItemStack(this.target.getOutputSlot().extractItem(0, count, mode == Actionable.SIMULATE));
+            ret = AEItemStack
+                    .fromItemStack(this.target.getOutputSlot().extractItem(0, count, mode == Actionable.SIMULATE));
         }
         return ret;
     }

@@ -18,9 +18,7 @@
 
 package appeng.services.version.exceptions;
 
-
 import javax.annotation.Nonnull;
-
 
 /**
  * A super class for any exception thrown by the version checker for easier handling.

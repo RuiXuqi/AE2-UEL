@@ -18,19 +18,17 @@
 
 package appeng.util;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Set;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.LevelEmitterMode;
 import appeng.api.config.Settings;
 import appeng.api.config.StorageFilter;
 import appeng.api.util.IConfigManager;
 import appeng.core.AELog;
-import net.minecraft.nbt.NBTTagCompound;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
-
 
 public final class ConfigManager implements IConfigManager {
     private final Map<Settings, Enum<?>> settings = new EnumMap<>(Settings.class);

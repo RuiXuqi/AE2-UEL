@@ -18,10 +18,6 @@
 
 package appeng.block.crafting;
 
-
-import appeng.api.util.AEColor;
-import appeng.client.UnlistedProperty;
-import appeng.tile.crafting.TileCraftingMonitorTile;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,6 +32,9 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.util.AEColor;
+import appeng.client.UnlistedProperty;
+import appeng.tile.crafting.TileCraftingMonitorTile;
 
 public class BlockCraftingMonitor extends BlockCraftingUnit {
 
@@ -47,7 +46,7 @@ public class BlockCraftingMonitor extends BlockCraftingUnit {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[]{
+        return new ExtendedBlockState(this, this.getAEStates(), new IUnlistedProperty[] {
                 STATE,
                 COLOR,
                 FORWARD,

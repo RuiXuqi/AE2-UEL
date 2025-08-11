@@ -18,6 +18,8 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.storage.ITerminalHost;
 import appeng.container.slot.OptionalSlotFake;
@@ -26,12 +28,8 @@ import appeng.container.slot.SlotPatternOutputs;
 import appeng.container.slot.SlotPatternTerm;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class ContainerPatternTerm extends ContainerPatternEncoder {
-    
 
     public ContainerPatternTerm(final InventoryPlayer ip, final ITerminalHost monitorable) {
         super(ip, monitorable, false);
@@ -46,7 +44,8 @@ public class ContainerPatternTerm extends ContainerPatternEncoder {
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotFakeCraftingMatrix(this.crafting, x + y * 3, 18 + x * 18, -76 + y * 18));
+                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotFakeCraftingMatrix(this.crafting,
+                        x + y * 3, 18 + x * 18, -76 + y * 18));
             }
         }
 
@@ -55,24 +54,26 @@ public class ContainerPatternTerm extends ContainerPatternEncoder {
         this.craftSlot.setIIcon(-1);
 
         for (int y = 0; y < this.outputSlots.length; y++) {
-            this.addSlotToContainer(this.outputSlots[y] = new SlotPatternOutputs(output, this, y, 110, -76 + y * 18, 0, 0, 1));
+            this.addSlotToContainer(
+                    this.outputSlots[y] = new SlotPatternOutputs(output, this, y, 110, -76 + y * 18, 0, 0, 1));
             this.outputSlots[y].setRenderDisabled(false);
             this.outputSlots[y].setIIcon(-1);
         }
 
         this.addSlotToContainer(
-                this.patternSlotIN = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.BLANK_PATTERN, patternInv, 0, 147, -72 - 9, this
-                        .getInventoryPlayer()));
+                this.patternSlotIN = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.BLANK_PATTERN,
+                        patternInv, 0, 147, -72 - 9, this
+                                .getInventoryPlayer()));
         this.addSlotToContainer(
-                this.patternSlotOUT = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN, patternInv, 1, 147, -72 + 34, this
-                        .getInventoryPlayer()));
+                this.patternSlotOUT = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN,
+                        patternInv, 1, 147, -72 + 34, this
+                                .getInventoryPlayer()));
 
         this.patternSlotOUT.setStackLimit(1);
 
         this.bindPlayerInventory(ip, 0, 0);
         this.updateOrderOfOutputSlots();
     }
-
 
     @Override
     public boolean isSlotEnabled(final int idx) {

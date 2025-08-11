@@ -18,11 +18,9 @@
 
 package appeng.core.sync.network;
 
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-
 
 public interface IPacketHandler {
 

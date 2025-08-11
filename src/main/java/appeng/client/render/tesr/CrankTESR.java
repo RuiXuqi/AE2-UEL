@@ -18,9 +18,8 @@
 
 package appeng.client.render.tesr;
 
+import org.lwjgl.opengl.GL11;
 
-import appeng.client.render.FacingToRotation;
-import appeng.tile.grindstone.TileCrank;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -30,8 +29,9 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
+import appeng.client.render.FacingToRotation;
+import appeng.tile.grindstone.TileCrank;
 
 /**
  * This FastTESR only handles the animated model of the turning crank. When the crank is at rest, it is rendered using a
@@ -41,7 +41,8 @@ import org.lwjgl.opengl.GL11;
 public class CrankTESR extends TileEntitySpecialRenderer<TileCrank> {
 
     @Override
-    public void render(TileCrank te, double x, double y, double z, float partialTicks, int destroyStage, float p_render_10_) {
+    public void render(TileCrank te, double x, double y, double z, float partialTicks, int destroyStage,
+            float p_render_10_) {
         // Most of this is blatantly copied from FastTESR
         Tessellator tessellator = Tessellator.getInstance();
         this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

@@ -18,10 +18,8 @@
 
 package appeng.integration.modules.waila.part;
 
+import java.util.List;
 
-import appeng.api.parts.IPart;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,11 +27,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import appeng.api.parts.IPart;
 
 /**
- * Default implementation of {@link appeng.integration.modules.waila.part.IPartWailaDataProvider}
+ * Default implementation of {@link IPartWailaDataProvider}
  *
  * @author thatsIch
  * @version rv2
@@ -46,22 +46,26 @@ public abstract class BasePartWailaDataProvider implements IPartWailaDataProvide
     }
 
     @Override
-    public List<String> getWailaHead(final IPart part, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaHead(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         return currentToolTip;
     }
 
     @Override
-    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         return currentToolTip;
     }
 
     @Override
-    public List<String> getWailaTail(final IPart part, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaTail(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         return currentToolTip;
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos) {
         return tag;
     }
 }

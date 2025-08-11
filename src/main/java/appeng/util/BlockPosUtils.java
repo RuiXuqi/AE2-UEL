@@ -2,7 +2,6 @@ package appeng.util;
 
 import net.minecraft.util.math.BlockPos;
 
-
 public class BlockPosUtils {
     public static long getDistance(BlockPos blockPos, BlockPos blockPos2) {
         int x;

@@ -18,6 +18,11 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.SecurityPermissions;
@@ -33,12 +38,6 @@ import appeng.tile.misc.TileSecurityStation;
 import appeng.util.Platform;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class ContainerSecurityStation extends ContainerMEMonitorable implements IAEAppEngInventory {
 
@@ -60,11 +59,14 @@ public class ContainerSecurityStation extends ContainerMEMonitorable implements 
 
         this.securityBox = (TileSecurityStation) monitorable;
 
-        this.addSlotToContainer(this.configSlot = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.BIOMETRIC_CARD, this.securityBox
-                .getConfigSlot(), 0, 37, -33, ip));
+        this.addSlotToContainer(this.configSlot = new SlotRestrictedInput(
+                SlotRestrictedInput.PlacableItemType.BIOMETRIC_CARD, this.securityBox
+                        .getConfigSlot(),
+                0, 37, -33, ip));
 
         this.addSlotToContainer(
-                this.wirelessIn = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODABLE_ITEM, this.wirelessEncoder, 0, 212, 10 + jeiOffset, ip));
+                this.wirelessIn = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODABLE_ITEM,
+                        this.wirelessEncoder, 0, 212, 10 + jeiOffset, ip));
         this.addSlotToContainer(this.wirelessOut = new SlotOutput(this.wirelessEncoder, 1, 212, 68 + jeiOffset, -1));
 
         this.bindPlayerInventory(ip, 0, 0);
@@ -125,7 +127,8 @@ public class ContainerSecurityStation extends ContainerMEMonitorable implements 
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (!this.wirelessOut.getHasStack()) {
             if (this.wirelessIn.getHasStack()) {
                 final ItemStack term = this.wirelessIn.getStack().copy();
@@ -135,7 +138,8 @@ public class ContainerSecurityStation extends ContainerMEMonitorable implements 
                     networkEncodable = (INetworkEncodable) term.getItem();
                 }
 
-                final IWirelessTermHandler wTermHandler = AEApi.instance().registries().wireless().getWirelessTerminalHandler(term);
+                final IWirelessTermHandler wTermHandler = AEApi.instance().registries().wireless()
+                        .getWirelessTerminalHandler(term);
                 if (wTermHandler != null) {
                     networkEncodable = wTermHandler;
                 }

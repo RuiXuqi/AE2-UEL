@@ -18,13 +18,9 @@
 
 package appeng.entity;
 
+import java.util.Date;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IMaterials;
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import appeng.helpers.Reflected;
-import appeng.util.Platform;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -34,9 +30,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Date;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.definitions.IMaterials;
+import appeng.core.AEConfig;
+import appeng.core.features.AEFeature;
+import appeng.helpers.Reflected;
+import appeng.util.Platform;
 
 public final class EntitySingularity extends AEBaseEntityItem {
 
@@ -75,7 +74,8 @@ public final class EntitySingularity extends AEBaseEntityItem {
         final IMaterials materials = AEApi.instance().definitions().materials();
 
         if (materials.singularity().isSameAs(item)) {
-            final AxisAlignedBB region = new AxisAlignedBB(this.posX - 4, this.posY - 4, this.posZ - 4, this.posX + 4, this.posY + 4, this.posZ + 4);
+            final AxisAlignedBB region = new AxisAlignedBB(this.posX - 4, this.posY - 4, this.posZ - 4, this.posX + 4,
+                    this.posY + 4, this.posZ + 4);
             final List<Entity> l = this.getCheckedEntitiesWithinAABBExcludingEntity(region);
 
             for (final Entity e : l) {
@@ -107,14 +107,14 @@ public final class EntitySingularity extends AEBaseEntityItem {
                                     e.setDead();
                                 }
 
-                                materials.qESingularity().maybeStack(2).ifPresent(singularityStack ->
-                                {
+                                materials.qESingularity().maybeStack(2).ifPresent(singularityStack -> {
                                     final NBTTagCompound cmp = Platform.openNbtData(singularityStack);
                                     cmp.setLong("freq", (new Date()).getTime() * 100 + (randTickSeed) % 100);
                                     randTickSeed++;
                                     item.grow(-1);
 
-                                    final EntitySingularity entity = new EntitySingularity(this.world, this.posX, this.posY, this.posZ, singularityStack);
+                                    final EntitySingularity entity = new EntitySingularity(this.world, this.posX,
+                                            this.posY, this.posZ, singularityStack);
                                     this.world.spawnEntity(entity);
                                 });
                             }

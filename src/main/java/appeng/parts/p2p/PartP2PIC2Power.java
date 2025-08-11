@@ -18,6 +18,18 @@
 
 package appeng.parts.p2p;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import ic2.api.energy.prefab.BasicSinkSource;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyEmitter;
 
 import appeng.api.config.PowerUnits;
 import appeng.api.parts.IPartModel;
@@ -25,18 +37,6 @@ import appeng.items.parts.PartModels;
 import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.util.Platform;
-import ic2.api.energy.prefab.BasicSinkSource;
-import ic2.api.energy.tile.IEnergyAcceptor;
-import ic2.api.energy.tile.IEnergyEmitter;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class PartP2PIC2Power extends PartP2PTunnel<PartP2PIC2Power> {
 
@@ -113,7 +113,8 @@ public class PartP2PIC2Power extends PartP2PTunnel<PartP2PIC2Power> {
 
     private void updateSinkSource() {
         if (this.sinkSource == null) {
-            this.sinkSource = new SinkSource(this.getHost().getTile().getWorld(), this.getHost().getLocation().getPos(), 2048, 4, 4);
+            this.sinkSource = new SinkSource(this.getHost().getTile().getWorld(), this.getHost().getLocation().getPos(),
+                    2048, 4, 4);
         }
 
         this.sinkSource.update();

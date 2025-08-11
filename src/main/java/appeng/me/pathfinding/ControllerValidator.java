@@ -18,14 +18,13 @@
 
 package appeng.me.pathfinding;
 
+import net.minecraft.util.math.BlockPos;
 
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridVisitor;
 import appeng.core.AEConfig;
 import appeng.tile.networking.TileController;
-import net.minecraft.util.math.BlockPos;
-
 
 public class ControllerValidator implements IGridVisitor {
 
@@ -62,7 +61,9 @@ public class ControllerValidator implements IGridVisitor {
             this.minZ = Math.min(pos.getZ(), this.minZ);
             this.maxZ = Math.max(pos.getZ(), this.maxZ);
 
-            if (this.maxX - this.minX < AEConfig.instance().getMaxControllerSizeX() && this.maxY - this.minY < AEConfig.instance().getMaxControllerSizeY() && this.maxZ - this.minZ < AEConfig.instance().getMaxControllerSizeZ()) {
+            if (this.maxX - this.minX < AEConfig.instance().getMaxControllerSizeX()
+                    && this.maxY - this.minY < AEConfig.instance().getMaxControllerSizeY()
+                    && this.maxZ - this.minZ < AEConfig.instance().getMaxControllerSizeZ()) {
                 this.setFound(this.getFound() + 1);
                 return true;
             }

@@ -18,9 +18,9 @@
 
 package appeng.spatial;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.core.AppEng;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
@@ -29,9 +29,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.core.AppEng;
 
 public class StorageChunkProvider extends ChunkGeneratorOverworld {
 
@@ -54,7 +53,8 @@ public class StorageChunkProvider extends ChunkGeneratorOverworld {
             biomes[k] = biomeId;
         }
 
-        AEApi.instance().definitions().blocks().matrixFrame().maybeBlock().ifPresent(block -> this.fillChunk(chunk, block.getDefaultState()));
+        AEApi.instance().definitions().blocks().matrixFrame().maybeBlock()
+                .ifPresent(block -> this.fillChunk(chunk, block.getDefaultState()));
 
         chunk.setModified(false);
 
@@ -92,7 +92,8 @@ public class StorageChunkProvider extends ChunkGeneratorOverworld {
     }
 
     @Override
-    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean p_180513_4_) {
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position,
+            boolean p_180513_4_) {
         return null;
     }
 

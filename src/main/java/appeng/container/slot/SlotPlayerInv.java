@@ -18,9 +18,7 @@
 
 package appeng.container.slot;
 
-
 import net.minecraftforge.items.IItemHandler;
-
 
 // there is nothing special about this slot, its simply used to represent the players inventory, vs a container slot.
 

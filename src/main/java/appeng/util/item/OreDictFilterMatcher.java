@@ -3,7 +3,6 @@ package appeng.util.item;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * @author brachy84
  * @butcherer PrototypeTrousers
@@ -75,8 +74,7 @@ public class OreDictFilterMatcher {
     }
 
     /**
-     * Matches the given string against a list of rules.
-     * The string does not have to be an oreDict.
+     * Matches the given string against a list of rules. The string does not have to be an oreDict.
      *
      * @param rules   to check against
      * @param oreDict string to check
@@ -264,7 +262,6 @@ public class OreDictFilterMatcher {
         return input;
     }
 
-
     public static class MatchRule {
         public final MatchLogic logic;
         public final String expression;
@@ -305,7 +302,6 @@ public class OreDictFilterMatcher {
             return subRules != null;
         }
     }
-
 
     public enum MatchLogic {
         OR,

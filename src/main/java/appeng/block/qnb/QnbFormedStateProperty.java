@@ -1,8 +1,6 @@
 package appeng.block.qnb;
 
-
 import net.minecraftforge.common.property.IUnlistedProperty;
-
 
 public class QnbFormedStateProperty implements IUnlistedProperty<QnbFormedState> {
 

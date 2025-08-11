@@ -18,14 +18,13 @@
 
 package appeng.server;
 
-
 import com.google.common.base.Joiner;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-
 
 public final class AECommand extends CommandBase {
     private final MinecraftServer srv;
@@ -50,7 +49,8 @@ public final class AECommand extends CommandBase {
     }
 
     @Override
-    public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args) throws CommandException {
+    public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args)
+            throws CommandException {
         if (args.length == 0) {
             throw new WrongUsageException("commands.ae2.usage");
         } else if ("help".equals(args[0])) {

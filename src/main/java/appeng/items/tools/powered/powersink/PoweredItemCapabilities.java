@@ -18,11 +18,8 @@
 
 package appeng.items.tools.powered.powersink;
 
+import javax.annotation.Nullable;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerUnits;
-import appeng.api.implementations.items.IAEItemPowerStorage;
-import appeng.capabilities.Capabilities;
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaHolder;
 import net.minecraft.item.ItemStack;
@@ -31,8 +28,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
-
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerUnits;
+import appeng.api.implementations.items.IAEItemPowerStorage;
+import appeng.capabilities.Capabilities;
 
 /**
  * The capability provider to expose chargable items to other mods.
@@ -57,7 +56,8 @@ class PoweredItemCapabilities implements ICapabilityProvider, IEnergyStorage {
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == Capabilities.FORGE_ENERGY || capability == Capabilities.TESLA_CONSUMER || capability == Capabilities.TESLA_HOLDER;
+        return capability == Capabilities.FORGE_ENERGY || capability == Capabilities.TESLA_CONSUMER
+                || capability == Capabilities.TESLA_HOLDER;
     }
 
     @SuppressWarnings("unchecked")
@@ -74,7 +74,8 @@ class PoweredItemCapabilities implements ICapabilityProvider, IEnergyStorage {
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         final double convertedOffer = PowerUnits.RF.convertTo(PowerUnits.AE, maxReceive);
-        final double overflow = this.item.injectAEPower(this.is, convertedOffer, simulate ? Actionable.SIMULATE : Actionable.MODULATE);
+        final double overflow = this.item.injectAEPower(this.is, convertedOffer,
+                simulate ? Actionable.SIMULATE : Actionable.MODULATE);
 
         return maxReceive - (int) PowerUnits.AE.convertTo(PowerUnits.RF, overflow);
     }

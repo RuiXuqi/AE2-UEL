@@ -18,15 +18,16 @@
 
 package appeng.core.features;
 
+import java.util.Optional;
 
-import appeng.api.definitions.IItemDefinition;
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Preconditions;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-import java.util.Optional;
-
+import appeng.api.definitions.IItemDefinition;
 
 public final class DamagedItemDefinition implements IItemDefinition {
     private final String identifier;
@@ -70,7 +71,8 @@ public final class DamagedItemDefinition implements IItemDefinition {
             return false;
         }
 
-        return this.isEnabled() && comparableStack.getItem() == this.source.get().getItem() && comparableStack.getItemDamage() == this.source.get().getDamage();
+        return this.isEnabled() && comparableStack.getItem() == this.source.get().getItem()
+                && comparableStack.getItemDamage() == this.source.get().getDamage();
     }
 
 }

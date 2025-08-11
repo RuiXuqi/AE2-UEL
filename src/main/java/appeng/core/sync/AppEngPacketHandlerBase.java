@@ -18,15 +18,14 @@
 
 package appeng.core.sync;
 
-
-import appeng.core.sync.packets.*;
-import io.netty.buffer.ByteBuf;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.netty.buffer.ByteBuf;
+
+import appeng.core.sync.packets.*;
 
 public class AppEngPacketHandlerBase {
     private static final Map<Class<? extends AppEngPacket>, PacketTypes> REVERSE_LOOKUP = new HashMap<>();
@@ -94,7 +93,6 @@ public class AppEngPacketHandlerBase {
 
         ;
 
-
         private final Class<? extends AppEngPacket> packetClass;
         private final Constructor<? extends AppEngPacket> packetConstructor;
 
@@ -112,7 +110,8 @@ public class AppEngPacketHandlerBase {
             REVERSE_LOOKUP.put(this.packetClass, this);
 
             if (this.packetConstructor == null) {
-                throw new IllegalStateException("Invalid Packet Class " + c + ", must be constructable on DataInputStream");
+                throw new IllegalStateException(
+                        "Invalid Packet Class " + c + ", must be constructable on DataInputStream");
             }
         }
 
@@ -124,7 +123,8 @@ public class AppEngPacketHandlerBase {
             return REVERSE_LOOKUP.get(c);
         }
 
-        public AppEngPacket parsePacket(final ByteBuf in) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        public AppEngPacket parsePacket(final ByteBuf in) throws InstantiationException, IllegalAccessException,
+                IllegalArgumentException, InvocationTargetException {
             return this.packetConstructor.newInstance(in);
         }
     }

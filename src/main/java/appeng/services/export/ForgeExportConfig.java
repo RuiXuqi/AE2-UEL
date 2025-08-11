@@ -18,13 +18,12 @@
 
 package appeng.services.export;
 
-
-import com.google.common.base.Preconditions;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-
 import javax.annotation.Nonnull;
 
+import com.google.common.base.Preconditions;
+
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 /**
  * Offers configuration switches for the user to change the export process
@@ -73,13 +72,17 @@ public final class ForgeExportConfig implements ExportConfig {
     public ForgeExportConfig(@Nonnull final Configuration config) {
         this.config = Preconditions.checkNotNull(config);
 
-        this.exportItemNamesEnabled = this.config.getBoolean(EXPORT_ITEM_NAMES_KEY, GENERAL_CATEGORY, EXPORT_ITEM_NAMES_DEFAULT,
+        this.exportItemNamesEnabled = this.config.getBoolean(EXPORT_ITEM_NAMES_KEY, GENERAL_CATEGORY,
+                EXPORT_ITEM_NAMES_DEFAULT,
                 EXPORT_ITEM_NAMES_DESCRIPTION);
-        this.cacheEnabled = this.config.getBoolean(ENABLE_CACHE_KEY, CACHE_CATEGORY, ENABLE_CACHE_DEFAULT, ENABLE_CACHE_DESCRIPTION);
-        this.additionalInformationEnabled = this.config.getBoolean(ENABLE_ADDITIONAL_INFO_KEY, GENERAL_CATEGORY, ENABLE_ADDITIONAL_INFO_DEFAULT,
+        this.cacheEnabled = this.config.getBoolean(ENABLE_CACHE_KEY, CACHE_CATEGORY, ENABLE_CACHE_DEFAULT,
+                ENABLE_CACHE_DESCRIPTION);
+        this.additionalInformationEnabled = this.config.getBoolean(ENABLE_ADDITIONAL_INFO_KEY, GENERAL_CATEGORY,
+                ENABLE_ADDITIONAL_INFO_DEFAULT,
                 ENABLE_ADDITIONAL_INFO_DESCRIPTION);
         this.cache = this.config.getString(DIGEST_KEY, CACHE_CATEGORY, DIGEST_DEFAULT, DIGEST_DESCRIPTION);
-        this.forceRefreshEnabled = this.config.getBoolean(ENABLE_FORCE_REFRESH_KEY, GENERAL_CATEGORY, ENABLE_FORCE_REFRESH_DEFAULT,
+        this.forceRefreshEnabled = this.config.getBoolean(ENABLE_FORCE_REFRESH_KEY, GENERAL_CATEGORY,
+                ENABLE_FORCE_REFRESH_DEFAULT,
                 ENABLE_FORCE_REFRESH_DESCRIPTION);
     }
 

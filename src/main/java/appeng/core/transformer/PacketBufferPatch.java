@@ -19,13 +19,14 @@ package appeng.core.transformer;
  * along with StackUp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.IOException;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-
-import java.io.IOException;
 
 public class PacketBufferPatch extends PacketBuffer {
 

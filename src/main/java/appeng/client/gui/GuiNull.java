@@ -18,9 +18,7 @@
 
 package appeng.client.gui;
 
-
 import net.minecraft.inventory.Container;
-
 
 public class GuiNull extends AEBaseGui {
 

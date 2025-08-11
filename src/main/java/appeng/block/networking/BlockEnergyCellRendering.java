@@ -18,6 +18,9 @@
 
 package appeng.block.networking;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.implementations.items.IAEItemPowerStorage;
 import appeng.block.AEBaseItemBlockChargeable;
@@ -25,10 +28,6 @@ import appeng.bootstrap.BlockRenderingCustomizer;
 import appeng.bootstrap.IBlockRendering;
 import appeng.bootstrap.IItemRendering;
 import appeng.tile.networking.TileEnergyCell;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 
 public class BlockEnergyCellRendering extends BlockRenderingCustomizer {
 
@@ -45,8 +44,7 @@ public class BlockEnergyCellRendering extends BlockRenderingCustomizer {
     }
 
     /**
-     * Determines which version of the energy cell model should be used depending on the fill factor
-     * of the item stack.
+     * Determines which version of the energy cell model should be used depending on the fill factor of the item stack.
      */
     private ModelResourceLocation getItemModel(ItemStack is) {
         double fillFactor = getFillFactor(is);
@@ -56,8 +54,8 @@ public class BlockEnergyCellRendering extends BlockRenderingCustomizer {
     }
 
     /**
-     * Helper method that returns the energy fill factor (between 0 and 1) of a given item stack.
-     * Returns 0 if the item stack has no fill factor.
+     * Helper method that returns the energy fill factor (between 0 and 1) of a given item stack. Returns 0 if the item
+     * stack has no fill factor.
      */
     private static double getFillFactor(ItemStack is) {
         if (!(is.getItem() instanceof IAEItemPowerStorage)) {

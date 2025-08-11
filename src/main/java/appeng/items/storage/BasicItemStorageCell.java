@@ -18,6 +18,8 @@
 
 package appeng.items.storage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.storage.IStorageChannel;
@@ -25,9 +27,6 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.items.materials.MaterialType;
 import appeng.util.InventoryAdaptor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-
 
 public final class BasicItemStorageCell extends AbstractStorageCell<IAEItemStack> {
 
@@ -77,8 +76,7 @@ public final class BasicItemStorageCell extends AbstractStorageCell<IAEItemStack
 
     @Override
     protected void dropEmptyStorageCellCase(final InventoryAdaptor ia, final EntityPlayer player) {
-        AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1).ifPresent(is ->
-        {
+        AEApi.instance().definitions().materials().emptyStorageCell().maybeStack(1).ifPresent(is -> {
             final ItemStack extraA = ia.addItems(is);
             if (!extraA.isEmpty()) {
                 player.dropItem(extraA, false);

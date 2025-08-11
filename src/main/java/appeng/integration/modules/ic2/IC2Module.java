@@ -18,6 +18,10 @@
 
 package appeng.integration.modules.ic2;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
+import ic2.api.item.ElectricItem;
 
 import appeng.api.AEApi;
 import appeng.api.config.TunnelType;
@@ -27,14 +31,11 @@ import appeng.integration.abstraction.IC2PowerSink;
 import appeng.integration.abstraction.IIC2;
 import appeng.integration.modules.ic2.energy.PoweredItemManager;
 import appeng.tile.powersink.IExternalPowerSink;
-import ic2.api.item.ElectricItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-
 
 public class IC2Module implements IIC2 {
 
-    private static final String[] IC2_CABLE_TYPES = {"copper", "glass", "gold", "iron", "tin", "detector", "splitter"};
+    private static final String[] IC2_CABLE_TYPES = { "copper", "glass", "gold", "iron", "tin", "detector",
+            "splitter" };
 
     public IC2Module() {
         IntegrationHelper.testClassExistence(this, ic2.api.energy.tile.IEnergyTile.class);

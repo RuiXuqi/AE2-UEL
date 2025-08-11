@@ -18,13 +18,11 @@
 
 package appeng.integration;
 
-
-import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
-import net.minecraftforge.fml.relauncher.Side;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 public enum IntegrationRegistry {
     INSTANCE;
@@ -69,7 +67,8 @@ public enum IntegrationRegistry {
                 builder.append(", ");
             }
 
-            final String integrationState = node.getType() + ":" + (node.getState() == IntegrationStage.FAILED ? "OFF" : "ON");
+            final String integrationState = node.getType() + ":"
+                    + (node.getState() == IntegrationStage.FAILED ? "OFF" : "ON");
             builder.append(integrationState);
         }
 

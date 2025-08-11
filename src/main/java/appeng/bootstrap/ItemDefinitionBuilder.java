@@ -18,6 +18,19 @@
 
 package appeng.bootstrap;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.bootstrap.components.IItemRegistrationComponent;
 import appeng.bootstrap.components.IPostInitComponent;
@@ -27,20 +40,6 @@ import appeng.core.CreativeTab;
 import appeng.core.features.AEFeature;
 import appeng.core.features.ItemDefinition;
 import appeng.util.Platform;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.dispenser.IBehaviorDispenseItem;
-import net.minecraft.item.Item;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 
 class ItemDefinitionBuilder implements IItemBuilder {
 
@@ -134,8 +133,7 @@ class ItemDefinitionBuilder implements IItemBuilder {
 
         // Register custom dispenser behavior if requested
         if (this.dispenserBehaviorSupplier != null) {
-            this.factory.addBootstrapComponent((IPostInitComponent) side ->
-            {
+            this.factory.addBootstrapComponent((IPostInitComponent) side -> {
                 IBehaviorDispenseItem behavior = this.dispenserBehaviorSupplier.get();
                 BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, behavior);
             });

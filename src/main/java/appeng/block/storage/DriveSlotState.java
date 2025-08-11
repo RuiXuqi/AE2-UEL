@@ -18,9 +18,7 @@
 
 package appeng.block.storage;
 
-
 import net.minecraft.util.IStringSerializable;
-
 
 /**
  * Describes the different states a single slot of a BlockDrive can be in in terms of rendering.

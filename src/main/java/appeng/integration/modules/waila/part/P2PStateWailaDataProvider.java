@@ -18,15 +18,10 @@
 
 package appeng.integration.modules.waila.part;
 
+import java.util.List;
 
-import appeng.api.parts.IPart;
-import appeng.core.localization.WailaText;
-import appeng.me.GridAccessException;
-import appeng.parts.p2p.PartP2PTunnel;
-import appeng.util.Platform;
 import com.google.common.collect.Iterators;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -34,8 +29,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import appeng.api.parts.IPart;
+import appeng.core.localization.WailaText;
+import appeng.me.GridAccessException;
+import appeng.parts.p2p.PartP2PTunnel;
+import appeng.util.Platform;
 
 /**
  * Provides information about a P2P tunnel to WAILA.
@@ -58,7 +59,8 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
      * @return modified tooltip
      */
     @Override
-    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         if (part instanceof PartP2PTunnel) {
             NBTTagCompound nbtData = accessor.getNBTData();
             if (nbtData.hasKey(TAG_P2P_STATE)) {
@@ -82,7 +84,8 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
 
                 final short freq = nbtData.getShort(TAG_P2P_FREQUENCY);
                 final String freqTooltip = Platform.p2p().toHexString(freq);
-                currentToolTip.add(I18n.translateToLocalFormatted("gui.tooltips.appliedenergistics2.P2PFrequency", freqTooltip));
+                currentToolTip.add(
+                        I18n.translateToLocalFormatted("gui.tooltips.appliedenergistics2.P2PFrequency", freqTooltip));
             }
         }
 
@@ -90,7 +93,8 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, IPart part, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos) {
         if (part instanceof PartP2PTunnel) {
             final PartP2PTunnel tunnel = (PartP2PTunnel) part;
 
@@ -118,7 +122,7 @@ public final class P2PStateWailaDataProvider extends BasePartWailaDataProvider {
                 }
             }
 
-            tag.setIntArray(TAG_P2P_STATE, new int[]{
+            tag.setIntArray(TAG_P2P_STATE, new int[] {
                     state,
                     outputCount
             });

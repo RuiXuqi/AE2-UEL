@@ -18,15 +18,14 @@
 
 package appeng.parts;
 
+import java.util.List;
 
-import appeng.api.parts.IPartCollisionHelper;
-import appeng.api.util.AEPartLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import java.util.List;
-
+import appeng.api.parts.IPartCollisionHelper;
+import appeng.api.util.AEPartLocation;
 
 public class BusCollisionHelper implements IPartCollisionHelper {
 
@@ -39,7 +38,8 @@ public class BusCollisionHelper implements IPartCollisionHelper {
     private final Entity entity;
     private final boolean isVisual;
 
-    public BusCollisionHelper(final List<AxisAlignedBB> boxes, final EnumFacing x, final EnumFacing y, final EnumFacing z, final Entity e, final boolean visual) {
+    public BusCollisionHelper(final List<AxisAlignedBB> boxes, final EnumFacing x, final EnumFacing y,
+            final EnumFacing z, final Entity e, final boolean visual) {
         this.boxes = boxes;
         this.x = x;
         this.y = y;
@@ -48,7 +48,8 @@ public class BusCollisionHelper implements IPartCollisionHelper {
         this.isVisual = visual;
     }
 
-    public BusCollisionHelper(final List<AxisAlignedBB> boxes, final AEPartLocation s, final Entity e, final boolean visual) {
+    public BusCollisionHelper(final List<AxisAlignedBB> boxes, final AEPartLocation s, final Entity e,
+            final boolean visual) {
         this.boxes = boxes;
         this.entity = e;
         this.isVisual = visual;

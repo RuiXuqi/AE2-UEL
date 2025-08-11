@@ -18,6 +18,22 @@
 
 package appeng.items.storage;
 
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.FuzzyMode;
@@ -38,30 +54,14 @@ import appeng.items.contents.CellUpgrades;
 import appeng.items.materials.MaterialType;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.List;
-import java.util.Set;
-
 
 /**
  * @author DrummerMC
  * @version rv6 - 2018-01-17
  * @since rv6 2018-01-17
  */
-public abstract class AbstractStorageCell<T extends IAEStack<T>> extends AEBaseItem implements IStorageCell<T>, IItemGroup {
+public abstract class AbstractStorageCell<T extends IAEStack<T>> extends AEBaseItem
+        implements IStorageCell<T>, IItemGroup {
     protected final MaterialType component;
     protected final int totalBytes;
 
@@ -73,10 +73,12 @@ public abstract class AbstractStorageCell<T extends IAEStack<T>> extends AEBaseI
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         AEApi.instance()
                 .client()
-                .addCellInformation(AEApi.instance().registries().cell().getCellInventory(stack, null, this.getChannel()), lines);
+                .addCellInformation(
+                        AEApi.instance().registries().cell().getCellInventory(stack, null, this.getChannel()), lines);
     }
 
     @Override
@@ -152,7 +154,8 @@ public abstract class AbstractStorageCell<T extends IAEStack<T>> extends AEBaseI
             }
 
             final InventoryPlayer playerInventory = player.inventory;
-            final IMEInventoryHandler inv = AEApi.instance().registries().cell().getCellInventory(stack, null, this.getChannel());
+            final IMEInventoryHandler inv = AEApi.instance().registries().cell().getCellInventory(stack, null,
+                    this.getChannel());
             if (inv != null && playerInventory.getCurrentItem() == stack) {
                 final InventoryAdaptor ia = InventoryAdaptor.getAdaptor(player);
                 final IItemList<IAEItemStack> list = inv.getAvailableItems(this.getChannel().createList());
@@ -192,8 +195,10 @@ public abstract class AbstractStorageCell<T extends IAEStack<T>> extends AEBaseI
     protected abstract void dropEmptyStorageCellCase(final InventoryAdaptor ia, final EntityPlayer player);
 
     @Override
-    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
-        return this.disassembleDrive(player.getHeldItem(hand), world, player) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
+    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+        return this.disassembleDrive(player.getHeldItem(hand), world, player) ? EnumActionResult.SUCCESS
+                : EnumActionResult.PASS;
     }
 
     @Override
@@ -203,7 +208,8 @@ public abstract class AbstractStorageCell<T extends IAEStack<T>> extends AEBaseI
                 .materials()
                 .emptyStorageCell()
                 .maybeStack(1)
-                .orElseThrow(() -> new MissingDefinitionException("Tried to use empty storage cells while basic storage cells are defined."));
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to use empty storage cells while basic storage cells are defined."));
     }
 
     @Override

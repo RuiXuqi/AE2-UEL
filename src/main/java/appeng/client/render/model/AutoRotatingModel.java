@@ -18,13 +18,17 @@
 
 package appeng.client.render.model;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.block.AEBaseTileBlock;
-import appeng.client.render.FacingToRotation;
+import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
+
 import com.google.common.base.Objects;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -42,11 +46,8 @@ import net.minecraftforge.client.model.pipeline.QuadGatheringTransformer;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.vecmath.Vector3f;
-import javax.vecmath.Vector4f;
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.block.AEBaseTileBlock;
+import appeng.client.render.FacingToRotation;
 
 public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadListener {
 
@@ -56,12 +57,14 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
     public AutoRotatingModel(IBakedModel parent) {
         this.parent = parent;
         // 6 (DUNSWE) * 6 (DUNSWE) * 7 (DUNSWE + null) = 252
-        this.quadCache = CacheBuilder.newBuilder().maximumSize(252).build(new CacheLoader<AutoRotatingCacheKey, List<BakedQuad>>() {
-            @Override
-            public List<BakedQuad> load(AutoRotatingCacheKey key) throws Exception {
-                return AutoRotatingModel.this.getRotatedModel(key.getBlockState(), key.getSide(), key.getForward(), key.getUp());
-            }
-        });
+        this.quadCache = CacheBuilder.newBuilder().maximumSize(252)
+                .build(new CacheLoader<AutoRotatingCacheKey, List<BakedQuad>>() {
+                    @Override
+                    public List<BakedQuad> load(AutoRotatingCacheKey key) throws Exception {
+                        return AutoRotatingModel.this.getRotatedModel(key.getBlockState(), key.getSide(),
+                                key.getForward(), key.getUp());
+                    }
+                });
     }
 
     private List<BakedQuad> getRotatedModel(IBlockState state, EnumFacing side, EnumFacing forward, EnumFacing up) {
@@ -89,8 +92,10 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
             // Packing it back to the vanilla vertex format will fix this inconsistency because it converts
             // the normal back to a byte-based format, which then re-applies Forge's own bug when piping it
             // to the AO lighter, thus fixing our problem.
-            BakedQuad packedQuad = new BakedQuad(unpackedQuad.getVertexData(), quad.getTintIndex(), unpackedQuad.getFace(), quad.getSprite(), quad
-                    .shouldApplyDiffuseLighting(), quad.getFormat());
+            BakedQuad packedQuad = new BakedQuad(unpackedQuad.getVertexData(), quad.getTintIndex(),
+                    unpackedQuad.getFace(), quad.getSprite(), quad
+                            .shouldApplyDiffuseLighting(),
+                    quad.getFormat());
             rotated.add(packedQuad);
         }
         return rotated;
@@ -207,7 +212,7 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
                     vec.x += 0.5f;
                     vec.y += 0.5f;
                     vec.z += 0.5f;
-                    return new float[]{vec.x, vec.y, vec.z
+                    return new float[] { vec.x, vec.y, vec.z
                     };
                 case 4:
                     Vector4f vecc = new Vector4f(fs[0], fs[1], fs[2], fs[3]);
@@ -218,7 +223,7 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
                     vecc.x += 0.5f;
                     vecc.y += 0.5f;
                     vecc.z += 0.5f;
-                    return new float[]{vecc.x, vecc.y, vecc.z, vecc.w
+                    return new float[] { vecc.x, vecc.y, vecc.z, vecc.w
                     };
 
                 default:
@@ -232,7 +237,7 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
                     case 3:
                         Vector3f vec = new Vector3f(fs);
                         this.f2r.getMat().transform(vec);
-                        return new float[]{
+                        return new float[] {
                                 vec.getX(),
                                 vec.getY(),
                                 vec.getZ()
@@ -240,7 +245,7 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
                     case 4:
                         Vector4f vec4 = new Vector4f(fs);
                         this.f2r.getMat().transform(vec4);
-                        return new float[]{
+                        return new float[] {
                                 vec4.getX(),
                                 vec4.getY(),
                                 vec4.getZ(),
@@ -254,7 +259,7 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
                 switch (fs.length) {
                     case 3:
                         Vec3i vec = this.f2r.rotate(this.face).getDirectionVec();
-                        return new float[]{
+                        return new float[] {
                                 vec.getX(),
                                 vec.getY(),
                                 vec.getZ()
@@ -262,7 +267,7 @@ public class AutoRotatingModel implements IBakedModel, IResourceManagerReloadLis
                     case 4:
                         Vector4f veccc = new Vector4f(fs[0], fs[1], fs[2], fs[3]);
                         Vec3i vecc = this.f2r.rotate(this.face).getDirectionVec();
-                        return new float[]{
+                        return new float[] {
                                 vecc.getX(),
                                 vecc.getY(),
                                 vecc.getZ(),

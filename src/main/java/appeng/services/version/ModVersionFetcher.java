@@ -18,12 +18,10 @@
 
 package appeng.services.version;
 
+import javax.annotation.Nonnull;
 
 import appeng.core.AELog;
 import appeng.services.version.exceptions.VersionCheckerException;
-
-import javax.annotation.Nonnull;
-
 
 /**
  * Wrapper for {@link VersionParser} to check if the check is happening in developer environment or in a pull request.
@@ -47,7 +45,7 @@ public final class ModVersionFetcher implements VersionFetcher {
      * Parses only, if not checked in developer environment or in a pull request
      *
      * @return {@link DoNotCheckVersion} if in developer environment or pull request, {@link MissingVersion} in case of
-     * a parser exception or else the parsed {@link Version}.
+     *         a parser exception or else the parsed {@link Version}.
      */
     @Override
     public Version get() {

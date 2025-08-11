@@ -18,7 +18,6 @@
 
 package appeng.services.compass;
 
-
 public interface ICompassCallback {
 
     /**

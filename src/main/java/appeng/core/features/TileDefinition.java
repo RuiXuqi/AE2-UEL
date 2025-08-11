@@ -18,15 +18,15 @@
 
 package appeng.core.features;
 
+import java.util.Optional;
 
-import appeng.api.definitions.ITileDefinition;
-import appeng.block.AEBaseTileBlock;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 
-import javax.annotation.Nonnull;
-import java.util.Optional;
-
+import appeng.api.definitions.ITileDefinition;
+import appeng.block.AEBaseTileBlock;
 
 public final class TileDefinition extends BlockDefinition implements ITileDefinition {
 

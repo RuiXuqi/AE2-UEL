@@ -18,6 +18,13 @@
 
 package appeng.crafting;
 
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -38,13 +45,6 @@ import appeng.api.util.DimensionalCoord;
 import appeng.core.AELog;
 import appeng.hooks.TickHandler;
 import appeng.me.cache.GridStorageCache;
-import com.google.common.base.Stopwatch;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
 
 public class CraftingJob implements Runnable, ICraftingJob {
     private static final String LOG_CRAFTING_JOB = "CraftingJob (%s) issued by %s requesting [%s] using %s bytes took %s us";
@@ -52,8 +52,10 @@ public class CraftingJob implements Runnable, ICraftingJob {
 
     private final MECraftingInventory original;
     private final World world;
-    private final IItemList<IAEItemStack> crafting = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-    private final IItemList<IAEItemStack> missing = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> crafting = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> missing = AEApi.instance().storage()
+            .getStorageChannel(IItemStorageChannel.class).createList();
 
     private final HashMap<String, TwoIntegers> opsAndMultiplier = new HashMap<>();
     private final Object monitor = new Object();
@@ -71,12 +73,14 @@ public class CraftingJob implements Runnable, ICraftingJob {
     private boolean done = false;
     private int time;
     private int incTime;
+    private CraftingTreeNode rootNode;
 
     private World wrapWorld(final World w) {
         return w;
     }
 
-    public CraftingJob(final World w, final IGrid grid, final IActionSource actionSrc, final IAEItemStack what, final ICraftingCallback callback) {
+    public CraftingJob(final World w, final IGrid grid, final IActionSource actionSrc, final IAEItemStack what,
+            final ICraftingCallback callback) {
         this.world = this.wrapWorld(w);
         this.output = what.copy();
         this.actionSrc = actionSrc;
@@ -85,9 +89,12 @@ public class CraftingJob implements Runnable, ICraftingJob {
 
         this.cc = grid.getCache(ICraftingGrid.class);
         final GridStorageCache sg = grid.getCache(IStorageGrid.class);
-        this.original = new MECraftingInventory(sg.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)).getStorageList());
+        this.original = new MECraftingInventory(
+                sg.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
+                        .getStorageList());
 
-        this.setTree(this.getCraftingTree(cc, what));
+        this.rootNode = this.getCraftingTree(cc, what);
+        this.setTree(this.rootNode);
         this.availableCheck = null;
     }
 
@@ -124,7 +131,7 @@ public class CraftingJob implements Runnable, ICraftingJob {
     public void run() {
         try {
             try {
-                TickHandler.INSTANCE.registerCraftingSimulation(this.world, this);
+                TickHandler.instance().registerCraftingSimulation(this.world, this);
                 this.handlePausing();
 
                 final MECraftingInventory craftingInventory = new MECraftingInventory(this.original, true, false, true);
@@ -151,7 +158,8 @@ public class CraftingJob implements Runnable, ICraftingJob {
 
                 try {
                     if (actionSrc.player().isPresent()) {
-                        final MECraftingInventory craftingInventory = new MECraftingInventory(this.original, true, false, true);
+                        final MECraftingInventory craftingInventory = new MECraftingInventory(this.original, true,
+                                false, true);
                         craftingInventory.ignore(this.output);
 
                         this.getTree().setSimulate();
@@ -336,4 +344,12 @@ public class CraftingJob implements Runnable, ICraftingJob {
         private final long perOp = 0;
         private final long times = 0;
     }
+
+    public long getTotalCraftsForPrimaryOutput(IAEItemStack material) {
+        if (material == null) {
+            throw new IllegalArgumentException("Material cannot be null");
+        }
+        return this.rootNode.getTotalCraftsForPrimaryOutput(material);
+    }
+
 }

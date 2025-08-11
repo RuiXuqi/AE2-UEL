@@ -18,12 +18,32 @@
 
 package appeng.tile.misc;
 
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.google.common.collect.ImmutableSet;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.Upgrades;
 import appeng.api.definitions.IMaterials;
-import appeng.api.implementations.tiles.ISegmentedInventory;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingLink;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -46,35 +66,14 @@ import appeng.helpers.IInterfaceHost;
 import appeng.helpers.IPriorityHost;
 import appeng.items.misc.ItemEncodedPattern;
 import appeng.tile.grid.AENetworkInvTile;
-import appeng.tile.inventory.AppEngInternalAEInventory;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
 import appeng.util.inv.IInventoryDestination;
 import appeng.util.inv.InvOperation;
-import com.google.common.collect.ImmutableSet;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.PlayerInvWrapper;
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.List;
-
-
-public class TileInterface extends AENetworkInvTile implements IGridTickable, IInventoryDestination, IInterfaceHost, IPriorityHost {
+public class TileInterface extends AENetworkInvTile
+        implements IGridTickable, IInventoryDestination, IInterfaceHost, IPriorityHost {
 
     private final DualityInterface duality = new DualityInterface(this.getProxy(), this);
 
@@ -100,7 +99,8 @@ public class TileInterface extends AENetworkInvTile implements IGridTickable, II
 
         if (!this.omniDirectional && this.getForward() == facing.getOpposite()) {
             newForward = facing;
-        } else if (!this.omniDirectional && (this.getForward() == facing || this.getForward() == facing.getOpposite())) {
+        } else if (!this.omniDirectional
+                && (this.getForward() == facing || this.getForward() == facing.getOpposite())) {
             this.omniDirectional = true;
         } else if (this.omniDirectional) {
             newForward = facing.getOpposite();
@@ -217,7 +217,8 @@ public class TileInterface extends AENetworkInvTile implements IGridTickable, II
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         this.duality.onChangeInventory(inv, slot, mc, removed, added);
     }
 
@@ -279,7 +280,7 @@ public class TileInterface extends AENetworkInvTile implements IGridTickable, II
         return this.duality.injectCraftedItems(link, items, mode);
     }
 
-    public void updateRedstoneState(){
+    public void updateRedstoneState() {
         this.duality.updateRedstoneState();
     }
 

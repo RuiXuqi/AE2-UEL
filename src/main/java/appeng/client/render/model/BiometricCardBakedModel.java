@@ -1,14 +1,20 @@
 package appeng.client.render.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import appeng.api.implementations.items.IBiometricCard;
-import appeng.api.util.AEColor;
-import appeng.client.render.cablebus.CubeBuilder;
-import appeng.core.AELog;
+import javax.annotation.Nullable;
+import javax.vecmath.Matrix4f;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.GameProfile;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -21,15 +27,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
-import org.apache.commons.lang3.tuple.Pair;
 
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
+import appeng.api.implementations.items.IBiometricCard;
+import appeng.api.util.AEColor;
+import appeng.client.render.cablebus.CubeBuilder;
+import appeng.core.AELog;
 
 class BiometricCardBakedModel implements IBakedModel {
 
@@ -49,7 +51,8 @@ class BiometricCardBakedModel implements IBakedModel {
         this(format, baseModel, texture, 0, createCache());
     }
 
-    private BiometricCardBakedModel(VertexFormat format, IBakedModel baseModel, TextureAtlasSprite texture, int hash, Cache<Integer, BiometricCardBakedModel> modelCache) {
+    private BiometricCardBakedModel(VertexFormat format, IBakedModel baseModel, TextureAtlasSprite texture, int hash,
+            Cache<Integer, BiometricCardBakedModel> modelCache) {
         this.format = format;
         this.baseModel = baseModel;
         this.texture = texture;
@@ -104,7 +107,8 @@ class BiometricCardBakedModel implements IBakedModel {
                     builder.setColorRGB(col.mediumVariant);
                 } else {
                     final float scale = 0.3f / 255.0f;
-                    builder.setColorRGB(((col.blackVariant >> 16) & 0xff) * scale, ((col.blackVariant >> 8) & 0xff) * scale,
+                    builder.setColorRGB(((col.blackVariant >> 16) & 0xff) * scale,
+                            ((col.blackVariant >> 8) & 0xff) * scale,
                             (col.blackVariant & 0xff) * scale);
                 }
 
@@ -143,7 +147,8 @@ class BiometricCardBakedModel implements IBakedModel {
     public ItemOverrideList getOverrides() {
         return new ItemOverrideList(Collections.emptyList()) {
             @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
+                    EntityLivingBase entity) {
                 String username = "";
                 if (stack.getItem() instanceof IBiometricCard) {
                     final GameProfile gp = ((IBiometricCard) stack.getItem()).getProfile(stack);
@@ -164,7 +169,9 @@ class BiometricCardBakedModel implements IBakedModel {
 
                 try {
                     return BiometricCardBakedModel.this.modelCache.get(hash,
-                            () -> new BiometricCardBakedModel(BiometricCardBakedModel.this.format, BiometricCardBakedModel.this.baseModel, BiometricCardBakedModel.this.texture, hash, BiometricCardBakedModel.this.modelCache));
+                            () -> new BiometricCardBakedModel(BiometricCardBakedModel.this.format,
+                                    BiometricCardBakedModel.this.baseModel, BiometricCardBakedModel.this.texture, hash,
+                                    BiometricCardBakedModel.this.modelCache));
                 } catch (ExecutionException e) {
                     AELog.error(e);
                     return BiometricCardBakedModel.this;

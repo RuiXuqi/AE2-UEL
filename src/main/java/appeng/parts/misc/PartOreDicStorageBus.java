@@ -1,5 +1,13 @@
 package appeng.parts.misc;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
+
 import appeng.api.AEApi;
 import appeng.api.config.*;
 import appeng.api.networking.storage.IBaseMonitor;
@@ -22,23 +30,19 @@ import appeng.util.Platform;
 import appeng.util.item.OreDictFilterMatcher;
 import appeng.util.prioritylist.IPartitionList;
 import appeng.util.prioritylist.OreDictPriorityList;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-
 
 public class PartOreDicStorageBus extends PartStorageBus {
-    public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID, "part/oredict_storage_bus_base");
+    public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID,
+            "part/oredict_storage_bus_base");
     @PartModels
-    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/storage_bus_off"));
+    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/storage_bus_off"));
     @PartModels
-    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/storage_bus_on"));
+    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/storage_bus_on"));
     @PartModels
-    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/storage_bus_has_channel"));
+    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/storage_bus_has_channel"));
 
     public String oreExp = "";
     OreDictPriorityList<IAEItemStack> priorityList;
@@ -108,17 +112,21 @@ public class PartOreDicStorageBus extends PartStorageBus {
             }
 
             if (inv != null) {
-                this.handler = new MEInventoryHandler<>(inv, AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+                this.handler = new MEInventoryHandler<>(inv,
+                        AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
 
                 this.handler.setBaseAccess((AccessRestriction) this.getConfigManager().getSetting(Settings.ACCESS));
-                this.handler.setWhitelist(this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST : IncludeExclude.WHITELIST);
+                this.handler.setWhitelist(this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST
+                        : IncludeExclude.WHITELIST);
                 this.handler.setPriority(this.priority);
                 this.handler.setPartitionList(this.getPriorityList());
-                this.handler.setStorageFilter((StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
+                this.handler
+                        .setStorageFilter((StorageFilter) this.getConfigManager().getSetting(Settings.STORAGE_FILTER));
                 this.handler.setSticky(this.getInstalledUpgrades(Upgrades.STICKY) > 0);
 
                 if (inv instanceof IBaseMonitor) {
-                    if (((AccessRestriction) ((ConfigManager) this.getConfigManager()).getSetting(Settings.ACCESS)).hasPermission(AccessRestriction.READ)) {
+                    if (((AccessRestriction) ((ConfigManager) this.getConfigManager()).getSetting(Settings.ACCESS))
+                            .hasPermission(AccessRestriction.READ)) {
                         ((IBaseMonitor<IAEItemStack>) inv).addListener(this, this.handler);
                     }
                 }

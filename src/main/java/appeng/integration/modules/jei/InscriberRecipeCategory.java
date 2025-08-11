@@ -18,16 +18,16 @@
 
 package appeng.integration.modules.jei;
 
-
-import appeng.core.AppEng;
-import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.gui.*;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
+import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
+
+import appeng.core.AppEng;
 
 class InscriberRecipeCategory implements IRecipeCategory<InscriberRecipeWrapper> {
 
@@ -50,7 +50,8 @@ class InscriberRecipeCategory implements IRecipeCategory<InscriberRecipeWrapper>
         this.localizedName = I18n.format("tile.appliedenergistics2.inscriber.name");
 
         IDrawableStatic progressDrawable = guiHelper.createDrawable(location, 135, 177, 6, 18, 24, 0, 91, 0);
-        this.progress = guiHelper.createAnimatedDrawable(progressDrawable, 40, IDrawableAnimated.StartDirection.BOTTOM, false);
+        this.progress = guiHelper.createAnimatedDrawable(progressDrawable, 40, IDrawableAnimated.StartDirection.BOTTOM,
+                false);
     }
 
     @Override
@@ -64,8 +65,7 @@ class InscriberRecipeCategory implements IRecipeCategory<InscriberRecipeWrapper>
     }
 
     /**
-     * Return the name of the mod associated with this recipe category.
-     * Used for the recipe category tab's tooltip.
+     * Return the name of the mod associated with this recipe category. Used for the recipe category tab's tooltip.
      *
      * @since JEI 4.5.0
      */

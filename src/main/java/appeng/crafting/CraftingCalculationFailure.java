@@ -18,9 +18,7 @@
 
 package appeng.crafting;
 
-
 import appeng.api.storage.data.IAEItemStack;
-
 
 public class CraftingCalculationFailure extends RuntimeException {
 

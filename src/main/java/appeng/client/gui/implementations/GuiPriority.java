@@ -18,6 +18,11 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.client.gui.AEBaseGui;
 import appeng.client.gui.widgets.GuiNumberBox;
@@ -31,12 +36,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketSwitchGuis;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.helpers.IPriorityHost;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-
-import java.io.IOException;
-
 
 public class GuiPriority extends AEBaseGui {
 
@@ -82,10 +81,12 @@ public class GuiPriority extends AEBaseGui {
         this.OriginalGui = con.getPriorityHost().getGuiBridge();
 
         if (this.OriginalGui != null && !myIcon.isEmpty()) {
-            this.buttonList.add(this.originalGuiBtn = new GuiTabButton(this.guiLeft + 154, this.guiTop, myIcon, myIcon.getDisplayName(), this.itemRender));
+            this.buttonList.add(this.originalGuiBtn = new GuiTabButton(this.guiLeft + 154, this.guiTop, myIcon,
+                    myIcon.getDisplayName(), this.itemRender));
         }
 
-        this.priority = new GuiNumberBox(this.fontRenderer, this.guiLeft + 62, this.guiTop + 57, 59, this.fontRenderer.FONT_HEIGHT, Long.class);
+        this.priority = new GuiNumberBox(this.fontRenderer, this.guiLeft + 62, this.guiTop + 57, 59,
+                this.fontRenderer.FONT_HEIGHT, Long.class);
         this.priority.setEnableBackgroundDrawing(false);
         this.priority.setMaxStringLength(16);
         this.priority.setTextColor(0xFFFFFF);
@@ -116,7 +117,8 @@ public class GuiPriority extends AEBaseGui {
         }
 
         final boolean isPlus = btn == this.plus1 || btn == this.plus10 || btn == this.plus100 || btn == this.plus1000;
-        final boolean isMinus = btn == this.minus1 || btn == this.minus10 || btn == this.minus100 || btn == this.minus1000;
+        final boolean isMinus = btn == this.minus1 || btn == this.minus10 || btn == this.minus100
+                || btn == this.minus1000;
 
         if (isPlus || isMinus) {
             this.addQty(this.getQty(btn));
@@ -158,8 +160,10 @@ public class GuiPriority extends AEBaseGui {
     @Override
     protected void keyTyped(final char character, final int key) throws IOException {
         if (!this.checkHotbarKeys(key)) {
-            if ((key == 211 || key == 205 || key == 203 || key == 14 || character == '-' || Character.isDigit(character)) && this.priority
-                    .textboxKeyTyped(character, key)) {
+            if ((key == 211
+                    || key == 205 || key == 203 || key == 14 || character == '-' || Character.isDigit(character))
+                    && this.priority
+                            .textboxKeyTyped(character, key)) {
                 try {
                     String out = this.priority.getText();
 

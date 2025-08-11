@@ -18,10 +18,6 @@
 
 package appeng.hooks;
 
-
-import appeng.api.util.AEPartLocation;
-import appeng.items.tools.powered.ToolMatterCannon;
-import appeng.util.Platform;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
 import net.minecraft.dispenser.IBlockSource;
@@ -32,6 +28,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import appeng.api.util.AEPartLocation;
+import appeng.items.tools.powered.ToolMatterCannon;
+import appeng.util.Platform;
 
 public final class DispenserMatterCannon extends BehaviorDefaultDispenseItem {
 
@@ -42,7 +41,8 @@ public final class DispenserMatterCannon extends BehaviorDefaultDispenseItem {
             final EnumFacing enumfacing = dispenser.getBlockState().getValue(BlockDispenser.FACING);
             AEPartLocation dir = AEPartLocation.INTERNAL;
             for (final AEPartLocation d : AEPartLocation.SIDE_LOCATIONS) {
-                if (enumfacing.getXOffset() == d.xOffset && enumfacing.getYOffset() == d.yOffset && enumfacing.getZOffset() == d.zOffset) {
+                if (enumfacing.getXOffset() == d.xOffset && enumfacing.getYOffset() == d.yOffset
+                        && enumfacing.getZOffset() == d.zOffset) {
                     dir = d;
                 }
             }

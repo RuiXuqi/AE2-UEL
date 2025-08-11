@@ -18,16 +18,14 @@
 
 package appeng.me.storage;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import appeng.api.networking.storage.IStackWatcher;
 import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.storage.data.IAEStack;
 import appeng.me.cache.GridStorageCache;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 
 /**
  * Maintain my interests, and a global watch list, they should always be fully synchronized.

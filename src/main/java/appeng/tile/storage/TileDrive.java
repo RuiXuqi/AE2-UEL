@@ -18,6 +18,14 @@
 
 package appeng.tile.storage;
 
+import java.io.IOException;
+import java.util.*;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.tiles.IChestOrDrive;
@@ -44,14 +52,6 @@ import appeng.tile.inventory.AppEngCellInventory;
 import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.filter.IAEItemFilter;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.IOException;
-import java.util.*;
-
 
 public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPriorityHost {
 
@@ -69,8 +69,7 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
      * <p>
      * Bit 29-0: 3 bits as state of each cell with the cell in slot 0 located in the 3 least significant bits.
      * <p>
-     * Cell states:
-     * Bit 2-0: cell status, representing {@link appeng.block.storage.DriveSlotState}.
+     * Cell states: Bit 2-0: cell status, representing {@link appeng.block.storage.DriveSlotState}.
      */
     private int cellState = 0;
     private boolean powered;
@@ -208,7 +207,8 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         if (this.isCached) {
             this.isCached = false; // recalculate the storage cell.
             this.updateState();
@@ -228,7 +228,8 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
 
     private void updateState() {
         if (!this.isCached) {
-            final Collection<IStorageChannel<? extends IAEStack<?>>> storageChannels = AEApi.instance().storage().storageChannels();
+            final Collection<IStorageChannel<? extends IAEStack<?>>> storageChannels = AEApi.instance().storage()
+                    .storageChannels();
             storageChannels.forEach(channel -> this.inventoryHandlers.put(channel, new ArrayList<>(10)));
 
             double power = 2.0;
@@ -250,7 +251,8 @@ public class TileDrive extends AENetworkInvTile implements IChestOrDrive, IPrior
                                 this.inv.setHandler(x, cell);
                                 power += this.handlersBySlot[x].cellIdleDrain(is, cell);
 
-                                final DriveWatcher<IAEItemStack> ih = new DriveWatcher(cell, is, this.handlersBySlot[x], this);
+                                final DriveWatcher<IAEItemStack> ih = new DriveWatcher(cell, is, this.handlersBySlot[x],
+                                        this);
                                 ih.setPriority(this.priority);
                                 this.invBySlot[x] = ih;
                                 this.inventoryHandlers.get(channel).add(ih);

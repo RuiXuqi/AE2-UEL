@@ -18,6 +18,20 @@
 
 package appeng.fluids.tile;
 
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Upgrades;
@@ -38,22 +52,9 @@ import appeng.fluids.helper.IConfigurableFluidInventory;
 import appeng.fluids.helper.IFluidInterfaceHost;
 import appeng.helpers.IPriorityHost;
 import appeng.tile.grid.AENetworkTile;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
-
-
-public class TileFluidInterface extends AENetworkTile implements IGridTickable, IFluidInterfaceHost, IPriorityHost, IConfigurableFluidInventory {
+public class TileFluidInterface extends AENetworkTile
+        implements IGridTickable, IFluidInterfaceHost, IPriorityHost, IConfigurableFluidInventory {
     private final DualityFluidInterface duality = new DualityFluidInterface(this.getProxy(), this);
 
     @MENetworkEventSubscribe

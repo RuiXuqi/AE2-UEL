@@ -18,13 +18,11 @@
 
 package appeng.block;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.helpers.AEGlassMaterial;
-import appeng.helpers.ICustomCollision;
-import appeng.util.LookDirection;
-import appeng.util.Platform;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -47,10 +45,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.helpers.AEGlassMaterial;
+import appeng.helpers.ICustomCollision;
+import appeng.util.LookDirection;
+import appeng.util.Platform;
 
 public abstract class AEBaseBlock extends Block {
 
@@ -100,7 +100,8 @@ public abstract class AEBaseBlock extends Block {
 
     @SuppressWarnings("deprecation")
     @Override
-    public void addCollisionBoxToList(final IBlockState state, final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, @Nullable final Entity e, boolean p_185477_7_) {
+    public void addCollisionBoxToList(final IBlockState state, final World w, final BlockPos pos,
+            final AxisAlignedBB bb, final List<AxisAlignedBB> out, @Nullable final Entity e, boolean p_185477_7_) {
         final ICustomCollision collisionHandler = this.getCustomCollision(w, pos);
 
         if (collisionHandler != null && bb != null) {
@@ -128,7 +129,8 @@ public abstract class AEBaseBlock extends Block {
                 final EntityPlayer player = Minecraft.getMinecraft().player;
                 final LookDirection ld = Platform.getPlayerRay(player, Platform.getEyeOffset(player));
 
-                final Iterable<AxisAlignedBB> bbs = collisionHandler.getSelectedBoundingBoxesFromPool(w, pos, Minecraft.getMinecraft().player, true);
+                final Iterable<AxisAlignedBB> bbs = collisionHandler.getSelectedBoundingBoxesFromPool(w, pos,
+                        Minecraft.getMinecraft().player, true);
                 AxisAlignedBB br = null;
 
                 double lastDist = 0;
@@ -155,8 +157,10 @@ public abstract class AEBaseBlock extends Block {
                 }
 
                 if (br != null) {
-                    br = new AxisAlignedBB(br.minX + pos.getX(), br.minY + pos.getY(), br.minZ + pos.getZ(), br.maxX + pos.getX(), br.maxY + pos
-                            .getY(), br.maxZ + pos.getZ());
+                    br = new AxisAlignedBB(br.minX + pos.getX(), br.minY + pos.getY(), br.minZ + pos.getZ(),
+                            br.maxX + pos.getX(), br.maxY + pos
+                                    .getY(),
+                            br.maxZ + pos.getZ());
                     return br;
                 }
             }
@@ -182,8 +186,9 @@ public abstract class AEBaseBlock extends Block {
             if (b == null) {
                 b = new AxisAlignedBB(16d, 16d, 16d, 0d, 0d, 0d);
             } else {
-                b = new AxisAlignedBB(b.minX + pos.getX(), b.minY + pos.getY(), b.minZ + pos.getZ(), b.maxX + pos.getX(), b.maxY + pos.getY(), b.maxZ + pos
-                        .getZ());
+                b = new AxisAlignedBB(b.minX + pos.getX(), b.minY + pos.getY(), b.minZ + pos.getZ(),
+                        b.maxX + pos.getX(), b.maxY + pos.getY(), b.maxZ + pos
+                                .getZ());
             }
 
             return b;
@@ -199,7 +204,8 @@ public abstract class AEBaseBlock extends Block {
 
     @SuppressWarnings("deprecation")
     @Override
-    public RayTraceResult collisionRayTrace(final IBlockState state, final World w, final BlockPos pos, final Vec3d a, final Vec3d b) {
+    public RayTraceResult collisionRayTrace(final IBlockState state, final World w, final BlockPos pos, final Vec3d a,
+            final Vec3d b) {
         final ICustomCollision collisionHandler = this.getCustomCollision(w, pos);
 
         if (collisionHandler != null) {
@@ -284,11 +290,14 @@ public abstract class AEBaseBlock extends Block {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(final ItemStack is, final World world, final List<String> lines, final ITooltipFlag advancedItemTooltips) {
+    public void addInformation(final ItemStack is, final World world, final List<String> lines,
+            final ITooltipFlag advancedItemTooltips) {
 
     }
 
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         return false;
     }
 
@@ -372,7 +381,8 @@ public abstract class AEBaseBlock extends Block {
         return null;
     }
 
-    protected boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward, final EnumFacing up) {
+    protected boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward,
+            final EnumFacing up) {
         return true;
     }
 

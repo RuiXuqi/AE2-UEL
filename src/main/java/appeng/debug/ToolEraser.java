@@ -18,10 +18,9 @@
 
 package appeng.debug;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.core.AELog;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
@@ -30,16 +29,17 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import appeng.core.AELog;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 public class ToolEraser extends AEBaseItem {
 
     private static final int BLOCK_ERASE_LIMIT = 90000;
 
     @Override
-    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
         if (Platform.isClient()) {
             return EnumActionResult.PASS;
         }

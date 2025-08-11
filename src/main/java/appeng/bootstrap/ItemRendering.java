@@ -18,12 +18,10 @@
 
 package appeng.bootstrap;
 
+import java.util.*;
 
-import appeng.bootstrap.components.ItemColorComponent;
-import appeng.bootstrap.components.ItemMeshDefinitionComponent;
-import appeng.bootstrap.components.ItemModelComponent;
-import appeng.bootstrap.components.ItemVariantsComponent;
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -37,8 +35,10 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.*;
-
+import appeng.bootstrap.components.ItemColorComponent;
+import appeng.bootstrap.components.ItemMeshDefinitionComponent;
+import appeng.bootstrap.components.ItemModelComponent;
+import appeng.bootstrap.components.ItemVariantsComponent;
 
 class ItemRendering implements IItemRendering {
 

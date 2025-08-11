@@ -18,11 +18,9 @@
 
 package appeng.client.render.effects;
 
-
-import net.minecraft.world.World;
-
 import java.util.Random;
 
+import net.minecraft.world.World;
 
 public class LightningArcFX extends LightningFX {
     private static final Random RANDOM_GENERATOR = new Random();
@@ -31,7 +29,8 @@ public class LightningArcFX extends LightningFX {
     private final double ry;
     private final double rz;
 
-    public LightningArcFX(final World w, final double x, final double y, final double z, final double ex, final double ey, final double ez, final double r, final double g, final double b) {
+    public LightningArcFX(final World w, final double x, final double y, final double z, final double ex,
+            final double ey, final double ez, final double r, final double g, final double b) {
         super(w, x, y, z, r, g, b, 6);
 
         this.rx = ex - x;
@@ -48,7 +47,8 @@ public class LightningArcFX extends LightningFX {
         final double lastDirectionY = this.ry * i;
         final double lastDirectionZ = this.rz * i;
 
-        final double len = Math.sqrt(lastDirectionX * lastDirectionX + lastDirectionY * lastDirectionY + lastDirectionZ * lastDirectionZ);
+        final double len = Math.sqrt(
+                lastDirectionX * lastDirectionX + lastDirectionY * lastDirectionY + lastDirectionZ * lastDirectionZ);
         for (int s = 0; s < this.getSteps(); s++) {
             final double[][] localSteps = this.getPrecomputedSteps();
 

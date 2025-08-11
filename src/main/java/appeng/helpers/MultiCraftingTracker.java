@@ -18,6 +18,14 @@
 
 package appeng.helpers;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import com.google.common.collect.ImmutableSet;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGrid;
@@ -28,14 +36,6 @@ import appeng.api.networking.crafting.ICraftingRequester;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.InventoryAdaptor;
-import com.google.common.collect.ImmutableSet;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 
 public class MultiCraftingTracker {
 
@@ -72,7 +72,8 @@ public class MultiCraftingTracker {
         }
     }
 
-    public boolean handleCrafting(final int x, final long itemToCraft, final IAEItemStack ais, final InventoryAdaptor d, final World w, final IGrid g, final ICraftingGrid cg, final IActionSource mySrc) {
+    public boolean handleCrafting(final int x, final long itemToCraft, final IAEItemStack ais, final InventoryAdaptor d,
+            final World w, final IGrid g, final ICraftingGrid cg, final IActionSource mySrc) {
         if (ais != null) {
             ItemStack inputStack = ais.createItemStack();
 

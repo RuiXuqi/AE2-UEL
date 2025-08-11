@@ -18,11 +18,10 @@
 
 package appeng.container.slot;
 
-
-import appeng.container.implementations.ContainerMAC;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
+import appeng.container.implementations.ContainerMAC;
 
 public class SlotMACPattern extends AppEngSlot {
 

@@ -18,29 +18,30 @@
 
 package appeng.core.sync;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
-import appeng.core.AEConfig;
-import appeng.core.AELog;
-import appeng.core.features.AEFeature;
-import appeng.core.sync.network.INetworkInfo;
-import appeng.core.sync.network.NetworkHandler;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
+import appeng.core.AEConfig;
+import appeng.core.AELog;
+import appeng.core.features.AEFeature;
+import appeng.core.sync.network.INetworkInfo;
+import appeng.core.sync.network.NetworkHandler;
 
 public abstract class AppEngPacket implements Packet {
     private PacketBuffer p;
     private PacketCallState caller;
 
     public void serverPacketData(final INetworkInfo manager, final AppEngPacket packet, final EntityPlayer player) {
-        throw new UnsupportedOperationException("This packet ( " + this.getPacketID() + " does not implement a server side handler.");
+        throw new UnsupportedOperationException(
+                "This packet ( " + this.getPacketID() + " does not implement a server side handler.");
     }
 
     public final int getPacketID() {
@@ -48,7 +49,8 @@ public abstract class AppEngPacket implements Packet {
     }
 
     public void clientPacketData(final INetworkInfo network, final AppEngPacket packet, final EntityPlayer player) {
-        throw new UnsupportedOperationException("This packet ( " + this.getPacketID() + " does not implement a client side handler.");
+        throw new UnsupportedOperationException(
+                "This packet ( " + this.getPacketID() + " does not implement a client side handler.");
     }
 
     protected void configureWrite(final ByteBuf data) {
@@ -59,7 +61,8 @@ public abstract class AppEngPacket implements Packet {
     public FMLProxyPacket getProxy() {
         if (this.p.array().length > 2 * 1024 * 1024) // 2k walking room :)
         {
-            throw new IllegalArgumentException("Sorry AE2 made a " + this.p.array().length + " byte packet by accident!");
+            throw new IllegalArgumentException(
+                    "Sorry AE2 made a " + this.p.array().length + " byte packet by accident!");
         }
 
         final FMLProxyPacket pp = new FMLProxyPacket(this.p, NetworkHandler.instance().getChannel());

@@ -18,15 +18,10 @@
 
 package appeng.integration.modules.waila;
 
+import java.util.List;
 
-import appeng.integration.modules.waila.tile.ChargerWailaDataProvider;
-import appeng.integration.modules.waila.tile.CraftingMonitorWailaDataProvider;
-import appeng.integration.modules.waila.tile.PowerStateWailaDataProvider;
-import appeng.integration.modules.waila.tile.PowerStorageWailaDataProvider;
 import com.google.common.collect.Lists;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,8 +29,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 
+import appeng.integration.modules.waila.tile.ChargerWailaDataProvider;
+import appeng.integration.modules.waila.tile.CraftingMonitorWailaDataProvider;
+import appeng.integration.modules.waila.tile.PowerStateWailaDataProvider;
+import appeng.integration.modules.waila.tile.PowerStorageWailaDataProvider;
 
 /**
  * Delegation provider for tiles through {@link mcp.mobius.waila.api.IWailaDataProvider}
@@ -68,7 +69,8 @@ public final class TileWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaHead(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         for (final IWailaDataProvider provider : this.providers) {
             provider.getWailaHead(itemStack, currentToolTip, accessor, config);
         }
@@ -77,7 +79,8 @@ public final class TileWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         for (final IWailaDataProvider provider : this.providers) {
             provider.getWailaBody(itemStack, currentToolTip, accessor, config);
         }
@@ -86,7 +89,8 @@ public final class TileWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaTail(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaTail(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         for (final IWailaDataProvider provider : this.providers) {
             provider.getWailaTail(itemStack, currentToolTip, accessor, config);
         }
@@ -95,7 +99,8 @@ public final class TileWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world,
+            BlockPos pos) {
         for (final IWailaDataProvider provider : this.providers) {
             provider.getNBTData(player, te, tag, world, pos);
         }

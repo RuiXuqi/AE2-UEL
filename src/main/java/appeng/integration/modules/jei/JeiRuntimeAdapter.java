@@ -18,11 +18,11 @@
 
 package appeng.integration.modules.jei;
 
-
-import appeng.integration.abstraction.IJEI;
 import com.google.common.base.Strings;
+
 import mezz.jei.api.IJeiRuntime;
 
+import appeng.integration.abstraction.IJEI;
 
 class JeiRuntimeAdapter implements IJEI {
 

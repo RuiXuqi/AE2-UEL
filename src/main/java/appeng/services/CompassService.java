@@ -18,14 +18,16 @@
 
 package appeng.services;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.*;
 
-import appeng.api.AEApi;
-import appeng.api.util.DimensionalCoord;
-import appeng.block.storage.BlockSkyChest;
-import appeng.services.compass.CompassReader;
-import appeng.services.compass.ICompassCallback;
-import appeng.util.Platform;
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Preconditions;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.World;
@@ -33,13 +35,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.*;
-
+import appeng.api.AEApi;
+import appeng.api.util.DimensionalCoord;
+import appeng.block.storage.BlockSkyChest;
+import appeng.services.compass.CompassReader;
+import appeng.services.compass.ICompassCallback;
+import appeng.util.Platform;
 
 public final class CompassService {
     private static final int CHUNK_SIZE = 16;

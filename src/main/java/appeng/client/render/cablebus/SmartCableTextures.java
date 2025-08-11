@@ -18,14 +18,13 @@
 
 package appeng.client.render.cablebus;
 
-
-import appeng.core.AppEng;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ResourceLocation;
-
 import java.util.Arrays;
 import java.util.function.Function;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ResourceLocation;
+
+import appeng.core.AppEng;
 
 /**
  * Manages the channel textures for smart cables.
@@ -67,8 +66,10 @@ public class SmartCableTextures {
     private final TextureAtlasSprite[] denseTextures;
 
     public SmartCableTextures(Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        this.textures = Arrays.stream(SMART_CHANNELS_TEXTURES).map(bakedTextureGetter::apply).toArray(TextureAtlasSprite[]::new);
-        this.denseTextures = Arrays.stream(DENSE_SMART_CHANNELS_TEXTURES).map(bakedTextureGetter::apply).toArray(TextureAtlasSprite[]::new);
+        this.textures = Arrays.stream(SMART_CHANNELS_TEXTURES).map(bakedTextureGetter::apply)
+                .toArray(TextureAtlasSprite[]::new);
+        this.denseTextures = Arrays.stream(DENSE_SMART_CHANNELS_TEXTURES).map(bakedTextureGetter::apply)
+                .toArray(TextureAtlasSprite[]::new);
     }
 
     /**

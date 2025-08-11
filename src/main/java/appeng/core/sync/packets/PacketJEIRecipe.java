@@ -18,6 +18,27 @@
 
 package appeng.core.sync.packets;
 
+import static appeng.helpers.ItemStackHelper.stackFromNBT;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -32,9 +53,7 @@ import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.container.implementations.ContainerExpandedProcessingPatternTerm;
 import appeng.container.implementations.ContainerPatternEncoder;
-import appeng.container.implementations.ContainerPatternTerm;
 import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.helpers.IContainerCraftingPacket;
@@ -45,34 +64,12 @@ import appeng.util.inv.AdaptorItemHandler;
 import appeng.util.inv.WrapperInvItemHandler;
 import appeng.util.item.AEItemStack;
 import appeng.util.prioritylist.IPartitionList;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.items.IItemHandler;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static appeng.helpers.ItemStackHelper.stackFromNBT;
-
 
 public class PacketJEIRecipe extends AppEngPacket {
 
     private List<ItemStack[]> recipe;
     private List<ItemStack> output;
-    static ItemStack[] emptyArray = {ItemStack.EMPTY};
-
+    static ItemStack[] emptyArray = { ItemStack.EMPTY };
 
     // automatic.
     public PacketJEIRecipe(final ByteBuf stream) throws IOException {
@@ -151,7 +148,8 @@ public class PacketJEIRecipe extends AppEngPacket {
         final IItemHandler playerInventory = cct.getInventoryByName("player");
 
         if (inv != null && this.recipe != null && security != null) {
-            final IMEMonitor<IAEItemStack> storage = inv.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+            final IMEMonitor<IAEItemStack> storage = inv
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
             final IPartitionList<IAEItemStack> filter = ItemViewCell.createFilter(cct.getViewCells());
 
             for (int x = 0; x < craftMatrix.getSlots(); x++) {
@@ -175,7 +173,9 @@ public class PacketJEIRecipe extends AppEngPacket {
                     // put away old item
                     if (newItem != currentItem && security.hasPermission(player, SecurityPermissions.INJECT)) {
                         final IAEItemStack in = AEItemStack.fromItemStack(currentItem);
-                        final IAEItemStack out = cct.useRealItems() ? Platform.poweredInsert(energy, storage, in, cct.getActionSource()) : null;
+                        final IAEItemStack out = cct.useRealItems()
+                                ? Platform.poweredInsert(energy, storage, in, cct.getActionSource())
+                                : null;
                         if (out != null) {
                             currentItem = out.createItemStack();
                         } else {
@@ -190,25 +190,32 @@ public class PacketJEIRecipe extends AppEngPacket {
                         final IAEItemStack request = AEItemStack.fromItemStack(this.recipe.get(x)[y]);
                         if (request != null) {
                             // try ae
-                            if ((filter == null || filter.isListed(request)) && security.hasPermission(player, SecurityPermissions.EXTRACT)) {
+                            if ((filter == null || filter.isListed(request))
+                                    && security.hasPermission(player, SecurityPermissions.EXTRACT)) {
                                 request.setStackSize(1);
                                 IAEItemStack out;
 
                                 if (cct.useRealItems()) {
                                     out = Platform.poweredExtraction(energy, storage, request, cct.getActionSource());
                                     if (out == null) {
-                                        if (request.getItem().isDamageable() || Platform.isGTDamageableItem(request.getItem())) {
-                                            Collection<IAEItemStack> outList = inv.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)).getStorageList().findFuzzy(request, FuzzyMode.IGNORE_ALL);
+                                        if (request.getItem().isDamageable()
+                                                || Platform.isGTDamageableItem(request.getItem())) {
+                                            Collection<IAEItemStack> outList = inv
+                                                    .getInventory(AEApi.instance().storage()
+                                                            .getStorageChannel(IItemStorageChannel.class))
+                                                    .getStorageList().findFuzzy(request, FuzzyMode.IGNORE_ALL);
                                             for (IAEItemStack is : outList) {
                                                 if (is.getStackSize() == 0) {
                                                     continue;
                                                 }
                                                 if (Platform.isGTDamageableItem(request.getItem())) {
-                                                    if (!(is.getDefinition().getMetadata() == request.getDefinition().getMetadata())) {
+                                                    if (!(is.getDefinition().getMetadata() == request.getDefinition()
+                                                            .getMetadata())) {
                                                         continue;
                                                     }
                                                 }
-                                                out = Platform.poweredExtraction(energy, storage, is.copy().setStackSize(1), cct.getActionSource());
+                                                out = Platform.poweredExtraction(energy, storage,
+                                                        is.copy().setStackSize(1), cct.getActionSource());
                                                 if (out != null) {
                                                     break;
                                                 }
@@ -238,9 +245,11 @@ public class PacketJEIRecipe extends AppEngPacket {
                                 AdaptorItemHandler ad = new AdaptorItemHandler(playerInventory);
 
                                 if (cct.useRealItems()) {
-                                    currentItem = ad.removeSimilarItems(1, this.recipe.get(x)[y], FuzzyMode.IGNORE_ALL, null);
+                                    currentItem = ad.removeSimilarItems(1, this.recipe.get(x)[y], FuzzyMode.IGNORE_ALL,
+                                            null);
                                 } else {
-                                    currentItem = ad.simulateSimilarRemove(recipe.get(x)[y].getCount(), this.recipe.get(x)[y], FuzzyMode.IGNORE_ALL, null);
+                                    currentItem = ad.simulateSimilarRemove(recipe.get(x)[y].getCount(),
+                                            this.recipe.get(x)[y], FuzzyMode.IGNORE_ALL, null);
                                 }
                             }
                         }
@@ -256,7 +265,8 @@ public class PacketJEIRecipe extends AppEngPacket {
 
             con.onCraftMatrixChanged(new WrapperInvItemHandler(craftMatrix));
 
-            if (this.output != null && ((con instanceof ContainerPatternEncoder && !((ContainerPatternEncoder) con).isCraftingMode()))) {
+            if (this.output != null && ((con instanceof ContainerPatternEncoder
+                    && !((ContainerPatternEncoder) con).isCraftingMode()))) {
                 IItemHandler outputSlots = cct.getInventoryByName("output");
                 for (int i = 0; i < outputSlots.getSlots(); ++i) {
                     ItemHandlerUtil.setStackInSlot(outputSlots, i, ItemStack.EMPTY);

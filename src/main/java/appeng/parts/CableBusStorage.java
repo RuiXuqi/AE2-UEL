@@ -18,14 +18,12 @@
 
 package appeng.parts;
 
+import javax.annotation.Nullable;
 
 import appeng.api.implementations.parts.IPartCable;
 import appeng.api.parts.IFacadePart;
 import appeng.api.parts.IPart;
 import appeng.api.util.AEPartLocation;
-
-import javax.annotation.Nullable;
-
 
 /**
  * Thin data storage to optimize memory usage for cables.

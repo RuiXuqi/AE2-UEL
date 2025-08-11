@@ -18,12 +18,13 @@
 
 package appeng.client.render.cablebus;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
 
-import appeng.api.util.AEColor;
-import appeng.core.AELog;
-import appeng.core.features.registries.PartModels;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -33,10 +34,9 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
-
+import appeng.api.util.AEColor;
+import appeng.core.AELog;
+import appeng.core.features.registries.PartModels;
 
 /**
  * The built-in model for the cable bus block.
@@ -63,7 +63,8 @@ public class CableBusModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         Map<ResourceLocation, IBakedModel> partModels = this.loadPartModels(state, format, bakedTextureGetter);
 
         CableBuilder cableBuilder = new CableBuilder(format, bakedTextureGetter);
@@ -76,7 +77,8 @@ public class CableBusModel implements IModel {
         return new CableBusBakedModel(cableBuilder, facadeBuilder, partModels, particleTexture);
     }
 
-    private Map<ResourceLocation, IBakedModel> loadPartModels(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    private Map<ResourceLocation, IBakedModel> loadPartModels(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         ImmutableMap.Builder<ResourceLocation, IBakedModel> result = ImmutableMap.builder();
 
         for (ResourceLocation location : this.partModels.getModels()) {

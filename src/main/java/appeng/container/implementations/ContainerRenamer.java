@@ -1,15 +1,16 @@
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import appeng.api.config.SecurityPermissions;
 import appeng.api.parts.IPart;
 import appeng.client.gui.widgets.MEGuiTextField;
 import appeng.container.AEBaseContainer;
 import appeng.helpers.ICustomNameObject;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerRenamer extends AEBaseContainer {
     private final ICustomNameObject namedObject;
@@ -25,7 +26,8 @@ public class ContainerRenamer extends AEBaseContainer {
     @SideOnly(Side.CLIENT)
     public void setTextField(final MEGuiTextField name) {
         this.textField = name;
-        if (getCustomName() != null) textField.setText(getCustomName());
+        if (getCustomName() != null)
+            textField.setText(getCustomName());
     }
 
     public void setNewName(String newValue) {
@@ -36,13 +38,15 @@ public class ContainerRenamer extends AEBaseContainer {
     @Override
     public void setCustomName(final String customName) {
         super.setCustomName(customName);
-        if (!Platform.isServer() && customName != null) textField.setText(customName);
+        if (!Platform.isServer() && customName != null)
+            textField.setText(customName);
     }
 
     @Override
     public void detectAndSendChanges() {
         verifyPermissions(SecurityPermissions.BUILD, false);
         super.detectAndSendChanges();
-        if (!Platform.isServer() && getCustomName() != null) textField.setText(getCustomName());
+        if (!Platform.isServer() && getCustomName() != null)
+            textField.setText(getCustomName());
     }
 }

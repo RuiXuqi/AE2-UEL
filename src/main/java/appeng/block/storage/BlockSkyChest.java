@@ -18,13 +18,11 @@
 
 package appeng.block.storage;
 
+import java.util.Collections;
+import java.util.List;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.sync.GuiBridge;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.storage.TileSkyChest;
-import appeng.util.Platform;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -39,10 +37,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.storage.TileSkyChest;
+import appeng.util.Platform;
 
 public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
 
@@ -70,7 +70,7 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{NATURAL};
+        return new IProperty[] { NATURAL };
     }
 
     @Override
@@ -89,23 +89,28 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (Platform.isServer()) {
-            Platform.openGUI(player, this.getTileEntity(w, pos), AEPartLocation.fromFacing(side), GuiBridge.GUI_SKYCHEST);
+            Platform.openGUI(player, this.getTileEntity(w, pos), AEPartLocation.fromFacing(side),
+                    GuiBridge.GUI_SKYCHEST);
         }
 
         return true;
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
         final AxisAlignedBB aabb = this.computeAABB(w, pos);
 
         return Collections.singletonList(aabb);
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         final AxisAlignedBB aabb = this.computeAABB(w, pos);
 
         out.add(aabb);
@@ -124,13 +129,19 @@ public class BlockSkyChest extends AEBaseTileBlock implements ICustomCollision {
         final double offsetZ = o.getZOffset() == 0 ? AABB_OFFSET_SIDES : 0.0;
 
         // for x/z top and bottom is swapped
-        final double minX = Math.max(0.0, offsetX + (o.getXOffset() < 0 ? AABB_OFFSET_BOTTOM : (o.getXOffset() * AABB_OFFSET_TOP)));
-        final double minY = Math.max(0.0, offsetY + (o.getYOffset() < 0 ? AABB_OFFSET_TOP : (o.getYOffset() * AABB_OFFSET_BOTTOM)));
-        final double minZ = Math.max(0.0, offsetZ + (o.getZOffset() < 0 ? AABB_OFFSET_BOTTOM : (o.getZOffset() * AABB_OFFSET_TOP)));
+        final double minX = Math.max(0.0,
+                offsetX + (o.getXOffset() < 0 ? AABB_OFFSET_BOTTOM : (o.getXOffset() * AABB_OFFSET_TOP)));
+        final double minY = Math.max(0.0,
+                offsetY + (o.getYOffset() < 0 ? AABB_OFFSET_TOP : (o.getYOffset() * AABB_OFFSET_BOTTOM)));
+        final double minZ = Math.max(0.0,
+                offsetZ + (o.getZOffset() < 0 ? AABB_OFFSET_BOTTOM : (o.getZOffset() * AABB_OFFSET_TOP)));
 
-        final double maxX = Math.min(1.0, 1.0 - offsetX - (o.getXOffset() < 0 ? AABB_OFFSET_TOP : (o.getXOffset() * AABB_OFFSET_BOTTOM)));
-        final double maxY = Math.min(1.0, 1.0 - offsetY - (o.getYOffset() < 0 ? AABB_OFFSET_BOTTOM : (o.getYOffset() * AABB_OFFSET_TOP)));
-        final double maxZ = Math.min(1.0, 1.0 - offsetZ - (o.getZOffset() < 0 ? AABB_OFFSET_TOP : (o.getZOffset() * AABB_OFFSET_BOTTOM)));
+        final double maxX = Math.min(1.0,
+                1.0 - offsetX - (o.getXOffset() < 0 ? AABB_OFFSET_TOP : (o.getXOffset() * AABB_OFFSET_BOTTOM)));
+        final double maxY = Math.min(1.0,
+                1.0 - offsetY - (o.getYOffset() < 0 ? AABB_OFFSET_BOTTOM : (o.getYOffset() * AABB_OFFSET_TOP)));
+        final double maxZ = Math.min(1.0,
+                1.0 - offsetZ - (o.getZOffset() < 0 ? AABB_OFFSET_TOP : (o.getZOffset() * AABB_OFFSET_BOTTOM)));
 
         return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
     }

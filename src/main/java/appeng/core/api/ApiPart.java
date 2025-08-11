@@ -18,17 +18,8 @@
 
 package appeng.core.api;
 
+import org.jetbrains.annotations.Nullable;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.ITileDefinition;
-import appeng.api.parts.CableRenderMode;
-import appeng.api.parts.IPart;
-import appeng.api.parts.IPartHelper;
-import appeng.core.AppEng;
-import appeng.parts.PartPlacement;
-import appeng.api.parts.IPartHost;
-import appeng.api.util.AEPartLocation;
-import appeng.util.Platform;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,13 +31,22 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import org.jetbrains.annotations.Nullable;
-
+import appeng.api.AEApi;
+import appeng.api.definitions.ITileDefinition;
+import appeng.api.parts.CableRenderMode;
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartHelper;
+import appeng.api.parts.IPartHost;
+import appeng.api.util.AEPartLocation;
+import appeng.core.AppEng;
+import appeng.parts.PartPlacement;
+import appeng.util.Platform;
 
 public class ApiPart implements IPartHelper {
 
     @Override
-    public EnumActionResult placeBus(final ItemStack is, final BlockPos pos, final EnumFacing side, final EntityPlayer player, final EnumHand hand, final World w) {
+    public EnumActionResult placeBus(final ItemStack is, final BlockPos pos, final EnumFacing side,
+            final EntityPlayer player, final EnumHand hand, final World w) {
         return PartPlacement.place(is, pos, side, player, hand, w);
     }
 
@@ -87,9 +87,11 @@ public class ApiPart implements IPartHelper {
             }
 
             final ITileDefinition multiPart = AEApi.instance().definitions().blocks().multiPart();
-            if (!multiPart.isEnabled()) return null;
+            if (!multiPart.isEnabled())
+                return null;
             Block blk = multiPart.maybeBlock().orElse(null);
-            if (blk == null) return null;
+            if (blk == null)
+                return null;
 
             final IBlockState state = blk.getDefaultState();
             w.setBlockState(pos, state, 3);

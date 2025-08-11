@@ -18,7 +18,6 @@
 
 package appeng.block.crafting;
 
-
 public class BlockCraftingStorage extends BlockCraftingUnit {
 
     public BlockCraftingStorage(final CraftingUnitType type) {

@@ -18,6 +18,24 @@
 
 package appeng.tile.networking;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IFacadeContainer;
@@ -33,24 +51,6 @@ import appeng.hooks.TickHandler;
 import appeng.parts.CableBusContainer;
 import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-
 
 public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomCollision {
 
@@ -129,7 +129,7 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     @Override
     public void validate() {
         super.validate();
-        TickHandler.INSTANCE.addInit(this);
+        TickHandler.instance().addInit(this);
     }
 
     @Override
@@ -211,7 +211,8 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     }
 
     @Override
-    public AEPartLocation addPart(final ItemStack is, final AEPartLocation side, final EntityPlayer player, final EnumHand hand) {
+    public AEPartLocation addPart(final ItemStack is, final AEPartLocation side, final EntityPlayer player,
+            final EnumHand hand) {
         return this.getCableBus().addPart(is, side, player, hand);
     }
 
@@ -252,7 +253,8 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity e, final boolean visual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity e,
+            final boolean visual) {
         return this.getCableBus().getSelectedBoundingBoxesFromPool(false, true, e, visual);
     }
 
@@ -287,7 +289,8 @@ public class TileCableBus extends AEBaseTile implements AEMultiTile, ICustomColl
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         for (final AxisAlignedBB bx : this.getSelectedBoundingBoxesFromPool(w, pos, e, false)) {
             out.add(new AxisAlignedBB(bx.minX, bx.minY, bx.minZ, bx.maxX, bx.maxY, bx.maxZ));
         }

@@ -18,6 +18,11 @@
 
 package appeng.parts;
 
+import java.io.IOException;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.item.ItemStack;
 
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
@@ -26,11 +31,6 @@ import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.me.GridAccessException;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-
-import java.io.IOException;
-
 
 public abstract class PartBasicState extends AEBasePart implements IPowerChannelState {
 

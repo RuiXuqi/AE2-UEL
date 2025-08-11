@@ -18,6 +18,24 @@
 
 package appeng.bootstrap;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.definitions.IBlockDefinition;
 import appeng.block.AEBaseBlock;
@@ -33,24 +51,6 @@ import appeng.core.CreativeTab;
 import appeng.core.features.*;
 import appeng.tile.AEBaseTile;
 import appeng.util.Platform;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 
 class BlockDefinitionBuilder implements IBlockBuilder {
 
@@ -129,7 +129,8 @@ class BlockDefinitionBuilder implements IBlockBuilder {
             @Override
             @SideOnly(Side.CLIENT)
             public void customize(IBlockRendering rendering, IItemRendering itemRendering) {
-                ModelResourceLocation model = new ModelResourceLocation(new ResourceLocation(AppEng.MOD_ID, BlockDefinitionBuilder.this.registryName), "inventory");
+                ModelResourceLocation model = new ModelResourceLocation(
+                        new ResourceLocation(AppEng.MOD_ID, BlockDefinitionBuilder.this.registryName), "inventory");
                 itemRendering.model(model).variants(model);
             }
         });
@@ -174,7 +175,8 @@ class BlockDefinitionBuilder implements IBlockBuilder {
         // Register the item and block with the game
         this.factory.addBootstrapComponent((IBlockRegistrationComponent) (side, registry) -> registry.register(block));
         if (item != null) {
-            this.factory.addBootstrapComponent((IItemRegistrationComponent) (side, registry) -> registry.register(item));
+            this.factory
+                    .addBootstrapComponent((IItemRegistrationComponent) (side, registry) -> registry.register(item));
         }
 
         block.setCreativeTab(this.creativeTab);
@@ -204,10 +206,10 @@ class BlockDefinitionBuilder implements IBlockBuilder {
         }
 
         if (block instanceof AEBaseTileBlock) {
-            this.factory.addBootstrapComponent((IPreInitComponent) side ->
-            {
+            this.factory.addBootstrapComponent((IPreInitComponent) side -> {
                 AEBaseTile.registerTileItem(
-                        this.tileEntityDefinition == null ? ((AEBaseTileBlock) block).getTileEntityClass() : this.tileEntityDefinition.getTileEntityClass(),
+                        this.tileEntityDefinition == null ? ((AEBaseTileBlock) block).getTileEntityClass()
+                                : this.tileEntityDefinition.getTileEntityClass(),
                         new BlockStackSrc(block, 0, ActivityState.Enabled));
             });
 

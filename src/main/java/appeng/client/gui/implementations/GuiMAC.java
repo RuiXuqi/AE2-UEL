@@ -18,6 +18,7 @@
 
 package appeng.client.gui.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.RedstoneMode;
 import appeng.api.config.Settings;
@@ -27,8 +28,6 @@ import appeng.client.gui.widgets.GuiProgressBar.Direction;
 import appeng.container.implementations.ContainerMAC;
 import appeng.core.localization.GuiText;
 import appeng.tile.crafting.TileMolecularAssembler;
-import net.minecraft.entity.player.InventoryPlayer;
-
 
 public class GuiMAC extends GuiUpgradeable {
 
@@ -51,7 +50,8 @@ public class GuiMAC extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
+        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.REDSTONE_CONTROLLED,
+                RedstoneMode.IGNORE);
         this.buttonList.add(this.redstoneMode);
     }
 

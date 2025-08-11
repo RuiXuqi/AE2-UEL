@@ -18,30 +18,13 @@
 
 package appeng.parts;
 
+import java.io.IOException;
+import java.util.*;
 
-import appeng.api.AEApi;
-import appeng.api.config.YesNo;
-import appeng.api.exceptions.FailedConnectionException;
-import appeng.api.implementations.parts.IPartCable;
-import appeng.api.networking.IGridHost;
-import appeng.api.networking.IGridNode;
-import appeng.api.parts.*;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEColor;
-import appeng.api.util.AEPartLocation;
-import appeng.api.util.DimensionalCoord;
-import appeng.client.render.cablebus.CableBusRenderState;
-import appeng.client.render.cablebus.CableCoreType;
-import appeng.client.render.cablebus.FacadeRenderState;
-import appeng.core.AELog;
-import appeng.core.AEConfig;
-import appeng.facade.FacadeContainer;
-import appeng.helpers.AEMultiTile;
-import appeng.items.parts.ItemFacade;
-import appeng.me.GridConnection;
-import appeng.parts.networking.PartCable;
-import appeng.util.Platform;
+import javax.annotation.Nullable;
+
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -58,10 +41,28 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.io.IOException;
-import java.util.*;
-
+import appeng.api.AEApi;
+import appeng.api.config.YesNo;
+import appeng.api.exceptions.FailedConnectionException;
+import appeng.api.implementations.parts.IPartCable;
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
+import appeng.api.parts.*;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.api.util.AEPartLocation;
+import appeng.api.util.DimensionalCoord;
+import appeng.client.render.cablebus.CableBusRenderState;
+import appeng.client.render.cablebus.CableCoreType;
+import appeng.client.render.cablebus.FacadeRenderState;
+import appeng.core.AEConfig;
+import appeng.core.AELog;
+import appeng.facade.FacadeContainer;
+import appeng.helpers.AEMultiTile;
+import appeng.items.parts.ItemFacade;
+import appeng.me.GridConnection;
+import appeng.parts.networking.PartCable;
+import appeng.util.Platform;
 
 public class CableBusContainer extends CableBusStorage implements AEMultiTile, ICableBusContainer {
 
@@ -126,7 +127,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
                 if (bp instanceof IPartCable) {
                     boolean canPlace = true;
                     for (final AEPartLocation d : AEPartLocation.SIDE_LOCATIONS) {
-                        if (this.getPart(d) != null && !this.getPart(d).canBePlacedOn(((IPartCable) bp).supportsBuses())) {
+                        if (this.getPart(d) != null
+                                && !this.getPart(d).canBePlacedOn(((IPartCable) bp).supportsBuses())) {
                             canPlace = false;
                         }
                     }
@@ -150,7 +152,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
     }
 
     @Override
-    public AEPartLocation addPart(ItemStack is, final AEPartLocation side, final @Nullable EntityPlayer player, final @Nullable EnumHand hand) {
+    public AEPartLocation addPart(ItemStack is, final AEPartLocation side, final @Nullable EntityPlayer player,
+            final @Nullable EnumHand hand) {
         if (this.canAddPart(is, side)) {
             if (is.getItem() instanceof IPartItem) {
                 final IPartItem bi = (IPartItem) is.getItem();
@@ -162,7 +165,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
                 if (bp instanceof IPartCable) {
                     boolean canPlace = true;
                     for (final AEPartLocation d : AEPartLocation.SIDE_LOCATIONS) {
-                        if (this.getPart(d) != null && !this.getPart(d).canBePlacedOn(((IPartCable) bp).supportsBuses())) {
+                        if (this.getPart(d) != null
+                                && !this.getPart(d).canBePlacedOn(((IPartCable) bp).supportsBuses())) {
                             canPlace = false;
                         }
                     }
@@ -576,7 +580,9 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
 
     @Override
     public float getCableConnectionLength(AECableType cable) {
-        return this.getPart(AEPartLocation.INTERNAL) instanceof IPartCable ? this.getPart(AEPartLocation.INTERNAL).getCableConnectionLength(cable) : -1;
+        return this.getPart(AEPartLocation.INTERNAL) instanceof IPartCable
+                ? this.getPart(AEPartLocation.INTERNAL).getCableConnectionLength(cable)
+                : -1;
     }
 
     @Override
@@ -589,7 +595,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
         }
     }
 
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final boolean ignoreConnections, final boolean includeFacades, final Entity e, final boolean visual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final boolean ignoreConnections,
+            final boolean includeFacades, final Entity e, final boolean visual) {
         final List<AxisAlignedBB> boxes = new ArrayList<>();
 
         final IFacadeContainer fc = this.getFacadeContainer();
@@ -876,7 +883,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
                         p = this.getPart(side);
                         p.readFromNBT(extra);
                     } else {
-                        AELog.warn("Invalid NBT For CableBus Container: " + iss.getItem().getClass().getName() + " is not a valid part; it was ignored.");
+                        AELog.warn("Invalid NBT For CableBus Container: " + iss.getItem().getClass().getName()
+                                + " is not a valid part; it was ignored.");
                     }
                 }
             } else {
@@ -964,7 +972,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
 
                 if (adjacentTe instanceof IGridHost) {
                     final IGridHost gridHost = (IGridHost) adjacentTe;
-                    final AECableType adjacentType = gridHost.getCableConnectionType(AEPartLocation.fromFacing(facing.getOpposite()));
+                    final AECableType adjacentType = gridHost
+                            .getCableConnectionType(AEPartLocation.fromFacing(facing.getOpposite()));
 
                     connectionType = AECableType.min(connectionType, adjacentType);
                 }
@@ -1008,7 +1017,8 @@ public class CableBusContainer extends CableBusStorage implements AEMultiTile, I
                 final IGridHost gridHost = (IGridHost) part;
                 final AECableType desiredType = gridHost.getCableConnectionType(AEPartLocation.INTERNAL);
 
-                if (renderState.getCoreType() == CableCoreType.GLASS && (desiredType == AECableType.SMART || desiredType == AECableType.COVERED)) {
+                if (renderState.getCoreType() == CableCoreType.GLASS
+                        && (desiredType == AECableType.SMART || desiredType == AECableType.COVERED)) {
                     renderState.setCoreType(CableCoreType.COVERED);
                 }
 

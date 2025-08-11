@@ -1,8 +1,11 @@
 package appeng.client.render.crafting;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
 
-import appeng.core.AppEng;
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -14,10 +17,7 @@ import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Function;
-
+import appeng.core.AppEng;
 
 /**
  * Simple model for the encoded pattern built-in baked model.
@@ -37,7 +37,8 @@ class ItemEncodedPatternModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         IBakedModel baseModel;
         try {
             baseModel = ModelLoaderRegistry.getModel(BASE_MODEL).bake(state, format, bakedTextureGetter);
@@ -45,7 +46,8 @@ class ItemEncodedPatternModel implements IModel {
             throw new RuntimeException(e);
         }
 
-        ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = PerspectiveMapWrapper.getTransforms(state);
+        ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = PerspectiveMapWrapper
+                .getTransforms(state);
 
         return new ItemEncodedPatternBakedModel(baseModel, transforms);
     }

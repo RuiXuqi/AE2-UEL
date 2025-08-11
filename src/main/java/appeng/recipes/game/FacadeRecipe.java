@@ -18,11 +18,8 @@
 
 package appeng.recipes.game;
 
+import javax.annotation.Nullable;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IComparableDefinition;
-import appeng.api.definitions.IDefinitions;
-import appeng.items.parts.ItemFacade;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -31,10 +28,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-import javax.annotation.Nullable;
+import appeng.api.AEApi;
+import appeng.api.definitions.IComparableDefinition;
+import appeng.api.definitions.IDefinitions;
+import appeng.items.parts.ItemFacade;
 
-
-public final class FacadeRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public final class FacadeRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe>
+        implements IRecipe {
     private final IComparableDefinition anchor;
     private final ItemFacade facade;
 
@@ -52,9 +52,12 @@ public final class FacadeRecipe extends net.minecraftforge.registries.IForgeRegi
 
     @Nullable
     private ItemStack getOutput(final IInventory inv, final boolean createFacade) {
-        if (inv.getStackInSlot(0).isEmpty() && inv.getStackInSlot(2).isEmpty() && inv.getStackInSlot(6).isEmpty() && inv.getStackInSlot(8).isEmpty()) {
-            if (this.anchor.isSameAs(inv.getStackInSlot(1)) && this.anchor.isSameAs(inv.getStackInSlot(3)) && this.anchor
-                    .isSameAs(inv.getStackInSlot(5)) && this.anchor.isSameAs(inv.getStackInSlot(7))) {
+        if (inv.getStackInSlot(0).isEmpty() && inv.getStackInSlot(2).isEmpty() && inv.getStackInSlot(6).isEmpty()
+                && inv.getStackInSlot(8).isEmpty()) {
+            if (this.anchor.isSameAs(inv.getStackInSlot(1)) && this.anchor.isSameAs(inv.getStackInSlot(3))
+                    && this.anchor
+                            .isSameAs(inv.getStackInSlot(5))
+                    && this.anchor.isSameAs(inv.getStackInSlot(7))) {
                 final ItemStack facades = this.facade.createFacadeForItem(inv.getStackInSlot(4), !createFacade);
                 if (!facades.isEmpty() && createFacade) {
                     facades.setCount(4);

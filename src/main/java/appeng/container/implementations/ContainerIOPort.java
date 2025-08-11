@@ -18,6 +18,8 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.*;
 import appeng.container.guisync.GuiSync;
@@ -25,9 +27,6 @@ import appeng.container.slot.SlotOutput;
 import appeng.container.slot.SlotRestrictedInput;
 import appeng.tile.storage.TileIOPort;
 import appeng.util.Platform;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.items.IItemHandler;
-
 
 public class ContainerIOPort extends ContainerUpgradeable {
 
@@ -55,8 +54,9 @@ public class ContainerIOPort extends ContainerUpgradeable {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 2; x++) {
                 this.addSlotToContainer(
-                        new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_CELLS, cells, x + y * 2, offX + x * 18, offY + y * 18, this
-                                .getInventoryPlayer()));
+                        new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.STORAGE_CELLS, cells, x + y * 2,
+                                offX + x * 18, offY + y * 18, this
+                                        .getInventoryPlayer()));
             }
         }
 
@@ -65,18 +65,22 @@ public class ContainerIOPort extends ContainerUpgradeable {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 2; x++) {
                 this.addSlotToContainer(
-                        new SlotOutput(cells, 6 + x + y * 2, offX + x * 18, offY + y * 18, SlotRestrictedInput.PlacableItemType.STORAGE_CELLS.IIcon));
+                        new SlotOutput(cells, 6 + x + y * 2, offX + x * 18, offY + y * 18,
+                                SlotRestrictedInput.PlacableItemType.STORAGE_CELLS.IIcon));
             }
         }
 
         final IItemHandler upgrades = this.getUpgradeable().getInventoryByName("upgrades");
-        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0, 187, 8, this.getInventoryPlayer()))
+        this.addSlotToContainer((new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 0,
+                187, 8, this.getInventoryPlayer()))
                 .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 1, 187, 8 + 18,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
         this.addSlotToContainer(
-                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2, this.getInventoryPlayer()))
+                (new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, 2, 187, 8 + 18 * 2,
+                        this.getInventoryPlayer()))
                         .setNotDraggable());
     }
 
@@ -95,9 +99,12 @@ public class ContainerIOPort extends ContainerUpgradeable {
         this.verifyPermissions(SecurityPermissions.BUILD, false);
 
         if (Platform.isServer()) {
-            this.setOperationMode((OperationMode) this.getUpgradeable().getConfigManager().getSetting(Settings.OPERATION_MODE));
-            this.setFullMode((FullnessMode) this.getUpgradeable().getConfigManager().getSetting(Settings.FULLNESS_MODE));
-            this.setRedStoneMode((RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED));
+            this.setOperationMode(
+                    (OperationMode) this.getUpgradeable().getConfigManager().getSetting(Settings.OPERATION_MODE));
+            this.setFullMode(
+                    (FullnessMode) this.getUpgradeable().getConfigManager().getSetting(Settings.FULLNESS_MODE));
+            this.setRedStoneMode(
+                    (RedstoneMode) this.getUpgradeable().getConfigManager().getSetting(Settings.REDSTONE_CONTROLLED));
         }
 
         this.standardDetectAndSendChanges();

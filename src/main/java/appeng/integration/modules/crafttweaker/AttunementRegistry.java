@@ -18,14 +18,13 @@
 
 package appeng.integration.modules.crafttweaker;
 
-
-import appeng.api.AEApi;
-import appeng.api.config.TunnelType;
-import appeng.api.features.IP2PTunnelRegistry;
 import crafttweaker.api.item.IIngredient;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import appeng.api.AEApi;
+import appeng.api.config.TunnelType;
+import appeng.api.features.IP2PTunnelRegistry;
 
 @ZenClass("mods.appliedenergistics2.Attunement")
 public class AttunementRegistry {

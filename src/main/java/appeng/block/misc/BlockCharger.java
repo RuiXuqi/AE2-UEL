@@ -18,19 +18,17 @@
 
 package appeng.block.misc;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-import appeng.api.AEApi;
-import appeng.api.util.AEAxisAlignedBB;
-import appeng.block.AEBaseTileBlock;
-import appeng.client.render.effects.LightningFX;
-import appeng.client.render.renderable.ItemRenderable;
-import appeng.client.render.tesr.ModularTESR;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.AEBaseTile;
-import appeng.tile.misc.TileCharger;
-import appeng.util.Platform;
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -45,16 +43,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+import appeng.api.AEApi;
+import appeng.api.util.AEAxisAlignedBB;
+import appeng.block.AEBaseTileBlock;
+import appeng.client.render.effects.LightningFX;
+import appeng.client.render.renderable.ItemRenderable;
+import appeng.client.render.tesr.ModularTESR;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.AEBaseTile;
+import appeng.tile.misc.TileCharger;
+import appeng.util.Platform;
 
 public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
 
@@ -66,7 +67,9 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (player.isSneaking()) {
             return false;
         }
@@ -96,15 +99,18 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
         if (tile instanceof TileCharger) {
             final TileCharger tc = (TileCharger) tile;
 
-            if (AEApi.instance().definitions().materials().certusQuartzCrystalCharged().isSameAs(tc.getInternalInventory().getStackInSlot(0))) {
+            if (AEApi.instance().definitions().materials().certusQuartzCrystalCharged()
+                    .isSameAs(tc.getInternalInventory().getStackInSlot(0))) {
                 final double xOff = 0.0;
                 final double yOff = 0.0;
                 final double zOff = 0.0;
 
                 for (int bolts = 0; bolts < 3; bolts++) {
                     if (AppEng.proxy.shouldAddParticles(r)) {
-                        final LightningFX fx = new LightningFX(w, xOff + 0.5 + pos.getX(), yOff + 0.5 + pos.getY(), zOff + 0.5 + pos
-                                .getZ(), 0.0D, 0.0D, 0.0D);
+                        final LightningFX fx = new LightningFX(w, xOff + 0.5 + pos.getX(), yOff + 0.5 + pos.getY(),
+                                zOff + 0.5 + pos
+                                        .getZ(),
+                                0.0D, 0.0D, 0.0D);
                         Minecraft.getMinecraft().effectRenderer.addEffect(fx);
                     }
                 }
@@ -113,13 +119,15 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
         final TileCharger tile = this.getTileEntity(w, pos);
         if (tile != null) {
             final double twoPixels = 2.0 / 16.0;
             final EnumFacing up = tile.getUp();
             final EnumFacing forward = tile.getForward();
-            final AEAxisAlignedBB bb = new AEAxisAlignedBB(twoPixels, twoPixels, twoPixels, 1.0 - twoPixels, 1.0 - twoPixels, 1.0 - twoPixels);
+            final AEAxisAlignedBB bb = new AEAxisAlignedBB(twoPixels, twoPixels, twoPixels, 1.0 - twoPixels,
+                    1.0 - twoPixels, 1.0 - twoPixels);
 
             if (up.getXOffset() != 0) {
                 bb.minX = 0;
@@ -163,7 +171,8 @@ public class BlockCharger extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         out.add(new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
     }
 

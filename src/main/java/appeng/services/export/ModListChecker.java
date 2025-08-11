@@ -18,18 +18,18 @@
 
 package appeng.services.export;
 
-
-import com.google.common.base.Preconditions;
-import net.minecraftforge.fml.common.ModContainer;
-import org.apache.commons.codec.digest.DigestUtils;
-
-import javax.annotation.Nonnull;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import net.minecraftforge.fml.common.ModContainer;
 
 /**
- * Checks the cached digest against the current mods including their versions.
- * Use the config to manipulate the process
+ * Checks the cached digest against the current mods including their versions. Use the config to manipulate the process
  *
  * @author thatsIch
  * @version rv3 - 01.09.2015
@@ -51,8 +51,7 @@ final class ModListChecker implements Checker<List<ModContainer>> {
 
     /**
      * Compiles a list of all mods and their versions to a digest which is updated, if it differs from the config. This
-     * is used to elevate the need to export
-     * the csv once again, if no change was detected.
+     * is used to elevate the need to export the csv once again, if no change was detected.
      *
      * @param modContainers all mods and their versions to check if a difference exists between the current instance and
      *                      the previous instance

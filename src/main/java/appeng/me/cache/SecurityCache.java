@@ -18,6 +18,15 @@
 
 package appeng.me.cache;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+
+import com.google.common.base.Preconditions;
+import com.mojang.authlib.GameProfile;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGrid;
@@ -30,15 +39,6 @@ import appeng.api.networking.security.ISecurityGrid;
 import appeng.api.networking.security.ISecurityProvider;
 import appeng.core.worlddata.WorldData;
 import appeng.me.GridNode;
-import com.google.common.base.Preconditions;
-import com.mojang.authlib.GameProfile;
-import net.minecraft.entity.player.EntityPlayer;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-
 
 public class SecurityCache implements ISecurityGrid {
 
@@ -81,10 +81,14 @@ public class SecurityCache implements ISecurityGrid {
     private void updateSecurityKey() {
         final long lastCode = this.securityKey;
 
+        /**
+         * Placing a security station will propagate the security station's owner to all connected grid nodes to prevent
+         * the network from not reforming due to different owners later.
+         */
         int newOwner = -1;
         if (this.securityProvider.size() == 1) {
-            this.securityKey = this.securityProvider.get(0).getSecurityKey();
             ISecurityProvider securityProvider = this.securityProvider.get(0);
+            this.securityKey = securityProvider.getSecurityKey();
             newOwner = securityProvider.getOwner();
         } else {
             this.securityKey = -1;
@@ -93,9 +97,10 @@ public class SecurityCache implements ISecurityGrid {
         if (lastCode != this.securityKey) {
             this.getGrid().postEvent(new MENetworkSecurityChange());
             for (final IGridNode n : this.getGrid().getNodes()) {
-                ((GridNode) n).setLastSecurityKey(this.securityKey);
-                if (n.getPlayerID() != newOwner) {
-                    n.setPlayerID(newOwner);
+                GridNode gridNode = (GridNode) n;
+                gridNode.setLastSecurityKey(this.securityKey);
+                if (gridNode.getPlayerID() != newOwner) {
+                    gridNode.setPlayerID(newOwner);
                 }
             }
         }
@@ -137,21 +142,23 @@ public class SecurityCache implements ISecurityGrid {
         Preconditions.checkNotNull(perm);
 
         final GameProfile profile = player.getGameProfile();
-        final int playerID = WorldData.instance().playerData().getPlayerID(profile);
+        final int playerID = WorldData.instance().playerData().getMePlayerId(profile);
 
         return this.hasPermission(playerID, perm);
     }
 
     @Override
     public boolean hasPermission(final int playerID, final SecurityPermissions perm) {
-        if (playerID == -1) {
-            return true;
-        }
         if (this.isAvailable()) {
             final EnumSet<SecurityPermissions> perms = this.playerPerms.get(playerID);
 
             if (perms == null) {
-                return this.hasPermission(-1, perm);
+                if (playerID == -1) // no default?
+                {
+                    return false;
+                } else {
+                    return this.hasPermission(-1, perm);
+                }
             }
 
             return perms.contains(perm);

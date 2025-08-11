@@ -18,19 +18,19 @@
 
 package appeng.integration.modules.jei;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import appeng.api.features.IGrinderRecipe;
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeWrapper;
 
+import appeng.api.features.IGrinderRecipe;
 
 class GrinderRecipeWrapper implements IRecipeWrapper {
 

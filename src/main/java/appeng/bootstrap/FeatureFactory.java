@@ -18,6 +18,17 @@
 
 package appeng.bootstrap;
 
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.util.AEColor;
@@ -30,18 +41,6 @@ import appeng.core.features.ActivityState;
 import appeng.core.features.ColoredItemDefinition;
 import appeng.core.features.ItemStackSrc;
 import appeng.util.Platform;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
-
 
 public class FeatureFactory {
 
@@ -58,7 +57,7 @@ public class FeatureFactory {
     public final TileEntityComponent tileEntityComponent;
 
     public FeatureFactory() {
-        this.defaultFeatures = new AEFeature[]{AEFeature.CORE};
+        this.defaultFeatures = new AEFeature[] { AEFeature.CORE };
         this.bootstrapComponents = new HashMap<>();
 
         this.tileEntityComponent = new TileEntityComponent();
@@ -94,8 +93,7 @@ public class FeatureFactory {
     public AEColoredItemDefinition colored(IItemDefinition target, int offset) {
         ColoredItemDefinition definition = new ColoredItemDefinition();
 
-        target.maybeItem().ifPresent(targetItem ->
-        {
+        target.maybeItem().ifPresent(targetItem -> {
             for (final AEColor color : AEColor.VALID_COLORS) {
                 final ActivityState state = ActivityState.from(target.isEnabled());
 
@@ -116,7 +114,8 @@ public class FeatureFactory {
                 .forEach(i -> this.addBootstrapComponent((Class<? extends IBootstrapComponent>) i, component));
     }
 
-    private <T extends IBootstrapComponent> void addBootstrapComponent(Class<? extends IBootstrapComponent> eventType, T component) {
+    private <T extends IBootstrapComponent> void addBootstrapComponent(Class<? extends IBootstrapComponent> eventType,
+            T component) {
         this.bootstrapComponents.computeIfAbsent(eventType, c -> new ArrayList<IBootstrapComponent>()).add(component);
     }
 

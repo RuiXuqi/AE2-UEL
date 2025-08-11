@@ -18,15 +18,14 @@
 
 package appeng.parts.reporting;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.parts.IPartModel;
 import appeng.core.AppEng;
 import appeng.helpers.Reflected;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
 
 /**
  * @author AlgorithmX2
@@ -41,9 +40,11 @@ public class PartStorageMonitor extends AbstractPartMonitor {
     @PartModels
     public static final ResourceLocation MODEL_ON = new ResourceLocation(AppEng.MOD_ID, "part/storage_monitor_on");
     @PartModels
-    public static final ResourceLocation MODEL_LOCKED_OFF = new ResourceLocation(AppEng.MOD_ID, "part/storage_monitor_locked_off");
+    public static final ResourceLocation MODEL_LOCKED_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/storage_monitor_locked_off");
     @PartModels
-    public static final ResourceLocation MODEL_LOCKED_ON = new ResourceLocation(AppEng.MOD_ID, "part/storage_monitor_locked_on");
+    public static final ResourceLocation MODEL_LOCKED_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/storage_monitor_locked_on");
 
     public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, MODEL_OFF, MODEL_STATUS_OFF);
     public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, MODEL_ON, MODEL_STATUS_ON);
@@ -51,7 +52,8 @@ public class PartStorageMonitor extends AbstractPartMonitor {
 
     public static final IPartModel MODELS_LOCKED_OFF = new PartModel(MODEL_BASE, MODEL_LOCKED_OFF, MODEL_STATUS_OFF);
     public static final IPartModel MODELS_LOCKED_ON = new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_ON);
-    public static final IPartModel MODELS_LOCKED_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_LOCKED_ON, MODEL_STATUS_HAS_CHANNEL);
+    public static final IPartModel MODELS_LOCKED_HAS_CHANNEL = new PartModel(MODEL_BASE, MODEL_LOCKED_ON,
+            MODEL_STATUS_HAS_CHANNEL);
 
     @Reflected
     public PartStorageMonitor(final ItemStack is) {

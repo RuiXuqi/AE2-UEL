@@ -18,6 +18,20 @@
 
 package appeng.core.api.definitions;
 
+import com.google.common.base.Verify;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.definitions.IBlockDefinition;
 import appeng.api.definitions.IBlocks;
@@ -82,20 +96,6 @@ import appeng.tile.storage.TileChest;
 import appeng.tile.storage.TileDrive;
 import appeng.tile.storage.TileIOPort;
 import appeng.tile.storage.TileSkyChest;
-import com.google.common.base.Verify;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.block.BlockSlab;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemSlab;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
-
 
 /**
  * Internal implementation for the API blocks
@@ -182,13 +182,14 @@ public final class ApiBlocks implements IBlocks {
         // this.quartzOre = new BlockDefinition( "ore.quartz", new OreQuartz() );
         this.quartzOre = registry.block("quartz_ore", BlockQuartzOre::new)
                 .features(AEFeature.CERTUS_ORE)
-                .bootstrap((block, item) -> (IOreDictComponent) side -> OreDictionary.registerOre("oreCertusQuartz", new ItemStack(block)))
+                .bootstrap((block,
+                        item) -> (IOreDictComponent) side -> OreDictionary.registerOre("oreCertusQuartz",
+                                new ItemStack(block)))
                 .build();
         this.quartzOreCharged = registry.block("charged_quartz_ore", BlockChargedQuartzOre::new)
                 .features(AEFeature.CERTUS_ORE, AEFeature.CHARGED_CERTUS_ORE)
                 .useCustomItemModel()
-                .bootstrap((block, item) -> (IOreDictComponent) side ->
-                {
+                .bootstrap((block, item) -> (IOreDictComponent) side -> {
                     OreDictionary.registerOre("oreCertusQuartz", new ItemStack(block));
                     OreDictionary.registerOre("oreChargedCertusQuartz", new ItemStack(block));
                 })
@@ -284,10 +285,10 @@ public final class ApiBlocks implements IBlocks {
                 .build();
         this.tinyTNT = registry.block("tiny_tnt", BlockTinyTNT::new)
                 .features(AEFeature.TINY_TNT)
-                .bootstrap((block, item) -> (IPreInitComponent) side -> BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item,
-                        new DispenserBehaviorTinyTNT()))
-                .bootstrap((block, item) -> (IEntityRegistrationComponent) r ->
-                {
+                .bootstrap((block,
+                        item) -> (IPreInitComponent) side -> BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item,
+                                new DispenserBehaviorTinyTNT()))
+                .bootstrap((block, item) -> (IEntityRegistrationComponent) r -> {
                     r.register(EntityEntryBuilder.create()
                             .entity(EntityTinyTNTPrimed.class)
                             .id(new ResourceLocation("appliedenergistics2", EntityTinyTNTPrimed.class.getName()),
@@ -394,30 +395,35 @@ public final class ApiBlocks implements IBlocks {
                 .tileEntity(new TileEntityDefinition(TileCraftingTile.class, "crafting_unit"))
                 .useCustomItemModel()
                 .build();
-        this.craftingAccelerator = crafting.block("crafting_accelerator", () -> new BlockCraftingUnit(CraftingUnitType.ACCELERATOR))
+        this.craftingAccelerator = crafting
+                .block("crafting_accelerator", () -> new BlockCraftingUnit(CraftingUnitType.ACCELERATOR))
                 .rendering(new CraftingCubeRendering("crafting_accelerator", CraftingUnitType.ACCELERATOR))
                 .tileEntity(new TileEntityDefinition(TileCraftingTile.class, "crafting_unit"))
                 .useCustomItemModel()
                 .build();
-        this.craftingStorage1k = crafting.block("crafting_storage_1k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_1K))
+        this.craftingStorage1k = crafting
+                .block("crafting_storage_1k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_1K))
                 .item(ItemCraftingStorage::new)
                 .tileEntity(new TileEntityDefinition(TileCraftingStorageTile.class, "crafting_storage"))
                 .rendering(new CraftingCubeRendering("crafting_storage_1k", CraftingUnitType.STORAGE_1K))
                 .useCustomItemModel()
                 .build();
-        this.craftingStorage4k = crafting.block("crafting_storage_4k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_4K))
+        this.craftingStorage4k = crafting
+                .block("crafting_storage_4k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_4K))
                 .item(ItemCraftingStorage::new)
                 .tileEntity(new TileEntityDefinition(TileCraftingStorageTile.class, "crafting_storage"))
                 .rendering(new CraftingCubeRendering("crafting_storage_4k", CraftingUnitType.STORAGE_4K))
                 .useCustomItemModel()
                 .build();
-        this.craftingStorage16k = crafting.block("crafting_storage_16k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_16K))
+        this.craftingStorage16k = crafting
+                .block("crafting_storage_16k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_16K))
                 .item(ItemCraftingStorage::new)
                 .tileEntity(new TileEntityDefinition(TileCraftingStorageTile.class, "crafting_storage"))
                 .rendering(new CraftingCubeRendering("crafting_storage_16k", CraftingUnitType.STORAGE_16K))
                 .useCustomItemModel()
                 .build();
-        this.craftingStorage64k = crafting.block("crafting_storage_64k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_64K))
+        this.craftingStorage64k = crafting
+                .block("crafting_storage_64k", () -> new BlockCraftingStorage(CraftingUnitType.STORAGE_64K))
                 .item(ItemCraftingStorage::new)
                 .tileEntity(new TileEntityDefinition(TileCraftingStorageTile.class, "crafting_storage"))
                 .rendering(new CraftingCubeRendering("crafting_storage_64k", CraftingUnitType.STORAGE_64K))
@@ -462,13 +468,18 @@ public final class ApiBlocks implements IBlocks {
                 .build();
 
         this.skyStoneSlab = makeSlab("sky_stone_slab", "sky_stone_double_slab", registry, this.skyStoneBlock());
-        this.smoothSkyStoneSlab = makeSlab("smooth_sky_stone_slab", "smooth_sky_stone_double_slab", registry, this.smoothSkyStoneBlock());
-        this.skyStoneBrickSlab = makeSlab("sky_stone_brick_slab", "sky_stone_brick_double_slab", registry, this.skyStoneBrick());
-        this.skyStoneSmallBrickSlab = makeSlab("sky_stone_small_brick_slab", "sky_stone_small_brick_double_slab", registry, this.skyStoneSmallBrick());
+        this.smoothSkyStoneSlab = makeSlab("smooth_sky_stone_slab", "smooth_sky_stone_double_slab", registry,
+                this.smoothSkyStoneBlock());
+        this.skyStoneBrickSlab = makeSlab("sky_stone_brick_slab", "sky_stone_brick_double_slab", registry,
+                this.skyStoneBrick());
+        this.skyStoneSmallBrickSlab = makeSlab("sky_stone_small_brick_slab", "sky_stone_small_brick_double_slab",
+                registry, this.skyStoneSmallBrick());
         this.fluixSlab = makeSlab("fluix_slab", "fluix_double_slab", registry, this.fluixBlock());
         this.quartzSlab = makeSlab("quartz_slab", "quartz_double_slab", registry, this.quartzBlock());
-        this.chiseledQuartzSlab = makeSlab("chiseled_quartz_slab", "chiseled_quartz_double_slab", registry, this.chiseledQuartzBlock());
-        this.quartzPillarSlab = makeSlab("quartz_pillar_slab", "quartz_pillar_double_slab", registry, this.quartzPillar());
+        this.chiseledQuartzSlab = makeSlab("chiseled_quartz_slab", "chiseled_quartz_double_slab", registry,
+                this.chiseledQuartzBlock());
+        this.quartzPillarSlab = makeSlab("quartz_pillar_slab", "quartz_pillar_double_slab", registry,
+                this.quartzPillar());
 
         this.itemGen = registry.block("debug_item_gen", BlockItemGen::new)
                 .features(AEFeature.UNSUPPORTED_DEVELOPER_TOOLS, AEFeature.CREATIVE)
@@ -497,7 +508,8 @@ public final class ApiBlocks implements IBlocks {
                 .build();
     }
 
-    private static IBlockDefinition makeSlab(String slabId, String doubleSlabId, FeatureFactory registry, IBlockDefinition blockDef) {
+    private static IBlockDefinition makeSlab(String slabId, String doubleSlabId, FeatureFactory registry,
+            IBlockDefinition blockDef) {
         if (!blockDef.maybeBlock().isPresent()) {
             return new BlockDefinition(slabId, null, null);
         }
@@ -516,7 +528,8 @@ public final class ApiBlocks implements IBlocks {
         BlockSlab slabBlock = (BlockSlab) slabDef.maybeBlock().get();
 
         // Reigster the double slab variant as well
-        IBlockDefinition doubleSlabDef = registry.block(doubleSlabId, () -> new BlockSlabCommon.Double(slabBlock, block))
+        IBlockDefinition doubleSlabDef = registry
+                .block(doubleSlabId, () -> new BlockSlabCommon.Double(slabBlock, block))
                 .features(AEFeature.DECORATIVE_BLOCKS)
                 .disableItem()
                 .build();
@@ -549,13 +562,16 @@ public final class ApiBlocks implements IBlocks {
             return new BlockDefinition(registryName, null, null);
         }
 
-        IBlockDefinition stairs = registry.block(registryName, () -> new BlockStairCommon(block.maybeBlock().get(), block.identifier()))
+        IBlockDefinition stairs = registry
+                .block(registryName, () -> new BlockStairCommon(block.maybeBlock().get(), block.identifier()))
                 .features(AEFeature.DECORATIVE_BLOCKS)
                 .rendering(new BlockRenderingCustomizer() {
                     @Override
                     @SideOnly(Side.CLIENT)
                     public void customize(IBlockRendering rendering, IItemRendering itemRendering) {
-                        ModelResourceLocation model = new ModelResourceLocation(new ResourceLocation(AppEng.MOD_ID, registryName), "facing=east,half=bottom,shape=straight");
+                        ModelResourceLocation model = new ModelResourceLocation(
+                                new ResourceLocation(AppEng.MOD_ID, registryName),
+                                "facing=east,half=bottom,shape=straight");
                         itemRendering.model(model);
                     }
                 })

@@ -18,15 +18,12 @@
 
 package appeng.items.misc;
 
+import java.util.List;
+import java.util.Optional;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IMaterials;
-import appeng.api.implementations.items.IGrowableCrystal;
-import appeng.api.recipes.ResolverResult;
-import appeng.core.localization.ButtonToolTips;
-import appeng.entity.EntityGrowingCrystal;
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
@@ -39,11 +36,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-
+import appeng.api.AEApi;
+import appeng.api.definitions.IMaterials;
+import appeng.api.implementations.items.IGrowableCrystal;
+import appeng.api.recipes.ResolverResult;
+import appeng.core.localization.ButtonToolTips;
+import appeng.entity.EntityGrowingCrystal;
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
 
 public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
 
@@ -67,12 +67,12 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
                 .items()
                 .crystalSeed()
                 .maybeStack(1)
-                .map(crystalSeedStack ->
-                {
+                .map(crystalSeedStack -> {
                     crystalSeedStack.setItemDamage(certus2);
                     crystalSeedStack = newStyle(crystalSeedStack);
                     String itemName = crystalSeedStack.getItem().getRegistryName().getPath();
-                    return new ResolverResult(itemName, crystalSeedStack.getItemDamage(), crystalSeedStack.getTagCompound());
+                    return new ResolverResult(itemName, crystalSeedStack.getItemDamage(),
+                            crystalSeedStack.getTagCompound());
                 })
                 .orElse(null);
 
@@ -141,7 +141,8 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         lines.add(ButtonToolTips.DoesntDespawn.getLocal());
         final int progress = getProgress(stack) % SINGLE_OFFSET;
         lines.add(Math.floor((float) progress / (float) (SINGLE_OFFSET / 100)) + "%");
@@ -196,7 +197,8 @@ public class ItemCrystalSeed extends AEBaseItem implements IGrowableCrystal {
 
     @Override
     public Entity createEntity(final World world, final Entity location, final ItemStack itemstack) {
-        final EntityGrowingCrystal egc = new EntityGrowingCrystal(world, location.posX, location.posY, location.posZ, itemstack);
+        final EntityGrowingCrystal egc = new EntityGrowingCrystal(world, location.posX, location.posY, location.posZ,
+                itemstack);
 
         egc.motionX = location.motionX;
         egc.motionY = location.motionY;

@@ -18,6 +18,10 @@
 
 package appeng.core.sync.packets;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 import appeng.container.implementations.ContainerFluidInterfaceConfigurationTerminal;
 import appeng.core.AELog;
@@ -27,10 +31,6 @@ import appeng.fluids.container.ContainerFluidInterface;
 import appeng.fluids.container.ContainerFluidTerminal;
 import appeng.fluids.container.ContainerWirelessFluidTerminal;
 import appeng.fluids.util.AEFluidStack;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-
 
 /**
  * @author BrockWS

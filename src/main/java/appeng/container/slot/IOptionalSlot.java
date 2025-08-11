@@ -18,7 +18,6 @@
 
 package appeng.container.slot;
 
-
 /**
  * @author BrockWS
  * @version rv6 - 2/05/2018

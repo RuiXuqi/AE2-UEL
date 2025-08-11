@@ -18,9 +18,7 @@
 
 package appeng.core.crash;
 
-
 import net.minecraftforge.fml.common.ICrashCallable;
-
 
 abstract class BaseCrashEnhancement implements ICrashCallable {
     private final String name;

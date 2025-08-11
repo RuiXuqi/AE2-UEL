@@ -18,17 +18,17 @@
 
 package appeng.util.item;
 
+import java.util.*;
 
-import appeng.api.storage.data.IAEItemStack;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
-
+import appeng.api.storage.data.IAEItemStack;
 
 public class OreHelper {
 
@@ -37,12 +37,13 @@ public class OreHelper {
     /**
      * A local cache to speed up OreDictionary lookups.
      */
-    private final LoadingCache<String, List<ItemStack>> oreDictCache = CacheBuilder.newBuilder().build(new CacheLoader<String, List<ItemStack>>() {
-        @Override
-        public List<ItemStack> load(final String oreName) {
-            return OreDictionary.getOres(oreName);
-        }
-    });
+    private final LoadingCache<String, List<ItemStack>> oreDictCache = CacheBuilder.newBuilder()
+            .build(new CacheLoader<String, List<ItemStack>>() {
+                @Override
+                public List<ItemStack> load(final String oreName) {
+                    return OreDictionary.getOres(oreName);
+                }
+            });
 
     private final Map<ItemRef, OreReference> references = new HashMap<>();
 
@@ -185,7 +186,8 @@ public class OreHelper {
 
         @Override
         public String toString() {
-            return "ItemRef [ref=" + this.ref.getTranslationKey() + ", damage=" + this.damage + ", hash=" + this.hash + ']';
+            return "ItemRef [ref=" + this.ref.getTranslationKey() + ", damage=" + this.damage + ", hash=" + this.hash
+                    + ']';
         }
     }
 }

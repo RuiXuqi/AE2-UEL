@@ -18,6 +18,16 @@
 
 package appeng.container.implementations;
 
+import static appeng.helpers.PatternHelper.CRAFTING_GRID_DIMENSION;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandler;
+
+import baubles.api.BaublesApi;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -39,18 +49,9 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.Platform;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.InvOperation;
-import baubles.api.BaublesApi;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandler;
 
-import static appeng.helpers.PatternHelper.CRAFTING_GRID_DIMENSION;
-
-
-public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder implements IUpgradeableCellContainer, IInventorySlotAware {
+public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder
+        implements IUpgradeableCellContainer, IInventorySlotAware {
 
     private final WirelessTerminalGuiObject wirelessTerminalGUIObject;
     private final int slot;
@@ -90,7 +91,8 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotFakeCraftingMatrix(this.crafting, x + y * 3, 18 + x * 18, -76 + y * 18));
+                this.addSlotToContainer(this.craftingSlots[x + y * 3] = new SlotFakeCraftingMatrix(this.crafting,
+                        x + y * 3, 18 + x * 18, -76 + y * 18));
             }
         }
 
@@ -99,17 +101,20 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
         this.craftSlot.setIIcon(-1);
 
         for (int y = 0; y < this.outputSlots.length; y++) {
-            this.addSlotToContainer(this.outputSlots[y] = new SlotPatternOutputs(output, this, y, 110, -76 + y * 18, 0, 0, 1));
+            this.addSlotToContainer(
+                    this.outputSlots[y] = new SlotPatternOutputs(output, this, y, 110, -76 + y * 18, 0, 0, 1));
             this.outputSlots[y].setRenderDisabled(false);
             this.outputSlots[y].setIIcon(-1);
         }
 
         this.addSlotToContainer(
-                this.patternSlotIN = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.BLANK_PATTERN, pattern, 0, 147, -72 - 9, this
-                        .getInventoryPlayer()));
+                this.patternSlotIN = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.BLANK_PATTERN,
+                        pattern, 0, 147, -72 - 9, this
+                                .getInventoryPlayer()));
         this.addSlotToContainer(
-                this.patternSlotOUT = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN, pattern, 1, 147, -72 + 34, this
-                        .getInventoryPlayer()));
+                this.patternSlotOUT = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.ENCODED_PATTERN,
+                        pattern, 1, 147, -72 + 34, this
+                                .getInventoryPlayer()));
 
         this.patternSlotOUT.setStackLimit(1);
 
@@ -128,17 +133,21 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
             if (wirelessTerminalGUIObject.isBaubleSlot()) {
                 currentItem = BaublesApi.getBaublesHandler(this.getPlayerInv().player).getStackInSlot(this.slot);
             } else {
-                currentItem = this.slot < 0 ? this.getPlayerInv().getCurrentItem() : this.getPlayerInv().getStackInSlot(this.slot);
+                currentItem = this.slot < 0 ? this.getPlayerInv().getCurrentItem()
+                        : this.getPlayerInv().getStackInSlot(this.slot);
             }
 
             if (currentItem.isEmpty()) {
                 this.setValidContainer(false);
-            } else if (!this.wirelessTerminalGUIObject.getItemStack().isEmpty() && currentItem != this.wirelessTerminalGUIObject.getItemStack()) {
+            } else if (!this.wirelessTerminalGUIObject.getItemStack().isEmpty()
+                    && currentItem != this.wirelessTerminalGUIObject.getItemStack()) {
                 if (ItemStack.areItemsEqual(this.wirelessTerminalGUIObject.getItemStack(), currentItem)) {
                     if (wirelessTerminalGUIObject.isBaubleSlot()) {
-                        BaublesApi.getBaublesHandler(this.getPlayerInv().player).setStackInSlot(this.slot, this.wirelessTerminalGUIObject.getItemStack());
+                        BaublesApi.getBaublesHandler(this.getPlayerInv().player).setStackInSlot(this.slot,
+                                this.wirelessTerminalGUIObject.getItemStack());
                     } else {
-                        this.getPlayerInv().setInventorySlotContents(this.slot, this.wirelessTerminalGUIObject.getItemStack());
+                        this.getPlayerInv().setInventorySlotContents(this.slot,
+                                this.wirelessTerminalGUIObject.getItemStack());
                     }
                 } else {
                     this.setValidContainer(false);
@@ -148,7 +157,8 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
             // drain 1 ae t
             this.ticks++;
             if (this.ticks > 10) {
-                double ext = this.wirelessTerminalGUIObject.extractAEPower(this.getPowerMultiplier() * this.ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                double ext = this.wirelessTerminalGUIObject.extractAEPower(this.getPowerMultiplier() * this.ticks,
+                        Actionable.MODULATE, PowerMultiplier.CONFIG);
                 if (ext < this.getPowerMultiplier() * this.ticks) {
                     if (Platform.isServer() && this.isValidContainer()) {
                         this.getPlayerInv().player.sendMessage(PlayerMessages.DeviceNotPowered.get());
@@ -166,7 +176,8 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
 
                 this.setValidContainer(false);
             } else {
-                this.setPowerMultiplier(AEConfig.instance().wireless_getDrainRate(this.wirelessTerminalGUIObject.getRange()));
+                this.setPowerMultiplier(
+                        AEConfig.instance().wireless_getDrainRate(this.wirelessTerminalGUIObject.getRange()));
             }
 
             super.detectAndSendChanges();
@@ -253,7 +264,8 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removedStack, final ItemStack newStack) {
         if (inv == this.pattern && slot == 1) {
             final ItemStack is = this.pattern.getStackInSlot(1);
             if (!is.isEmpty() && is.getItem() instanceof ICraftingPatternItem) {
@@ -265,7 +277,8 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
 
                     for (int x = 0; x < this.crafting.getSlots() && x < details.getInputs().length; x++) {
                         final IAEItemStack item = details.getInputs()[x];
-                        ItemHandlerUtil.setStackInSlot(this.crafting, x, item == null ? ItemStack.EMPTY : item.createItemStack());
+                        ItemHandlerUtil.setStackInSlot(this.crafting, x,
+                                item == null ? ItemStack.EMPTY : item.createItemStack());
                     }
 
                     for (int x = 0; x < this.output.getSlots(); x++) {
@@ -307,7 +320,8 @@ public class ContainerWirelessPatternTerminal extends ContainerPatternEncoder im
     public void setupUpgrades() {
         if (wirelessTerminalGUIObject != null) {
             for (int upgradeSlot = 0; upgradeSlot < availableUpgrades(); upgradeSlot++) {
-                this.magnetSlot = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades, upgradeSlot, 206, 135 + upgradeSlot * 18, this.getInventoryPlayer());
+                this.magnetSlot = new SlotRestrictedInput(SlotRestrictedInput.PlacableItemType.UPGRADES, upgrades,
+                        upgradeSlot, 206, 135 + upgradeSlot * 18, this.getInventoryPlayer());
                 this.magnetSlot.setNotDraggable();
                 this.addSlotToContainer(magnetSlot);
             }

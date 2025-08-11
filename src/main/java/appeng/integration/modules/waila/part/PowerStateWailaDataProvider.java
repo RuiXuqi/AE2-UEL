@@ -18,15 +18,14 @@
 
 package appeng.integration.modules.waila.part;
 
+import java.util.List;
+
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.parts.IPart;
 import appeng.core.localization.WailaText;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
-import java.util.List;
-
 
 /**
  * Power state provider for WAILA
@@ -46,7 +45,8 @@ public final class PowerStateWailaDataProvider extends BasePartWailaDataProvider
      * @return modified tooltip
      */
     @Override
-    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final IPart part, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         if (part instanceof IPowerChannelState) {
             final IPowerChannelState state = (IPowerChannelState) part;
 

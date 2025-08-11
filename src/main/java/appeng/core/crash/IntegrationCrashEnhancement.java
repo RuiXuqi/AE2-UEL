@@ -18,9 +18,7 @@
 
 package appeng.core.crash;
 
-
 import appeng.integration.IntegrationRegistry;
-
 
 public class IntegrationCrashEnhancement extends BaseCrashEnhancement {
     public IntegrationCrashEnhancement() {

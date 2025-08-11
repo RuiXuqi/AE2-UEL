@@ -18,10 +18,8 @@
 
 package appeng.me;
 
-
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IGridVisitor;
-
 
 public class GridPropagator implements IGridVisitor {
     private final Grid g;

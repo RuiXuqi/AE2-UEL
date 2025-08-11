@@ -18,6 +18,15 @@
 
 package appeng.parts.misc;
 
+import java.util.*;
+
+import com.google.common.primitives.Ints;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -39,14 +48,6 @@ import appeng.me.storage.ITickingMonitor;
 import appeng.util.inv.ItemHandlerIterator;
 import appeng.util.inv.ItemSlot;
 import appeng.util.item.AEItemStack;
-import com.google.common.primitives.Ints;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.*;
-
 
 /**
  * Wraps an Item Handler in such a way that it can be used as an IMEInventory for items.
@@ -149,14 +150,17 @@ class ItemHandlerAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAE
                     if (extracted.getCount() > remainingCurrentSlot) {
                         // Something broke. It should never return more than we requested...
                         // We're going to silently eat the remainder
-                        AELog.warn("Mod that provided item handler %s is broken. Returned %s items while only requesting %d.", this.itemHandler.getClass().getName(), extracted.toString(), remainingCurrentSlot);
+                        AELog.warn(
+                                "Mod that provided item handler %s is broken. Returned %s items while only requesting %d.",
+                                this.itemHandler.getClass().getName(), extracted.toString(), remainingCurrentSlot);
                         extracted.setCount(remainingCurrentSlot);
                     }
 
                     // Heuristic for simulation: looping in case of simulations is pointless, since the state of the
                     // underlying inventory does not change after a simulated extraction. To still support inventories
                     // that report stacks that are larger than maxStackSize, we use this heuristic
-                    if (simulate && extracted.getCount() == extracted.getMaxStackSize() && remainingCurrentSlot > extracted.getMaxStackSize()) {
+                    if (simulate && extracted.getCount() == extracted.getMaxStackSize()
+                            && remainingCurrentSlot > extracted.getMaxStackSize()) {
                         extracted.setCount(remainingCurrentSlot);
                     }
 
@@ -181,7 +185,8 @@ class ItemHandlerAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAE
                 IAEItemStack cachedStack = this.cache.currentlyCached.findPrecise(request);
                 if (cachedStack != null) {
                     cachedStack.decStackSize(gatheredAEItemStack.getStackSize());
-                    this.postDifference(Collections.singletonList(gatheredAEItemStack.copy().setStackSize(-gatheredAEItemStack.getStackSize())));
+                    this.postDifference(Collections.singletonList(
+                            gatheredAEItemStack.copy().setStackSize(-gatheredAEItemStack.getStackSize())));
                 }
                 try {
                     this.proxyable.getProxy().getTick().alertDevice(this.proxyable.getProxy().getNode());
@@ -233,7 +238,8 @@ class ItemHandlerAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAE
     }
 
     private void postDifference(Iterable<IAEItemStack> a) {
-        final Iterator<Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet().iterator();
+        final Iterator<Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet()
+                .iterator();
         while (i.hasNext()) {
             final Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> l = i.next();
             final IMEMonitorHandlerReceiver<IAEItemStack> key = l.getKey();
@@ -248,7 +254,8 @@ class ItemHandlerAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAE
     private static class InventoryCache implements Iterable<ItemSlot> {
         private final IItemHandler itemHandler;
         private final StorageFilter mode;
-        IItemList<IAEItemStack> currentlyCached = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+        IItemList<IAEItemStack> currentlyCached = AEApi.instance().storage()
+                .getStorageChannel(IItemStorageChannel.class).createList();
 
         public InventoryCache(IItemHandler itemHandler, StorageFilter mode) {
             this.mode = mode;
@@ -267,7 +274,8 @@ class ItemHandlerAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAE
         public List<IAEItemStack> update() {
             final List<IAEItemStack> changes = new ArrayList<>();
 
-            IItemList<IAEItemStack> currentlyOnStorage = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+            IItemList<IAEItemStack> currentlyOnStorage = AEApi.instance().storage()
+                    .getStorageChannel(IItemStorageChannel.class).createList();
 
             for (final ItemSlot is : this) {
                 if (this.mode == StorageFilter.EXTRACTABLE_ONLY && !is.isExtractable()) {

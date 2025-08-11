@@ -18,6 +18,12 @@
 
 package appeng.fluids.client.gui;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.config.*;
 import appeng.client.gui.implementations.GuiUpgradeable;
@@ -35,12 +41,6 @@ import appeng.fluids.client.gui.widgets.GuiOptionalFluidSlot;
 import appeng.fluids.container.ContainerFluidStorageBus;
 import appeng.fluids.parts.PartFluidStorageBus;
 import appeng.fluids.util.IAEFluidTank;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 /**
  * @author BrockWS
@@ -87,11 +87,15 @@ public class GuiFluidStorageBus extends GuiUpgradeable {
     protected void addButtons() {
         this.clear = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.ACTIONS, ActionItems.CLOSE);
         this.partition = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.ACTIONS, ActionItems.WRENCH);
-        this.rwMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.ACCESS, AccessRestriction.READ_WRITE);
-        this.storageFilter = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.STORAGE_FILTER, StorageFilter.EXTRACTABLE_ONLY);
-        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 88, Settings.FUZZY_MODE, FuzzyMode.IGNORE_ALL);
+        this.rwMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 48, Settings.ACCESS,
+                AccessRestriction.READ_WRITE);
+        this.storageFilter = new GuiImgButton(this.guiLeft - 18, this.guiTop + 68, Settings.STORAGE_FILTER,
+                StorageFilter.EXTRACTABLE_ONLY);
+        this.fuzzyMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 88, Settings.FUZZY_MODE,
+                FuzzyMode.IGNORE_ALL);
 
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender));
+        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16,
+                GuiText.Priority.getLocal(), this.itemRender));
 
         this.buttonList.add(this.storageFilter);
         this.buttonList.add(this.fuzzyMode);
@@ -139,7 +143,8 @@ public class GuiFluidStorageBus extends GuiUpgradeable {
             } else if (btn == this.rwMode) {
                 NetworkHandler.instance().sendToServer(new PacketConfigButton(this.rwMode.getSetting(), backwards));
             } else if (btn == this.storageFilter) {
-                NetworkHandler.instance().sendToServer(new PacketConfigButton(this.storageFilter.getSetting(), backwards));
+                NetworkHandler.instance()
+                        .sendToServer(new PacketConfigButton(this.storageFilter.getSetting(), backwards));
             }
         } catch (final IOException e) {
             AELog.debug(e);

@@ -18,12 +18,11 @@
 
 package appeng.services.compass;
 
-
-import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 import java.util.concurrent.ThreadFactory;
 
+import javax.annotation.Nonnull;
+
+import com.google.common.base.Preconditions;
 
 /**
  * @author thatsIch
@@ -34,7 +33,9 @@ public final class CompassThreadFactory implements ThreadFactory {
     @Override
     public Thread newThread(@Nonnull final Runnable job) {
         Preconditions.checkNotNull(job);
+        final Thread compass = new Thread(job, "AE Compass Service");
+        compass.setDaemon(true);
 
-        return new Thread(job, "AE Compass Service");
+        return compass;
     }
 }

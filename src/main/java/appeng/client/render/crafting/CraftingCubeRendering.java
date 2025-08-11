@@ -18,12 +18,9 @@
 
 package appeng.client.render.crafting;
 
+import java.util.HashMap;
+import java.util.Map;
 
-import appeng.block.crafting.BlockCraftingUnit;
-import appeng.bootstrap.BlockRenderingCustomizer;
-import appeng.bootstrap.IBlockRendering;
-import appeng.bootstrap.IItemRendering;
-import appeng.core.AppEng;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -31,9 +28,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import appeng.block.crafting.BlockCraftingUnit;
+import appeng.bootstrap.BlockRenderingCustomizer;
+import appeng.bootstrap.IBlockRendering;
+import appeng.bootstrap.IItemRendering;
+import appeng.core.AppEng;
 
 /**
  * Rendering customization for the crafting cube.
@@ -64,7 +63,8 @@ public class CraftingCubeRendering extends BlockRenderingCustomizer {
 
         // This is the built-in model
         String builtInName = "models/block/crafting/" + this.registryName + "/builtin";
-        ModelResourceLocation builtInModelName = new ModelResourceLocation(new ResourceLocation(AppEng.MOD_ID, builtInName), "normal");
+        ModelResourceLocation builtInModelName = new ModelResourceLocation(
+                new ResourceLocation(AppEng.MOD_ID, builtInName), "normal");
 
         rendering.builtInModel(builtInName, new CraftingCubeModel(this.type));
 
@@ -76,7 +76,8 @@ public class CraftingCubeRendering extends BlockRenderingCustomizer {
 
     }
 
-    private Map<IBlockState, ModelResourceLocation> mapState(Block block, ModelResourceLocation defaultModel, ModelResourceLocation formedModel) {
+    private Map<IBlockState, ModelResourceLocation> mapState(Block block, ModelResourceLocation defaultModel,
+            ModelResourceLocation formedModel) {
         Map<IBlockState, ModelResourceLocation> result = new HashMap<>();
         for (IBlockState state : block.getBlockState().getValidStates()) {
             if (state.getValue(BlockCraftingUnit.FORMED)) {

@@ -18,7 +18,6 @@
 
 package appeng.services.version.exceptions;
 
-
 /**
  * Indicates a invalid build number, which is any string except a natural number.
  */

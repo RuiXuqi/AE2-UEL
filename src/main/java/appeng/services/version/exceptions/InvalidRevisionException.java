@@ -18,7 +18,6 @@
 
 package appeng.services.version.exceptions;
 
-
 /**
  * Indicates a invalid revision, which does not match the pattern "rv" followed by a natural number.
  */

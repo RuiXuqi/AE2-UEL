@@ -18,11 +18,9 @@
 
 package appeng.core.stats;
 
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatBasic;
 import net.minecraft.util.text.TextComponentTranslation;
-
 
 public enum Stats {
 

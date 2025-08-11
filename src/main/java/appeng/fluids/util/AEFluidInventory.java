@@ -1,16 +1,15 @@
 package appeng.fluids.util;
 
+import java.util.Objects;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.AELog;
 import appeng.util.Platform;
 import appeng.util.inv.InvOperation;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-
-import java.util.Objects;
-
 
 public class AEFluidInventory implements IAEFluidTank {
     private final IAEFluidStack[] fluids;
@@ -50,7 +49,8 @@ public class AEFluidInventory implements IAEFluidTank {
                     IAEFluidStack removeStack = this.fluids[slot];
                     this.fluids[slot] = fluid.copy();
                     this.fluids[slot].setStackSize(fluid.getStackSize());
-                    this.onContentChanged(slot, InvOperation.SET, fluid.getFluidStack(), removeStack == null ? null : removeStack.getFluidStack());
+                    this.onContentChanged(slot, InvOperation.SET, fluid.getFluidStack(),
+                            removeStack == null ? null : removeStack.getFluidStack());
                 }
             }
         }
@@ -278,7 +278,8 @@ public class AEFluidInventory implements IAEFluidTank {
 
         @Override
         public FluidStack getContents() {
-            return AEFluidInventory.this.fluids[this.slot] == null ? null : AEFluidInventory.this.fluids[this.slot].getFluidStack();
+            return AEFluidInventory.this.fluids[this.slot] == null ? null
+                    : AEFluidInventory.this.fluids[this.slot].getFluidStack();
         }
 
         @Override

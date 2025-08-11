@@ -18,22 +18,21 @@
 
 package appeng.client.render.cablebus;
 
+import java.lang.ref.WeakReference;
+import java.util.*;
 
-import appeng.api.parts.IPartModel;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-import java.lang.ref.WeakReference;
-import java.util.*;
-
+import appeng.api.parts.IPartModel;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
 
 /**
- * This class captures the entire rendering state needed for a cable bus and transports it to the rendering thread
- * for processing.
+ * This class captures the entire rendering state needed for a cable bus and transports it to the rendering thread for
+ * processing.
  */
 public class CableBusRenderState {
 
@@ -190,9 +189,12 @@ public class CableBusRenderState {
 
         final CableBusRenderState other = (CableBusRenderState) obj;
 
-        return this.cableColor == other.cableColor && this.cableType == other.cableType && this.coreType == other.coreType && Objects
-                .equals(this.attachmentConnections, other.attachmentConnections) && Objects.equals(this.cableBusAdjacent, other.cableBusAdjacent) && Objects
-                .equals(this.channelsOnSide, other.channelsOnSide) && Objects.equals(this.connectionTypes, other.connectionTypes) && Objects
-                .equals(this.partFlags, other.partFlags);
+        return this.cableColor == other.cableColor && this.cableType == other.cableType
+                && this.coreType == other.coreType && Objects
+                        .equals(this.attachmentConnections, other.attachmentConnections)
+                && Objects.equals(this.cableBusAdjacent, other.cableBusAdjacent) && Objects
+                        .equals(this.channelsOnSide, other.channelsOnSide)
+                && Objects.equals(this.connectionTypes, other.connectionTypes) && Objects
+                        .equals(this.partFlags, other.partFlags);
     }
 }

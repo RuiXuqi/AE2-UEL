@@ -18,9 +18,7 @@
 
 package appeng.core.settings;
 
-
 import appeng.core.AEConfig;
-
 
 public enum TickRates {
 

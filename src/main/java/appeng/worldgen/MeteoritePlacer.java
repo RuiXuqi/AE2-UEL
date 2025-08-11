@@ -18,18 +18,11 @@
 
 package appeng.worldgen;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
-import appeng.api.AEApi;
-import appeng.api.definitions.IBlockDefinition;
-import appeng.api.definitions.IBlocks;
-import appeng.api.definitions.IMaterials;
-import appeng.block.storage.BlockSkyChest;
-import appeng.core.AEConfig;
-import appeng.core.features.AEFeature;
-import appeng.core.worlddata.WorldData;
-import appeng.util.InventoryAdaptor;
-import appeng.util.Platform;
-import appeng.worldgen.meteorite.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -43,11 +36,17 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
+import appeng.api.AEApi;
+import appeng.api.definitions.IBlockDefinition;
+import appeng.api.definitions.IBlocks;
+import appeng.api.definitions.IMaterials;
+import appeng.block.storage.BlockSkyChest;
+import appeng.core.AEConfig;
+import appeng.core.features.AEFeature;
+import appeng.core.worlddata.WorldData;
+import appeng.util.InventoryAdaptor;
+import appeng.util.Platform;
+import appeng.worldgen.meteorite.*;
 
 public final class MeteoritePlacer {
     private static final double PRESSES_SPAWN_CHANCE = 0.7;
@@ -181,7 +180,8 @@ public final class MeteoritePlacer {
 
         for (final Object o : w.getWorld()
                 .getEntitiesWithinAABB(EntityItem.class,
-                        new AxisAlignedBB(w.minX(x - 30), y - 5, w.minZ(z - 30), w.maxX(x + 30), y + 30, w.maxZ(z + 30)))) {
+                        new AxisAlignedBB(w.minX(x - 30), y - 5, w.minZ(z - 30), w.maxX(x + 30), y + 30,
+                                w.maxZ(z + 30)))) {
             final Entity e = (Entity) o;
             e.setDead();
         }
@@ -194,59 +194,23 @@ public final class MeteoritePlacer {
 
         if (AEConfig.instance().isFeatureEnabled(AEFeature.SPAWN_PRESSES_IN_METEORITES)) {
             this.skyChestDefinition.maybeBlock().ifPresent(block -> this.putter.put(w, x, y, z,
-                            block.getDefaultState().withProperty(BlockSkyChest.NATURAL, true)));
+                    block.getDefaultState().withProperty(BlockSkyChest.NATURAL, true)));
 
             final TileEntity te = w.getTileEntity(x, y, z);
             final InventoryAdaptor ap = InventoryAdaptor.getAdaptor(te, EnumFacing.UP);
             if (ap != null) {
-                int primary = Math.max(1, (int) (Math.random() * 4));
 
-                if (primary > 3) // in case math breaks...
-                {
-                    primary = 3;
-                }
+                final IMaterials materials = AEApi.instance().definitions().materials();
+                List<ItemStack> presses = new ArrayList<>(4);
+                presses.add(materials.calcProcessorPress().maybeStack(1).orElse(ItemStack.EMPTY));
+                presses.add(materials.engProcessorPress().maybeStack(1).orElse(ItemStack.EMPTY));
+                presses.add(materials.logicProcessorPress().maybeStack(1).orElse(ItemStack.EMPTY));
+                presses.add(materials.siliconPress().maybeStack(1).orElse(ItemStack.EMPTY));
 
-                for (int zz = 0; zz < primary; zz++) {
-                    int r;
-                    boolean duplicate;
-
-                    do {
-                        duplicate = false;
-
-                        if (Math.random() > PRESSES_SPAWN_CHANCE) {
-                            r = WorldData.instance().storageData().getNextOrderedValue("presses");
-                        } else {
-                            r = (int) (Math.random() * 1000);
-                        }
-
-                        ItemStack toAdd = ItemStack.EMPTY;
-                        final IMaterials materials = AEApi.instance().definitions().materials();
-
-                        switch (r % 4) {
-                            case 0:
-                                toAdd = materials.calcProcessorPress().maybeStack(1).orElse(ItemStack.EMPTY);
-                                break;
-                            case 1:
-                                toAdd = materials.engProcessorPress().maybeStack(1).orElse(ItemStack.EMPTY);
-                                break;
-                            case 2:
-                                toAdd = materials.logicProcessorPress().maybeStack(1).orElse(ItemStack.EMPTY);
-                                break;
-                            case 3:
-                                toAdd = materials.siliconPress().maybeStack(1).orElse(ItemStack.EMPTY);
-                                break;
-                            default:
-                        }
-
-                        if (!toAdd.isEmpty()) {
-                            if (ap.simulateRemove(1, toAdd, null).isEmpty()) {
-                                ap.addItems(toAdd);
-                            } else {
-                                duplicate = true;
-                            }
-                        }
+                for (ItemStack press : presses) {
+                    if (!press.isEmpty() && ap.simulateAdd(press).isEmpty()) {
+                        ap.addItems(press);
                     }
-                    while (duplicate);
                 }
 
                 final int secondary = Math.max(1, (int) (Math.random() * 3));
@@ -336,7 +300,8 @@ public final class MeteoritePlacer {
                             final Block xf = w.getBlock(i, j - 1, k);
                             if (!xf.isReplaceable(w.getWorld(), new BlockPos(i, j - 1, k))) {
                                 final double extraRange = Math.random() * 0.6;
-                                final double height = this.crater * (extraRange + 0.2) - Math.abs(dist - this.crater * 1.7);
+                                final double height = this.crater * (extraRange + 0.2)
+                                        - Math.abs(dist - this.crater * 1.7);
 
                                 if (xf != blk && height > 0 && Math.random() > 0.6) {
                                     randomShit++;
@@ -473,7 +438,8 @@ public final class MeteoritePlacer {
             this.settings.setInteger("skyMode", skyMode);
             w.done();
 
-            WorldData.instance().spawnData().addNearByMeteorites(w.getWorld().provider.getDimension(), x >> 4, z >> 4, this.settings);
+            WorldData.instance().spawnData().addNearByMeteorites(w.getWorld().provider.getDimension(), x >> 4, z >> 4,
+                    this.settings);
             return true;
         }
         return false;

@@ -18,9 +18,25 @@
 
 package appeng.parts.p2p;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.Vec3d;
 
 import appeng.api.AEApi;
-import appeng.api.config.*;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
+import appeng.api.config.PowerUnits;
+import appeng.api.config.SecurityPermissions;
+import appeng.api.config.TunnelType;
+import appeng.api.definitions.IParts;
 import appeng.api.implementations.items.IMemoryCard;
 import appeng.api.implementations.items.MemoryCardMessages;
 import appeng.api.networking.events.MENetworkBootingStatusChange;
@@ -40,17 +56,6 @@ import appeng.me.cache.P2PCache;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.parts.PartBasicState;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.Vec3d;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-
 
 public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicState {
     private final TunnelCollection type = new TunnelCollection<T>(null, this.getClass());
@@ -61,7 +66,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
         super(is);
     }
 
-    public TunnelCollection<T> getCollection(final Collection<PartP2PTunnel> collection, final Class<? extends PartP2PTunnel> c) {
+    public TunnelCollection<T> getCollection(final Collection<PartP2PTunnel> collection,
+            final Class<? extends PartP2PTunnel> c) {
         if (this.type.matches(c)) {
             this.type.setSource(collection);
             return this.type;
@@ -180,7 +186,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
         }
 
         final TunnelType tt = AEApi.instance().registries().p2pTunnel().getTunnelTypeByItem(is);
-        if (!is.isEmpty() && is.getItem() instanceof IMemoryCard mc) {
+        if (!is.isEmpty() && is.getItem() instanceof IMemoryCard) {
+            final IMemoryCard mc = (IMemoryCard) is.getItem();
             final NBTTagCompound data = mc.getData(is);
 
             final ItemStack newType = new ItemStack(data);
@@ -202,7 +209,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                         final AEPartLocation dir = this.getHost().addPart(newType, this.getSide(), player, hand);
                         final IPart newBus = this.getHost().getPart(dir);
 
-                        if (newBus instanceof PartP2PTunnel newTunnel) {
+                        if (newBus instanceof PartP2PTunnel) {
+                            final PartP2PTunnel newTunnel = (PartP2PTunnel) newBus;
 
                             if (pasteAsOutput) {
                                 newTunnel.setOutput(true);
@@ -226,7 +234,52 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
             mc.notifyUser(player, MemoryCardMessages.INVALID_MACHINE);
         } else if (tt != null) // attunement
         {
-            final ItemStack newType = tt.getPartItemStack();
+            final ItemStack newType;
+
+            final IParts parts = AEApi.instance().definitions().parts();
+
+            switch (tt) {
+                case LIGHT:
+                    newType = parts.p2PTunnelLight().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case FE_POWER:
+                    newType = parts.p2PTunnelFE().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case GTEU_POWER:
+                    newType = parts.p2PTunnelGTEU().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case FLUID:
+                    newType = parts.p2PTunnelFluids().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case IC2_POWER:
+                    newType = parts.p2PTunnelEU().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case ITEM:
+                    newType = parts.p2PTunnelItems().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case ME:
+                    newType = parts.p2PTunnelME().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                case REDSTONE:
+                    newType = parts.p2PTunnelRedstone().maybeStack(1).orElse(ItemStack.EMPTY);
+                    break;
+
+                /*
+                 * case COMPUTER_MESSAGE: for( ItemStack stack : parts.p2PTunnelOpenComputers().maybeStack( 1 ).asSet()
+                 * ) { newType = stack; } break;
+                 */
+
+                default:
+                    newType = ItemStack.EMPTY;
+                    break;
+            }
 
             if (!newType.isEmpty() && !ItemStack.areItemsEqual(newType, this.getItemStack())) {
                 final boolean oldOutput = this.isOutput();
@@ -243,7 +296,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                 final AEPartLocation dir = this.getHost().addPart(newType, this.getSide(), player, hand);
                 final IPart newBus = this.getHost().getPart(dir);
 
-                if (newBus instanceof PartP2PTunnel newTunnel) {
+                if (newBus instanceof PartP2PTunnel) {
+                    final PartP2PTunnel newTunnel = (PartP2PTunnel) newBus;
                     newTunnel.setOutput(oldOutput);
 
                     try {
@@ -276,11 +330,12 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
         }
 
         final ItemStack is = player.inventory.getCurrentItem();
-        if (!is.isEmpty() && is.getItem() instanceof IMemoryCard mc) {
+        if (!is.isEmpty() && is.getItem() instanceof IMemoryCard) {
             if (Platform.isClient()) {
                 return true;
             }
 
+            final IMemoryCard mc = (IMemoryCard) is.getItem();
             final NBTTagCompound data = mc.getData(is);
             final short storedFrequency = data.getShort("freq");
 
@@ -307,7 +362,8 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
                     final AEPartLocation dir = this.getHost().addPart(newType, this.getSide(), player, hand);
                     final IPart newBus = this.getHost().getPart(dir);
 
-                    if (newBus instanceof PartP2PTunnel newTunnel) {
+                    if (newBus instanceof PartP2PTunnel) {
+                        final PartP2PTunnel newTunnel = (PartP2PTunnel) newBus;
                         newTunnel.setOutput(false);
                         newTunnel.getProxy().getP2P().updateFreq(newTunnel, newFreq);
 
@@ -335,7 +391,7 @@ public abstract class PartP2PTunnel<T extends PartP2PTunnel> extends PartBasicSt
             }
 
             final AEColor[] colors = Platform.p2p().toColors(this.getFrequency());
-            final int[] colorCode = new int[]{
+            final int[] colorCode = new int[] {
                     colors[0].ordinal(), colors[0].ordinal(),
                     colors[1].ordinal(), colors[1].ordinal(),
                     colors[2].ordinal(), colors[2].ordinal(),

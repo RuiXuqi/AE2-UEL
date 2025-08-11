@@ -18,6 +18,10 @@
 
 package appeng.core.api.definitions;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.definitions.IItemDefinition;
 import appeng.api.definitions.IItems;
@@ -50,11 +54,6 @@ import appeng.items.storage.ItemViewCell;
 import appeng.items.tools.*;
 import appeng.items.tools.powered.*;
 import appeng.items.tools.quartz.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import net.minecraftforge.oredict.OreDictionary;
-
 
 /**
  * Internal implementation for the API items
@@ -127,53 +126,69 @@ public final class ApiItems implements IItems {
 
     public ApiItems(FeatureFactory registry) {
         FeatureFactory certusTools = registry.features(AEFeature.CERTUS_QUARTZ_TOOLS);
-        this.certusQuartzAxe = certusTools.item("certus_quartz_axe", () -> new ToolQuartzAxe(AEFeature.CERTUS_QUARTZ_TOOLS))
+        this.certusQuartzAxe = certusTools
+                .item("certus_quartz_axe", () -> new ToolQuartzAxe(AEFeature.CERTUS_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_AXE)
                 .build();
-        this.certusQuartzHoe = certusTools.item("certus_quartz_hoe", () -> new ToolQuartzHoe(AEFeature.CERTUS_QUARTZ_TOOLS))
+        this.certusQuartzHoe = certusTools
+                .item("certus_quartz_hoe", () -> new ToolQuartzHoe(AEFeature.CERTUS_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_HOE)
                 .build();
-        this.certusQuartzShovel = certusTools.item("certus_quartz_spade", () -> new ToolQuartzSpade(AEFeature.CERTUS_QUARTZ_TOOLS))
+        this.certusQuartzShovel = certusTools
+                .item("certus_quartz_spade", () -> new ToolQuartzSpade(AEFeature.CERTUS_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_SPADE)
                 .build();
-        this.certusQuartzPick = certusTools.item("certus_quartz_pickaxe", () -> new ToolQuartzPickaxe(AEFeature.CERTUS_QUARTZ_TOOLS))
+        this.certusQuartzPick = certusTools
+                .item("certus_quartz_pickaxe", () -> new ToolQuartzPickaxe(AEFeature.CERTUS_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_PICKAXE)
                 .build();
-        this.certusQuartzSword = certusTools.item("certus_quartz_sword", () -> new ToolQuartzSword(AEFeature.CERTUS_QUARTZ_TOOLS))
+        this.certusQuartzSword = certusTools
+                .item("certus_quartz_sword", () -> new ToolQuartzSword(AEFeature.CERTUS_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_SWORD)
                 .build();
         this.certusQuartzWrench = certusTools.item("certus_quartz_wrench", ToolQuartzWrench::new)
                 .addFeatures(AEFeature.QUARTZ_WRENCH)
-                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzWrench", new ItemStack(item)))
+                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzWrench",
+                        new ItemStack(item)))
                 .build();
-        this.certusQuartzKnife = certusTools.item("certus_quartz_cutting_knife", () -> new ToolQuartzCuttingKnife(AEFeature.CERTUS_QUARTZ_TOOLS))
+        this.certusQuartzKnife = certusTools
+                .item("certus_quartz_cutting_knife", () -> new ToolQuartzCuttingKnife(AEFeature.CERTUS_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_KNIFE)
-                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzKnife", new ItemStack(item)))
+                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzKnife",
+                        new ItemStack(item)))
                 .build();
 
         FeatureFactory netherTools = registry.features(AEFeature.NETHER_QUARTZ_TOOLS);
-        this.netherQuartzAxe = netherTools.item("nether_quartz_axe", () -> new ToolQuartzAxe(AEFeature.NETHER_QUARTZ_TOOLS))
+        this.netherQuartzAxe = netherTools
+                .item("nether_quartz_axe", () -> new ToolQuartzAxe(AEFeature.NETHER_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_AXE)
                 .build();
-        this.netherQuartzHoe = netherTools.item("nether_quartz_hoe", () -> new ToolQuartzHoe(AEFeature.NETHER_QUARTZ_TOOLS))
+        this.netherQuartzHoe = netherTools
+                .item("nether_quartz_hoe", () -> new ToolQuartzHoe(AEFeature.NETHER_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_HOE)
                 .build();
-        this.netherQuartzShovel = netherTools.item("nether_quartz_spade", () -> new ToolQuartzSpade(AEFeature.NETHER_QUARTZ_TOOLS))
+        this.netherQuartzShovel = netherTools
+                .item("nether_quartz_spade", () -> new ToolQuartzSpade(AEFeature.NETHER_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_SPADE)
                 .build();
-        this.netherQuartzPick = netherTools.item("nether_quartz_pickaxe", () -> new ToolQuartzPickaxe(AEFeature.NETHER_QUARTZ_TOOLS))
+        this.netherQuartzPick = netherTools
+                .item("nether_quartz_pickaxe", () -> new ToolQuartzPickaxe(AEFeature.NETHER_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_PICKAXE)
                 .build();
-        this.netherQuartzSword = netherTools.item("nether_quartz_sword", () -> new ToolQuartzSword(AEFeature.NETHER_QUARTZ_TOOLS))
+        this.netherQuartzSword = netherTools
+                .item("nether_quartz_sword", () -> new ToolQuartzSword(AEFeature.NETHER_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_SWORD)
                 .build();
         this.netherQuartzWrench = netherTools.item("nether_quartz_wrench", ToolQuartzWrench::new)
                 .addFeatures(AEFeature.QUARTZ_WRENCH)
-                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzWrench", new ItemStack(item)))
+                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzWrench",
+                        new ItemStack(item)))
                 .build();
-        this.netherQuartzKnife = netherTools.item("nether_quartz_cutting_knife", () -> new ToolQuartzCuttingKnife(AEFeature.NETHER_QUARTZ_TOOLS))
+        this.netherQuartzKnife = netherTools
+                .item("nether_quartz_cutting_knife", () -> new ToolQuartzCuttingKnife(AEFeature.NETHER_QUARTZ_TOOLS))
                 .addFeatures(AEFeature.QUARTZ_KNIFE)
-                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzKnife", new ItemStack(item)))
+                .bootstrap(item -> (IOreDictComponent) side -> OreDictionary.registerOre("itemQuartzKnife",
+                        new ItemStack(item)))
                 .build();
 
         FeatureFactory powerTools = registry.features(AEFeature.POWERED_TOOLS);
@@ -181,18 +196,26 @@ public final class ApiItems implements IItems {
                 .addFeatures(AEFeature.ENTROPY_MANIPULATOR)
                 .dispenserBehavior(DispenserBlockTool::new)
                 .build();
-        this.wirelessTerminal = powerTools.item("wireless_terminal", ToolWirelessTerminal::new).addFeatures(AEFeature.WIRELESS_ACCESS_TERMINAL).build();
-        this.wirelessCraftingTerminal = powerTools.item("wireless_crafting_terminal", ToolWirelessCraftingTerminal::new).addFeatures(AEFeature.WIRELESS_CRAFTING_TERMINAL).build();
-        this.wirelessPatternTerminal = powerTools.item("wireless_pattern_terminal", ToolWirelessPatternTerminal::new).addFeatures(AEFeature.WIRELESS_PATTERN_TERMINAL).build();
-        this.wirelessFluidTerminal = powerTools.item("wireless_fluid_terminal", ToolWirelessFluidTerminal::new).addFeatures(AEFeature.WIRELESS_FLUID_TERMINAL).build();
-        this.wirelessInterfaceTerminal = powerTools.item("wireless_interface_terminal",ToolWirelessInterfaceTerminal::new).addFeatures(AEFeature.WIRELESS_INTERFACE_TERMINAL).build();
+        this.wirelessTerminal = powerTools.item("wireless_terminal", ToolWirelessTerminal::new)
+                .addFeatures(AEFeature.WIRELESS_ACCESS_TERMINAL).build();
+        this.wirelessCraftingTerminal = powerTools.item("wireless_crafting_terminal", ToolWirelessCraftingTerminal::new)
+                .addFeatures(AEFeature.WIRELESS_CRAFTING_TERMINAL).build();
+        this.wirelessPatternTerminal = powerTools.item("wireless_pattern_terminal", ToolWirelessPatternTerminal::new)
+                .addFeatures(AEFeature.WIRELESS_PATTERN_TERMINAL).build();
+        this.wirelessFluidTerminal = powerTools.item("wireless_fluid_terminal", ToolWirelessFluidTerminal::new)
+                .addFeatures(AEFeature.WIRELESS_FLUID_TERMINAL).build();
+        this.wirelessInterfaceTerminal = powerTools
+                .item("wireless_interface_terminal", ToolWirelessInterfaceTerminal::new)
+                .addFeatures(AEFeature.WIRELESS_INTERFACE_TERMINAL).build();
 
-        this.chargedStaff = powerTools.item("charged_staff", ToolChargedStaff::new).addFeatures(AEFeature.CHARGED_STAFF).build();
+        this.chargedStaff = powerTools.item("charged_staff", ToolChargedStaff::new).addFeatures(AEFeature.CHARGED_STAFF)
+                .build();
         this.massCannon = powerTools.item("matter_cannon", ToolMatterCannon::new)
                 .addFeatures(AEFeature.MATTER_CANNON)
                 .dispenserBehavior(DispenserMatterCannon::new)
                 .build();
-        this.portableCell = powerTools.item("portable_cell", ToolPortableCell::new).addFeatures(AEFeature.PORTABLE_CELL, AEFeature.STORAGE_CELLS).build();
+        this.portableCell = powerTools.item("portable_cell", ToolPortableCell::new)
+                .addFeatures(AEFeature.PORTABLE_CELL, AEFeature.STORAGE_CELLS).build();
         this.colorApplicator = powerTools.item("color_applicator", ToolColorApplicator::new)
                 .addFeatures(AEFeature.COLOR_APPLICATOR)
                 .dispenserBehavior(DispenserBlockTool::new)
@@ -215,20 +238,35 @@ public final class ApiItems implements IItems {
         this.viewCell = registry.item("view_cell", ItemViewCell::new).features(AEFeature.VIEW_CELL).build();
 
         FeatureFactory storageCells = registry.features(AEFeature.STORAGE_CELLS);
-        this.cell1k = storageCells.item("storage_cell_1k", () -> new BasicItemStorageCell(MaterialType.CELL1K_PART, 1)).build();
-        this.cell4k = storageCells.item("storage_cell_4k", () -> new BasicItemStorageCell(MaterialType.CELL4K_PART, 4)).build();
-        this.cell16k = storageCells.item("storage_cell_16k", () -> new BasicItemStorageCell(MaterialType.CELL16K_PART, 16)).build();
-        this.cell64k = storageCells.item("storage_cell_64k", () -> new BasicItemStorageCell(MaterialType.CELL64K_PART, 64)).build();
+        this.cell1k = storageCells.item("storage_cell_1k", () -> new BasicItemStorageCell(MaterialType.CELL1K_PART, 1))
+                .build();
+        this.cell4k = storageCells.item("storage_cell_4k", () -> new BasicItemStorageCell(MaterialType.CELL4K_PART, 4))
+                .build();
+        this.cell16k = storageCells
+                .item("storage_cell_16k", () -> new BasicItemStorageCell(MaterialType.CELL16K_PART, 16)).build();
+        this.cell64k = storageCells
+                .item("storage_cell_64k", () -> new BasicItemStorageCell(MaterialType.CELL64K_PART, 64)).build();
 
-        this.fluidCell1k = storageCells.item("fluid_storage_cell_1k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL1K_PART, 1)).build();
-        this.fluidCell4k = storageCells.item("fluid_storage_cell_4k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL4K_PART, 4)).build();
-        this.fluidCell16k = storageCells.item("fluid_storage_cell_16k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL16K_PART, 16)).build();
-        this.fluidCell64k = storageCells.item("fluid_storage_cell_64k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL64K_PART, 64)).build();
+        this.fluidCell1k = storageCells
+                .item("fluid_storage_cell_1k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL1K_PART, 1))
+                .build();
+        this.fluidCell4k = storageCells
+                .item("fluid_storage_cell_4k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL4K_PART, 4))
+                .build();
+        this.fluidCell16k = storageCells
+                .item("fluid_storage_cell_16k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL16K_PART, 16))
+                .build();
+        this.fluidCell64k = storageCells
+                .item("fluid_storage_cell_64k", () -> new BasicFluidStorageCell(MaterialType.FLUID_CELL64K_PART, 64))
+                .build();
 
         FeatureFactory spatialCells = registry.features(AEFeature.SPATIAL_IO);
-        this.spatialCell2 = spatialCells.item("spatial_storage_cell_2_cubed", () -> new ItemSpatialStorageCell(2)).build();
-        this.spatialCell16 = spatialCells.item("spatial_storage_cell_16_cubed", () -> new ItemSpatialStorageCell(16)).build();
-        this.spatialCell128 = spatialCells.item("spatial_storage_cell_128_cubed", () -> new ItemSpatialStorageCell(128)).build();
+        this.spatialCell2 = spatialCells.item("spatial_storage_cell_2_cubed", () -> new ItemSpatialStorageCell(2))
+                .build();
+        this.spatialCell16 = spatialCells.item("spatial_storage_cell_16_cubed", () -> new ItemSpatialStorageCell(16))
+                .build();
+        this.spatialCell128 = spatialCells.item("spatial_storage_cell_128_cubed", () -> new ItemSpatialStorageCell(128))
+                .build();
 
         this.facade = registry.item("facade", ItemFacade::new)
                 .features(AEFeature.FACADES)
@@ -238,8 +276,7 @@ public final class ApiItems implements IItems {
         this.crystalSeed = registry.item("crystal_seed", ItemCrystalSeed::new)
                 .features(AEFeature.CRYSTAL_SEEDS)
                 .rendering(new ItemCrystalSeedRendering())
-                .bootstrap(item -> (IEntityRegistrationComponent) r ->
-                {
+                .bootstrap(item -> (IEntityRegistrationComponent) r -> {
                     r.register(EntityEntryBuilder.create()
                             .entity(EntityGrowingCrystal.class)
                             .id(new ResourceLocation("appliedenergistics2", EntityGrowingCrystal.class.getName()),
@@ -269,7 +306,8 @@ public final class ApiItems implements IItems {
         this.toolDebugCard = debugTools.item("debug_card", ToolDebugCard::new).build();
         this.toolReplicatorCard = debugTools.item("debug_replicator_card", ToolReplicatorCard::new).build();
 
-        this.dummyFluidItem = registry.item("dummy_fluid_item", FluidDummyItem::new).rendering(new FluidDummyItemRendering()).build();
+        this.dummyFluidItem = registry.item("dummy_fluid_item", FluidDummyItem::new)
+                .rendering(new FluidDummyItemRendering()).build();
     }
 
     @Override

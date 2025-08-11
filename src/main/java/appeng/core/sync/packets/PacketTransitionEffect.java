@@ -18,15 +18,9 @@
 
 package appeng.core.sync.packets;
 
-
-import appeng.api.util.AEPartLocation;
-import appeng.client.render.effects.EnergyFx;
-import appeng.core.AppEng;
-import appeng.core.sync.AppEngPacket;
-import appeng.core.sync.network.INetworkInfo;
-import appeng.util.Platform;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -38,6 +32,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.util.AEPartLocation;
+import appeng.client.render.effects.EnergyFx;
+import appeng.core.AppEng;
+import appeng.core.sync.AppEngPacket;
+import appeng.core.sync.network.INetworkInfo;
+import appeng.util.Platform;
 
 public class PacketTransitionEffect extends AppEngPacket {
 
@@ -57,7 +57,8 @@ public class PacketTransitionEffect extends AppEngPacket {
     }
 
     // api
-    public PacketTransitionEffect(final double x, final double y, final double z, final AEPartLocation dir, final boolean wasBlock) {
+    public PacketTransitionEffect(final double x, final double y, final double z, final AEPartLocation dir,
+            final boolean wasBlock) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -84,9 +85,12 @@ public class PacketTransitionEffect extends AppEngPacket {
         for (int zz = 0; zz < (this.mode ? 32 : 8); zz++) {
             if (AppEng.proxy.shouldAddParticles(Platform.getRandom())) {
                 final EnergyFx fx = new EnergyFx(world, this.x + (this.mode ? (Platform
-                        .getRandomInt() % 100) * 0.01 : (Platform.getRandomInt() % 100) * 0.005 - 0.25), this.y + (this.mode ? (Platform
-                        .getRandomInt() % 100) * 0.01 : (Platform.getRandomInt() % 100) * 0.005 - 0.25), this.z + (this.mode ? (Platform
-                        .getRandomInt() % 100) * 0.01 : (Platform.getRandomInt() % 100) * 0.005 - 0.25), Items.DIAMOND);
+                        .getRandomInt() % 100) * 0.01 : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
+                        this.y + (this.mode ? (Platform
+                                .getRandomInt() % 100) * 0.01 : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
+                        this.z + (this.mode ? (Platform
+                                .getRandomInt() % 100) * 0.01 : (Platform.getRandomInt() % 100) * 0.005 - 0.25),
+                        Items.DIAMOND);
 
                 if (!this.mode) {
                     fx.fromItem(this.d);
@@ -106,8 +110,10 @@ public class PacketTransitionEffect extends AppEngPacket {
             Minecraft.getMinecraft()
                     .getSoundHandler()
                     .playSound(new PositionedSoundRecord(block.getSoundType()
-                            .getBreakSound(), SoundCategory.BLOCKS, (block.getSoundType().getVolume() + 1.0F) / 2.0F, block.getSoundType()
-                            .getPitch() * 0.8F, (float) this.x + 0.5F, (float) this.y + 0.5F, (float) this.z + 0.5F));
+                            .getBreakSound(), SoundCategory.BLOCKS, (block.getSoundType().getVolume() + 1.0F) / 2.0F,
+                            block.getSoundType()
+                                    .getPitch() * 0.8F,
+                            (float) this.x + 0.5F, (float) this.y + 0.5F, (float) this.z + 0.5F));
         }
     }
 }

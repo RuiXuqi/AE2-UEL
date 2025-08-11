@@ -18,9 +18,14 @@
 
 package appeng.client.render.model;
 
-import appeng.block.storage.BlockDrive;
-import appeng.block.storage.DriveSlotState;
-import appeng.block.storage.DriveSlotsState;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -31,12 +36,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import appeng.block.storage.BlockDrive;
+import appeng.block.storage.DriveSlotState;
+import appeng.block.storage.DriveSlotsState;
 
 public class DriveBakedModel implements IBakedModel {
     private final IBakedModel bakedBase;
@@ -92,7 +94,6 @@ public class DriveBakedModel implements IBakedModel {
                 }
             }
         }
-
 
         return result;
     }

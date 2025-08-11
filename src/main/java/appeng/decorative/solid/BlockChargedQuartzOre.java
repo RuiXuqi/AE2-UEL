@@ -18,12 +18,8 @@
 
 package appeng.decorative.solid;
 
+import java.util.Random;
 
-import appeng.api.AEApi;
-import appeng.api.exceptions.MissingDefinitionException;
-import appeng.client.render.effects.ChargedOreFX;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,8 +31,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
-
+import appeng.api.AEApi;
+import appeng.api.exceptions.MissingDefinitionException;
+import appeng.client.render.effects.ChargedOreFX;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
 
 public class BlockChargedQuartzOre extends BlockQuartzOre {
     @Override
@@ -46,7 +45,8 @@ public class BlockChargedQuartzOre extends BlockQuartzOre {
                 .materials()
                 .certusQuartzCrystalCharged()
                 .maybeItem()
-                .orElseThrow(() -> new MissingDefinitionException("Tried to access charged certus quartz crystal, even though they are disabled"));
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to access charged certus quartz crystal, even though they are disabled"));
     }
 
     @Override
@@ -56,18 +56,21 @@ public class BlockChargedQuartzOre extends BlockQuartzOre {
                 .materials()
                 .certusQuartzCrystalCharged()
                 .maybeStack(1)
-                .orElseThrow(() -> new MissingDefinitionException("Tried to access charged certus quartz crystal, even though they are disabled"))
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to access charged certus quartz crystal, even though they are disabled"))
                 .getItemDamage();
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos,
+            EntityPlayer player) {
         return AEApi.instance()
                 .definitions()
                 .blocks()
                 .quartzOreCharged()
                 .maybeStack(1)
-                .orElseThrow(() -> new MissingDefinitionException("Tried to access charged certus quartz ore, even though they are disabled"));
+                .orElseThrow(() -> new MissingDefinitionException(
+                        "Tried to access charged certus quartz ore, even though they are disabled"));
     }
 
     @Override
@@ -106,7 +109,8 @@ public class BlockChargedQuartzOre extends BlockQuartzOre {
         }
 
         if (AppEng.proxy.shouldAddParticles(r)) {
-            final ChargedOreFX fx = new ChargedOreFX(w, pos.getX() + xOff, pos.getY() + yOff, pos.getZ() + zOff, 0.0f, 0.0f, 0.0f);
+            final ChargedOreFX fx = new ChargedOreFX(w, pos.getX() + xOff, pos.getY() + yOff, pos.getZ() + zOff, 0.0f,
+                    0.0f, 0.0f);
             Minecraft.getMinecraft().effectRenderer.addEffect(fx);
         }
     }

@@ -18,6 +18,18 @@
 
 package appeng.services.version.github;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.commons.io.IOUtils;
 
 import appeng.core.AELog;
 import appeng.services.version.Channel;
@@ -25,17 +37,6 @@ import appeng.services.version.Version;
 import appeng.services.version.VersionCheckerConfig;
 import appeng.services.version.VersionParser;
 import appeng.services.version.exceptions.VersionCheckerException;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.apache.commons.io.IOUtils;
-
-import javax.annotation.Nonnull;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
 
 public final class ReleaseFetcher {
     private static final String GITHUB_RELEASES_URL = "https://api.github.com/repos/AppliedEnergistics/Applied-Energistics-2/releases";

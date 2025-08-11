@@ -84,4 +84,5 @@ public interface IMTModGuiContainer2 {
      * @return True if Mouse Tweaks should click the slot on which the RMB was pressed.
      */
     boolean MT_disableRMBDraggingFunctionality();
+
 }

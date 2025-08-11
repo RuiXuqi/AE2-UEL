@@ -18,13 +18,11 @@
 
 package appeng.util;
 
-
-import appeng.core.AELog;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
+import appeng.core.AELog;
 
 public class ClassInstantiation<T> {
     private final Class<? extends T> template;
@@ -36,7 +34,8 @@ public class ClassInstantiation<T> {
     }
 
     public Optional<T> get() {
-        @SuppressWarnings("unchecked") final Constructor<T>[] constructors = (Constructor<T>[]) this.template.getConstructors();
+        @SuppressWarnings("unchecked")
+        final Constructor<T>[] constructors = (Constructor<T>[]) this.template.getConstructors();
 
         for (final Constructor<T> constructor : constructors) {
             final Class<?>[] paramTypes = constructor.getParameterTypes();
@@ -73,8 +72,10 @@ public class ClassInstantiation<T> {
             return true;
         }
 
-        expected = this.condense(expected, Boolean.class, Character.class, Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class);
-        got = this.condense(got, Boolean.class, Character.class, Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class);
+        expected = this.condense(expected, Boolean.class, Character.class, Byte.class, Short.class, Integer.class,
+                Long.class, Float.class, Double.class);
+        got = this.condense(got, Boolean.class, Character.class, Byte.class, Short.class, Integer.class, Long.class,
+                Float.class, Double.class);
 
         return expected == got || expected.isAssignableFrom(got);
     }

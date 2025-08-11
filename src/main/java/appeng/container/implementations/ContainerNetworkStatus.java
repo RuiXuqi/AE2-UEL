@@ -18,6 +18,13 @@
 
 package appeng.container.implementations;
 
+import java.io.IOException;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.guiobjects.INetworkTool;
@@ -37,14 +44,6 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketMEInventoryUpdate;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-
-import java.io.IOException;
-import java.util.List;
-
 
 public class ContainerNetworkStatus extends AEBaseContainer {
 
@@ -103,7 +102,8 @@ public class ContainerNetworkStatus extends AEBaseContainer {
                 final PacketMEInventoryUpdate piu = new PacketMEInventoryUpdate();
 
                 for (final Class<? extends IGridHost> machineClass : this.network.getMachinesClasses()) {
-                    final IItemList<IAEItemStack> list = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+                    final IItemList<IAEItemStack> list = AEApi.instance().storage()
+                            .getStorageChannel(IItemStorageChannel.class).createList();
                     for (final IGridNode machine : this.network.getMachines(machineClass)) {
                         final IGridBlock blk = machine.getGridBlock();
                         final ItemStack is = blk.getMachineRepresentation();

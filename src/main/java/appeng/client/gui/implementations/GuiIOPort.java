@@ -18,6 +18,12 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.api.AEApi;
 import appeng.api.config.FullnessMode;
@@ -31,12 +37,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketConfigButton;
 import appeng.tile.storage.TileIOPort;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
 
 public class GuiIOPort extends GuiUpgradeable {
 
@@ -50,9 +50,12 @@ public class GuiIOPort extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_CONTROLLED, RedstoneMode.IGNORE);
-        this.fullMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.FULLNESS_MODE, FullnessMode.EMPTY);
-        this.operationMode = new GuiImgButton(this.guiLeft + 80, this.guiTop + 17, Settings.OPERATION_MODE, OperationMode.EMPTY);
+        this.redstoneMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 28, Settings.REDSTONE_CONTROLLED,
+                RedstoneMode.IGNORE);
+        this.fullMode = new GuiImgButton(this.guiLeft - 18, this.guiTop + 8, Settings.FULLNESS_MODE,
+                FullnessMode.EMPTY);
+        this.operationMode = new GuiImgButton(this.guiLeft + 80, this.guiTop + 17, Settings.OPERATION_MODE,
+                OperationMode.EMPTY);
 
         this.buttonList.add(this.operationMode);
         this.buttonList.add(this.redstoneMode);
@@ -83,9 +86,11 @@ public class GuiIOPort extends GuiUpgradeable {
 
         final IDefinitions definitions = AEApi.instance().definitions();
 
-        definitions.items().cell1k().maybeStack(1).ifPresent(cell1kStack -> this.drawItem(offsetX + 66 - 8, offsetY + 17, cell1kStack));
+        definitions.items().cell1k().maybeStack(1)
+                .ifPresent(cell1kStack -> this.drawItem(offsetX + 66 - 8, offsetY + 17, cell1kStack));
 
-        definitions.blocks().drive().maybeStack(1).ifPresent(driveStack -> this.drawItem(offsetX + 94 + 8, offsetY + 17, driveStack));
+        definitions.blocks().drive().maybeStack(1)
+                .ifPresent(driveStack -> this.drawItem(offsetX + 94 + 8, offsetY + 17, driveStack));
     }
 
     @Override

@@ -18,12 +18,8 @@
 
 package appeng.fluids.block;
 
+import javax.annotation.Nullable;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.sync.GuiBridge;
-import appeng.fluids.tile.TileFluidInterface;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,8 +29,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.sync.GuiBridge;
+import appeng.fluids.tile.TileFluidInterface;
+import appeng.util.Platform;
 
 public class BlockFluidInterface extends AEBaseTileBlock {
     public BlockFluidInterface() {
@@ -42,7 +41,9 @@ public class BlockFluidInterface extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer p, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (p.isSneaking()) {
             return false;
         }

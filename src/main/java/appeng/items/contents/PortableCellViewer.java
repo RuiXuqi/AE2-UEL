@@ -18,6 +18,10 @@
 
 package appeng.items.contents;
 
+import java.util.Collections;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -34,11 +38,6 @@ import appeng.container.interfaces.IInventorySlotAware;
 import appeng.me.helpers.MEMonitorHandler;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import java.util.Collections;
-
 
 public class PortableCellViewer extends MEMonitorHandler<IAEItemStack> implements IPortableCell, IInventorySlotAware {
 
@@ -47,7 +46,8 @@ public class PortableCellViewer extends MEMonitorHandler<IAEItemStack> implement
     private final int inventorySlot;
 
     public PortableCellViewer(final ItemStack is, final int slot) {
-        super(AEApi.instance().registries().cell().getCellInventory(is, null, AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
+        super(AEApi.instance().registries().cell().getCellInventory(is, null,
+                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)));
         this.ips = (IAEItemPowerStorage) is.getItem();
         this.target = is;
         this.inventorySlot = slot;
@@ -81,7 +81,10 @@ public class PortableCellViewer extends MEMonitorHandler<IAEItemStack> implement
         final IAEItemStack injected = super.injectItems(input, mode, src);
 
         if (mode == Actionable.MODULATE && (injected == null || injected.getStackSize() != size)) {
-            this.notifyListenersOfChange(Collections.singletonList(input.copy().setStackSize(input.getStackSize() - (injected == null ? 0 : injected.getStackSize()))), null);
+            this.notifyListenersOfChange(
+                    Collections.singletonList(input.copy()
+                            .setStackSize(input.getStackSize() - (injected == null ? 0 : injected.getStackSize()))),
+                    null);
         }
 
         return injected;
@@ -92,7 +95,8 @@ public class PortableCellViewer extends MEMonitorHandler<IAEItemStack> implement
         final IAEItemStack extractable = super.extractItems(request, mode, src);
 
         if (mode == Actionable.MODULATE && extractable != null) {
-            this.notifyListenersOfChange(Collections.singletonList(request.copy().setStackSize(-extractable.getStackSize())), null);
+            this.notifyListenersOfChange(
+                    Collections.singletonList(request.copy().setStackSize(-extractable.getStackSize())), null);
         }
 
         return extractable;
@@ -108,8 +112,7 @@ public class PortableCellViewer extends MEMonitorHandler<IAEItemStack> implement
 
     @Override
     public IConfigManager getConfigManager() {
-        final ConfigManager out = new ConfigManager((manager, settingName, newValue) ->
-        {
+        final ConfigManager out = new ConfigManager((manager, settingName, newValue) -> {
             final NBTTagCompound data = Platform.openNbtData(PortableCellViewer.this.target);
             manager.writeToNBT(data);
         });

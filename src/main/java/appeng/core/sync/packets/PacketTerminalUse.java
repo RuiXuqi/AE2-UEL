@@ -1,5 +1,15 @@
 package appeng.core.sync.packets;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.Optional;
+
+import baubles.api.BaublesApi;
+
 import appeng.api.AEApi;
 import appeng.api.features.ILocatable;
 import appeng.api.features.IWirelessTermHandler;
@@ -8,13 +18,6 @@ import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.items.tools.powered.Terminal;
 import appeng.util.Platform;
-import baubles.api.BaublesApi;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.Optional;
 
 public class PacketTerminalUse extends AppEngPacket {
     Terminal terminal;
@@ -61,7 +64,8 @@ public class PacketTerminalUse extends AppEngPacket {
     }
 
     void openGui(ItemStack itemStack, int slotIdx, EntityPlayer player, boolean isBauble) {
-        final IWirelessTermHandler handler = AEApi.instance().registries().wireless().getWirelessTerminalHandler(itemStack);
+        final IWirelessTermHandler handler = AEApi.instance().registries().wireless()
+                .getWirelessTerminalHandler(itemStack);
         if (handler == null) {
             return;
         }

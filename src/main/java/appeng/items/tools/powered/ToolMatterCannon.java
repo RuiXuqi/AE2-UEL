@@ -18,6 +18,29 @@
 
 package appeng.items.tools.powered;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -48,29 +71,6 @@ import appeng.me.helpers.PlayerSource;
 import appeng.tile.misc.TilePaint;
 import appeng.util.LookDirection;
 import appeng.util.Platform;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nullable;
-import java.util.List;
-
 
 public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<IAEItemStack> {
 
@@ -80,7 +80,8 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines, final ITooltipFlag advancedTooltips) {
+    public void addCheckedInformation(final ItemStack stack, final World world, final List<String> lines,
+            final ITooltipFlag advancedTooltips) {
         super.addCheckedInformation(stack, world, lines, advancedTooltips);
 
         final ICellInventoryHandler<IAEItemStack> cdi = AEApi.instance()
@@ -93,7 +94,8 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(final World w, final EntityPlayer p, final @Nullable EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(final World w, final EntityPlayer p,
+            final @Nullable EnumHand hand) {
         if (this.getAECurrentPower(p.getHeldItem(hand)) > 1600) {
             int shots = 1;
 
@@ -109,7 +111,8 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
                             AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
             if (inv != null) {
                 final IItemList<IAEItemStack> itemList = inv
-                        .getAvailableItems(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
+                        .getAvailableItems(
+                                AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList());
                 IAEItemStack req = itemList.getFirstItem();
                 if (req instanceof IAEItemStack) {
                     shots = Math.min(shots, (int) req.getStackSize());
@@ -165,9 +168,12 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
         return new ActionResult<>(EnumActionResult.FAIL, p.getHeldItem(hand));
     }
 
-    private void shootPaintBalls(final ItemStack type, final World w, final EntityPlayer p, final Vec3d Vec3d, final Vec3d Vec3d1, final Vec3d direction, final double d0, final double d1, final double d2) {
-        final AxisAlignedBB bb = new AxisAlignedBB(Math.min(Vec3d.x, Vec3d1.x), Math.min(Vec3d.y, Vec3d1.y), Math.min(Vec3d.z, Vec3d1.z), Math
-                .max(Vec3d.x, Vec3d1.x), Math.max(Vec3d.y, Vec3d1.y), Math.max(Vec3d.z, Vec3d1.z)).grow(16, 16, 16);
+    private void shootPaintBalls(final ItemStack type, final World w, final EntityPlayer p, final Vec3d Vec3d,
+            final Vec3d Vec3d1, final Vec3d direction, final double d0, final double d1, final double d2) {
+        final AxisAlignedBB bb = new AxisAlignedBB(Math.min(Vec3d.x, Vec3d1.x), Math.min(Vec3d.y, Vec3d1.y),
+                Math.min(Vec3d.z, Vec3d1.z), Math
+                        .max(Vec3d.x, Vec3d1.x),
+                Math.max(Vec3d.y, Vec3d1.y), Math.max(Vec3d.z, Vec3d1.z)).grow(16, 16, 16);
 
         Entity entity = null;
         final List list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
@@ -211,8 +217,10 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
 
         try {
             AppEng.proxy.sendToAllNearExcept(null, d0, d1, d2, 128, w,
-                    new PacketMatterCannon(d0, d1, d2, (float) direction.x, (float) direction.y, (float) direction.z, (byte) (pos == null ? 32 : pos.hitVec
-                            .squareDistanceTo(vec) + 1)));
+                    new PacketMatterCannon(d0, d1, d2, (float) direction.x, (float) direction.y, (float) direction.z,
+                            (byte) (pos == null ? 32
+                                    : pos.hitVec
+                                            .squareDistanceTo(vec) + 1)));
         } catch (final Exception err) {
             AELog.debug(err);
         }
@@ -226,7 +234,7 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
             if (pos.typeOfHit == RayTraceResult.Type.ENTITY) {
                 final int id = pos.entityHit.getEntityId();
                 final PlayerColor marker = new PlayerColor(id, col, 20 * 30);
-                TickHandler.INSTANCE.getPlayerColors().put(id, marker);
+                TickHandler.instance().getPlayerColors().put(id, marker);
 
                 if (pos.entityHit instanceof EntitySheep) {
                     final EntitySheep sh = (EntitySheep) pos.entityHit;
@@ -245,8 +253,7 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
 
                 final Block whatsThere = w.getBlockState(hitPos).getBlock();
                 if (whatsThere.isReplaceable(w, hitPos) && w.isAirBlock(hitPos)) {
-                    AEApi.instance().definitions().blocks().paint().maybeBlock().ifPresent(paintBlock ->
-                    {
+                    AEApi.instance().definitions().blocks().paint().maybeBlock().ifPresent(paintBlock -> {
                         w.setBlockState(hitPos, paintBlock.getDefaultState(), 3);
                     });
                 }
@@ -260,13 +267,16 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
         }
     }
 
-    private void standardAmmo(float penetration, final World w, final EntityPlayer p, final Vec3d Vec3d, final Vec3d Vec3d1, final Vec3d direction, final double d0, final double d1, final double d2) {
+    private void standardAmmo(float penetration, final World w, final EntityPlayer p, final Vec3d Vec3d,
+            final Vec3d Vec3d1, final Vec3d direction, final double d0, final double d1, final double d2) {
         boolean hasDestroyed = true;
         while (penetration > 0 && hasDestroyed) {
             hasDestroyed = false;
 
-            final AxisAlignedBB bb = new AxisAlignedBB(Math.min(Vec3d.x, Vec3d1.x), Math.min(Vec3d.y, Vec3d1.y), Math.min(Vec3d.z, Vec3d1.z), Math
-                    .max(Vec3d.x, Vec3d1.x), Math.max(Vec3d.y, Vec3d1.y), Math.max(Vec3d.z, Vec3d1.z)).grow(16, 16, 16);
+            final AxisAlignedBB bb = new AxisAlignedBB(Math.min(Vec3d.x, Vec3d1.x), Math.min(Vec3d.y, Vec3d1.y),
+                    Math.min(Vec3d.z, Vec3d1.z), Math
+                            .max(Vec3d.x, Vec3d1.x),
+                    Math.max(Vec3d.y, Vec3d1.y), Math.max(Vec3d.z, Vec3d1.z)).grow(16, 16, 16);
 
             Entity entity = null;
             final List list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
@@ -309,8 +319,10 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
 
             try {
                 AppEng.proxy.sendToAllNearExcept(null, d0, d1, d2, 128, w,
-                        new PacketMatterCannon(d0, d1, d2, (float) direction.x, (float) direction.y, (float) direction.z, (byte) (pos == null ? 32 : pos.hitVec
-                                .squareDistanceTo(vec) + 1)));
+                        new PacketMatterCannon(d0, d1, d2, (float) direction.x, (float) direction.y,
+                                (float) direction.z, (byte) (pos == null ? 32
+                                        : pos.hitVec
+                                                .squareDistanceTo(vec) + 1)));
             } catch (final Exception err) {
                 AELog.debug(err);
             }
@@ -347,7 +359,8 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
 
                         final float hardness = bs.getBlockHardness(w, pos.getBlockPos()) * 9.0f;
                         if (hardness >= 0.0) {
-                            if (penetration > hardness && Platform.hasPermissions(new DimensionalCoord(w, pos.getBlockPos()), p)) {
+                            if (penetration > hardness
+                                    && Platform.hasPermissions(new DimensionalCoord(w, pos.getBlockPos()), p)) {
                                 hasDestroyed = true;
                                 penetration -= hardness;
                                 penetration *= 0.60;
@@ -407,7 +420,8 @@ public class ToolMatterCannon extends AEBasePoweredItem implements IStorageCell<
 
     @Override
     public boolean isBlackListed(final ItemStack cellItem, final IAEItemStack requestedAddition) {
-        final float pen = AEApi.instance().registries().matterCannon().getPenetration(requestedAddition.createItemStack());
+        final float pen = AEApi.instance().registries().matterCannon()
+                .getPenetration(requestedAddition.createItemStack());
         if (pen > 0) {
             return false;
         }

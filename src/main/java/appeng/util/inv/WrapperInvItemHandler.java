@@ -18,14 +18,13 @@
 
 package appeng.util.inv;
 
-
-import appeng.util.helpers.ItemHandlerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.IItemHandler;
 
+import appeng.util.helpers.ItemHandlerUtil;
 
 public class WrapperInvItemHandler implements IInventory {
     private final IItemHandler inv;

@@ -18,9 +18,7 @@
 
 package appeng.core.worlddata;
 
-
 import javax.annotation.Nonnull;
-
 
 /**
  * @author thatsIch

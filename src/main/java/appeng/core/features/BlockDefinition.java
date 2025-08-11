@@ -18,17 +18,17 @@
 
 package appeng.core.features;
 
+import java.util.Optional;
 
-import appeng.api.definitions.IBlockDefinition;
 import com.google.common.base.Preconditions;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-import java.util.Optional;
-
+import appeng.api.definitions.IBlockDefinition;
 
 public class BlockDefinition extends ItemDefinition implements IBlockDefinition {
     private final Optional<Block> block;

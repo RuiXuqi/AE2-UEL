@@ -18,8 +18,21 @@
 
 package appeng.core;
 
+import java.io.File;
+import java.util.*;
+import java.util.stream.Stream;
+
+import com.google.common.collect.Sets;
+
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import appeng.api.config.*;
+import appeng.api.networking.pathing.ChannelMode;
 import appeng.api.util.IConfigManager;
 import appeng.api.util.IConfigurableObject;
 import appeng.core.features.AEFeature;
@@ -28,18 +41,6 @@ import appeng.items.materials.MaterialType;
 import appeng.util.ConfigManager;
 import appeng.util.IConfigManagerHost;
 import appeng.util.Platform;
-import com.google.common.collect.Sets;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.io.File;
-import java.util.*;
-import java.util.stream.Stream;
-
 
 public final class AEConfig extends Configuration implements IConfigurableObject, IConfigManagerHost {
 
@@ -49,10 +50,12 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     // Tunnels
     public static final double TUNNEL_POWER_LOSS = 0.05;
     // Default Grindstone ores
-    private static final String[] ORES_VANILLA = {"Obsidian", "Ender", "EnderPearl", "Coal", "Iron", "Gold", "Charcoal", "NetherQuartz"};
-    private static final String[] ORES_AE = {"CertusQuartz", "Wheat", "Fluix"};
-    private static final String[] ORES_COMMON = {"Copper", "Tin", "Silver", "Lead", "Bronze"};
-    private static final String[] ORES_MISC = {"Brass", "Platinum", "Nickel", "Invar", "Aluminium", "Electrum", "Osmium", "Zinc"};
+    private static final String[] ORES_VANILLA = { "Obsidian", "Ender", "EnderPearl", "Coal", "Iron", "Gold",
+            "Charcoal", "NetherQuartz" };
+    private static final String[] ORES_AE = { "CertusQuartz", "Wheat", "Fluix" };
+    private static final String[] ORES_COMMON = { "Copper", "Tin", "Silver", "Lead", "Bronze" };
+    private static final String[] ORES_MISC = { "Brass", "Platinum", "Nickel", "Invar", "Aluminium", "Electrum",
+            "Osmium", "Zinc" };
     // Default Energy Conversion Rates
     private static final double DEFAULT_IC2_EXCHANGE = 2.0;
     private static final double DEFAULT_GTEU_EXCHANGE = 2.0;
@@ -64,14 +67,39 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     private final EnumSet<AEFeature> featureFlags = EnumSet.noneOf(AEFeature.class);
     private final File configFile;
     // GUI Buttons
-    private final int[] craftByStacks = {1, 10, 100, 1000};
-    private final int[] priorityByStacks = {1, 10, 100, 1000};
-    private final int[] levelByStacks = {1, 10, 100, 1000};
-    private final int[] levelByMillibuckets = {10, 100, 1000, 10000};
+    private final int[] craftByStacks = { 1, 10, 100, 1000 };
+    private final int[] priorityByStacks = { 1, 10, 100, 1000 };
+    private final int[] levelByStacks = { 1, 10, 100, 1000 };
+    private final int[] levelByMillibuckets = { 10, 100, 1000, 10000 };
     private final Set<String> grinderBlackList;
     private final int chargedChange = 4;
     private final double wirelessHighWirelessCount = 64;
-    private String[] nonBlockingItems = {"[gregtech|actuallyadditions]", "gregtech:circuit.integrated", "gregtech:shape.mold.plate", "gregtech:shape.mold.gear", "gregtech:shape.mold.credit", "gregtech:shape.mold.bottle", "gregtech:shape.mold.ingot", "gregtech:shape.mold.ball", "gregtech:shape.mold.block", "gregtech:shape.mold.nugget", "gregtech:shape.mold.cylinder", "gregtech:shape.mold.anvil", "gregtech:shape.mold.name", "gregtech:shape.mold.gear.small", "gregtech:shape.mold.rotor", "gregtech:shape.extruder.plate", "gregtech:shape.extruder.rod", "gregtech:shape.extruder.bolt", "gregtech:shape.extruder.ring", "gregtech:shape.extruder.cell", "gregtech:shape.extruder.ingot", "gregtech:shape.extruder.wire", "gregtech:shape.extruder.pipe.tiny", "gregtech:shape.extruder.pipe.small", "gregtech:shape.extruder.pipe.medium", "gregtech:shape.extruder.pipe.normal", "gregtech:shape.extruder.pipe.large", "gregtech:shape.extruder.pipe.huge", "gregtech:shape.extruder.block", "gregtech:shape.extruder.sword", "gregtech:shape.extruder.pickaxe", "gregtech:shape.extruder.shovel", "gregtech:shape.extruder.axe", "gregtech:shape.extruder.hoe", "gregtech:shape.extruder.hammer", "gregtech:shape.extruder.file", "gregtech:shape.extruder.saw", "gregtech:shape.extruder.gear", "gregtech:shape.extruder.bottle", "gregtech:shape.extruder.foil", "gregtech:shape.extruder.gear_small", "gregtech:shape.extruder.rod_long", "gregtech:shape.extruder.rotor", "gregtech:glass_lens.white", "gregtech:glass_lens.orange", "gregtech:glass_lens.magenta", "gregtech:glass_lens.light_blue", "gregtech:glass_lens.yellow", "gregtech:glass_lens.lime", "gregtech:glass_lens.pink", "gregtech:glass_lens.gray", "gregtech:glass_lens.light_gray", "gregtech:glass_lens.cyan", "gregtech:glass_lens.purple", "gregtech:glass_lens.blue", "gregtech:glass_lens.brown", "gregtech:glass_lens.green", "gregtech:glass_lens.red", "gregtech:glass_lens.black", "contenttweaker:smallgearextrudershape", "contenttweaker:creativeportabletankmold", "ore:lensAlmandine", "ore:lensBlueTopaz", "ore:lensDiamond", "ore:lensEmerald", "ore:lensGreenSapphire", "ore:lensRutile", "ore:lensRuby", "ore:lensSapphire", "ore:lensTopaz", "ore:lensJasper", "ore:lensGlass", "ore:lensOlivine", "ore:lensOpal", "ore:lensAmethyst", "ore:lensLapis", "ore:lensEnderPearl", "ore:lensEnderEye", "ore:lensGarnetRed", "ore:lensGarnetYellow", "ore:lensVinteum", "ore:lensNetherStar",};
+    private String[] nonBlockingItems = { "[gregtech|actuallyadditions]", "gregtech:circuit.integrated",
+            "gregtech:shape.mold.plate", "gregtech:shape.mold.gear", "gregtech:shape.mold.credit",
+            "gregtech:shape.mold.bottle", "gregtech:shape.mold.ingot", "gregtech:shape.mold.ball",
+            "gregtech:shape.mold.block", "gregtech:shape.mold.nugget", "gregtech:shape.mold.cylinder",
+            "gregtech:shape.mold.anvil", "gregtech:shape.mold.name", "gregtech:shape.mold.gear.small",
+            "gregtech:shape.mold.rotor", "gregtech:shape.extruder.plate", "gregtech:shape.extruder.rod",
+            "gregtech:shape.extruder.bolt", "gregtech:shape.extruder.ring", "gregtech:shape.extruder.cell",
+            "gregtech:shape.extruder.ingot", "gregtech:shape.extruder.wire", "gregtech:shape.extruder.pipe.tiny",
+            "gregtech:shape.extruder.pipe.small", "gregtech:shape.extruder.pipe.medium",
+            "gregtech:shape.extruder.pipe.normal", "gregtech:shape.extruder.pipe.large",
+            "gregtech:shape.extruder.pipe.huge", "gregtech:shape.extruder.block", "gregtech:shape.extruder.sword",
+            "gregtech:shape.extruder.pickaxe", "gregtech:shape.extruder.shovel", "gregtech:shape.extruder.axe",
+            "gregtech:shape.extruder.hoe", "gregtech:shape.extruder.hammer", "gregtech:shape.extruder.file",
+            "gregtech:shape.extruder.saw", "gregtech:shape.extruder.gear", "gregtech:shape.extruder.bottle",
+            "gregtech:shape.extruder.foil", "gregtech:shape.extruder.gear_small", "gregtech:shape.extruder.rod_long",
+            "gregtech:shape.extruder.rotor", "gregtech:glass_lens.white", "gregtech:glass_lens.orange",
+            "gregtech:glass_lens.magenta", "gregtech:glass_lens.light_blue", "gregtech:glass_lens.yellow",
+            "gregtech:glass_lens.lime", "gregtech:glass_lens.pink", "gregtech:glass_lens.gray",
+            "gregtech:glass_lens.light_gray", "gregtech:glass_lens.cyan", "gregtech:glass_lens.purple",
+            "gregtech:glass_lens.blue", "gregtech:glass_lens.brown", "gregtech:glass_lens.green",
+            "gregtech:glass_lens.red", "gregtech:glass_lens.black", "contenttweaker:smallgearextrudershape",
+            "contenttweaker:creativeportabletankmold", "ore:lensAlmandine", "ore:lensBlueTopaz", "ore:lensDiamond",
+            "ore:lensEmerald", "ore:lensGreenSapphire", "ore:lensRutile", "ore:lensRuby", "ore:lensSapphire",
+            "ore:lensTopaz", "ore:lensJasper", "ore:lensGlass", "ore:lensOlivine", "ore:lensOpal", "ore:lensAmethyst",
+            "ore:lensLapis", "ore:lensEnderPearl", "ore:lensEnderEye", "ore:lensGarnetRed", "ore:lensGarnetYellow",
+            "ore:lensVinteum", "ore:lensNetherStar", };
     private boolean updatable = false;
     // Misc
     private boolean removeCrashingItemsOnLoad = false;
@@ -92,7 +120,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     private double spatialPowerExponent = 1.35;
     private double spatialPowerMultiplier = 1250.0;
     // Grindstone
-    private String[] grinderOres = Stream.of(ORES_VANILLA, ORES_AE, ORES_COMMON, ORES_MISC).flatMap(Stream::of).toArray(String[]::new);
+    private String[] grinderOres = Stream.of(ORES_VANILLA, ORES_AE, ORES_COMMON, ORES_MISC).flatMap(Stream::of)
+            .toArray(String[]::new);
     private double oreDoublePercentage = 90.0;
     // Batteries
     private int wirelessTerminalBattery = 1600000;
@@ -110,7 +139,7 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     private int minMeteoriteDistanceSq = this.minMeteoriteDistance * this.minMeteoriteDistance;
     private double meteoriteClusterChance = 0.1;
     private int meteoriteMaximumSpawnHeight = 180;
-    private int[] meteoriteDimensionWhitelist = {0};
+    private int[] meteoriteDimensionWhitelist = { 0 };
     // Wireless
     private double wirelessBaseCost = 8;
     private double wirelessCostMultiplier = 1;
@@ -128,15 +157,20 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     private int normalChannelCapacity = 8;
     private int denseChannelCapacity = 32;
 
+    private ChannelMode channelMode = ChannelMode.DEFAULT;
+
     private AEConfig(final File configFile) {
         super(configFile);
         this.configFile = configFile;
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        PowerUnits.EU.conversionRatio = this.get("PowerRatios", "IC2", DEFAULT_IC2_EXCHANGE).getDouble(DEFAULT_IC2_EXCHANGE);
-        PowerUnits.RF.conversionRatio = this.get("PowerRatios", "ForgeEnergy", DEFAULT_RF_EXCHANGE).getDouble(DEFAULT_RF_EXCHANGE);
-        PowerUnits.GTEU.conversionRatio = this.get("PowerRatios", "GTEU", DEFAULT_GTEU_EXCHANGE).getDouble(DEFAULT_GTEU_EXCHANGE);
+        PowerUnits.EU.conversionRatio = this.get("PowerRatios", "IC2", DEFAULT_IC2_EXCHANGE)
+                .getDouble(DEFAULT_IC2_EXCHANGE);
+        PowerUnits.RF.conversionRatio = this.get("PowerRatios", "ForgeEnergy", DEFAULT_RF_EXCHANGE)
+                .getDouble(DEFAULT_RF_EXCHANGE);
+        PowerUnits.GTEU.conversionRatio = this.get("PowerRatios", "GTEU", DEFAULT_GTEU_EXCHANGE)
+                .getDouble(DEFAULT_GTEU_EXCHANGE);
 
         final double usageEffective = this.get("PowerRatios", "UsageMultiplier", 1.0).getDouble(1.0);
         PowerMultiplier.CONFIG.multiplier = Math.max(0.01, usageEffective);
@@ -144,66 +178,113 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         CondenserOutput.MATTER_BALLS.requiredPower = this.get("Condenser", "MatterBalls", 256).getInt(256);
         CondenserOutput.SINGULARITY.requiredPower = this.get("Condenser", "Singularity", 256000).getInt(256000);
 
-        this.removeCrashingItemsOnLoad = this.get("general", "removeCrashingItemsOnLoad", false, "Will auto-remove items that crash when being loaded from storage. This will destroy those items instead of crashing the game!").getBoolean();
-        this.normalChannelCapacity = Math.min(this.get("general", "normalChannelCapacity", this.normalChannelCapacity, "Max channel number may not exceed 256").getInt(this.normalChannelCapacity), 256);
-        this.denseChannelCapacity = Math.min(this.get("general", "denseChannelCapacity", this.denseChannelCapacity, "Max channel number may not exceed 256").getInt(this.denseChannelCapacity), 256);
+        this.removeCrashingItemsOnLoad = this.get("general", "removeCrashingItemsOnLoad", false,
+                "Will auto-remove items that crash when being loaded from storage. This will destroy those items instead of crashing the game!")
+                .getBoolean();
+        this.normalChannelCapacity = Math.min(this.get("general", "normalChannelCapacity", this.normalChannelCapacity,
+                "Max channel number may not exceed 256").getInt(this.normalChannelCapacity), 256);
+        this.denseChannelCapacity = Math.min(this.get("general", "denseChannelCapacity", this.denseChannelCapacity,
+                "Max channel number may not exceed 256").getInt(this.denseChannelCapacity), 256);
 
-        this.setCategoryComment("BlockingMode", "Map of items to not block when blockingmode is enabled.\n[modid]\nmodid:item:metadata(optional,default:0)\nSupports more than one modid, so you can block different things between, for example, gregtech or enderio");
-        this.nonBlockingItems = this.get("BlockingMode", "nonBlockingItems", nonBlockingItems, "NonBlockingItems").getStringList();
+        this.setCategoryComment("BlockingMode",
+                "Map of items to not block when blockingmode is enabled.\n[modid]\nmodid:item:metadata(optional,default:0)\nSupports more than one modid, so you can block different things between, for example, gregtech or enderio");
+        this.nonBlockingItems = this.get("BlockingMode", "nonBlockingItems", nonBlockingItems, "NonBlockingItems")
+                .getStringList();
 
-        this.setCategoryComment("GrindStone", "Creates recipe of the following pattern automatically: '1 oreTYPE => 2 dustTYPE' and '(1 ingotTYPE or 1 crystalTYPE or 1 gemTYPE) => 1 dustTYPE'");
-        this.grinderOres = this.get("GrindStone", "grinderOres", this.grinderOres, "The list of types to handle. Specify without a prefix like ore or dust.").getStringList();
-        this.grinderBlackList = Sets.newHashSet(this.get("GrindStone", "blacklist", new String[]{}, "Blacklists the exact oredict name from being handled by any recipe.").getStringList());
-        this.oreDoublePercentage = this.get("GrindStone", "oreDoublePercentage", this.oreDoublePercentage, "Chance to actually get an output with stacksize > 1.").getDouble(this.oreDoublePercentage);
+        this.setCategoryComment("GrindStone",
+                "Creates recipe of the following pattern automatically: '1 oreTYPE => 2 dustTYPE' and '(1 ingotTYPE or 1 crystalTYPE or 1 gemTYPE) => 1 dustTYPE'");
+        this.grinderOres = this.get("GrindStone", "grinderOres", this.grinderOres,
+                "The list of types to handle. Specify without a prefix like ore or dust.").getStringList();
+        this.grinderBlackList = Sets.newHashSet(this.get("GrindStone", "blacklist", new String[] {},
+                "Blacklists the exact oredict name from being handled by any recipe.").getStringList());
+        this.oreDoublePercentage = this.get("GrindStone", "oreDoublePercentage", this.oreDoublePercentage,
+                "Chance to actually get an output with stacksize > 1.").getDouble(this.oreDoublePercentage);
 
         this.settings.registerSetting(Settings.SEARCH_TOOLTIPS, YesNo.YES);
         this.settings.registerSetting(Settings.TERMINAL_STYLE, TerminalStyle.TALL);
         this.settings.registerSetting(Settings.SEARCH_MODE, SearchBoxMode.AUTOSEARCH);
 
-        this.spawnChargedChance = (float) (1.0 - this.get("worldGen", "spawnChargedChance", 1.0 - this.spawnChargedChance).getDouble(1.0 - this.spawnChargedChance));
-        this.minMeteoriteDistance = this.get("worldGen", "minMeteoriteDistance", this.minMeteoriteDistance).getInt(this.minMeteoriteDistance);
-        this.meteoriteClusterChance = this.get("worldGen", "meteoriteClusterChance", this.meteoriteClusterChance).getDouble(this.meteoriteClusterChance);
-        this.meteoriteMaximumSpawnHeight = this.get("worldGen", "meteoriteMaximumSpawnHeight", this.meteoriteMaximumSpawnHeight).getInt(this.meteoriteMaximumSpawnHeight);
-        this.meteoriteDimensionWhitelist = this.get("worldGen", "meteoriteDimensionWhitelist", this.meteoriteDimensionWhitelist).getIntList();
+        this.spawnChargedChance = (float) (1.0
+                - this.get("worldGen", "spawnChargedChance", 1.0 - this.spawnChargedChance)
+                        .getDouble(1.0 - this.spawnChargedChance));
+        this.minMeteoriteDistance = this.get("worldGen", "minMeteoriteDistance", this.minMeteoriteDistance)
+                .getInt(this.minMeteoriteDistance);
+        this.meteoriteClusterChance = this.get("worldGen", "meteoriteClusterChance", this.meteoriteClusterChance)
+                .getDouble(this.meteoriteClusterChance);
+        this.meteoriteMaximumSpawnHeight = this
+                .get("worldGen", "meteoriteMaximumSpawnHeight", this.meteoriteMaximumSpawnHeight)
+                .getInt(this.meteoriteMaximumSpawnHeight);
+        this.meteoriteDimensionWhitelist = this
+                .get("worldGen", "meteoriteDimensionWhitelist", this.meteoriteDimensionWhitelist).getIntList();
 
-        this.quartzOresPerCluster = this.get("worldGen", "quartzOresPerCluster", this.quartzOresPerCluster).getInt(this.quartzOresPerCluster);
-        this.quartzOresClusterAmount = this.get("worldGen", "quartzOresClusterAmount", this.quartzOresClusterAmount).getInt(this.quartzOresClusterAmount);
+        this.quartzOresPerCluster = this.get("worldGen", "quartzOresPerCluster", this.quartzOresPerCluster)
+                .getInt(this.quartzOresPerCluster);
+        this.quartzOresClusterAmount = this.get("worldGen", "quartzOresClusterAmount", this.quartzOresClusterAmount)
+                .getInt(this.quartzOresClusterAmount);
 
         this.minMeteoriteDistanceSq = this.minMeteoriteDistance * this.minMeteoriteDistance;
 
-        this.addCustomCategoryComment("wireless", "Range= wirelessBaseRange + wirelessBoosterRangeMultiplier * Math.pow( boosters, wirelessBoosterExp )\nPowerDrain= wirelessBaseCost + wirelessCostMultiplier * Math.pow( boosters, 1 + boosters / wirelessHighWirelessCount )");
+        this.addCustomCategoryComment("wireless",
+                "Range= wirelessBaseRange + wirelessBoosterRangeMultiplier * Math.pow( boosters, wirelessBoosterExp )\nPowerDrain= wirelessBaseCost + wirelessCostMultiplier * Math.pow( boosters, 1 + boosters / wirelessHighWirelessCount )");
 
-        this.wirelessBaseCost = this.get("wireless", "wirelessBaseCost", this.wirelessBaseCost).getDouble(this.wirelessBaseCost);
-        this.wirelessCostMultiplier = this.get("wireless", "wirelessCostMultiplier", this.wirelessCostMultiplier).getDouble(this.wirelessCostMultiplier);
-        this.wirelessBaseRange = this.get("wireless", "wirelessBaseRange", this.wirelessBaseRange).getDouble(this.wirelessBaseRange);
-        this.wirelessBoosterRangeMultiplier = this.get("wireless", "wirelessBoosterRangeMultiplier", this.wirelessBoosterRangeMultiplier).getDouble(this.wirelessBoosterRangeMultiplier);
-        this.wirelessBoosterExp = this.get("wireless", "wirelessBoosterExp", this.wirelessBoosterExp).getDouble(this.wirelessBoosterExp);
-        this.wirelessTerminalDrainMultiplier = this.get("wireless", "wirelessTerminalDrainMultiplier", this.wirelessTerminalDrainMultiplier).getDouble(this.wirelessTerminalDrainMultiplier);
+        this.wirelessBaseCost = this.get("wireless", "wirelessBaseCost", this.wirelessBaseCost)
+                .getDouble(this.wirelessBaseCost);
+        this.wirelessCostMultiplier = this.get("wireless", "wirelessCostMultiplier", this.wirelessCostMultiplier)
+                .getDouble(this.wirelessCostMultiplier);
+        this.wirelessBaseRange = this.get("wireless", "wirelessBaseRange", this.wirelessBaseRange)
+                .getDouble(this.wirelessBaseRange);
+        this.wirelessBoosterRangeMultiplier = this
+                .get("wireless", "wirelessBoosterRangeMultiplier", this.wirelessBoosterRangeMultiplier)
+                .getDouble(this.wirelessBoosterRangeMultiplier);
+        this.wirelessBoosterExp = this.get("wireless", "wirelessBoosterExp", this.wirelessBoosterExp)
+                .getDouble(this.wirelessBoosterExp);
+        this.wirelessTerminalDrainMultiplier = this
+                .get("wireless", "wirelessTerminalDrainMultiplier", this.wirelessTerminalDrainMultiplier)
+                .getDouble(this.wirelessTerminalDrainMultiplier);
 
-        this.formationPlaneEntityLimit = this.get("automation", "formationPlaneEntityLimit", this.formationPlaneEntityLimit).getInt(this.formationPlaneEntityLimit);
+        this.formationPlaneEntityLimit = this
+                .get("automation", "formationPlaneEntityLimit", this.formationPlaneEntityLimit)
+                .getInt(this.formationPlaneEntityLimit);
 
-        this.wirelessTerminalBattery = this.get("battery", "wirelessTerminal", this.wirelessTerminalBattery).getInt(this.wirelessTerminalBattery);
-        this.chargedStaffBattery = this.get("battery", "chargedStaff", this.chargedStaffBattery).getInt(this.chargedStaffBattery);
-        this.entropyManipulatorBattery = this.get("battery", "entropyManipulator", this.entropyManipulatorBattery).getInt(this.entropyManipulatorBattery);
-        this.portableCellBattery = this.get("battery", "portableCell", this.portableCellBattery).getInt(this.portableCellBattery);
-        this.colorApplicatorBattery = this.get("battery", "colorApplicator", this.colorApplicatorBattery).getInt(this.colorApplicatorBattery);
-        this.matterCannonBattery = this.get("battery", "matterCannon", this.matterCannonBattery).getInt(this.matterCannonBattery);
+        this.wirelessTerminalBattery = this.get("battery", "wirelessTerminal", this.wirelessTerminalBattery)
+                .getInt(this.wirelessTerminalBattery);
+        this.chargedStaffBattery = this.get("battery", "chargedStaff", this.chargedStaffBattery)
+                .getInt(this.chargedStaffBattery);
+        this.entropyManipulatorBattery = this.get("battery", "entropyManipulator", this.entropyManipulatorBattery)
+                .getInt(this.entropyManipulatorBattery);
+        this.portableCellBattery = this.get("battery", "portableCell", this.portableCellBattery)
+                .getInt(this.portableCellBattery);
+        this.colorApplicatorBattery = this.get("battery", "colorApplicator", this.colorApplicatorBattery)
+                .getInt(this.colorApplicatorBattery);
+        this.matterCannonBattery = this.get("battery", "matterCannon", this.matterCannonBattery)
+                .getInt(this.matterCannonBattery);
 
-        this.addCustomCategoryComment("autocrafting", "Enable patterns with substitutions on to have their substitutes to be auto craftable.\nThis changes the crafting tree, and can show missing ingredients for the substitute, instead of the patterned item");
-        this.enableCraftingSubstitutes = this.get("autocrafting", "EnableAutocraftinSubstitutes", this.enableCraftingSubstitutes).getBoolean(this.enableCraftingSubstitutes);
+        this.addCustomCategoryComment("autocrafting",
+                "Enable patterns with substitutions on to have their substitutes to be auto craftable.\nThis changes the crafting tree, and can show missing ingredients for the substitute, instead of the patterned item");
+        this.enableCraftingSubstitutes = this
+                .get("autocrafting", "EnableAutocraftinSubstitutes", this.enableCraftingSubstitutes)
+                .getBoolean(this.enableCraftingSubstitutes);
 
-        this.addCustomCategoryComment("ControllerSize", "Set the max size of a controller in any of the 3 axis.\nEach is between [1, 64)");
-        this.maxControllerSizeX = Math.min(Math.max(this.get("ControllerSize", "maxControllerSizeX", this.maxControllerSizeX).getInt(this.maxControllerSizeX), 1), 63);
-        this.maxControllerSizeY = Math.min(Math.max(this.get("ControllerSize", "maxControllerSizeY", this.maxControllerSizeY).getInt(this.maxControllerSizeY), 1), 63);
-        this.maxControllerSizeZ = Math.min(Math.max(this.get("ControllerSize", "maxControllerSizeZ", this.maxControllerSizeZ).getInt(this.maxControllerSizeZ), 1), 63);
-
+        this.addCustomCategoryComment("ControllerSize",
+                "Set the max size of a controller in any of the 3 axis.\nEach is between [1, 64)");
+        this.maxControllerSizeX = Math
+                .min(Math.max(this.get("ControllerSize", "maxControllerSizeX", this.maxControllerSizeX)
+                        .getInt(this.maxControllerSizeX), 1), 63);
+        this.maxControllerSizeY = Math
+                .min(Math.max(this.get("ControllerSize", "maxControllerSizeY", this.maxControllerSizeY)
+                        .getInt(this.maxControllerSizeY), 1), 63);
+        this.maxControllerSizeZ = Math
+                .min(Math.max(this.get("ControllerSize", "maxControllerSizeZ", this.maxControllerSizeZ)
+                        .getInt(this.maxControllerSizeZ), 1), 63);
 
         this.clientSync();
 
-        this.addCustomCategoryComment("features", "Warning: Disabling a feature may disable other features depending on it.");
+        this.addCustomCategoryComment("features",
+                "Warning: Disabling a feature may disable other features depending on it.");
         for (final AEFeature feature : AEFeature.values()) {
             if (feature.isVisible()) {
-                final Property option = this.get("Features." + feature.category(), feature.key(), feature.isEnabled(), feature.comment());
+                final Property option = this.get("Features." + feature.category(), feature.key(), feature.isEnabled(),
+                        feature.comment());
 
                 if (option.getBoolean(feature.isEnabled())) {
                     this.featureFlags.add(feature);
@@ -222,7 +303,16 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         }
 
         try {
-            this.selectedPowerUnit = PowerUnits.valueOf(this.get("Client", "PowerUnit", this.selectedPowerUnit.name(), this.getListComment(this.selectedPowerUnit)).getString());
+            this.channelMode = ChannelMode.valueOf(
+                    this.get("general", "channels", this.channelMode.name(),
+                            "Changes the channel capacity that cables provide in AE2.").getString());
+        } catch (final Throwable t) {
+            this.channelMode = ChannelMode.DEFAULT;
+        }
+
+        try {
+            this.selectedPowerUnit = PowerUnits.valueOf(this.get("Client", "PowerUnit", this.selectedPowerUnit.name(),
+                    this.getListComment(this.selectedPowerUnit)).getString());
         } catch (final Throwable t) {
             this.selectedPowerUnit = PowerUnits.AE;
         }
@@ -232,14 +322,20 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         }
 
         if (this.isFeatureEnabled(AEFeature.SPATIAL_IO)) {
-            this.storageProviderID = this.get("spatialio", "storageProviderID", this.storageProviderID).getInt(this.storageProviderID);
-            this.storageDimensionID = this.get("spatialio", "storageDimensionID", this.storageDimensionID).getInt(this.storageDimensionID);
-            this.spatialPowerMultiplier = this.get("spatialio", "spatialPowerMultiplier", this.spatialPowerMultiplier).getDouble(this.spatialPowerMultiplier);
-            this.spatialPowerExponent = this.get("spatialio", "spatialPowerExponent", this.spatialPowerExponent).getDouble(this.spatialPowerExponent);
+            this.storageProviderID = this.get("spatialio", "storageProviderID", this.storageProviderID)
+                    .getInt(this.storageProviderID);
+            this.storageDimensionID = this.get("spatialio", "storageDimensionID", this.storageDimensionID)
+                    .getInt(this.storageDimensionID);
+            this.spatialPowerMultiplier = this.get("spatialio", "spatialPowerMultiplier", this.spatialPowerMultiplier)
+                    .getDouble(this.spatialPowerMultiplier);
+            this.spatialPowerExponent = this.get("spatialio", "spatialPowerExponent", this.spatialPowerExponent)
+                    .getDouble(this.spatialPowerExponent);
         }
 
         if (this.isFeatureEnabled(AEFeature.CRAFTING_CPU)) {
-            this.craftingCalculationTimePerTick = this.get("craftingCPU", "craftingCalculationTimePerTick", this.craftingCalculationTimePerTick).getInt(this.craftingCalculationTimePerTick);
+            this.craftingCalculationTimePerTick = this
+                    .get("craftingCPU", "craftingCalculationTimePerTick", this.craftingCalculationTimePerTick)
+                    .getInt(this.craftingCalculationTimePerTick);
         }
 
         this.updatable = true;
@@ -254,13 +350,20 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     private void clientSync() {
-        this.disableColoredCableRecipesInJEI = this.get("Client", "disableColoredCableRecipesInJEI", true).getBoolean(true);
+        this.disableColoredCableRecipesInJEI = this.get("Client", "disableColoredCableRecipesInJEI", true)
+                .getBoolean(true);
         this.enableEffects = this.get("Client", "enableEffects", true).getBoolean(true);
         this.useLargeFonts = this.get("Client", "useTerminalUseLargeFont", false).getBoolean(false);
         this.useColoredCraftingStatus = this.get("Client", "useColoredCraftingStatus", true).getBoolean(true);
-        this.showCraftableTooltip = this.get("Client", "showCraftableTooltip", true, "Whether to add \"Craftable\" to item tooltips when they can be crafted automatically.").getBoolean(true);
-        this.showPlacementPreview = this.get("Client", "showPlacementPreview", true, "Whether to show a preview of part and facade placement.").getBoolean(true);
-        this.showCellContentsPreview = this.get("Client", "showCellContentsPreview", true, "Whether to show a preview of cell contents in tooltips.").getBoolean(true);
+        this.showCraftableTooltip = this
+                .get("Client", "showCraftableTooltip", true,
+                        "Whether to add \"Craftable\" to item tooltips when they can be crafted automatically.")
+                .getBoolean(true);
+        this.showPlacementPreview = this
+                .get("Client", "showPlacementPreview", true, "Whether to show a preview of part and facade placement.")
+                .getBoolean(true);
+        this.showCellContentsPreview = this.get("Client", "showCellContentsPreview", true,
+                "Whether to show a preview of cell contents in tooltips.").getBoolean(true);
 
         // load buttons..
         for (int btnNum = 0; btnNum < 4; btnNum++) {
@@ -292,7 +395,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
             try {
                 value = Enum.valueOf(value.getClass(), p.getString());
             } catch (final IllegalArgumentException er) {
-                AELog.info("Invalid value '" + p.getString() + "' for " + e.name() + " using '" + value.name() + "' instead");
+                AELog.info("Invalid value '" + p.getString() + "' for " + e.name() + " using '" + value.name()
+                        + "' instead");
             }
 
             this.settings.putSetting(e, value);
@@ -331,15 +435,18 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     public double wireless_getMaxRange(final int boosters) {
-        return this.wirelessBaseRange + this.wirelessBoosterRangeMultiplier * Math.pow(boosters, this.wirelessBoosterExp);
+        return this.wirelessBaseRange
+                + this.wirelessBoosterRangeMultiplier * Math.pow(boosters, this.wirelessBoosterExp);
     }
 
     public double wireless_getPowerDrain(final int boosters) {
-        return this.wirelessBaseCost + this.wirelessCostMultiplier * Math.pow(boosters, 1 + boosters / this.wirelessHighWirelessCount);
+        return this.wirelessBaseCost
+                + this.wirelessCostMultiplier * Math.pow(boosters, 1 + boosters / this.wirelessHighWirelessCount);
     }
 
     @Override
-    public Property get(final String category, final String key, final String defaultValue, final String comment, final Property.Type type) {
+    public Property get(final String category, final String key, final String defaultValue, final String comment,
+            final Property.Type type) {
         final Property prop = super.get(category, key, defaultValue, comment, type);
 
         if (prop != null) {
@@ -358,7 +465,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
             this.get("spatialio", "storageDimensionID", this.storageDimensionID).set(this.storageDimensionID);
         }
 
-        this.get("Client", "PowerUnit", this.selectedPowerUnit.name(), this.getListComment(this.selectedPowerUnit)).set(this.selectedPowerUnit.name());
+        this.get("Client", "PowerUnit", this.selectedPowerUnit.name(), this.getListComment(this.selectedPowerUnit))
+                .set(this.selectedPowerUnit.name());
 
         if (this.hasChanged()) {
             super.save();
@@ -385,7 +493,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
             return true;
         }
 
-        this.setCategoryComment("OreCamouflage", "AE2 Automatically uses alternative ores present in your instance of MC to blend better with its surroundings, if you prefer you can disable this selectively using these flags; Its important to note, that some if these items even if enabled may not be craftable in game because other items are overriding their recipes.");
+        this.setCategoryComment("OreCamouflage",
+                "AE2 Automatically uses alternative ores present in your instance of MC to blend better with its surroundings, if you prefer you can disable this selectively using these flags; Its important to note, that some if these items even if enabled may not be craftable in game because other items are overriding their recipes.");
         final Property p = this.get("OreCamouflage", mt.name(), true);
         p.setComment("OreDictionary Names: " + mt.getOreName());
 
@@ -397,7 +506,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
         for (final Settings e : this.settings.getSettings()) {
             if (e == setting) {
                 final String Category = "Client";
-                final Property p = this.get(Category, e.name(), this.settings.getSetting(e).name(), this.getListComment(newValue));
+                final Property p = this.get(Category, e.name(), this.settings.getSetting(e).name(),
+                        this.getListComment(newValue));
                 p.set(newValue.name());
             }
         }
@@ -489,7 +599,8 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     public void nextPowerUnit(final boolean backwards) {
-        this.selectedPowerUnit = Platform.rotateEnum(this.selectedPowerUnit, backwards, Settings.POWER_UNITS.getPossibleValues());
+        this.selectedPowerUnit = Platform.rotateEnum(this.selectedPowerUnit, backwards,
+                Settings.POWER_UNITS.getPossibleValues());
         this.save();
     }
 
@@ -697,10 +808,37 @@ public final class AEConfig extends Configuration implements IConfigurableObject
     }
 
     public int getNormalChannelCapacity() {
-        return this.normalChannelCapacity;
+        ChannelMode mode = getChannelMode();
+        if (mode == ChannelMode.INFINITE) {
+            return Integer.MAX_VALUE;
+        }
+        return normalChannelCapacity * mode.getCableCapacityFactor();
     }
 
     public int getDenseChannelCapacity() {
-        return this.denseChannelCapacity;
+        ChannelMode mode = getChannelMode();
+        if (mode == ChannelMode.INFINITE) {
+            return Integer.MAX_VALUE;
+        }
+        return denseChannelCapacity * mode.getCableCapacityFactor();
     }
+
+    public ChannelMode getChannelMode() {
+        return this.channelMode;
+    }
+
+    public void setChannelMode(ChannelMode mode) {
+        this.channelMode = Objects.requireNonNull(mode, "ChannelMode cannot be null");
+
+        // Update config property
+        Property prop = this.get("general", "channels", this.channelMode.name(),
+                "Changes the channel capacity that cables provide in AE2.");
+        prop.set(mode.name());
+
+        // Save config if we're in a state where we can
+        if (this.updatable) {
+            this.save();
+        }
+    }
+
 }

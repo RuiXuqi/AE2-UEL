@@ -18,10 +18,8 @@
 
 package appeng.container.slot;
 
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
-
 
 public class SlotOutput extends AppEngSlot {
 

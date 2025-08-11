@@ -18,6 +18,9 @@
 
 package appeng.me.storage;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.implementations.items.IStorageCell;
@@ -26,10 +29,6 @@ import appeng.api.storage.ISaveProvider;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.Platform;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.IItemHandler;
-
 
 /**
  * @author DrummerMC
@@ -230,8 +229,10 @@ public abstract class AbstractCellInventory<T extends IAEStack<T>> implements IC
     @Override
     public boolean canHoldNewItem() {
         final long bytesFree = this.getFreeBytes();
-        return (bytesFree > this.getBytesPerType() || (bytesFree == this.getBytesPerType() && this.getUnusedItemCount() > 0)) && this
-                .getRemainingItemTypes() > 0;
+        return (bytesFree > this.getBytesPerType()
+                || (bytesFree == this.getBytesPerType() && this.getUnusedItemCount() > 0))
+                && this
+                        .getRemainingItemTypes() > 0;
     }
 
     @Override

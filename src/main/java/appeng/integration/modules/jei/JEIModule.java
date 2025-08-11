@@ -18,13 +18,11 @@
 
 package appeng.integration.modules.jei;
 
-
 import appeng.integration.abstraction.IJEI;
-
 
 public class JEIModule implements IJEI {
 
-    private IJEI jei = new IJEI.Stub();
+    private IJEI jei = new Stub();
 
     public void setJei(IJEI jei) {
         this.jei = jei;

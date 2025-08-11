@@ -18,14 +18,9 @@
 
 package appeng.block.networking;
 
+import java.util.Collections;
+import java.util.List;
 
-import appeng.api.util.AEPartLocation;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.sync.GuiBridge;
-import appeng.helpers.AEGlassMaterial;
-import appeng.helpers.ICustomCollision;
-import appeng.tile.networking.TileWireless;
-import appeng.util.Platform;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -40,10 +35,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-
+import appeng.api.util.AEPartLocation;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.AEGlassMaterial;
+import appeng.helpers.ICustomCollision;
+import appeng.tile.networking.TileWireless;
+import appeng.util.Platform;
 
 public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
 
@@ -92,11 +90,13 @@ public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{STATE};
+        return new IProperty[] { STATE };
     }
 
     @Override
-    public boolean onBlockActivated(final World w, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onBlockActivated(final World w, final BlockPos pos, final IBlockState state,
+            final EntityPlayer player, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         final TileWireless tg = this.getTileEntity(w, pos);
 
         if (tg != null && !player.isSneaking()) {
@@ -110,7 +110,8 @@ public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity thePlayer, final boolean b) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos,
+            final Entity thePlayer, final boolean b) {
         final TileWireless tile = this.getTileEntity(w, pos);
         if (tile != null) {
             final EnumFacing forward = tile.getForward();
@@ -169,7 +170,8 @@ public class BlockWireless extends AEBaseTileBlock implements ICustomCollision {
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List<AxisAlignedBB> out, final Entity e) {
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb,
+            final List<AxisAlignedBB> out, final Entity e) {
         final TileWireless tile = this.getTileEntity(w, pos);
         if (tile != null) {
             final EnumFacing forward = tile.getForward();

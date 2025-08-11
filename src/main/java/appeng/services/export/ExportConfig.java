@@ -18,9 +18,7 @@
 
 package appeng.services.export;
 
-
 import javax.annotation.Nonnull;
-
 
 /**
  * @author thatsIch
@@ -29,11 +27,8 @@ import javax.annotation.Nonnull;
  */
 public interface ExportConfig {
     /**
-     * config switch to disable the exporting.
-     * if the recipes system is not used
-     * there is no reason to export them.
-     * Still can be useful for debugging purpose,
-     * thus not tying it to the recipe system directly.
+     * config switch to disable the exporting. if the recipes system is not used there is no reason to export them.
+     * Still can be useful for debugging purpose, thus not tying it to the recipe system directly.
      *
      * @return true if exporting is enabled
      */

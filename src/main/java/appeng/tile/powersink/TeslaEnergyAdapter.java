@@ -18,11 +18,10 @@
 
 package appeng.tile.powersink;
 
+import net.darkhax.tesla.api.ITeslaConsumer;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerUnits;
-import net.darkhax.tesla.api.ITeslaConsumer;
-
 
 /**
  * Adapts an {@link IExternalPowerSink} to Forges {@link net.darkhax.tesla.api.ITeslaConsumer}.
@@ -40,7 +39,8 @@ class TeslaEnergyAdapter implements ITeslaConsumer {
         // Cut it down to what we can represent in a double
         double offeredPower = power;
 
-        final double overflow = this.sink.injectExternalPower(PowerUnits.RF, offeredPower, simulated ? Actionable.SIMULATE : Actionable.MODULATE);
+        final double overflow = this.sink.injectExternalPower(PowerUnits.RF, offeredPower,
+                simulated ? Actionable.SIMULATE : Actionable.MODULATE);
 
         return (long) (power - overflow);
     }

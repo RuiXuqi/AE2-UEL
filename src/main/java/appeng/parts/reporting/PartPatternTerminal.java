@@ -18,6 +18,13 @@
 
 package appeng.parts.reporting;
 
+import static appeng.helpers.PatternHelper.CRAFTING_GRID_DIMENSION;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import appeng.api.parts.IPartModel;
 import appeng.core.AppEng;
@@ -26,15 +33,6 @@ import appeng.helpers.Reflected;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
 import appeng.tile.inventory.AppEngInternalInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
-
-import static appeng.helpers.PatternHelper.CRAFTING_GRID_DIMENSION;
-import static appeng.helpers.PatternHelper.CRAFTING_OUTPUT_LIMIT;
-
 
 public class PartPatternTerminal extends AbstractPartEncoder {
 

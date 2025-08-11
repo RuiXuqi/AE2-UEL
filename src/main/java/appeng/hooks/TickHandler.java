@@ -18,6 +18,20 @@
 
 package appeng.hooks;
 
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
+
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import appeng.api.AEApi;
 import appeng.api.networking.IGridNode;
@@ -32,35 +46,24 @@ import appeng.me.Grid;
 import appeng.tile.AEBaseTile;
 import appeng.util.IWorldCallable;
 import appeng.util.Platform;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Multimap;
-import net.minecraft.world.World;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
-
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
 
 public class TickHandler {
 
-    public static final TickHandler INSTANCE = new TickHandler();
+    private static final TickHandler INSTANCE = new TickHandler();
     private final Queue<IWorldCallable<?>> serverQueue = new ArrayDeque<>();
     private final Multimap<World, CraftingJob> craftingJobs = LinkedListMultimap.create();
-    private final WeakHashMap<World, Queue<IWorldCallable<?>>> callQueue = new WeakHashMap<>();
+    private final Map<World, Queue<IWorldCallable<?>>> callQueue = new WeakHashMap<>();
     private final HandlerRep server = new HandlerRep();
     private final HandlerRep client = new HandlerRep();
-    private final HashMap<Integer, PlayerColor> cliPlayerColors = new HashMap<>();
-    private final HashMap<Integer, PlayerColor> srvPlayerColors = new HashMap<>();
+    private final Map<Integer, PlayerColor> cliPlayerColors = new HashMap<>();
+    private final Map<Integer, PlayerColor> srvPlayerColors = new HashMap<>();
     private CableRenderMode crm = CableRenderMode.STANDARD;
 
-    public HashMap<Integer, PlayerColor> getPlayerColors() {
+    public static TickHandler instance() {
+        return INSTANCE;
+    }
+
+    public Map<Integer, PlayerColor> getPlayerColors() {
         if (Platform.isServer()) {
             return this.srvPlayerColors;
         }
@@ -72,15 +75,13 @@ public class TickHandler {
      * <p>
      * Callbacks on the client are not support.
      * <p>
-     * Using null as world will queue it into the global {@link TickEvent.ServerTickEvent}, otherwise it will be ticked with the
-     * corresponding {@link TickEvent.WorldTickEvent}.
+     * Using null as world will queue it into the global {@link TickEvent.ServerTickEvent}, otherwise it will be ticked
+     * with the corresponding {@link TickEvent.WorldTickEvent}.
      *
      * @param w null or the specific {@link World}
      * @param c the callback
      */
     public void addCallable(final World w, final IWorldCallable<?> c) {
-        Preconditions.checkArgument(w == null || !w.isRemote, "Can only register serverside callbacks");
-
         if (w == null) {
             this.serverQueue.add(c);
         } else {
@@ -96,29 +97,26 @@ public class TickHandler {
     }
 
     public void addInit(final AEBaseTile tile) {
-        if (Platform.isServer()) // for no there is no reason to care about this on the client...
-        {
+        // for no there is no reason to care about this on the client...
+        if (Platform.isServer()) {
             this.getRepo().tiles.add(tile);
         }
     }
 
     private HandlerRep getRepo() {
-        if (Platform.isServer()) {
-            return this.server;
-        }
-        return this.client;
+        return Platform.isServer() ? this.server : this.client;
     }
 
     public void addNetwork(final Grid grid) {
-        if (Platform.isServer()) // for no there is no reason to care about this on the client...
-        {
+        // for no there is no reason to care about this on the client...
+        if (Platform.isServer()) {
             this.getRepo().addNetwork(grid);
         }
     }
 
     public void removeNetwork(final Grid grid) {
-        if (Platform.isServer()) // for no there is no reason to care about this on the client...
-        {
+        // for no there is no reason to care about this on the client...
+        if (Platform.isServer()) {
             this.getRepo().removeNetwork(grid);
         }
     }
@@ -133,8 +131,8 @@ public class TickHandler {
 
     @SubscribeEvent
     public void unloadWorld(final WorldEvent.Unload ev) {
-        if (Platform.isServer()) // for no there is no reason to care about this on the client...
-        {
+        // for no there is no reason to care about this on the client...
+        if (Platform.isServer()) {
             final List<IGridNode> toDestroy = new ArrayList<>();
 
             this.getRepo().updateNetworks();
@@ -152,10 +150,11 @@ public class TickHandler {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onTick(final TickEvent ev) {
+    public void onClientTick(TickEvent.ClientTickEvent ev) {
 
-        if (ev.type == Type.CLIENT && ev.phase == Phase.START) {
+        if (ev.phase == Phase.START) {
             this.tickColors(this.cliPlayerColors);
             final CableRenderMode currentMode = AEApi.instance().partHelper().getCableRenderMode();
             if (currentMode != this.crm) {
@@ -163,23 +162,40 @@ public class TickHandler {
                 AppEng.proxy.triggerUpdates();
             }
         }
+    }
 
-        if (ev.type == Type.WORLD && ev.phase == Phase.END) {
-            final WorldTickEvent wte = (WorldTickEvent) ev;
+    @SubscribeEvent
+    public void onWorldTick(TickEvent.WorldTickEvent ev) {
+        if (ev.phase == Phase.START) {
+            final Queue<IWorldCallable<?>> queue = this.callQueue.get(ev.world);
+            this.processQueue(queue, ev.world);
+        }
+
+        if (ev.phase == Phase.END) {
             synchronized (this.craftingJobs) {
-                final Collection<CraftingJob> jobSet = this.craftingJobs.get(wte.world);
+                final Collection<CraftingJob> jobSet = this.craftingJobs.get(ev.world);
+
                 if (!jobSet.isEmpty()) {
                     final int jobSize = jobSet.size();
                     final int microSecondsPerTick = AEConfig.instance().getCraftingCalculationTimePerTick() * 1000;
                     final int simTime = Math.max(1, microSecondsPerTick / jobSize);
 
-                    jobSet.removeIf(cj -> !cj.simulateFor(simTime));
+                    final Iterator<CraftingJob> i = jobSet.iterator();
+
+                    while (i.hasNext()) {
+                        final CraftingJob cj = i.next();
+                        if (!cj.simulateFor(simTime)) {
+                            i.remove();
+                        }
+                    }
                 }
             }
         }
+    }
 
-        // for no there is no reason to care about this on the client...
-        else if (ev.type == Type.SERVER && ev.phase == Phase.END) {
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent ev) {
+        if (ev.phase == Phase.END) {
             this.tickColors(this.srvPlayerColors);
             // ready tiles.
             final HandlerRep repo = this.getRepo();
@@ -199,16 +215,9 @@ public class TickHandler {
             // cross world queue.
             this.processQueue(this.serverQueue, null);
         }
-
-        // world synced queue(s)
-        if (ev.type == Type.WORLD && ev.phase == Phase.START) {
-            final World world = ((WorldTickEvent) ev).world;
-            final Queue<IWorldCallable<?>> queue = this.callQueue.get(world);
-            this.processQueue(queue, world);
-        }
     }
 
-    private void tickColors(final HashMap<Integer, PlayerColor> playerSet) {
+    private void tickColors(final Map<Integer, PlayerColor> playerSet) {
         final Iterator<PlayerColor> i = playerSet.values().iterator();
         while (i.hasNext()) {
             final PlayerColor pc = i.next();
@@ -226,7 +235,7 @@ public class TickHandler {
 
         final Stopwatch sw = Stopwatch.createStarted();
 
-        IWorldCallable<?> c = null;
+        IWorldCallable<?> c;
         while ((c = queue.poll()) != null) {
             try {
                 c.call(world);
@@ -235,7 +244,7 @@ public class TickHandler {
                     break;
                 }
             } catch (final Exception e) {
-                AELog.debug(e);
+                AELog.debug("Queue processing error: {}", e.getMessage());
             }
         }
     }

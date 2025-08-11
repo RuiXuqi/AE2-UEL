@@ -18,6 +18,36 @@
 
 package appeng.client.gui.implementations;
 
+import static appeng.client.render.BlockPosHighlighter.hilightBlock;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
+
+import com.google.common.collect.HashMultimap;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.DimensionManager;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import mezz.jei.api.gui.IGhostIngredientHandler;
 
 import appeng.api.config.ActionItems;
 import appeng.api.config.Settings;
@@ -42,34 +72,6 @@ import appeng.parts.reporting.PartFluidInterfaceConfigurationTerminal;
 import appeng.util.BlockPosUtils;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import com.google.common.collect.HashMultimap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import mezz.jei.api.gui.IGhostIngredientHandler;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.common.DimensionManager;
-import org.lwjgl.input.Mouse;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
-
-import static appeng.client.render.BlockPosHighlighter.hilightBlock;
-
 
 public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements IJEIGhostIngredients {
 
@@ -98,7 +100,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
     private final HashMap<ClientDCInternalFluidInv, Integer> dimHashMap = new HashMap<>();
     public Map<IGhostIngredientHandler.Target<?>, Object> mapTargetSlot = new HashMap<>();
 
-    public GuiFluidInterfaceConfigurationTerminal(final InventoryPlayer inventoryPlayer, final PartFluidInterfaceConfigurationTerminal te) {
+    public GuiFluidInterfaceConfigurationTerminal(final InventoryPlayer inventoryPlayer,
+            final PartFluidInterfaceConfigurationTerminal te) {
         super(new ContainerFluidInterfaceConfigurationTerminal(inventoryPlayer, te));
 
         this.partInterfaceTerminal = te;
@@ -116,7 +119,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
         this.getScrollBar().setHeight(106);
         this.getScrollBar().setTop(31);
 
-        this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX), this.guiTop + 17, 65, 12);
+        this.searchFieldInputs = new MEGuiTextField(this.fontRenderer, this.guiLeft + Math.max(32, this.offsetX),
+                this.guiTop + 17, 65, 12);
         this.searchFieldInputs.setEnableBackgroundDrawing(false);
         this.searchFieldInputs.setMaxStringLength(25);
         this.searchFieldInputs.setTextColor(0xFFFFFF);
@@ -136,7 +140,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
     public void drawFG(final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         this.buttonList.clear();
 
-        this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.FluidInterfaceConfigurationTerminal.getLocal()), 8, 6, 4210752);
+        this.fontRenderer.drawString(this.getGuiDisplayName(GuiText.FluidInterfaceConfigurationTerminal.getLocal()), 8,
+                6, 4210752);
         this.fontRenderer.drawString(GuiText.inventory.getLocal(), this.offsetX + 2, this.ySize - 96 + 3, 4210752);
 
         final int currentScroll = this.getScrollBar().getCurrentScroll();
@@ -150,7 +155,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
             if (lineObj instanceof ClientDCInternalFluidInv) {
                 final ClientDCInternalFluidInv inv = (ClientDCInternalFluidInv) lineObj;
 
-                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS, ActionItems.HIGHLIGHT_INTERFACE);
+                GuiButton guiButton = new GuiImgButton(guiLeft + 4, guiTop + offset, Settings.ACTIONS,
+                        ActionItems.HIGHLIGHT_INTERFACE);
                 guiButtonHashMap.put(guiButton, inv);
                 this.buttonList.add(guiButton);
                 int extraLines = numUpgradesMap.get(inv);
@@ -158,10 +164,13 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
                 for (int row = 0; row < 1 + extraLines && linesDraw < LINES_ON_PAGE; ++row) {
                     for (int z = 0; z < DualityFluidInterface.NUMBER_OF_TANKS; z++) {
                         GuiFluidTank tankSlot;
-                        if (!matchedInterfaces.contains(inv) && !this.matchedStacks.contains(inv.getInventory().getFluidInSlot(z + (row * 5)))) {
-                            tankSlot = new GuiFluidTank(inv.getInventory(), z + (row * 5), z + (row * 5), (z * 18 + 22), offset, 16, 16, true);
+                        if (!matchedInterfaces.contains(inv)
+                                && !this.matchedStacks.contains(inv.getInventory().getFluidInSlot(z + (row * 5)))) {
+                            tankSlot = new GuiFluidTank(inv.getInventory(), z + (row * 5), z + (row * 5), (z * 18 + 22),
+                                    offset, 16, 16, true);
                         } else {
-                            tankSlot = new GuiFluidTank(inv.getInventory(), z + (row * 5), z + (row * 5), (z * 18 + 22), offset, 16, 16);
+                            tankSlot = new GuiFluidTank(inv.getInventory(), z + (row * 5), z + (row * 5), (z * 18 + 22),
+                                    offset, 16, 16);
                         }
                         this.guiSlots.add(tankSlot);
                         guiFluidTankClientDCInternalFluidInvMap.put(tankSlot, inv);
@@ -186,7 +195,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
         }
 
         if (searchFieldInputs.isMouseIn(mouseX, mouseY)) {
-            drawTooltip(Mouse.getEventX() * this.width / this.mc.displayWidth - offsetX, mouseY - guiTop, "Inputs OR names");
+            drawTooltip(Mouse.getEventX() * this.width / this.mc.displayWidth - offsetX, mouseY - guiTop,
+                    "Inputs OR names");
         }
     }
 
@@ -201,8 +211,10 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
 
         for (GuiCustomSlot slot : this.guiSlots) {
             if (slot instanceof GuiFluidTank) {
-                if (this.isPointInRegion(slot.xPos(), slot.yPos(), slot.getWidth(), slot.getHeight(), xCoord, yCoord) && slot.canClick(this.mc.player)) {
-                    NetworkHandler.instance().sendToServer(new PacketInventoryAction(InventoryAction.PICKUP_OR_SET_DOWN, slot.getId(), guiFluidTankClientDCInternalFluidInvMap.get(slot).getId()));
+                if (this.isPointInRegion(slot.xPos(), slot.yPos(), slot.getWidth(), slot.getHeight(), xCoord, yCoord)
+                        && slot.canClick(this.mc.player)) {
+                    NetworkHandler.instance().sendToServer(new PacketInventoryAction(InventoryAction.PICKUP_OR_SET_DOWN,
+                            slot.getId(), guiFluidTankClientDCInternalFluidInvMap.get(slot).getId()));
                     return;
                 }
             }
@@ -220,13 +232,20 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
             int interfaceDim = dimHashMap.get(guiButtonHashMap.get(this.selectedButton));
             if (playerDim != interfaceDim) {
                 try {
-                    mc.player.sendStatusMessage(new TextComponentString("Interface located at dimension: " + interfaceDim + " [" + DimensionManager.getWorld(interfaceDim).provider.getDimensionType().getName() + "] and cant be highlighted"), false);
+                    mc.player.sendStatusMessage(
+                            new TextComponentString("Interface located at dimension: " + interfaceDim + " ["
+                                    + DimensionManager.getWorld(interfaceDim).provider.getDimensionType().getName()
+                                    + "] and cant be highlighted"),
+                            false);
                 } catch (Exception e) {
-                    mc.player.sendStatusMessage(new TextComponentString("Interface is located in another dimension and cannot be highlighted"), false);
+                    mc.player.sendStatusMessage(new TextComponentString(
+                            "Interface is located in another dimension and cannot be highlighted"), false);
                 }
             } else {
-                hilightBlock(blockPos, System.currentTimeMillis() + 500 * BlockPosUtils.getDistance(blockPos, blockPos2), playerDim);
-                mc.player.sendStatusMessage(new TextComponentString("The interface is now highlighted at " + "X: " + blockPos.getX() + " Y: " + blockPos.getY() + " Z: " + blockPos.getZ()), false);
+                hilightBlock(blockPos,
+                        System.currentTimeMillis() + 500 * BlockPosUtils.getDistance(blockPos, blockPos2), playerDim);
+                mc.player.sendStatusMessage(new TextComponentString("The interface is now highlighted at " + "X: "
+                        + blockPos.getX() + " Y: " + blockPos.getY() + " Z: " + blockPos.getZ()), false);
             }
             mc.player.closeScreen();
         }
@@ -290,7 +309,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
                 try {
                     final long id = Long.parseLong(oKey.substring(1), Character.MAX_RADIX);
                     final NBTTagCompound invData = in.getCompoundTag(oKey);
-                    final ClientDCInternalFluidInv current = this.getById(id, invData.getLong("sortBy"), invData.getString("un"));
+                    final ClientDCInternalFluidInv current = this.getById(id, invData.getLong("sortBy"),
+                            invData.getString("un"));
                     blockPosHashMap.put(current, NBTUtil.getPosFromTag(invData.getCompoundTag("pos")));
                     dimHashMap.put(current, invData.getInteger("dim"));
                     numUpgradesMap.put(current, invData.getInteger("numUpgrades"));
@@ -298,7 +318,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
                     for (int x = 0; x < current.getInventory().getSlots(); x++) {
                         final String which = Integer.toString(x);
                         if (invData.hasKey(which)) {
-                            current.getInventory().setFluidInSlot(x, AEFluidStack.fromNBT(invData.getCompoundTag(which)));
+                            current.getInventory().setFluidInSlot(x,
+                                    AEFluidStack.fromNBT(invData.getCompoundTag(which)));
                         }
                     }
                 } catch (final NumberFormatException ignored) {
@@ -450,7 +471,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
         ClientDCInternalFluidInv o = this.byId.get(id);
 
         if (o == null) {
-            this.byId.put(id, o = new ClientDCInternalFluidInv(DualityFluidInterface.NUMBER_OF_TANKS, id, sortBy, string, 1000));
+            this.byId.put(id,
+                    o = new ClientDCInternalFluidInv(DualityFluidInterface.NUMBER_OF_TANKS, id, sortBy, string, 1000));
             this.refreshList = true;
         }
 
@@ -476,7 +498,8 @@ public class GuiFluidInterfaceConfigurationTerminal extends AEBaseGui implements
                     public void accept(Object ingredient) {
                         final PacketInventoryAction p;
                         try {
-                            p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, (SlotDisconnected) slot, AEItemStack.fromItemStack(itemStack));
+                            p = new PacketInventoryAction(InventoryAction.PLACE_JEI_GHOST_ITEM, (SlotDisconnected) slot,
+                                    AEItemStack.fromItemStack(itemStack));
                             NetworkHandler.instance().sendToServer(p);
 
                         } catch (IOException e) {

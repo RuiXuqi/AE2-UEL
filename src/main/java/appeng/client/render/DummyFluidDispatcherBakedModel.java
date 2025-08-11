@@ -18,9 +18,15 @@
 
 package appeng.client.render;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
-import appeng.fluids.items.FluidDummyItem;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -37,23 +43,18 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
+import appeng.fluids.items.FluidDummyItem;
 
 /**
  * This baked model class is used as a dispatcher to redirect the renderer to the *real* model that should be used based
- * on the item stack.
- * A custom Item Override List is used to accomplish this.
+ * on the item stack. A custom Item Override List is used to accomplish this.
  */
 public class DummyFluidDispatcherBakedModel extends DelegateBakedModel {
     private final VertexFormat format;
     private final Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter;
 
-    public DummyFluidDispatcherBakedModel(IBakedModel baseModel, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public DummyFluidDispatcherBakedModel(IBakedModel baseModel, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         super(baseModel);
         this.format = format;
         this.bakedTextureGetter = bakedTextureGetter;
@@ -79,7 +80,8 @@ public class DummyFluidDispatcherBakedModel extends DelegateBakedModel {
     public ItemOverrideList getOverrides() {
         return new ItemOverrideList(Collections.emptyList()) {
             @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
+                    EntityLivingBase entity) {
                 if (!(stack.getItem() instanceof FluidDummyItem)) {
                     return originalModel;
                 }
@@ -91,12 +93,14 @@ public class DummyFluidDispatcherBakedModel extends DelegateBakedModel {
                     fluidStack = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
                 }
 
-                TextureAtlasSprite sprite = DummyFluidDispatcherBakedModel.this.bakedTextureGetter.apply(fluidStack.getFluid().getStill(fluidStack));
+                TextureAtlasSprite sprite = DummyFluidDispatcherBakedModel.this.bakedTextureGetter
+                        .apply(fluidStack.getFluid().getStill(fluidStack));
                 if (sprite == null) {
                     return new DummyFluidBakedModel(ImmutableList.of());
                 }
 
-                return new DummyFluidBakedModel(ItemLayerModel.getQuadsForSprite(0, sprite, DummyFluidDispatcherBakedModel.this.format, Optional.empty()));
+                return new DummyFluidBakedModel(ItemLayerModel.getQuadsForSprite(0, sprite,
+                        DummyFluidDispatcherBakedModel.this.format, Optional.empty()));
             }
         };
     }

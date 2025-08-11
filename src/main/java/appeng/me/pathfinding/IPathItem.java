@@ -18,40 +18,39 @@
 
 package appeng.me.pathfinding;
 
-
 import appeng.api.networking.GridFlags;
-import appeng.api.util.IReadOnlyCollection;
-
-import java.util.EnumSet;
-
 
 public interface IPathItem {
 
+    /* USED BY AD HOC PATHING */
+
+    void setAdHocChannels(int channels);
+
+    /* USED BY CONTROLLER PATHING */
+
     IPathItem getControllerRoute();
 
-    void setControllerRoute(IPathItem fast, boolean zeroOut);
+    /**
+     * Sets route to controller.
+     */
+    void setControllerRoute(IPathItem fast);
 
     /**
-     * used to determine if the finder can continue.
+     * The maximum number of channels connections to this path item can carry.
      */
-    boolean canSupportMoreChannels();
+    int getMaxChannels();
 
     /**
-     * find possible choices for other pathing.
+     * Find possible choices for other pathing.
      */
-    IReadOnlyCollection<IPathItem> getPossibleOptions();
+    Iterable<IPathItem> getPossibleOptions();
 
     /**
-     * add one to the channel count, this is mostly for cables.
+     * Tests if this path item has the specific grid flag set.
      */
-    void incrementChannelCount(int usedChannels);
+    boolean hasFlag(GridFlags flag);
 
-    /**
-     * get the grid flags for this IPathItem.
-     *
-     * @return the flag set.
-     */
-    EnumSet<GridFlags> getFlags();
+    /* USED BY BOTH */
 
     /**
      * channels are done, wrap it up.

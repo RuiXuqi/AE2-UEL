@@ -18,6 +18,9 @@
 
 package appeng.me.storage;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IBaseMonitor;
@@ -30,12 +33,8 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.Platform;
 import appeng.util.inv.ItemListIgnoreCrafting;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
-
-
-public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T> implements IMEMonitor<T>, IMEMonitorHandlerReceiver<T> {
+public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T>
+        implements IMEMonitor<T>, IMEMonitorHandlerReceiver<T> {
 
     private final HashMap<IMEMonitorHandlerReceiver<T>, Object> listeners = new HashMap<>();
     private IActionSource changeSource;
@@ -55,16 +54,18 @@ public class MEMonitorPassThrough<T extends IAEStack<T>> extends MEPassThrough<T
         }
 
         this.monitor = null;
-        final IItemList<T> before = this.getInternal() == null ? this.getWrappedChannel().createList() : this.getInternal()
-                .getAvailableItems(new ItemListIgnoreCrafting(this.getWrappedChannel().createList()));
+        final IItemList<T> before = this.getInternal() == null ? this.getWrappedChannel().createList()
+                : this.getInternal()
+                        .getAvailableItems(new ItemListIgnoreCrafting(this.getWrappedChannel().createList()));
 
         super.setInternal(i);
         if (i instanceof IMEMonitor) {
             this.monitor = (IMEMonitor<T>) i;
         }
 
-        final IItemList<T> after = this.getInternal() == null ? this.getWrappedChannel().createList() : this.getInternal()
-                .getAvailableItems(new ItemListIgnoreCrafting(this.getWrappedChannel().createList()));
+        final IItemList<T> after = this.getInternal() == null ? this.getWrappedChannel().createList()
+                : this.getInternal()
+                        .getAvailableItems(new ItemListIgnoreCrafting(this.getWrappedChannel().createList()));
 
         if (this.monitor != null && this.listeners.size() > 0) {
             this.monitor.addListener(this, this.monitor);

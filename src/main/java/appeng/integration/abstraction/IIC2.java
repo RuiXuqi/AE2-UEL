@@ -18,13 +18,12 @@
 
 package appeng.integration.abstraction;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.integration.IIntegrationModule;
 import appeng.integration.modules.ic2.IC2PowerSinkStub;
 import appeng.tile.powersink.IExternalPowerSink;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-
 
 public interface IIC2 extends IIntegrationModule {
 

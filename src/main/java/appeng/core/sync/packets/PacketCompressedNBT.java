@@ -18,14 +18,13 @@
 
 package appeng.core.sync.packets;
 
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
-import appeng.client.gui.implementations.GuiFluidInterfaceConfigurationTerminal;
-import appeng.client.gui.implementations.GuiInterfaceConfigurationTerminal;
-import appeng.client.gui.implementations.GuiInterfaceTerminal;
-import appeng.core.sync.AppEngPacket;
-import appeng.core.sync.network.INetworkInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,10 +33,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.io.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
+import appeng.client.gui.implementations.GuiFluidInterfaceConfigurationTerminal;
+import appeng.client.gui.implementations.GuiInterfaceConfigurationTerminal;
+import appeng.client.gui.implementations.GuiInterfaceTerminal;
+import appeng.core.sync.AppEngPacket;
+import appeng.core.sync.network.INetworkInfo;
 
 public class PacketCompressedNBT extends AppEngPacket {
 

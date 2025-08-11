@@ -1,5 +1,11 @@
 package appeng.parts.automation;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
@@ -15,15 +21,9 @@ import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.api.util.IConfigManager;
 import appeng.helpers.IPriorityHost;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 
-
-public abstract class PartAbstractFormationPlane<T extends IAEStack<T>> extends PartUpgradeable implements ICellContainer, IPriorityHost, IMEInventory<T> {
+public abstract class PartAbstractFormationPlane<T extends IAEStack<T>> extends PartUpgradeable
+        implements ICellContainer, IPriorityHost, IMEInventory<T> {
 
     private boolean wasActive = false;
     private int priority = 0;
@@ -139,7 +139,8 @@ public abstract class PartAbstractFormationPlane<T extends IAEStack<T>> extends 
 
             final BlockPos pos = te.getPos();
 
-            if (this.isTransitionPlane(te.getWorld().getTileEntity(pos.offset(facingRight.getOpposite())), this.getSide())) {
+            if (this.isTransitionPlane(te.getWorld().getTileEntity(pos.offset(facingRight.getOpposite())),
+                    this.getSide())) {
                 left = true;
             }
 
@@ -147,7 +148,8 @@ public abstract class PartAbstractFormationPlane<T extends IAEStack<T>> extends 
                 right = true;
             }
 
-            if (this.isTransitionPlane(te.getWorld().getTileEntity(pos.offset(facingUp.getOpposite())), this.getSide())) {
+            if (this.isTransitionPlane(te.getWorld().getTileEntity(pos.offset(facingUp.getOpposite())),
+                    this.getSide())) {
                 down = true;
             }
 

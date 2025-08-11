@@ -18,7 +18,6 @@
 
 package appeng.integration;
 
-
 enum IntegrationStage {
 
     PRE_INIT,

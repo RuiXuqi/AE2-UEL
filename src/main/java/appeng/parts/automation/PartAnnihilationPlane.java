@@ -18,6 +18,37 @@
 
 package appeng.parts.automation;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+
+import com.google.common.collect.Lists;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -53,41 +84,11 @@ import appeng.util.IWorldCallable;
 import appeng.util.Platform;
 import appeng.util.SettingsFrom;
 import appeng.util.item.AEItemStack;
-import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
-
 
 public class PartAnnihilationPlane extends PartBasicState implements IGridTickable, IWorldCallable<TickRateModulation> {
 
-    private static final PlaneModels MODELS = new PlaneModels("part/annihilation_plane_", "part/annihilation_plane_on_");
+    private static final PlaneModels MODELS = new PlaneModels("part/annihilation_plane_",
+            "part/annihilation_plane_on_");
 
     @PartModels
     public static List<IPartModel> getModels() {
@@ -113,7 +114,6 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         this.breaking = false;
         return this.breakBlock(true);
     }
-
 
     @Override
     public void getBoxes(final IPartCollisionHelper bch) {
@@ -198,7 +198,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
             final BlockPos pos = te.getPos();
 
-            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingRight.getOpposite())), this.getSide())) {
+            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingRight.getOpposite())),
+                    this.getSide())) {
                 left = true;
             }
 
@@ -206,7 +207,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                 right = true;
             }
 
-            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingUp.getOpposite())), this.getSide())) {
+            if (this.isAnnihilationPlane(te.getWorld().getTileEntity(pos.offset(facingUp.getOpposite())),
+                    this.getSide())) {
                 down = true;
             }
 
@@ -227,7 +229,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
     @Override
     public void onEntityCollision(final Entity entity) {
-        if (this.isAccepting && entity instanceof EntityItem && !entity.isDead && Platform.isServer() && this.getProxy().isActive()) {
+        if (this.isAccepting && entity instanceof EntityItem && !entity.isDead && Platform.isServer()
+                && this.getProxy().isActive()) {
             boolean capture = false;
             final BlockPos pos = this.getTile().getPos();
 
@@ -240,8 +243,9 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                 case UP:
                     if (entity.posX > pos.getX() && entity.posX < pos.getX() + 1) {
                         if (entity.posZ > pos.getZ() && entity.posZ < pos.getZ() + 1) {
-                            if ((entity.posY > pos.getY() + 0.9 && this.getSide() == AEPartLocation.UP) || (entity.posY < pos.getY() + 0.1 && this
-                                    .getSide() == AEPartLocation.DOWN)) {
+                            if ((entity.posY > pos.getY() + 0.9 && this.getSide() == AEPartLocation.UP)
+                                    || (entity.posY < pos.getY() + 0.1 && this
+                                            .getSide() == AEPartLocation.DOWN)) {
                                 capture = true;
                             }
                         }
@@ -251,8 +255,9 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                 case NORTH:
                     if (entity.posX > pos.getX() && entity.posX < pos.getX() + 1) {
                         if (posYMiddle > pos.getY() && posYMiddle < pos.getY() + 1) {
-                            if ((entity.posZ > pos.getZ() + 0.9 && this.getSide() == AEPartLocation.SOUTH) || (entity.posZ < pos.getZ() + 0.1 && this
-                                    .getSide() == AEPartLocation.NORTH)) {
+                            if ((entity.posZ > pos.getZ() + 0.9 && this.getSide() == AEPartLocation.SOUTH)
+                                    || (entity.posZ < pos.getZ() + 0.1 && this
+                                            .getSide() == AEPartLocation.NORTH)) {
                                 capture = true;
                             }
                         }
@@ -262,8 +267,9 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                 case WEST:
                     if (entity.posZ > pos.getZ() && entity.posZ < pos.getZ() + 1) {
                         if (posYMiddle > pos.getY() && posYMiddle < pos.getY() + 1) {
-                            if ((entity.posX > pos.getX() + 0.9 && this.getSide() == AEPartLocation.EAST) || (entity.posX < pos.getX() + 0.1 && this
-                                    .getSide() == AEPartLocation.WEST)) {
+                            if ((entity.posX > pos.getX() + 0.9 && this.getSide() == AEPartLocation.EAST)
+                                    || (entity.posX < pos.getX() + 0.1 && this
+                                            .getSide() == AEPartLocation.WEST)) {
                                 capture = true;
                             }
                         }
@@ -278,7 +284,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                 final boolean changed = this.storeEntityItem((EntityItem) entity);
 
                 if (changed) {
-                    AppEng.proxy.sendToAllNearExcept(null, pos.getX(), pos.getY(), pos.getZ(), 64, this.getTile().getWorld(),
+                    AppEng.proxy.sendToAllNearExcept(null, pos.getX(), pos.getY(), pos.getZ(), 64,
+                            this.getTile().getWorld(),
                             new PacketTransitionEffect(entity.posX, entity.posY, entity.posZ, this.getSide(), false));
                 }
             }
@@ -317,7 +324,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
             final IStorageGrid storage = this.getProxy().getStorage();
             final IEnergyGrid energy = this.getProxy().getEnergy();
             final IAEItemStack overflow = Platform.poweredInsert(energy,
-                    storage.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)), itemToStore, this.mySrc);
+                    storage.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class)),
+                    itemToStore, this.mySrc);
 
             this.isAccepting = overflow == null;
 
@@ -330,9 +338,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
     }
 
     /**
-     * Handles a possible overflow or none at all.
-     * It will update the entity to match the leftover stack size as well as mark it as dead without any leftover
-     * amount.
+     * Handles a possible overflow or none at all. It will update the entity to match the leftover stack size as well as
+     * mark it as dead without any leftover amount.
      *
      * @param entityItem the entity to update or destroy
      * @param overflow   the leftover {@link IAEItemStack}
@@ -388,7 +395,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                     final List<ItemStack> items = this.obtainBlockDrops(w, pos);
                     final float requiredPower = this.calculateEnergyUsage(w, pos, items);
 
-                    final boolean hasPower = energy.extractAEPower(requiredPower, Actionable.SIMULATE, PowerMultiplier.CONFIG) > requiredPower - 0.1;
+                    final boolean hasPower = energy.extractAEPower(requiredPower, Actionable.SIMULATE,
+                            PowerMultiplier.CONFIG) > requiredPower - 0.1;
                     final boolean canStore = this.canStoreItemStacks(items);
 
                     if (hasPower && canStore) {
@@ -396,10 +404,11 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
                             energy.extractAEPower(requiredPower, Actionable.MODULATE, PowerMultiplier.CONFIG);
                             this.breakBlockAndStoreItems(w, pos, items);
                             AppEng.proxy.sendToAllNearExcept(null, pos.getX(), pos.getY(), pos.getZ(), 64, w,
-                                    new PacketTransitionEffect(pos.getX(), pos.getY(), pos.getZ(), this.getSide(), true));
+                                    new PacketTransitionEffect(pos.getX(), pos.getY(), pos.getZ(), this.getSide(),
+                                            true));
                         } else {
                             this.breaking = true;
-                            TickHandler.INSTANCE.addCallable(this.getTile().getWorld(), this);
+                            TickHandler.instance().addCallable(this.getTile().getWorld(), this);
                         }
                         return TickRateModulation.URGENT;
                     }
@@ -415,7 +424,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
     @Override
     public TickingRequest getTickingRequest(final IGridNode node) {
-        return new TickingRequest(TickRates.AnnihilationPlane.getMin(), TickRates.AnnihilationPlane.getMax(), false, true);
+        return new TickingRequest(TickRates.AnnihilationPlane.getMin(), TickRates.AnnihilationPlane.getMax(), false,
+                true);
     }
 
     @Override
@@ -435,20 +445,25 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         final IBlockState state = w.getBlockState(pos);
         final Material material = state.getMaterial();
         final float hardness = state.getBlockHardness(w, pos);
-        final boolean ignoreMaterials = material == Material.AIR || material == Material.LAVA || material == Material.WATER || material.isLiquid();
-        final boolean ignoreBlocks = state.getBlock() == Blocks.BEDROCK || state.getBlock() == Blocks.END_PORTAL || state
-                .getBlock() == Blocks.END_PORTAL_FRAME || state.getBlock() == Blocks.COMMAND_BLOCK;
+        final boolean ignoreMaterials = material == Material.AIR || material == Material.LAVA
+                || material == Material.WATER || material.isLiquid();
+        final boolean ignoreBlocks = state.getBlock() == Blocks.BEDROCK || state.getBlock() == Blocks.END_PORTAL
+                || state
+                        .getBlock() == Blocks.END_PORTAL_FRAME
+                || state.getBlock() == Blocks.COMMAND_BLOCK;
 
-        return !ignoreMaterials && !ignoreBlocks && hardness >= 0f && !w.isAirBlock(pos) && w.isBlockLoaded(pos) && w.canMineBlockBody(
-                Platform.getPlayer(w),
-                pos);
+        return !ignoreMaterials && !ignoreBlocks && hardness >= 0f && !w.isAirBlock(pos) && w.isBlockLoaded(pos)
+                && w.canMineBlockBody(
+                        Platform.getPlayer(w),
+                        pos);
     }
 
     protected List<ItemStack> obtainBlockDrops(final WorldServer w, final BlockPos pos) {
         final FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(w);
         final IBlockState state = w.getBlockState(pos);
 
-        if (state.getBlock().canSilkHarvest(w, pos, state, fakePlayer) && enchantments.containsKey(Enchantments.SILK_TOUCH)) {
+        if (state.getBlock().canSilkHarvest(w, pos, state, fakePlayer)
+                && enchantments.containsKey(Enchantments.SILK_TOUCH)) {
             final List<ItemStack> out = new ArrayList<>(1);
             final Item item = Item.getItemFromBlock(state.getBlock());
 
@@ -517,7 +532,8 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
 
             for (final ItemStack itemStack : itemStacks) {
                 final IAEItemStack itemToTest = AEItemStack.fromItemStack(itemStack);
-                final IAEItemStack overflow = storage.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
+                final IAEItemStack overflow = storage
+                        .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class))
                         .injectItems(itemToTest, Actionable.SIMULATE, this.mySrc);
                 if (overflow != null) {
                     canStore = false;
@@ -605,4 +621,5 @@ public class PartAnnihilationPlane extends PartBasicState implements IGridTickab
         super.addToWorld();
         enchantments = EnchantmentHelper.getEnchantments(getItemStack());
     }
+
 }

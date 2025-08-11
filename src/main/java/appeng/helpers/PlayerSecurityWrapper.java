@@ -18,13 +18,11 @@
 
 package appeng.helpers;
 
-
-import appeng.api.config.SecurityPermissions;
-import appeng.api.networking.security.ISecurityRegistry;
-
 import java.util.EnumSet;
 import java.util.Map;
 
+import appeng.api.config.SecurityPermissions;
+import appeng.api.networking.security.ISecurityRegistry;
 
 public class PlayerSecurityWrapper implements ISecurityRegistry {
 

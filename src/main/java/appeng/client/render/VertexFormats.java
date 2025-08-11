@@ -18,12 +18,10 @@
 
 package appeng.client.render;
 
-
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.client.FMLClientHandler;
-
 
 /**
  * Utility for managing extended Vertex Formats without having to re-clone existing vertex formats over and over again.
@@ -31,7 +29,8 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 public final class VertexFormats {
 
     // Standard item format extended with lightmap coordinates
-    private static final VertexFormat itemFormatWithLightMap = new VertexFormat(DefaultVertexFormats.ITEM).addElement(DefaultVertexFormats.TEX_2S);
+    private static final VertexFormat itemFormatWithLightMap = new VertexFormat(DefaultVertexFormats.ITEM)
+            .addElement(DefaultVertexFormats.TEX_2S);
 
     private VertexFormats() {
     }

@@ -18,7 +18,6 @@
 
 package appeng.core;
 
-
 import appeng.api.definitions.IDefinitions;
 import appeng.bootstrap.FeatureFactory;
 import appeng.core.api.definitions.ApiBlocks;
@@ -26,7 +25,6 @@ import appeng.core.api.definitions.ApiItems;
 import appeng.core.api.definitions.ApiMaterials;
 import appeng.core.api.definitions.ApiParts;
 import appeng.core.features.registries.PartModels;
-
 
 /**
  * Internal implementation of the definitions for the API

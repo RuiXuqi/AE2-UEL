@@ -18,13 +18,12 @@
 
 package appeng.items.tools.powered;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import appeng.api.AEApi;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.core.sync.GuiBridge;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.IGuiHandler;
-
 
 public class ToolWirelessPatternTerminal extends ToolWirelessTerminal implements IWirelessTermHandler {
 

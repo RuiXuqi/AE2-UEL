@@ -18,15 +18,12 @@
 
 package appeng.parts.misc;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 
-import appeng.api.networking.IGridNode;
-import appeng.api.parts.*;
-import appeng.api.util.AECableType;
-import appeng.api.util.AEPartLocation;
-import appeng.core.AppEng;
-import appeng.items.parts.PartModels;
-import appeng.parts.PartModel;
 import io.netty.buffer.ByteBuf;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,18 +37,23 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Random;
-
+import appeng.api.networking.IGridNode;
+import appeng.api.parts.*;
+import appeng.api.util.AECableType;
+import appeng.api.util.AEPartLocation;
+import appeng.core.AppEng;
+import appeng.items.parts.PartModels;
+import appeng.parts.PartModel;
 
 public class PartCableAnchor implements IPart {
 
     @PartModels
-    public static final PartModel DEFAULT_MODELS = new PartModel(false, new ResourceLocation(AppEng.MOD_ID, "part/cable_anchor"));
+    public static final PartModel DEFAULT_MODELS = new PartModel(false,
+            new ResourceLocation(AppEng.MOD_ID, "part/cable_anchor"));
 
     @PartModels
-    public static final PartModel FACADE_MODELS = new PartModel(false, new ResourceLocation(AppEng.MOD_ID, "part/cable_anchor_short"));
+    public static final PartModel FACADE_MODELS = new PartModel(false,
+            new ResourceLocation(AppEng.MOD_ID, "part/cable_anchor_short"));
 
     private ItemStack is = ItemStack.EMPTY;
     private IPartHost host = null;
@@ -192,7 +194,8 @@ public class PartCableAnchor implements IPart {
     }
 
     @Override
-    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held, final AEPartLocation side) {
+    public void onPlacement(final EntityPlayer player, final EnumHand hand, final ItemStack held,
+            final AEPartLocation side) {
 
     }
 

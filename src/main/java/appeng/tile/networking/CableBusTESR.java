@@ -18,17 +18,17 @@
 
 package appeng.tile.networking;
 
-
-import appeng.api.parts.IPart;
-import appeng.tile.AEBaseTile;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 
+import appeng.api.parts.IPart;
+import appeng.tile.AEBaseTile;
 
 public class CableBusTESR extends TileEntitySpecialRenderer<AEBaseTile> {
 
     @Override
-    public void render(AEBaseTile te, double x, double y, double z, float partialTicks, int destroyStage, float p_render_10_) {
+    public void render(AEBaseTile te, double x, double y, double z, float partialTicks, int destroyStage,
+            float p_render_10_) {
 
         if (!(te instanceof TileCableBusTESR)) {
             return;

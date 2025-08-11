@@ -18,13 +18,12 @@
 
 package appeng.integration.modules.crafttweaker;
 
-
-import appeng.api.AEApi;
-import appeng.api.features.IMatterCannonAmmoRegistry;
 import crafttweaker.api.item.IIngredient;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
+import appeng.api.AEApi;
+import appeng.api.features.IMatterCannonAmmoRegistry;
 
 @ZenClass("mods.appliedenergistics2.Cannon")
 public class CannonRegistry {

@@ -1,5 +1,12 @@
 package appeng.tile.inventory;
 
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.wrapper.RangedWrapper;
+
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionSource;
@@ -10,18 +17,14 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.item.AEItemStack;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.wrapper.RangedWrapper;
-
-import javax.annotation.Nonnull;
-import java.util.function.Supplier;
 
 public class AppEngNetworkInventory extends AppEngInternalOversizedInventory {
 
     private final Supplier<IStorageGrid> supplier;
     private final IActionSource source;
 
-    public AppEngNetworkInventory(Supplier<IStorageGrid> networkSupplier, IActionSource source, IAEAppEngInventory inventory, int size, int maxStack) {
+    public AppEngNetworkInventory(Supplier<IStorageGrid> networkSupplier, IActionSource source,
+            IAEAppEngInventory inventory, int size, int maxStack) {
         super(inventory, size, maxStack);
         this.supplier = networkSupplier;
         this.source = source;
@@ -33,8 +36,10 @@ public class AppEngNetworkInventory extends AppEngInternalOversizedInventory {
         IStorageGrid storage = supplier.get();
         if (storage != null) {
             int originAmt = stack.getCount();
-            IMEInventory<IAEItemStack> dest = storage.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
-            IAEItemStack overflow = dest.injectItems(AEItemStack.fromItemStack(stack), simulate ? Actionable.SIMULATE : Actionable.MODULATE, this.source);
+            IMEInventory<IAEItemStack> dest = storage
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+            IAEItemStack overflow = dest.injectItems(AEItemStack.fromItemStack(stack),
+                    simulate ? Actionable.SIMULATE : Actionable.MODULATE, this.source);
             if (overflow != null && overflow.getStackSize() == originAmt) {
                 return super.insertItem(slot, stack, simulate);
             } else if (overflow != null) {

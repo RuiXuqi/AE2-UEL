@@ -18,11 +18,10 @@
 
 package appeng.util.inv;
 
+import net.minecraft.item.ItemStack;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.util.item.AEItemStack;
-import net.minecraft.item.ItemStack;
-
 
 public class ItemSlot {
 
@@ -34,7 +33,10 @@ public class ItemSlot {
 
     public ItemStack getItemStack() {
         return this.itemStack
-                .isEmpty() ? (this.aeItemStack == null ? ItemStack.EMPTY : (this.itemStack = this.aeItemStack.createItemStack())) : this.itemStack;
+                .isEmpty()
+                        ? (this.aeItemStack == null ? ItemStack.EMPTY
+                                : (this.itemStack = this.aeItemStack.createItemStack()))
+                        : this.itemStack;
     }
 
     public void setItemStack(final ItemStack is) {

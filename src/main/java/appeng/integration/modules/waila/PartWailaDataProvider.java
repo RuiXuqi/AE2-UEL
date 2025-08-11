@@ -18,13 +18,11 @@
 
 package appeng.integration.modules.waila;
 
+import java.util.List;
+import java.util.Optional;
 
-import appeng.api.parts.IPart;
-import appeng.integration.modules.waila.part.*;
 import com.google.common.collect.Lists;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,9 +31,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.Optional;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 
+import appeng.api.parts.IPart;
+import appeng.integration.modules.waila.part.*;
 
 /**
  * Delegation provider for parts through {@link IPartWailaDataProvider}
@@ -71,7 +72,8 @@ public final class PartWailaDataProvider implements IWailaDataProvider {
         final IPartWailaDataProvider partStack = new PartStackWailaDataProvider();
         final IPartWailaDataProvider annihilationPlane = new AnnihilationPlaneDataProvider();
 
-        this.providers = Lists.newArrayList(channel, storageMonitor, powerState, partStack, p2pState, annihilationPlane);
+        this.providers = Lists.newArrayList(channel, storageMonitor, powerState, partStack, p2pState,
+                annihilationPlane);
     }
 
     @Override
@@ -96,7 +98,8 @@ public final class PartWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaHead(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaHead(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         final TileEntity te = accessor.getTileEntity();
         final RayTraceResult mop = accessor.getMOP();
 
@@ -114,7 +117,8 @@ public final class PartWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         final TileEntity te = accessor.getTileEntity();
         final RayTraceResult mop = accessor.getMOP();
 
@@ -132,7 +136,8 @@ public final class PartWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public List<String> getWailaTail(final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaTail(final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         final TileEntity te = accessor.getTileEntity();
         final RayTraceResult mop = accessor.getMOP();
 
@@ -150,7 +155,8 @@ public final class PartWailaDataProvider implements IWailaDataProvider {
     }
 
     @Override
-    public NBTTagCompound getNBTData(final EntityPlayerMP player, final TileEntity te, final NBTTagCompound tag, final World world, BlockPos pos) {
+    public NBTTagCompound getNBTData(final EntityPlayerMP player, final TileEntity te, final NBTTagCompound tag,
+            final World world, BlockPos pos) {
         final RayTraceResult mop = this.tracer.retraceBlock(world, player, pos);
 
         if (mop != null) {

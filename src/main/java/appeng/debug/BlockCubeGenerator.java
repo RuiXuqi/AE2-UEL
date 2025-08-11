@@ -18,8 +18,8 @@
 
 package appeng.debug;
 
+import javax.annotation.Nullable;
 
-import appeng.block.AEBaseTileBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,8 +28,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
+import appeng.block.AEBaseTileBlock;
 
 public class BlockCubeGenerator extends AEBaseTileBlock {
 
@@ -38,7 +37,9 @@ public class BlockCubeGenerator extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         final TileCubeGenerator tcg = this.getTileEntity(w, pos);
         if (tcg != null) {
             tcg.click(player);

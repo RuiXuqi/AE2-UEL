@@ -18,6 +18,20 @@
 
 package appeng.tile.misc;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.CondenserOutput;
@@ -44,21 +58,6 @@ import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperChainedItemHandler;
 import appeng.util.inv.WrapperFilteredItemHandler;
 import appeng.util.inv.filter.AEItemFilters;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nullable;
-
 
 public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, IConfigurableObject {
 
@@ -72,8 +71,10 @@ public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, 
     private final IFluidHandler fluidHandler = new FluidHandler();
     private final MEHandler meHandler = new MEHandler();
 
-    private final IItemHandler externalInv = new WrapperChainedItemHandler(this.inputSlot, new WrapperFilteredItemHandler(this.outputSlot, AEItemFilters.EXTRACT_ONLY));
-    private final IItemHandler combinedInv = new WrapperChainedItemHandler(this.inputSlot, this.outputSlot, this.storageSlot);
+    private final IItemHandler externalInv = new WrapperChainedItemHandler(this.inputSlot,
+            new WrapperFilteredItemHandler(this.outputSlot, AEItemFilters.EXTRACT_ONLY));
+    private final IItemHandler combinedInv = new WrapperChainedItemHandler(this.inputSlot, this.outputSlot,
+            this.storageSlot);
 
     private double storedPower = 0;
 
@@ -168,7 +169,8 @@ public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, 
     }
 
     @Override
-    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc, final ItemStack removed, final ItemStack added) {
+    public void onChangeInventory(final IItemHandler inv, final int slot, final InvOperation mc,
+            final ItemStack removed, final ItemStack added) {
         if (inv == this.outputSlot) {
             if (!removed.isEmpty()) {
                 final double requiredPower = this.getRequiredPower();
@@ -264,11 +266,12 @@ public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, 
         }
     }
 
-    private static final IFluidTankProperties[] EMPTY = {new FluidTankProperties(null, Fluid.BUCKET_VOLUME, true, false)};
+    private static final IFluidTankProperties[] EMPTY = {
+            new FluidTankProperties(null, Fluid.BUCKET_VOLUME, true, false) };
 
     /**
-     * A fluid handler that exposes a 1 bucket tank that can only be filled, and - when filled - will add power
-     * to this condenser.
+     * A fluid handler that exposes a 1 bucket tank that can only be filled, and - when filled - will add power to this
+     * condenser.
      */
     private class FluidHandler implements IFluidHandler {
 
@@ -280,8 +283,10 @@ public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, 
         @Override
         public int fill(FluidStack resource, boolean doFill) {
             if (doFill) {
-                final IStorageChannel<IAEFluidStack> chan = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class);
-                TileCondenser.this.addPower((resource == null ? 0.0 : (double) resource.amount) / chan.transferFactor());
+                final IStorageChannel<IAEFluidStack> chan = AEApi.instance().storage()
+                        .getStorageChannel(IFluidStorageChannel.class);
+                TileCondenser.this
+                        .addPower((resource == null ? 0.0 : (double) resource.amount) / chan.transferFactor());
             }
 
             return resource == null ? 0 : resource.amount;
@@ -302,10 +307,8 @@ public class TileCondenser extends AEBaseInvTile implements IConfigManagerHost, 
 
     /**
      * This is used to expose a fake ME subnetwork that is only composed of this condenser tile. The purpose of this is
-     * to enable the condenser to
-     * override the {@link appeng.api.storage.IMEInventoryHandler#validForPass(int)} method to make sure a condenser is
-     * only ever used if an item
-     * can't go anywhere else.
+     * to enable the condenser to override the {@link appeng.api.storage.IMEInventoryHandler#validForPass(int)} method
+     * to make sure a condenser is only ever used if an item can't go anywhere else.
      */
     private class MEHandler implements IStorageMonitorableAccessor, IStorageMonitorable {
         private final CondenserItemInventory itemInventory = new CondenserItemInventory(TileCondenser.this);

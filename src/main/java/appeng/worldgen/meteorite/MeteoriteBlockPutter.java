@@ -18,11 +18,9 @@
 
 package appeng.worldgen.meteorite;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-
 
 public class MeteoriteBlockPutter {
     public boolean put(final IMeteoriteWorld w, final int i, final int j, final int k, final Block blk) {

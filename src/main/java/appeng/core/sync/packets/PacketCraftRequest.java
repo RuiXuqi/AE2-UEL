@@ -18,6 +18,13 @@
 
 package appeng.core.sync.packets;
 
+import java.util.concurrent.Future;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
@@ -33,13 +40,6 @@ import appeng.core.sync.AppEngPacket;
 import appeng.core.sync.GuiBridge;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.util.Platform;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-
-import java.util.concurrent.Future;
-
 
 public class PacketCraftRequest extends AppEngPacket {
 
@@ -87,17 +87,20 @@ public class PacketCraftRequest extends AppEngPacket {
                 Future<ICraftingJob> futureJob = null;
                 try {
                     final ICraftingGrid cg = g.getCache(ICraftingGrid.class);
-                    futureJob = cg.beginCraftingJob(cca.getWorld(), cca.getGrid(), cca.getActionSrc(), cca.getItemToCraft(), null);
+                    futureJob = cg.beginCraftingJob(cca.getWorld(), cca.getGrid(), cca.getActionSrc(),
+                            cca.getItemToCraft(), null);
 
                     final ContainerOpenContext context = cca.getOpenContext();
                     if (context != null) {
                         final TileEntity te = context.getTile();
                         if (te != null) {
-                            Platform.openGUI(player, te, cca.getOpenContext().getSide(), GuiBridge.GUI_CRAFTING_CONFIRM);
+                            Platform.openGUI(player, te, cca.getOpenContext().getSide(),
+                                    GuiBridge.GUI_CRAFTING_CONFIRM);
                         } else {
                             if (ah instanceof IInventorySlotAware) {
                                 IInventorySlotAware i = ((IInventorySlotAware) ah);
-                                Platform.openGUI(player, i.getInventorySlot(), GuiBridge.GUI_CRAFTING_CONFIRM, i.isBaubleSlot());
+                                Platform.openGUI(player, i.getInventorySlot(), GuiBridge.GUI_CRAFTING_CONFIRM,
+                                        i.isBaubleSlot());
                             }
                         }
 

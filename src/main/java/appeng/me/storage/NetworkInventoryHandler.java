@@ -18,6 +18,7 @@
 
 package appeng.me.storage;
 
+import java.util.*;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -32,9 +33,6 @@ import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.me.cache.SecurityCache;
-
-import java.util.*;
-
 
 public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInventoryHandler<T> {
 
@@ -90,7 +88,8 @@ public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInvent
             while (ii.hasNext() && input != null) {
                 final IMEInventoryHandler<T> inv = ii.next();
 
-                if (inv.canAccept(input) && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
+                if (inv.canAccept(input)
+                        && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
                     input = inv.injectItems(input, type, src);
                 }
             }
@@ -103,14 +102,14 @@ public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInvent
         }
 
         boolean stickyInventoryFound = false;
-
         // For this pass we do return input if the item is able to go into a sticky inventory. We NEVER want to try and
         // insert the item into a non-sticky inventory if it could already go into a sticky inventory.
         for (final List<IMEInventoryHandler<T>> stickyInvList : this.stickyPriorityInventory.values()) {
             Iterator<IMEInventoryHandler<T>> ii = stickyInvList.iterator();
             while (ii.hasNext() && input != null) {
                 final IMEInventoryHandler<T> inv = ii.next();
-                if (inv.validForPass(1) && inv.canAccept(input) && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
+                if (inv.validForPass(1) && inv.canAccept(input)
+                        && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
                     input = inv.injectItems(input, type, src);
                     stickyInventoryFound = true;
                 }
@@ -128,7 +127,8 @@ public class NetworkInventoryHandler<T extends IAEStack<T>> implements IMEInvent
                 final IMEInventoryHandler<T> inv = ii.next();
 
                 if (inv.validForPass(1) && inv
-                        .canAccept(input) && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
+                        .canAccept(input)
+                        && (inv.isPrioritized(input) || inv.extractItems(input, Actionable.SIMULATE, src) != null)) {
                     input = inv.injectItems(input, type, src);
                 }
             }

@@ -18,6 +18,20 @@
 
 package appeng.core.features.registries;
 
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 import appeng.api.AEApi;
 import appeng.api.config.TunnelType;
@@ -29,21 +43,6 @@ import appeng.api.features.IP2PTunnelRegistry;
 import appeng.api.util.AEColor;
 import appeng.capabilities.Capabilities;
 import appeng.util.item.OreHelper;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.oredict.OreDictionary;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.Map.Entry;
-
 
 public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
     private static final int INITIAL_CAPACITY = 40;
@@ -77,9 +76,11 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         gtceOreDict.add("cableGtSingle");
 
         for (String oreDict : gtceOreDict) {
-            Arrays.stream(OreDictionary.getOreNames()).filter(oreName -> oreName.startsWith(oreDict)).forEach(oreName -> {
-                OreHelper.INSTANCE.getCachedOres(oreName).forEach(stack -> this.addNewAttunement(stack, TunnelType.GTEU_POWER));
-            });
+            Arrays.stream(OreDictionary.getOreNames()).filter(oreName -> oreName.startsWith(oreDict))
+                    .forEach(oreName -> {
+                        OreHelper.INSTANCE.getCachedOres(oreName)
+                                .forEach(stack -> this.addNewAttunement(stack, TunnelType.GTEU_POWER));
+                    });
         }
 
         /**
@@ -122,7 +123,8 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         this.addNewAttunement(new ItemStack(Blocks.REDSTONE_WIRE), TunnelType.REDSTONE);
         this.addNewAttunement(new ItemStack(Blocks.REDSTONE_BLOCK), TunnelType.REDSTONE);
         this.addNewAttunement(new ItemStack(Blocks.LEVER), TunnelType.REDSTONE);
-        this.addNewAttunement(this.getModItem("enderio", "itemredstoneconduit", OreDictionary.WILDCARD_VALUE), TunnelType.REDSTONE);
+        this.addNewAttunement(this.getModItem("enderio", "itemredstoneconduit", OreDictionary.WILDCARD_VALUE),
+                TunnelType.REDSTONE);
 
         /**
          * attune based on lots of random item related stuff
@@ -139,7 +141,8 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         this.addNewAttunement(new ItemStack(Blocks.TRAPPED_CHEST), TunnelType.ITEM);
         this.addNewAttunement(this.getModItem("extrautilities", "extractor_base", 0), TunnelType.ITEM);
         this.addNewAttunement(this.getModItem("mekanism", "parttransmitter", 9), TunnelType.ITEM);
-        this.addNewAttunement(this.getModItem("enderio", "itemitemconduit", OreDictionary.WILDCARD_VALUE), TunnelType.ITEM);
+        this.addNewAttunement(this.getModItem("enderio", "itemitemconduit", OreDictionary.WILDCARD_VALUE),
+                TunnelType.ITEM);
         this.addNewAttunement(this.getModItem("thermaldynamics", "duct_32", 0), TunnelType.ITEM); // itemduct
         this.addNewAttunement(this.getModItem("thermaldynamics", "duct_32", 1), TunnelType.ITEM); // itemduct
         // (opaque)
@@ -159,8 +162,10 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
         this.addNewAttunement(this.getModItem("mekanism", "machineblock2", 11), TunnelType.FLUID);
         this.addNewAttunement(this.getModItem("mekanism", "parttransmitter", 4), TunnelType.FLUID);
         this.addNewAttunement(this.getModItem("extrautilities", "extractor_base", 6), TunnelType.FLUID);
-        this.addNewAttunement(this.getModItem("extrautilities", "drum", OreDictionary.WILDCARD_VALUE), TunnelType.FLUID);
-        this.addNewAttunement(this.getModItem("enderio", "itemliquidconduit", OreDictionary.WILDCARD_VALUE), TunnelType.FLUID);
+        this.addNewAttunement(this.getModItem("extrautilities", "drum", OreDictionary.WILDCARD_VALUE),
+                TunnelType.FLUID);
+        this.addNewAttunement(this.getModItem("enderio", "itemliquidconduit", OreDictionary.WILDCARD_VALUE),
+                TunnelType.FLUID);
         this.addNewAttunement(this.getModItem("thermaldynamics", "duct_16", 0), TunnelType.FLUID); // fluiduct
         this.addNewAttunement(this.getModItem("thermaldynamics", "duct_16", 1), TunnelType.FLUID); // fluiduct
         // (opaque)
@@ -253,7 +258,8 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
 
             // Use the mod id as last option.
             for (final Entry<String, TunnelType> entry : this.modIdTunnels.entrySet()) {
-                if (trigger.getItem().getRegistryName() != null && trigger.getItem().getRegistryName().getNamespace().equals(entry.getKey())) {
+                if (trigger.getItem().getRegistryName() != null
+                        && trigger.getItem().getRegistryName().getNamespace().equals(entry.getKey())) {
                     return entry.getValue();
                 }
             }
@@ -277,10 +283,5 @@ public final class P2PTunnelRegistry implements IP2PTunnelRegistry {
 
     private void addNewAttunement(final IItemDefinition definition, final TunnelType type) {
         definition.maybeStack(1).ifPresent(definitionStack -> this.addNewAttunement(definitionStack, type));
-    }
-
-    @Override
-    public TunnelType registerTunnelType(@NotNull String enumName, @NotNull ItemStack partStack) {
-        return TunnelType.registerTunnelType(enumName, partStack);
     }
 }

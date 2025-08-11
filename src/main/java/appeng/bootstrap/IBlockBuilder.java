@@ -18,17 +18,16 @@
 
 package appeng.bootstrap;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import appeng.api.definitions.IBlockDefinition;
-import appeng.bootstrap.definitions.TileEntityDefinition;
-import appeng.core.features.AEFeature;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
+import appeng.api.definitions.IBlockDefinition;
+import appeng.bootstrap.definitions.TileEntityDefinition;
+import appeng.core.features.AEFeature;
 
 public interface IBlockBuilder {
     IBlockBuilder bootstrap(BiFunction<Block, Item, IBootstrapComponent> component);
@@ -47,8 +46,8 @@ public interface IBlockBuilder {
     IBlockBuilder disableItem();
 
     /**
-     * Forces this block's item to uses a custom model, instead of using the default block state as the item model.
-     * The model has the same name as the registry name.
+     * Forces this block's item to uses a custom model, instead of using the default block state as the item model. The
+     * model has the same name as the registry name.
      */
     IBlockBuilder useCustomItemModel();
 

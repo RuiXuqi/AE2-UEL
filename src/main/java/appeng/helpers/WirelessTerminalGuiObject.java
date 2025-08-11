@@ -18,6 +18,11 @@
 
 package appeng.helpers;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -45,7 +50,6 @@ import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IConfigManager;
 import appeng.container.interfaces.IInventorySlotAware;
-import appeng.me.cluster.IAECluster;
 import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.parts.automation.StackUpgradeInventory;
 import appeng.parts.automation.UpgradeInventory;
@@ -54,14 +58,9 @@ import appeng.tile.networking.TileWireless;
 import appeng.tile.qnb.TileQuantumBridge;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.items.IItemHandler;
 
-
-public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IViewCellStorage, IAEAppEngInventory, IUpgradeableCellHost {
+public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IViewCellStorage,
+        IAEAppEngInventory, IUpgradeableCellHost {
 
     private final ItemStack effectiveItem;
     private final IWirelessTermHandler wth;
@@ -80,8 +79,8 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
     private final UpgradeInventory upgrades;
     private QuantumCluster myQC;
 
-
-    public WirelessTerminalGuiObject(final IWirelessTermHandler wh, final ItemStack is, final EntityPlayer ep, final World w, final int x, final int y, final int z) {
+    public WirelessTerminalGuiObject(final IWirelessTermHandler wh, final ItemStack is, final EntityPlayer ep,
+            final World w, final int x, final int y, final int z) {
         this.encryptionKey = wh.getEncryptionKey(is);
         this.effectiveItem = is;
         this.myPlayer = ep;
@@ -105,7 +104,8 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
                 if (this.targetGrid != null) {
                     this.sg = this.targetGrid.getCache(IStorageGrid.class);
                     if (this.sg != null) {
-                        this.itemStorage = this.sg.getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+                        this.itemStorage = this.sg
+                                .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
                     }
                 }
             }
@@ -279,7 +279,8 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
                 }
             }
 
-            if (myWap != null) return true;
+            if (myWap != null)
+                return true;
 
             tw = this.targetGrid.getMachines(TileQuantumBridge.class);
             for (final IGridNode n : tw) {
@@ -287,7 +288,8 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
                 if (tqb.getCluster() != null) {
                     TileQuantumBridge center = ((QuantumCluster) tqb.getCluster()).getCenter();
                     if (center != null) {
-                        if (center.getInternalInventory().getStackInSlot(1).isItemEqual(AEApi.instance().definitions().materials().cardQuantumLink().maybeStack(1).get())) {
+                        if (center.getInternalInventory().getStackInSlot(1).isItemEqual(
+                                AEApi.instance().definitions().materials().cardQuantumLink().maybeStack(1).get())) {
                             myQC = (QuantumCluster) tqb.getCluster();
                             myRange = 1;
                             return true;
@@ -352,7 +354,7 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
         viewCell.writeToNBT(data, "viewCell");
         upgrades.writeToNBT(data, "upgrades");
     }
-    
+
     public void saveChanges(NBTTagCompound data) {
         if (effectiveItem.getTagCompound() != null) {
             effectiveItem.getTagCompound().merge(data);
@@ -370,7 +372,8 @@ public class WirelessTerminalGuiObject implements IPortableCell, IActionHost, II
     }
 
     @Override
-    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
+    public void onChangeInventory(IItemHandler inv, int slot, InvOperation mc, ItemStack removedStack,
+            ItemStack newStack) {
 
     }
 

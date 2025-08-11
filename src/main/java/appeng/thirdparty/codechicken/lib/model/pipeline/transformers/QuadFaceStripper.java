@@ -18,20 +18,18 @@
 
 package appeng.thirdparty.codechicken.lib.model.pipeline.transformers;
 
+import static net.minecraft.util.EnumFacing.AxisDirection.POSITIVE;
 
-import appeng.thirdparty.codechicken.lib.model.Quad.Vertex;
-import appeng.thirdparty.codechicken.lib.model.pipeline.IPipelineElementFactory;
-import appeng.thirdparty.codechicken.lib.model.pipeline.QuadTransformer;
 import net.minecraft.util.EnumFacing.AxisDirection;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
-import static net.minecraft.util.EnumFacing.AxisDirection.POSITIVE;
-
+import appeng.thirdparty.codechicken.lib.model.Quad.Vertex;
+import appeng.thirdparty.codechicken.lib.model.pipeline.IPipelineElementFactory;
+import appeng.thirdparty.codechicken.lib.model.pipeline.QuadTransformer;
 
 /**
- * This transformer strips quads that are on faces.
- * Simply set the bounds for the faces, and the strip mask.
+ * This transformer strips quads that are on faces. Simply set the bounds for the faces, and the strip mask.
  *
  * @author covers1624
  */
@@ -53,9 +51,8 @@ public class QuadFaceStripper extends QuadTransformer {
     }
 
     /**
-     * The bounds of the faces,
-     * used as the .. bounds, if all vertices of a quad
-     * lay on the bounds, it is up for stripping.
+     * The bounds of the faces, used as the .. bounds, if all vertices of a quad lay on the bounds, it is up for
+     * stripping.
      *
      * @param bounds The bounds.
      */
@@ -64,9 +61,7 @@ public class QuadFaceStripper extends QuadTransformer {
     }
 
     /**
-     * The mask to strip edges.
-     * This is an opt in system,
-     * the mask is simple 'mask = (1 << side)'.
+     * The mask to strip edges. This is an opt in system, the mask is simple 'mask = (1 << side)'.
      *
      * @param mask The mask.
      */

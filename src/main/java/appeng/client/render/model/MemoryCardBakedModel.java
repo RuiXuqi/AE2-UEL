@@ -1,13 +1,20 @@
 package appeng.client.render.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import appeng.api.implementations.items.IMemoryCard;
-import appeng.api.util.AEColor;
-import appeng.client.render.cablebus.CubeBuilder;
-import appeng.core.AELog;
+import javax.annotation.Nullable;
+import javax.vecmath.Matrix4f;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableList;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -20,19 +27,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.TRSRTransformation;
-import org.apache.commons.lang3.tuple.Pair;
 
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
+import appeng.api.implementations.items.IMemoryCard;
+import appeng.api.util.AEColor;
+import appeng.client.render.cablebus.CubeBuilder;
+import appeng.core.AELog;
 
 class MemoryCardBakedModel implements IBakedModel {
-    private static final AEColor[] DEFAULT_COLOR_CODE = new AEColor[]{
+    private static final AEColor[] DEFAULT_COLOR_CODE = new AEColor[] {
             AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT,
             AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT, AEColor.TRANSPARENT,
     };
@@ -53,7 +55,8 @@ class MemoryCardBakedModel implements IBakedModel {
         this(format, baseModel, texture, DEFAULT_COLOR_CODE, createCache());
     }
 
-    private MemoryCardBakedModel(VertexFormat format, IBakedModel baseModel, TextureAtlasSprite texture, AEColor[] hash, Cache<CacheKey, MemoryCardBakedModel> modelCache) {
+    private MemoryCardBakedModel(VertexFormat format, IBakedModel baseModel, TextureAtlasSprite texture, AEColor[] hash,
+            Cache<CacheKey, MemoryCardBakedModel> modelCache) {
         this.format = format;
         this.baseModel = baseModel;
         this.texture = texture;
@@ -129,14 +132,17 @@ class MemoryCardBakedModel implements IBakedModel {
     public ItemOverrideList getOverrides() {
         return new ItemOverrideList(Collections.emptyList()) {
             @Override
-            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+            public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world,
+                    EntityLivingBase entity) {
                 try {
                     if (stack.getItem() instanceof IMemoryCard) {
                         final IMemoryCard memoryCard = (IMemoryCard) stack.getItem();
                         final AEColor[] colors = memoryCard.getColorCode(stack);
 
                         return MemoryCardBakedModel.this.modelCache.get(new CacheKey(colors),
-                                () -> new MemoryCardBakedModel(MemoryCardBakedModel.this.format, MemoryCardBakedModel.this.baseModel, MemoryCardBakedModel.this.texture, colors, MemoryCardBakedModel.this.modelCache));
+                                () -> new MemoryCardBakedModel(MemoryCardBakedModel.this.format,
+                                        MemoryCardBakedModel.this.baseModel, MemoryCardBakedModel.this.texture, colors,
+                                        MemoryCardBakedModel.this.modelCache));
                     }
                 } catch (ExecutionException e) {
                     AELog.error(e);

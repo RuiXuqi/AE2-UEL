@@ -18,12 +18,10 @@
 
 package appeng.worldgen.meteorite;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
 
 public interface IMeteoriteWorld {
     int minX(int in);

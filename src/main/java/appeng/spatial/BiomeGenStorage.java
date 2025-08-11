@@ -18,9 +18,7 @@
 
 package appeng.spatial;
 
-
 import net.minecraft.world.biome.Biome;
-
 
 public class BiomeGenStorage extends Biome {
 

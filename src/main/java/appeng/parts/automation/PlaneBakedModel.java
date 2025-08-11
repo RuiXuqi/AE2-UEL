@@ -18,9 +18,14 @@
 
 package appeng.parts.automation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import appeng.client.render.cablebus.CubeBuilder;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -30,11 +35,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import appeng.client.render.cablebus.CubeBuilder;
 
 /**
  * Built-in model for annihilation planes that supports connected textures.
@@ -45,7 +46,8 @@ public class PlaneBakedModel implements IBakedModel {
 
     private final List<BakedQuad> quads;
 
-    PlaneBakedModel(VertexFormat format, TextureAtlasSprite frontTexture, TextureAtlasSprite sidesTexture, TextureAtlasSprite backTexture, PlaneConnections connections) {
+    PlaneBakedModel(VertexFormat format, TextureAtlasSprite frontTexture, TextureAtlasSprite sidesTexture,
+            TextureAtlasSprite backTexture, PlaneConnections connections) {
         this.frontTexture = frontTexture;
 
         List<BakedQuad> quads = new ArrayList<>(4 * 6);

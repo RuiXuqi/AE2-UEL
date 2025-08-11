@@ -18,22 +18,22 @@
 
 package appeng.integration.modules.crafttweaker;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import net.minecraft.item.ItemStack;
+
+import crafttweaker.IAction;
+import crafttweaker.api.item.IIngredient;
+import crafttweaker.api.item.IItemStack;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 import appeng.api.AEApi;
 import appeng.api.features.IInscriberRecipe;
 import appeng.api.features.IInscriberRecipeBuilder;
 import appeng.api.features.IInscriberRegistry;
 import appeng.api.features.InscriberProcessType;
-import crafttweaker.IAction;
-import crafttweaker.api.item.IIngredient;
-import crafttweaker.api.item.IItemStack;
-import net.minecraft.item.ItemStack;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 
 @ZenClass("mods.appliedenergistics2.Inscriber")
 public class InscriberRecipes {
@@ -41,19 +41,21 @@ public class InscriberRecipes {
     }
 
     @ZenMethod
-    public static void addRecipe(IItemStack output, IIngredient input, boolean inscribe, @stanhebben.zenscript.annotations.Optional IIngredient top, @stanhebben.zenscript.annotations.Optional IIngredient bottom) {
+    public static void addRecipe(IItemStack output, IIngredient input, boolean inscribe,
+            @stanhebben.zenscript.annotations.Optional IIngredient top,
+            @stanhebben.zenscript.annotations.Optional IIngredient bottom) {
         Optional<Collection<ItemStack>> inStacks = CTModule.toStacks(input);
         if (!inStacks.isPresent()) {
             return;
         }
 
-        List<ItemStack> topList = new ArrayList<>(CTModule.toStacks(top).orElse(Collections.singleton(ItemStack.EMPTY)));
-        List<ItemStack> bottomList = new ArrayList<>(CTModule.toStacks(bottom).orElse(Collections.singleton(ItemStack.EMPTY)));
+        List<ItemStack> topList = new ArrayList<>(
+                CTModule.toStacks(top).orElse(Collections.singleton(ItemStack.EMPTY)));
+        List<ItemStack> bottomList = new ArrayList<>(
+                CTModule.toStacks(bottom).orElse(Collections.singleton(ItemStack.EMPTY)));
         final IInscriberRecipeBuilder builder = AEApi.instance().registries().inscriber().builder();
-        builder.withProcessType(inscribe ? InscriberProcessType.INSCRIBE : InscriberProcessType.PRESS).
-                withTopOptional(topList).
-                withBottomOptional(bottomList).
-                withOutput(CTModule.toStack(output))
+        builder.withProcessType(inscribe ? InscriberProcessType.INSCRIBE : InscriberProcessType.PRESS)
+                .withTopOptional(topList).withBottomOptional(bottomList).withOutput(CTModule.toStack(output))
                 .withInputs(inStacks.get());
         CTModule.MODIFICATIONS.add(new Add(builder.build()));
     }

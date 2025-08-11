@@ -18,8 +18,6 @@
 
 package appeng.bootstrap.components;
 
-
-import appeng.bootstrap.IModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
@@ -27,6 +25,7 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraftforge.fml.relauncher.Side;
 
+import appeng.bootstrap.IModelRegistry;
 
 /**
  * Registers a custom state mapper for a given block.

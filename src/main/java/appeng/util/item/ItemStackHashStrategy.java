@@ -1,15 +1,16 @@
 package appeng.util.item;
 
-import it.unimi.dsi.fastutil.Hash;
-import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nullable;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+
+import it.unimi.dsi.fastutil.Hash;
+
 /**
- * Original code by Eutro, butchered by Prototypetrousers.
- * A configurable generator of hashing strategies, allowing for consideration of select properties of ItemStacks when
- * considering equality.
+ * Original code by Eutro, butchered by Prototypetrousers. A configurable generator of hashing strategies, allowing for
+ * consideration of select properties of ItemStacks when considering equality.
  */
 public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack> {
     /**
@@ -20,8 +21,8 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack> {
     }
 
     /**
-     * Generates an ItemStackHash configured to compare every aspect of ItemStacks except the number
-     * of items in the stack.
+     * Generates an ItemStackHash configured to compare every aspect of ItemStacks except the number of items in the
+     * stack.
      *
      * @return the ItemStackHashStrategy as described above.
      */
@@ -78,17 +79,19 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack> {
             return new ItemStackHashStrategy() {
                 @Override
                 public int hashCode(@Nullable ItemStack o) {
-                    return o == null || o.isEmpty() ? 0 : Objects.hash(
-                            item ? o.getItem() : null,
-                            damage ? o.getItemDamage() : null,
-                            tag ? o.getTagCompound() : null
-                    );
+                    return o == null || o.isEmpty() ? 0
+                            : Objects.hash(
+                                    item ? o.getItem() : null,
+                                    damage ? o.getItemDamage() : null,
+                                    tag ? o.getTagCompound() : null);
                 }
 
                 @Override
                 public boolean equals(@Nullable ItemStack a, @Nullable ItemStack b) {
-                    if (a == null || a.isEmpty()) return b == null || b.isEmpty();
-                    if (b == null || b.isEmpty()) return false;
+                    if (a == null || a.isEmpty())
+                        return b == null || b.isEmpty();
+                    if (b == null || b.isEmpty())
+                        return false;
 
                     return (!item || a.getItem() == b.getItem()) &&
                             (!damage || a.getItemDamage() == b.getItemDamage()) &&
@@ -98,4 +101,3 @@ public interface ItemStackHashStrategy extends Hash.Strategy<ItemStack> {
         }
     }
 }
-

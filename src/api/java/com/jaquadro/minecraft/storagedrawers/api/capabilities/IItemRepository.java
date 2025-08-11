@@ -1,10 +1,10 @@
 package com.jaquadro.minecraft.storagedrawers.api.capabilities;
 
+import java.util.function.Predicate;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-
-import javax.annotation.Nonnull;
-import java.util.function.Predicate;
 
 /**
  * An interface for treating an inventory as a slotless, central repository of items.
@@ -16,8 +16,7 @@ import java.util.function.Predicate;
  * the predicate is derived from DefaultPredicate, then the implementation MUST apply any tests it would have applied
  * had no predicate been provided at all, in addition to testing the predicate itself.
  */
-public interface IItemRepository
-{
+public interface IItemRepository {
     /**
      * Gets a list of all items in the inventory.  The same item may appear multiple times with varying counts.
 
@@ -122,8 +121,7 @@ public interface IItemRepository
      * The ItemStack held by itemPrototype always reports a stack size of 1.
      * IT IS IMPORTANT THAT YOU NEVER MODIFY itemPrototype.
      */
-    class ItemRecord
-    {
+    class ItemRecord {
         @Nonnull
         public final ItemStack itemPrototype;
         public final int count;
@@ -139,5 +137,6 @@ public interface IItemRepository
      * internal default predicate to be tested in addition to the custom predicate.  An IItemRepository function
      * may choose to enforce its own predicate regardless.
      */
-    interface DefaultPredicate<T> extends Predicate<T> { }
+    interface DefaultPredicate<T> extends Predicate<T> {}
+
 }

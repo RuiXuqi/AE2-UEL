@@ -18,18 +18,18 @@
 
 package appeng.core;
 
+import javax.annotation.Nonnull;
 
-import appeng.core.features.AEFeature;
-import appeng.tile.AEBaseTile;
-import appeng.util.Platform;
-import net.minecraft.util.math.BlockPos;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.ParameterizedMessage;
 
-import javax.annotation.Nonnull;
+import net.minecraft.util.math.BlockPos;
 
+import appeng.core.features.AEFeature;
+import appeng.tile.AEBaseTile;
+import appeng.util.Platform;
 
 public final class AELog {
     private static final String LOGGER_PREFIX = "AE2:";
@@ -98,7 +98,8 @@ public final class AELog {
      * @param params    the parameters used for {@link String#format(String, Object...)}.
      * @see AELog#log(Level, String, Object...)
      */
-    public static void log(@Nonnull final Level level, @Nonnull final Throwable exception, @Nonnull String message, final Object... params) {
+    public static void log(@Nonnull final Level level, @Nonnull final Throwable exception, @Nonnull String message,
+            final Object... params) {
         if (AELog.isLogEnabled()) {
             final String formattedMessage = String.format(message, params);
             final Logger logger = getLogger();
@@ -321,7 +322,8 @@ public final class AELog {
      * @return true when the crafting debug log is enabled.
      */
     public static boolean isCraftingDebugLogEnabled() {
-        return AEConfig.instance().isFeatureEnabled(AEFeature.CRAFTING_LOG) && AEConfig.instance().isFeatureEnabled(AEFeature.DEBUG_LOGGING);
+        return AEConfig.instance().isFeatureEnabled(AEFeature.CRAFTING_LOG)
+                && AEConfig.instance().isFeatureEnabled(AEFeature.DEBUG_LOGGING);
     }
 
     /**

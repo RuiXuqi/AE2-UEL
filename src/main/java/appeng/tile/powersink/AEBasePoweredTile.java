@@ -18,6 +18,14 @@
 
 package appeng.tile.powersink;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -29,14 +37,6 @@ import appeng.capabilities.Capabilities;
 import appeng.integration.Integrations;
 import appeng.integration.abstraction.IC2PowerSink;
 import appeng.tile.AEBaseInvTile;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.IEnergyStorage;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-
 
 public abstract class AEBasePoweredTile extends AEBaseInvTile implements IAEPowerStorage, IExternalPowerSink {
 
@@ -91,7 +91,8 @@ public abstract class AEBasePoweredTile extends AEBaseInvTile implements IAEPowe
 
     @Override
     public final double getExternalPowerDemand(final PowerUnits externalUnit, final double maxPowerRequired) {
-        return PowerUnits.AE.convertTo(externalUnit, Math.max(0.0, this.getFunnelPowerDemand(externalUnit.convertTo(PowerUnits.AE, maxPowerRequired))));
+        return PowerUnits.AE.convertTo(externalUnit,
+                Math.max(0.0, this.getFunnelPowerDemand(externalUnit.convertTo(PowerUnits.AE, maxPowerRequired))));
     }
 
     protected double getFunnelPowerDemand(final double maxRequired) {

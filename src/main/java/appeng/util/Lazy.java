@@ -18,9 +18,7 @@
 
 package appeng.util;
 
-
 import java.util.function.Supplier;
-
 
 public class Lazy<T> implements Supplier<T> {
     private final Supplier<T> supplier;

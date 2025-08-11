@@ -18,9 +18,7 @@
 
 package appeng.container.interfaces;
 
-
 import appeng.client.gui.widgets.GuiProgressBar;
-
 
 /**
  * This interface provides the data for anything simulating a progress.

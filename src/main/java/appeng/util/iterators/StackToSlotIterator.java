@@ -18,12 +18,11 @@
 
 package appeng.util.iterators;
 
-
-import appeng.util.inv.ItemSlot;
-import net.minecraft.item.ItemStack;
-
 import java.util.Iterator;
 
+import net.minecraft.item.ItemStack;
+
+import appeng.util.inv.ItemSlot;
 
 public class StackToSlotIterator implements Iterator<ItemSlot> {
 

@@ -18,9 +18,7 @@
 
 package appeng.container.slot;
 
-
 import net.minecraftforge.items.IItemHandler;
-
 
 public class SlotInaccessibleHD extends SlotInaccessible {
 

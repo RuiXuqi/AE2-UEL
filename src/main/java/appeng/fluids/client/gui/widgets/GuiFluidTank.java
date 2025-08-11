@@ -18,14 +18,6 @@
 
 package appeng.fluids.client.gui.widgets;
 
-
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.client.gui.widgets.GuiCustomSlot;
-import appeng.client.gui.widgets.ITooltip;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.PacketInventoryAction;
-import appeng.fluids.util.IAEFluidTank;
-import appeng.helpers.InventoryAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,6 +26,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import appeng.api.storage.data.IAEFluidStack;
+import appeng.client.gui.widgets.GuiCustomSlot;
+import appeng.client.gui.widgets.ITooltip;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.PacketInventoryAction;
+import appeng.fluids.util.IAEFluidTank;
+import appeng.helpers.InventoryAction;
 
 @SideOnly(Side.CLIENT)
 public class GuiFluidTank extends GuiCustomSlot implements ITooltip {
@@ -67,7 +66,8 @@ public class GuiFluidTank extends GuiCustomSlot implements ITooltip {
             GlStateManager.disableBlend();
             GlStateManager.disableLighting();
 
-            //drawRect( this.x, this.y, this.x + this.width, this.y + this.height, AEColor.GRAY.blackVariant | 0xFF000000 );
+            // drawRect( this.x, this.y, this.x + this.width, this.y + this.height, AEColor.GRAY.blackVariant |
+            // 0xFF000000 );
 
             final IAEFluidStack fluid = this.tank.getFluidInSlot(this.slot);
             if (fluid != null && fluid.getStackSize() > 0) {
@@ -83,16 +83,20 @@ public class GuiFluidTank extends GuiCustomSlot implements ITooltip {
                 }
                 GlStateManager.color(red, green, blue);
 
-                TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getStill().toString());
-                int scaledHeight = (int) (this.height * ((float) fluid.getStackSize() / this.tank.getTankProperties()[this.slot].getCapacity()));
+                TextureAtlasSprite sprite = mc.getTextureMapBlocks()
+                        .getAtlasSprite(fluid.getFluid().getStill().toString());
+                int scaledHeight = (int) (this.height
+                        * ((float) fluid.getStackSize() / this.tank.getTankProperties()[this.slot].getCapacity()));
                 scaledHeight = Math.min(this.height, scaledHeight);
 
                 int iconHeightRemainder = scaledHeight % 16;
                 if (iconHeightRemainder > 0) {
-                    this.drawTexturedModalRect(this.xPos(), this.yPos() + this.getHeight() - iconHeightRemainder, sprite, 16, iconHeightRemainder);
+                    this.drawTexturedModalRect(this.xPos(), this.yPos() + this.getHeight() - iconHeightRemainder,
+                            sprite, 16, iconHeightRemainder);
                 }
                 for (int i = 0; i < scaledHeight / 16; i++) {
-                    this.drawTexturedModalRect(this.xPos(), this.yPos() + this.getHeight() - iconHeightRemainder - (i + 1) * 16, sprite, 16, 16);
+                    this.drawTexturedModalRect(this.xPos(),
+                            this.yPos() + this.getHeight() - iconHeightRemainder - (i + 1) * 16, sprite, 16, 16);
                 }
             }
         }
@@ -104,7 +108,8 @@ public class GuiFluidTank extends GuiCustomSlot implements ITooltip {
         if (fluid != null && fluid.getStackSize() > 0) {
             String desc = fluid.getFluid().getLocalizedName(fluid.getFluidStack());
 
-            return desc + "\n" + fluid.getStackSize() + "/" + this.tank.getTankProperties()[this.slot].getCapacity() + "mB";
+            return desc + "\n" + fluid.getStackSize() + "/" + this.tank.getTankProperties()[this.slot].getCapacity()
+                    + "mB";
         }
         return null;
     }

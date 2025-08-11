@@ -18,15 +18,6 @@
 
 package appeng.items.tools.quartz;
 
-
-import appeng.api.implementations.guiobjects.IGuiItem;
-import appeng.api.implementations.guiobjects.IGuiItemObject;
-import appeng.api.util.AEPartLocation;
-import appeng.core.features.AEFeature;
-import appeng.core.sync.GuiBridge;
-import appeng.items.AEBaseItem;
-import appeng.items.contents.QuartzKnifeObj;
-import appeng.util.Platform;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -36,6 +27,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import appeng.api.implementations.guiobjects.IGuiItem;
+import appeng.api.implementations.guiobjects.IGuiItemObject;
+import appeng.api.util.AEPartLocation;
+import appeng.core.features.AEFeature;
+import appeng.core.sync.GuiBridge;
+import appeng.items.AEBaseItem;
+import appeng.items.contents.QuartzKnifeObj;
+import appeng.util.Platform;
 
 public class ToolQuartzCuttingKnife extends AEBaseItem implements IGuiItem {
     private final AEFeature type;
@@ -47,7 +46,8 @@ public class ToolQuartzCuttingKnife extends AEBaseItem implements IGuiItem {
     }
 
     @Override
-    public EnumActionResult onItemUse(final EntityPlayer p, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public EnumActionResult onItemUse(final EntityPlayer p, final World worldIn, final BlockPos pos,
+            final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
         if (Platform.isServer()) {
             Platform.openGUI(p, null, AEPartLocation.INTERNAL, GuiBridge.GUI_QUARTZ_KNIFE);
         }

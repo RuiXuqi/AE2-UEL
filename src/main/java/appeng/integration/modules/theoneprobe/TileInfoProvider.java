@@ -18,22 +18,23 @@
 
 package appeng.integration.modules.theoneprobe;
 
+import java.util.List;
 
-import appeng.core.AppEng;
-import appeng.integration.modules.theoneprobe.tile.*;
-import appeng.tile.AEBaseTile;
 import com.google.common.collect.Lists;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ProbeMode;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.List;
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoProvider;
+import mcjty.theoneprobe.api.ProbeMode;
 
+import appeng.core.AppEng;
+import appeng.integration.modules.theoneprobe.tile.*;
+import appeng.tile.AEBaseTile;
 
 public final class TileInfoProvider implements IProbeInfoProvider {
     private final List<ITileProbInfoProvider> providers;
@@ -53,7 +54,8 @@ public final class TileInfoProvider implements IProbeInfoProvider {
     }
 
     @Override
-    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
+    public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world,
+            IBlockState blockState, IProbeHitData data) {
         final TileEntity tile = world.getTileEntity(data.getPos());
 
         if (tile instanceof AEBaseTile) {

@@ -1,8 +1,8 @@
 package com.enderio.core.common.interfaces;
 
-import net.minecraft.item.ItemStack;
-
 import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
 
 public interface IOverlayRenderAware {
 

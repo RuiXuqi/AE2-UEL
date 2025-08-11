@@ -1,5 +1,9 @@
 package appeng.fluids.client.gui;
 
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.client.gui.implementations.GuiUpgradeable;
 import appeng.client.gui.widgets.GuiTabButton;
@@ -12,11 +16,6 @@ import appeng.fluids.client.gui.widgets.GuiOptionalFluidSlot;
 import appeng.fluids.container.ContainerFluidFormationPlane;
 import appeng.fluids.parts.PartFluidFormationPlane;
 import appeng.fluids.util.IAEFluidTank;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-
-import java.io.IOException;
-
 
 public class GuiFluidFormationPlane extends GuiUpgradeable {
     private final PartFluidFormationPlane plane;
@@ -52,7 +51,8 @@ public class GuiFluidFormationPlane extends GuiUpgradeable {
 
     @Override
     protected void addButtons() {
-        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16, GuiText.Priority.getLocal(), this.itemRender));
+        this.buttonList.add(this.priority = new GuiTabButton(this.guiLeft + 154, this.guiTop, 2 + 4 * 16,
+                GuiText.Priority.getLocal(), this.itemRender));
     }
 
     @Override

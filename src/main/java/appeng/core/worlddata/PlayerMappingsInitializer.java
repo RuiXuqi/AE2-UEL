@@ -18,16 +18,15 @@
 
 package appeng.core.worlddata;
 
-
-import appeng.core.AELog;
-import appeng.util.UUIDMatcher;
-import net.minecraftforge.common.config.ConfigCategory;
-import net.minecraftforge.common.config.Property;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Property;
+
+import appeng.core.AELog;
+import appeng.util.UUIDMatcher;
 
 /**
  * Initializes a map of ID to UUID from the player list in the settings.cfg
@@ -39,12 +38,9 @@ class PlayerMappingsInitializer {
     private final Map<Integer, UUID> playerMappings;
 
     /**
-     * Creates the initializer for the player mappings.
-     * The map will be filled upon construction
-     * and will only be filled with valid entries.
-     * If an invalid entry is found, an warning is printed,
-     * mostly due to migration problems from 1.7.2 to 1.7.10
-     * where the UUIDs were introduced.
+     * Creates the initializer for the player mappings. The map will be filled upon construction and will only be filled
+     * with valid entries. If an invalid entry is found, an warning is printed, mostly due to migration problems from
+     * 1.7.2 to 1.7.10 where the UUIDs were introduced.
      *
      * @param playerList the category for the player list, generally extracted using the "players" tag
      */
@@ -69,7 +65,8 @@ class PlayerMappingsInitializer {
                 this.playerMappings.put(id, uuidString);
             } else {
                 AELog.warn(
-                        "The configuration for players contained an outdated entry instead an expected UUID " + maybeUUID + " for the player " + id + ". Please clean this up.");
+                        "The configuration for players contained an outdated entry instead an expected UUID "
+                                + maybeUUID + " for the player " + id + ". Please clean this up.");
             }
         }
     }

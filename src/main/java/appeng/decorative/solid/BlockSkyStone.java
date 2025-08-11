@@ -18,10 +18,6 @@
 
 package appeng.decorative.solid;
 
-
-import appeng.block.AEBaseBlock;
-import appeng.core.worlddata.WorldData;
-import appeng.util.Platform;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -32,6 +28,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import appeng.block.AEBaseBlock;
+import appeng.core.worlddata.WorldData;
+import appeng.util.Platform;
 
 public class BlockSkyStone extends AEBaseBlock {
     private static final float BLOCK_RESISTANCE = 150.0f;

@@ -18,6 +18,16 @@
 
 package appeng.parts.automation;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 
 import appeng.api.AEApi;
 import appeng.api.config.*;
@@ -49,28 +59,21 @@ import appeng.parts.PartModel;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.primitives.Ints;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
-
 
 public class PartExportBus extends PartSharedItemBus implements ICraftingRequester {
     public static final ResourceLocation MODEL_BASE = new ResourceLocation(AppEng.MOD_ID, "part/export_bus_base");
 
     @PartModels
-    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/export_bus_off"));
+    public static final IPartModel MODELS_OFF = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/export_bus_off"));
 
     @PartModels
-    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/export_bus_on"));
+    public static final IPartModel MODELS_ON = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/export_bus_on"));
 
     @PartModels
-    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE, new ResourceLocation(AppEng.MOD_ID, "part/export_bus_has_channel"));
+    public static final IPartModel MODELS_HAS_CHANNEL = new PartModel(MODEL_BASE,
+            new ResourceLocation(AppEng.MOD_ID, "part/export_bus_has_channel"));
 
     private final MultiCraftingTracker craftingTracker = new MultiCraftingTracker(this, 9);
     private final IActionSource mySrc;
@@ -114,11 +117,13 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
 
         try {
             final InventoryAdaptor destination = this.getHandler();
-            final IMEMonitor<IAEItemStack> inv = this.getProxy().getStorage().getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
+            final IMEMonitor<IAEItemStack> inv = this.getProxy().getStorage()
+                    .getInventory(AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class));
             final IEnergyGrid energy = this.getProxy().getEnergy();
             final ICraftingGrid cg = this.getProxy().getCrafting();
             final FuzzyMode fzMode = (FuzzyMode) this.getConfigManager().getSetting(Settings.FUZZY_MODE);
-            final SchedulingMode schedulingMode = (SchedulingMode) this.getConfigManager().getSetting(Settings.SCHEDULING_MODE);
+            final SchedulingMode schedulingMode = (SchedulingMode) this.getConfigManager()
+                    .getSetting(Settings.SCHEDULING_MODE);
 
             if (destination != null) {
                 int x = 0;
@@ -133,7 +138,9 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
                     }
 
                     if (this.craftOnly()) {
-                        this.didSomething = this.craftingTracker.handleCrafting(slotToExport, this.itemToSend, ais, destination, this.getTile().getWorld(), this.getProxy().getGrid(), cg, this.mySrc) || this.didSomething;
+                        this.didSomething = this.craftingTracker.handleCrafting(slotToExport, this.itemToSend, ais,
+                                destination, this.getTile().getWorld(), this.getProxy().getGrid(), cg, this.mySrc)
+                                || this.didSomething;
                         continue;
                     }
 
@@ -156,7 +163,9 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
                     }
 
                     if (this.itemToSend == before && this.isCraftingEnabled()) {
-                        this.didSomething = this.craftingTracker.handleCrafting(slotToExport, this.itemToSend, ais, destination, this.getTile().getWorld(), this.getProxy().getGrid(), cg, this.mySrc) || this.didSomething;
+                        this.didSomething = this.craftingTracker.handleCrafting(slotToExport, this.itemToSend, ais,
+                                destination, this.getTile().getWorld(), this.getProxy().getGrid(), cg, this.mySrc)
+                                || this.didSomething;
                     }
                 }
 
@@ -268,7 +277,8 @@ public class PartExportBus extends PartSharedItemBus implements ICraftingRequest
         return this.getInstalledUpgrades(Upgrades.CRAFTING) > 0;
     }
 
-    private void pushItemIntoTarget(final InventoryAdaptor d, final IEnergyGrid energy, final IMEInventory<IAEItemStack> inv, IAEItemStack org) {
+    private void pushItemIntoTarget(final InventoryAdaptor d, final IEnergyGrid energy,
+            final IMEInventory<IAEItemStack> inv, IAEItemStack org) {
         ItemStack inputStack = org.getCachedItemStack(org.getStackSize());
 
         ItemStack remaining = d.simulateAdd(inputStack);

@@ -18,6 +18,10 @@
 
 package appeng.client.gui.implementations;
 
+import java.io.IOException;
+
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import appeng.client.gui.AEBaseGui;
 import appeng.container.implementations.ContainerQuartzKnife;
@@ -26,11 +30,6 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.PacketValueConfig;
 import appeng.items.contents.QuartzKnifeObj;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.player.InventoryPlayer;
-
-import java.io.IOException;
-
 
 public class GuiQuartzKnife extends AEBaseGui {
 
@@ -45,7 +44,8 @@ public class GuiQuartzKnife extends AEBaseGui {
     public void initGui() {
         super.initGui();
 
-        this.name = new GuiTextField(0, this.fontRenderer, this.guiLeft + 24, this.guiTop + 32, 79, this.fontRenderer.FONT_HEIGHT);
+        this.name = new GuiTextField(0, this.fontRenderer, this.guiLeft + 24, this.guiTop + 32, 79,
+                this.fontRenderer.FONT_HEIGHT);
         this.name.setEnableBackgroundDrawing(false);
         this.name.setMaxStringLength(32);
         this.name.setTextColor(0xFFFFFF);

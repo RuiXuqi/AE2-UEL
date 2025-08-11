@@ -18,12 +18,20 @@
 
 package appeng.services.export;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-import appeng.core.AELog;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+
+import org.apache.commons.io.FileUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -33,15 +41,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import org.apache.commons.io.FileUtils;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-
+import appeng.core.AELog;
 
 /**
  * handles the exporting including processing, transformation and persisting the information
@@ -66,12 +67,12 @@ final class MinecraftItemCSVExporter implements Exporter {
 
     /**
      * @param exportDirectory directory of the resulting export file. Non-null required.
-     * @param itemRegistry    the registry with minecraft items. Needs to be populated at that time, thus the exporting can
-     *                        only happen in init (pre-init is the
-     *                        phase when all items are determined)
+     * @param itemRegistry    the registry with minecraft items. Needs to be populated at that time, thus the exporting
+     *                        can only happen in init (pre-init is the phase when all items are determined)
      * @param mode            mode in which the export should be operated. Resulting CSV will change depending on this.
      */
-    MinecraftItemCSVExporter(@Nonnull final File exportDirectory, @Nonnull final IForgeRegistry<Item> itemRegistry, @Nonnull final ExportMode mode) {
+    MinecraftItemCSVExporter(@Nonnull final File exportDirectory, @Nonnull final IForgeRegistry<Item> itemRegistry,
+            @Nonnull final ExportMode mode) {
         this.exportDirectory = Preconditions.checkNotNull(exportDirectory);
         Preconditions.checkArgument(!exportDirectory.isFile());
         this.itemRegistry = Preconditions.checkNotNull(itemRegistry);
@@ -91,7 +92,8 @@ final class MinecraftItemCSVExporter implements Exporter {
 
         final File file = new File(this.exportDirectory, ITEM_CSV_FILE_NAME);
 
-        try (final Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+        try (final Writer writer = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             FileUtils.forceMkdir(this.exportDirectory);
 
             final String header = this.mode == ExportMode.MINIMAL ? MINIMAL_HEADER : VERBOSE_HEADER;
@@ -226,7 +228,8 @@ final class MinecraftItemCSVExporter implements Exporter {
 
                 final Joiner newLineJoiner = Joiner.on('\n');
                 final Joiner typeJoiner = newLineJoiner.skipNulls();
-                final List<String> transformedTypes = Lists.transform(stacks, new TypeExtractFunction(itemName, this.mode));
+                final List<String> transformedTypes = Lists.transform(stacks,
+                        new TypeExtractFunction(itemName, this.mode));
 
                 return typeJoiner.join(transformedTypes);
             }

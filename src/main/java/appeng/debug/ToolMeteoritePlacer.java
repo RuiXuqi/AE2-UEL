@@ -18,11 +18,6 @@
 
 package appeng.debug;
 
-
-import appeng.items.AEBaseItem;
-import appeng.util.Platform;
-import appeng.worldgen.MeteoritePlacer;
-import appeng.worldgen.meteorite.StandardWorld;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -31,10 +26,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+import appeng.items.AEBaseItem;
+import appeng.util.Platform;
+import appeng.worldgen.MeteoritePlacer;
+import appeng.worldgen.meteorite.StandardWorld;
 
 public class ToolMeteoritePlacer extends AEBaseItem {
     @Override
-    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos, final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
+    public EnumActionResult onItemUseFirst(final EntityPlayer player, final World world, final BlockPos pos,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ, final EnumHand hand) {
         if (Platform.isClient()) {
             return EnumActionResult.PASS;
         }

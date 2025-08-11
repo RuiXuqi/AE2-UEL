@@ -18,10 +18,8 @@
 
 package appeng.decorative.solid;
 
+import java.util.Random;
 
-import appeng.client.render.effects.VibrantFX;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
@@ -29,8 +27,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Random;
-
+import appeng.client.render.effects.VibrantFX;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
 
 public class BlockQuartzLamp extends BlockQuartzGlass {
 
@@ -50,7 +49,8 @@ public class BlockQuartzLamp extends BlockQuartzGlass {
             final double d1 = (r.nextFloat() - 0.5F) * 0.96D;
             final double d2 = (r.nextFloat() - 0.5F) * 0.96D;
 
-            final VibrantFX fx = new VibrantFX(w, 0.5 + pos.getX() + d0, 0.5 + pos.getY() + d1, 0.5 + pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
+            final VibrantFX fx = new VibrantFX(w, 0.5 + pos.getX() + d0, 0.5 + pos.getY() + d1, 0.5 + pos.getZ() + d2,
+                    0.0D, 0.0D, 0.0D);
 
             Minecraft.getMinecraft().effectRenderer.addEffect(fx);
         }

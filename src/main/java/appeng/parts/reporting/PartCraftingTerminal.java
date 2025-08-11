@@ -18,6 +18,13 @@
 
 package appeng.parts.reporting;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.IItemHandler;
 
 import appeng.api.parts.IPartModel;
 import appeng.core.AppEng;
@@ -26,14 +33,6 @@ import appeng.helpers.Reflected;
 import appeng.items.parts.PartModels;
 import appeng.parts.PartModel;
 import appeng.tile.inventory.AppEngInternalInventory;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.IItemHandler;
-
-import java.util.List;
-
 
 public class PartCraftingTerminal extends AbstractPartTerminal {
 

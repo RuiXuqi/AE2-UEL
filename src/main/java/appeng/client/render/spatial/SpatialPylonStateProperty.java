@@ -18,9 +18,7 @@
 
 package appeng.client.render.spatial;
 
-
 import net.minecraftforge.common.property.IUnlistedProperty;
-
 
 /**
  * Models the rendering state of the spatial pylon, which is largely determined by the state of neighboring tiles.

@@ -18,7 +18,6 @@
 
 package appeng.services.version;
 
-
 /**
  * Exceptional template for {@link Version}, when the mod does not want a check
  */

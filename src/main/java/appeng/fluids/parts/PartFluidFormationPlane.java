@@ -1,5 +1,22 @@
 package appeng.fluids.parts;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -29,29 +46,12 @@ import appeng.me.storage.MEInventoryHandler;
 import appeng.parts.automation.PartAbstractFormationPlane;
 import appeng.parts.automation.PlaneModels;
 import appeng.util.Platform;
-import appeng.util.inv.InvOperation;
 import appeng.util.prioritylist.PrecisePriorityList;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fluids.*;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-
-public class PartFluidFormationPlane extends PartAbstractFormationPlane<IAEFluidStack> implements IAEFluidInventory, IConfigurableFluidInventory {
-    private static final PlaneModels MODELS = new PlaneModels("part/fluid_formation_plane_", "part/fluid_formation_plane_on_");
+public class PartFluidFormationPlane extends PartAbstractFormationPlane<IAEFluidStack>
+        implements IAEFluidInventory, IConfigurableFluidInventory {
+    private static final PlaneModels MODELS = new PlaneModels("part/fluid_formation_plane_",
+            "part/fluid_formation_plane_on_");
 
     @PartModels
     public static List<IPartModel> getModels() {
@@ -71,10 +71,12 @@ public class PartFluidFormationPlane extends PartAbstractFormationPlane<IAEFluid
     @Override
     protected void updateHandler() {
         this.myHandler.setBaseAccess(AccessRestriction.WRITE);
-        this.myHandler.setWhitelist(this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST : IncludeExclude.WHITELIST);
+        this.myHandler.setWhitelist(
+                this.getInstalledUpgrades(Upgrades.INVERTER) > 0 ? IncludeExclude.BLACKLIST : IncludeExclude.WHITELIST);
         this.myHandler.setPriority(this.getPriority());
 
-        final IItemList<IAEFluidStack> priorityList = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+        final IItemList<IAEFluidStack> priorityList = AEApi.instance().storage()
+                .getStorageChannel(IFluidStorageChannel.class).createList();
 
         final int slotsToUse = 18 + this.getInstalledUpgrades(Upgrades.CAPACITY) * 9;
         for (int x = 0; x < this.config.getSlots() && x < slotsToUse; x++) {
@@ -124,7 +126,8 @@ public class PartFluidFormationPlane extends PartAbstractFormationPlane<IAEFluid
     }
 
     private boolean canReplace(World w, IBlockState state, Block block, BlockPos pos) {
-        return block.isReplaceable(w, pos) && !(block instanceof IFluidBlock) && !(block instanceof BlockLiquid) && !state.getMaterial().isLiquid();
+        return block.isReplaceable(w, pos) && !(block instanceof IFluidBlock) && !(block instanceof BlockLiquid)
+                && !state.getMaterial().isLiquid();
     }
 
     @Override

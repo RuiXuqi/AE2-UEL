@@ -18,7 +18,6 @@
 
 package appeng.tile.networking;
 
-
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -26,7 +25,6 @@ import appeng.api.networking.energy.IAEPowerStorage;
 import appeng.api.util.AECableType;
 import appeng.api.util.AEPartLocation;
 import appeng.tile.grid.AENetworkTile;
-
 
 public class TileCreativeEnergyCell extends AENetworkTile implements IAEPowerStorage {
 
@@ -67,5 +65,11 @@ public class TileCreativeEnergyCell extends AENetworkTile implements IAEPowerSto
     @Override
     public double extractAEPower(final double amt, final Actionable mode, final PowerMultiplier pm) {
         return amt;
+    }
+
+    @Override
+    public int getPriority() {
+        // MAX_VALUE to move creative cells to the front.
+        return Integer.MAX_VALUE;
     }
 }

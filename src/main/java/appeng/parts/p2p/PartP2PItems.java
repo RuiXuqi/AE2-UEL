@@ -18,6 +18,18 @@
 
 package appeng.parts.p2p;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.ticking.IGridTickable;
@@ -30,19 +42,6 @@ import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.util.Platform;
 import appeng.util.inv.WrapperChainedItemHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class PartP2PItems extends PartP2PTunnel<PartP2PItems> implements IItemHandler, IGridTickable {
     private static final float POWER_DRAIN = 2.0f;
@@ -117,7 +116,8 @@ public class PartP2PItems extends PartP2PTunnel<PartP2PItems> implements IItemHa
                 final EnumFacing facing = this.getSide().getFacing();
                 final TileEntity te = this.getTile().getWorld().getTileEntity(this.getTile().getPos().offset(facing));
 
-                if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
+                if (te != null
+                        && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())) {
                     ret = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
                 }
             }

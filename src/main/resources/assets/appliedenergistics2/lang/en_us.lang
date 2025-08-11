@@ -267,6 +267,8 @@ gui.appliedenergistics2.UntilPulseUnlock=Waiting for redstone pulse to unlock
 gui.appliedenergistics2.CanBeEnchanted=Can be enchanted
 gui.appliedenergistics2.IncreasedEnergyUseFromEnchants=Enchants increase energy use
 gui.appliedenergistics2.Deprecated=Deprecated
+gui.appliedenergistics2.PatternExecutionCount=Steps
+gui.appliedenergistics2.MaterialUsagePercentage=Used
 
 // GUI Tooltips
 gui.tooltips.appliedenergistics2.Stash=Store Items

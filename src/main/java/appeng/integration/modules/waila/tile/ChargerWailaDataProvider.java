@@ -18,12 +18,10 @@
 
 package appeng.integration.modules.waila.tile;
 
+import java.util.List;
 
-import appeng.core.localization.WailaText;
-import appeng.integration.modules.waila.BaseWailaDataProvider;
-import appeng.tile.misc.TileCharger;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,9 +29,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.IItemHandler;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import appeng.core.localization.WailaText;
+import appeng.integration.modules.waila.BaseWailaDataProvider;
+import appeng.tile.misc.TileCharger;
 
 /**
  * Charger provider for WAILA
@@ -53,7 +54,8 @@ public final class ChargerWailaDataProvider extends BaseWailaDataProvider {
      * @return modified tooltip
      */
     @Override
-    public List<String> getWailaBody(@Nonnull final ItemStack itemStack, final List<String> currentToolTip, final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
+    public List<String> getWailaBody(@Nonnull final ItemStack itemStack, final List<String> currentToolTip,
+            final IWailaDataAccessor accessor, final IWailaConfigHandler config) {
         final TileEntity te = accessor.getTileEntity();
         if (te instanceof TileCharger) {
             final TileCharger charger = (TileCharger) te;
@@ -66,7 +68,8 @@ public final class ChargerWailaDataProvider extends BaseWailaDataProvider {
 
                 currentToolTip.add(WailaText.Contains + ": " + currentInventory);
                 ITooltipFlag.TooltipFlags tooltipFlag = Minecraft
-                        .getMinecraft().gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL;
+                        .getMinecraft().gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED
+                                : ITooltipFlag.TooltipFlags.NORMAL;
                 chargingItem.getItem().addInformation(chargingItem, player.world, currentToolTip, tooltipFlag);
             }
         }

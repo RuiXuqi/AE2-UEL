@@ -18,12 +18,11 @@
 
 package appeng.items.tools.quartz;
 
-
-import appeng.core.features.AEFeature;
-import appeng.util.Platform;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 
+import appeng.core.features.AEFeature;
+import appeng.util.Platform;
 
 public class ToolQuartzPickaxe extends ItemPickaxe {
     private final AEFeature type;

@@ -18,17 +18,16 @@
 
 package appeng.client.render.effects;
 
-
 import net.minecraft.client.particle.Particle;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-
 @SideOnly(Side.CLIENT)
 public class VibrantFX extends Particle {
 
-    public VibrantFX(final World par1World, final double x, final double y, final double z, final double par8, final double par10, final double par12) {
+    public VibrantFX(final World par1World, final double x, final double y, final double z, final double par8,
+            final double par10, final double par12) {
         super(par1World, x, y, z, par8, par10, par12);
         final float f = this.rand.nextFloat() * 0.1F + 0.8F;
         this.particleRed = f * 0.7f;

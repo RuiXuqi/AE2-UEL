@@ -18,12 +18,11 @@
 
 package appeng.items.tools.quartz;
 
-
-import appeng.core.features.AEFeature;
-import appeng.util.Platform;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 
+import appeng.core.features.AEFeature;
+import appeng.util.Platform;
 
 public class ToolQuartzSword extends ItemSword {
     private final AEFeature type;

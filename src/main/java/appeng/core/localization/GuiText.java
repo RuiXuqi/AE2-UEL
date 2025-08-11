@@ -18,11 +18,9 @@
 
 package appeng.core.localization;
 
-
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
-
 
 public enum GuiText {
     inventory("container"), // mc's default Inventory localization.
@@ -164,6 +162,8 @@ public enum GuiText {
 
     FromStorage,
     ToCraft,
+    PatternExecutionCount,
+    MaterialUsagePercentage,
     CraftingPlan,
     CalculatingWait,
     Start,
@@ -211,14 +211,14 @@ public enum GuiText {
     CraftingToastDone,
     CraftingToastCancelled,
 
-    //Used in Lock Crafting,
+    // Used in Lock Crafting,
     CraftingLock,
     NoneLock,
     LowRedstoneLock,
     HighRedstoneLock,
     ResultLock,
     UntilPulseUnlock,
-  
+
     // Used in Annihilation Planes
     CanBeEnchanted,
     IncreasedEnergyUseFromEnchants,

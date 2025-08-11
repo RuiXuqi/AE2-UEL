@@ -18,12 +18,10 @@
 
 package appeng.util.inv;
 
-
-import net.minecraftforge.items.IItemHandler;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import net.minecraftforge.items.IItemHandler;
 
 public class ItemHandlerIterator implements Iterator<ItemSlot> {
 

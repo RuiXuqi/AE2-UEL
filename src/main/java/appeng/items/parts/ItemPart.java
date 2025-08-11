@@ -18,18 +18,16 @@
 
 package appeng.items.parts;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.Map.Entry;
 
-import appeng.api.AEApi;
-import appeng.api.implementations.items.IItemGroup;
-import appeng.api.parts.IPart;
-import appeng.api.parts.IPartItem;
-import appeng.api.util.AEColor;
-import appeng.core.features.ActivityState;
-import appeng.core.features.ItemStackSrc;
-import appeng.core.localization.GuiText;
-import appeng.items.AEBaseItem;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -45,12 +43,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.Map.Entry;
-
+import appeng.api.AEApi;
+import appeng.api.implementations.items.IItemGroup;
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartItem;
+import appeng.api.util.AEColor;
+import appeng.core.features.ActivityState;
+import appeng.core.features.ItemStackSrc;
+import appeng.core.localization.GuiText;
+import appeng.items.AEBaseItem;
 
 public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup {
     private static final int INITIAL_REGISTERED_CAPACITY = PartType.values().length;
@@ -109,14 +110,16 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
         return output;
     }
 
-    private void processMetaOverlap(final boolean enabled, final int partDamage, final PartType mat, final PartTypeWithVariant pti) {
+    private void processMetaOverlap(final boolean enabled, final int partDamage, final PartType mat,
+            final PartTypeWithVariant pti) {
         assert partDamage >= 0;
         assert mat != null;
         assert pti != null;
 
         final PartTypeWithVariant registeredPartType = this.registered.get(partDamage);
         if (registeredPartType != null) {
-            throw new IllegalStateException("Meta Overlap detected with type " + mat + " and damage " + partDamage + ". Found " + registeredPartType + " there already.");
+            throw new IllegalStateException("Meta Overlap detected with type " + mat + " and damage " + partDamage
+                    + ". Found " + registeredPartType + " there already.");
         }
 
         if (enabled) {
@@ -136,7 +139,8 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
     }
 
     @Override
-    public EnumActionResult onItemUse(final EntityPlayer player, final World w, final BlockPos pos, final EnumHand hand, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public EnumActionResult onItemUse(final EntityPlayer player, final World w, final BlockPos pos, final EnumHand hand,
+            final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
         ItemStack heldItem = player.getHeldItem(hand);
         PartType typeByStack = getTypeByStack(heldItem);
         if (typeByStack == PartType.INVALID_TYPE) {
@@ -145,7 +149,7 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
 
         if (player.isSneaking() && typeByStack == PartType.IDENTITY_ANNIHILATION_PLANE) {
             ItemStack newPlane = new ItemStack(this, heldItem.getCount(), PartType.ANNIHILATION_PLANE.getBaseDamage());
-            newPlane.addEnchantment(Enchantments.SILK_TOUCH,1);
+            newPlane.addEnchantment(Enchantments.SILK_TOUCH, 1);
 
             player.setHeldItem(hand, newPlane);
             return EnumActionResult.SUCCESS;
@@ -193,13 +197,13 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
     }
 
     @Override
-    protected void addCheckedInformation(ItemStack stack, World world, List<String> lines, ITooltipFlag advancedTooltips) {
+    protected void addCheckedInformation(ItemStack stack, World world, List<String> lines,
+            ITooltipFlag advancedTooltips) {
         if (getTypeByStack(stack) == PartType.ANNIHILATION_PLANE) {
             var enchantments = EnchantmentHelper.getEnchantments(stack);
             if (enchantments.isEmpty()) {
                 lines.add(GuiText.CanBeEnchanted.getLocal());
-            }
-            else {
+            } else {
                 lines.add(GuiText.IncreasedEnergyUseFromEnchants.getLocal());
             }
         }
@@ -221,7 +225,8 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment == Enchantments.UNBREAKING || enchantment == Enchantments.FORTUNE || enchantment == Enchantments.SILK_TOUCH || enchantment == Enchantments.EFFICIENCY;
+        return enchantment == Enchantments.UNBREAKING || enchantment == Enchantments.FORTUNE
+                || enchantment == Enchantments.SILK_TOUCH || enchantment == Enchantments.EFFICIENCY;
     }
 
     @Override
@@ -327,7 +332,8 @@ public final class ItemPart extends AEBaseItem implements IPartItem, IItemGroup 
         if (group && importBus && exportBus && (u == PartType.IMPORT_BUS || u == PartType.EXPORT_BUS)) {
             return GuiText.IOBuses.getUnlocalized();
         }
-        if (group && importBusFluids && exportBusFluids && (u == PartType.FLUID_IMPORT_BUS || u == PartType.FLUID_EXPORT_BUS)) {
+        if (group && importBusFluids && exportBusFluids
+                && (u == PartType.FLUID_IMPORT_BUS || u == PartType.FLUID_EXPORT_BUS)) {
             return GuiText.IOBusesFluids.getUnlocalized();
         }
 

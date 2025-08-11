@@ -18,8 +18,12 @@
 
 package appeng.parts.automation;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Function;
 
 import com.google.common.collect.Lists;
+
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -27,11 +31,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Function;
-
 
 /**
  * Built-in model for annihilation planes that supports connected textures.
@@ -43,7 +42,8 @@ public class PlaneModel implements IModel {
     private final ResourceLocation backTexture;
     private final PlaneConnections connections;
 
-    public PlaneModel(ResourceLocation frontTexture, ResourceLocation sidesTexture, ResourceLocation backTexture, PlaneConnections connections) {
+    public PlaneModel(ResourceLocation frontTexture, ResourceLocation sidesTexture, ResourceLocation backTexture,
+            PlaneConnections connections) {
         this.frontTexture = frontTexture;
         this.sidesTexture = sidesTexture;
         this.backTexture = backTexture;
@@ -61,7 +61,8 @@ public class PlaneModel implements IModel {
     }
 
     @Override
-    public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+    public IBakedModel bake(IModelState state, VertexFormat format,
+            Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
         TextureAtlasSprite frontSprite = bakedTextureGetter.apply(this.frontTexture);
         TextureAtlasSprite sidesSprite = bakedTextureGetter.apply(this.sidesTexture);
         TextureAtlasSprite backSprite = bakedTextureGetter.apply(this.backTexture);

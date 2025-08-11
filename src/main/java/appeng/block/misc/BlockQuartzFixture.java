@@ -18,15 +18,10 @@
 
 package appeng.block.misc;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-import appeng.api.util.IOrientable;
-import appeng.api.util.IOrientableBlock;
-import appeng.block.AEBaseBlock;
-import appeng.client.render.effects.LightningFX;
-import appeng.core.AEConfig;
-import appeng.core.AppEng;
-import appeng.helpers.ICustomCollision;
-import appeng.helpers.MetaRotation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -44,11 +39,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+import appeng.api.util.IOrientable;
+import appeng.api.util.IOrientableBlock;
+import appeng.block.AEBaseBlock;
+import appeng.client.render.effects.LightningFX;
+import appeng.core.AEConfig;
+import appeng.core.AppEng;
+import appeng.helpers.ICustomCollision;
+import appeng.helpers.MetaRotation;
 
 public class BlockQuartzFixture extends AEBaseBlock implements IOrientableBlock, ICustomCollision {
 
@@ -61,7 +59,8 @@ public class BlockQuartzFixture extends AEBaseBlock implements IOrientableBlock,
     public BlockQuartzFixture() {
         super(Material.CIRCUITS);
 
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ODD, false));
+        this.setDefaultState(
+                this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ODD, false));
         this.setLightLevel(0.9375F);
         this.setLightOpacity(0);
         this.setFullSize(false);
@@ -92,11 +91,12 @@ public class BlockQuartzFixture extends AEBaseBlock implements IOrientableBlock,
 
     @Override
     protected IProperty[] getAEStates() {
-        return new IProperty[]{FACING, ODD};
+        return new IProperty[] { FACING, ODD };
     }
 
     @Override
-    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward, final EnumFacing up) {
+    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward,
+            final EnumFacing up) {
         return this.canPlaceAt(w, pos, up.getOpposite());
     }
 
@@ -106,21 +106,24 @@ public class BlockQuartzFixture extends AEBaseBlock implements IOrientableBlock,
     }
 
     @Override
-    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity e, final boolean isVisual) {
+    public Iterable<AxisAlignedBB> getSelectedBoundingBoxesFromPool(final World w, final BlockPos pos, final Entity e,
+            final boolean isVisual) {
         final EnumFacing up = this.getOrientable(w, pos).getUp();
         final double xOff = -0.3 * up.getXOffset();
         final double yOff = -0.3 * up.getYOffset();
         final double zOff = -0.3 * up.getZOffset();
-        return Collections.singletonList(new AxisAlignedBB(xOff + 0.3, yOff + 0.3, zOff + 0.3, xOff + 0.7, yOff + 0.7, zOff + 0.7));
+        return Collections.singletonList(
+                new AxisAlignedBB(xOff + 0.3, yOff + 0.3, zOff + 0.3, xOff + 0.7, yOff + 0.7, zOff + 0.7));
     }
 
     @Override
-    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List out, final Entity e) {/*
-     * double xOff = -0.15 * getUp().offsetX; double yOff = -0.15 * getUp().offsetY; double zOff = -0.15 *
-     * getUp().offsetZ; out.add( AxisAlignedBB.getBoundingBox( xOff + (double) x + 0.15, yOff + (double) y + 0.15,
-     * zOff
-     * + (double) z + 0.15,// ahh xOff + (double) x + 0.85, yOff + (double) y + 0.85, zOff + (double) z + 0.85 ) );
-     */
+    public void addCollidingBlockToList(final World w, final BlockPos pos, final AxisAlignedBB bb, final List out,
+            final Entity e) {/*
+                              * double xOff = -0.15 * getUp().offsetX; double yOff = -0.15 * getUp().offsetY; double
+                              * zOff = -0.15 * getUp().offsetZ; out.add( AxisAlignedBB.getBoundingBox( xOff + (double) x
+                              * + 0.15, yOff + (double) y + 0.15, zOff + (double) z + 0.15,// ahh xOff + (double) x +
+                              * 0.85, yOff + (double) y + 0.85, zOff + (double) z + 0.85 ) );
+                              */
     }
 
     @Override
@@ -140,7 +143,8 @@ public class BlockQuartzFixture extends AEBaseBlock implements IOrientableBlock,
         final double zOff = -0.3 * up.getZOffset();
         for (int bolts = 0; bolts < 3; bolts++) {
             if (AppEng.proxy.shouldAddParticles(r)) {
-                final LightningFX fx = new LightningFX(w, xOff + 0.5 + pos.getX(), yOff + 0.5 + pos.getY(), zOff + 0.5 + pos.getZ(), 0.0D, 0.0D, 0.0D);
+                final LightningFX fx = new LightningFX(w, xOff + 0.5 + pos.getX(), yOff + 0.5 + pos.getY(),
+                        zOff + 0.5 + pos.getZ(), 0.0D, 0.0D, 0.0D);
 
                 Minecraft.getMinecraft().effectRenderer.addEffect(fx);
             }

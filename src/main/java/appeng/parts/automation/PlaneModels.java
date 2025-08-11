@@ -18,27 +18,30 @@
 
 package appeng.parts.automation;
 
-
-import appeng.api.parts.IPartModel;
-import appeng.core.AppEng;
-import appeng.parts.PartModel;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.util.ResourceLocation;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+
+import net.minecraft.util.ResourceLocation;
+
+import appeng.api.parts.IPartModel;
+import appeng.core.AppEng;
+import appeng.parts.PartModel;
 
 /**
  * Contains a mapping from a Plane's connections to the models to use for that state.
  */
 public class PlaneModels {
 
-    public static final ResourceLocation MODEL_CHASSIS_OFF = new ResourceLocation(AppEng.MOD_ID, "part/transition_plane_off");
-    public static final ResourceLocation MODEL_CHASSIS_ON = new ResourceLocation(AppEng.MOD_ID, "part/transition_plane_on");
-    public static final ResourceLocation MODEL_CHASSIS_HAS_CHANNEL = new ResourceLocation(AppEng.MOD_ID, "part/transition_plane_has_channel");
+    public static final ResourceLocation MODEL_CHASSIS_OFF = new ResourceLocation(AppEng.MOD_ID,
+            "part/transition_plane_off");
+    public static final ResourceLocation MODEL_CHASSIS_ON = new ResourceLocation(AppEng.MOD_ID,
+            "part/transition_plane_on");
+    public static final ResourceLocation MODEL_CHASSIS_HAS_CHANNEL = new ResourceLocation(AppEng.MOD_ID,
+            "part/transition_plane_has_channel");
 
     private final Map<PlaneConnections, IPartModel> modelsOff;
 
@@ -52,7 +55,8 @@ public class PlaneModels {
         Map<PlaneConnections, IPartModel> modelsHasChannel = new HashMap<>();
 
         for (PlaneConnections permutation : PlaneConnections.PERMUTATIONS) {
-            ResourceLocation planeOff = new ResourceLocation(AppEng.MOD_ID, prefixOff + permutation.getFilenameSuffix());
+            ResourceLocation planeOff = new ResourceLocation(AppEng.MOD_ID,
+                    prefixOff + permutation.getFilenameSuffix());
             ResourceLocation planeOn = new ResourceLocation(AppEng.MOD_ID, prefixOn + permutation.getFilenameSuffix());
 
             modelsOff.put(permutation, new PartModel(MODEL_CHASSIS_OFF, planeOff));

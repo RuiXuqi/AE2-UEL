@@ -18,14 +18,13 @@
 
 package appeng.integration.modules.jei;
 
-
-import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 
 /**
  * Acts as a fake facade recipe wrapper, created by {@link FacadeRegistryPlugin}.

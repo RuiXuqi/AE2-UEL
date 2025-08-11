@@ -18,15 +18,13 @@
 
 package appeng.container.implementations;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.container.interfaces.IInventorySlotAware;
-import appeng.util.inv.IAEAppEngInventory;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-
 
 public class ContainerMEPortableCell extends ContainerMEMonitorable implements IInventorySlotAware {
 
@@ -55,7 +53,8 @@ public class ContainerMEPortableCell extends ContainerMEMonitorable implements I
 
     @Override
     public void detectAndSendChanges() {
-        final ItemStack currentItem = this.slot < 0 ? this.getPlayerInv().getCurrentItem() : this.getPlayerInv().getStackInSlot(this.slot);
+        final ItemStack currentItem = this.slot < 0 ? this.getPlayerInv().getCurrentItem()
+                : this.getPlayerInv().getStackInSlot(this.slot);
 
         if (this.portableCell == null || currentItem.isEmpty()) {
             this.setValidContainer(false);
@@ -68,7 +67,8 @@ public class ContainerMEPortableCell extends ContainerMEMonitorable implements I
         // drain 1 ae t
         this.ticks++;
         if (this.ticks > 10) {
-            this.portableCell.extractAEPower(this.getPowerMultiplier() * this.ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+            this.portableCell.extractAEPower(this.getPowerMultiplier() * this.ticks, Actionable.MODULATE,
+                    PowerMultiplier.CONFIG);
             this.ticks = 0;
         }
         super.detectAndSendChanges();

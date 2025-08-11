@@ -18,13 +18,11 @@
 
 package appeng.client.gui.implementations;
 
-
-import appeng.api.implementations.guiobjects.IPortableCell;
-import appeng.container.implementations.ContainerWirelessTerm;
-import appeng.helpers.WirelessTerminalGuiObject;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.InventoryPlayer;
 
+import appeng.container.implementations.ContainerWirelessTerm;
+import appeng.helpers.WirelessTerminalGuiObject;
 
 public class GuiWirelessTerm extends GuiMEMonitorable {
 

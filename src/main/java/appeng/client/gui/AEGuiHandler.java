@@ -1,5 +1,21 @@
 package appeng.client.gui;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Slot;
+
+import mezz.jei.api.gui.IAdvancedGuiHandler;
+import mezz.jei.api.gui.IGhostIngredientHandler;
+
 import appeng.api.storage.data.IAEItemStack;
 import appeng.client.gui.implementations.GuiCraftAmount;
 import appeng.client.gui.implementations.GuiCraftConfirm;
@@ -11,19 +27,6 @@ import appeng.client.gui.widgets.GuiCustomSlot;
 import appeng.container.interfaces.IJEIGhostIngredients;
 import appeng.container.interfaces.ISpecialSlotIngredient;
 import appeng.container.slot.IJEITargetSlot;
-import mezz.jei.api.gui.IAdvancedGuiHandler;
-import mezz.jei.api.gui.IGhostIngredientHandler;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Slot;
-import org.lwjgl.input.Mouse;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class AEGuiHandler implements IAdvancedGuiHandler<AEBaseGui>, IGhostIngredientHandler<AEBaseGui> {
     @Override
@@ -108,9 +111,11 @@ public class AEGuiHandler implements IAdvancedGuiHandler<AEBaseGui>, IGhostIngre
         final int yo = 19;
 
         int guiSlotx = (mouseX - guileft - xo) / 67;
-        if (guiSlotx > 2 || mouseX < guileft + xo) return -1;
+        if (guiSlotx > 2 || mouseX < guileft + xo)
+            return -1;
         int guiSloty = (mouseY - guitop - yo) / 23;
-        if (guiSloty > (rows - 1) || mouseY < guitop + yo) return -1;
+        if (guiSloty > (rows - 1) || mouseY < guitop + yo)
+            return -1;
         return (guiSloty * 3) + guiSlotx + (currentScroll * 3);
     }
 
@@ -124,7 +129,8 @@ public class AEGuiHandler implements IAdvancedGuiHandler<AEBaseGui>, IGhostIngre
             targets.addAll((List<Target<I>>) (Object) phantomTargets);
         }
         if (doStart && GuiScreen.isShiftKeyDown() && Mouse.isButtonDown(0)) {
-            if (gui instanceof GuiUpgradeable || gui instanceof GuiPatternTerm || gui instanceof GuiExpandedProcessingPatternTerm) {
+            if (gui instanceof GuiUpgradeable || gui instanceof GuiPatternTerm
+                    || gui instanceof GuiExpandedProcessingPatternTerm) {
                 IJEIGhostIngredients ghostGui = ((IJEIGhostIngredients) gui);
                 for (Target<I> target : targets) {
                     if (ghostGui.getFakeSlotTargetMap().get(target) instanceof IJEITargetSlot jeiSlot) {

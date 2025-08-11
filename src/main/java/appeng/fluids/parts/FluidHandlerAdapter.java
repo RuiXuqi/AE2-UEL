@@ -18,6 +18,11 @@
 
 package appeng.fluids.parts;
 
+import java.util.*;
+
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -37,12 +42,6 @@ import appeng.fluids.util.AEFluidStack;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.IGridProxyable;
 import appeng.me.storage.ITickingMonitor;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-
-import java.util.*;
-
 
 /**
  * Wraps an Fluid Handler in such a way that it can be used as an IMEInventory for fluids.
@@ -56,7 +55,7 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
     private IActionSource source;
     private final IFluidHandler fluidHandler;
     private final IGridProxyable proxyable;
-    private final FluidHandlerAdapter.InventoryCache cache;
+    private final InventoryCache cache;
     private StorageFilter mode;
     private AccessRestriction access;
 
@@ -68,7 +67,7 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
             this.mode = ((StorageFilter) partFluidStorageBus.getConfigManager().getSetting(Settings.STORAGE_FILTER));
             this.access = ((AccessRestriction) partFluidStorageBus.getConfigManager().getSetting(Settings.ACCESS));
         }
-        this.cache = new FluidHandlerAdapter.InventoryCache(this.fluidHandler, this.mode);
+        this.cache = new InventoryCache(this.fluidHandler, this.mode);
         this.cache.update();
     }
 
@@ -117,7 +116,8 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
             IAEFluidStack cachedStack = this.cache.currentlyCached.findPrecise(request);
             if (cachedStack != null) {
                 cachedStack.decStackSize(gatheredAEFluidstack.getStackSize());
-                this.postDifference(Collections.singletonList(gatheredAEFluidstack.copy().setStackSize(-gatheredAEFluidstack.getStackSize())));
+                this.postDifference(Collections
+                        .singletonList(gatheredAEFluidstack.copy().setStackSize(-gatheredAEFluidstack.getStackSize())));
             }
             try {
                 this.proxyable.getProxy().getTick().alertDevice(this.proxyable.getProxy().getNode());
@@ -165,7 +165,8 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
     }
 
     private void postDifference(Iterable<IAEFluidStack> a) {
-        final Iterator<Map.Entry<IMEMonitorHandlerReceiver<IAEFluidStack>, Object>> i = this.listeners.entrySet().iterator();
+        final Iterator<Map.Entry<IMEMonitorHandlerReceiver<IAEFluidStack>, Object>> i = this.listeners.entrySet()
+                .iterator();
         while (i.hasNext()) {
             final Map.Entry<IMEMonitorHandlerReceiver<IAEFluidStack>, Object> l = i.next();
             final IMEMonitorHandlerReceiver<IAEFluidStack> key = l.getKey();
@@ -180,7 +181,8 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
     private static class InventoryCache {
         private final IFluidHandler fluidHandler;
         private final StorageFilter mode;
-        IItemList<IAEFluidStack> currentlyCached = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+        IItemList<IAEFluidStack> currentlyCached = AEApi.instance().storage()
+                .getStorageChannel(IFluidStorageChannel.class).createList();
 
         public InventoryCache(IFluidHandler fluidHandler, StorageFilter mode) {
             this.mode = mode;
@@ -191,7 +193,8 @@ public class FluidHandlerAdapter implements IMEInventory<IAEFluidStack>, IBaseMo
             final List<IAEFluidStack> changes = new ArrayList<>();
             final IFluidTankProperties[] tankProperties = this.fluidHandler.getTankProperties();
 
-            IItemList<IAEFluidStack> currentlyOnStorage = AEApi.instance().storage().getStorageChannel(IFluidStorageChannel.class).createList();
+            IItemList<IAEFluidStack> currentlyOnStorage = AEApi.instance().storage()
+                    .getStorageChannel(IFluidStorageChannel.class).createList();
 
             for (IFluidTankProperties tankProperty : tankProperties) {
                 var contents = tankProperty.getContents();

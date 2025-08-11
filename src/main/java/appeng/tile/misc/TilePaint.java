@@ -18,13 +18,12 @@
 
 package appeng.tile.misc;
 
+import java.io.IOException;
+import java.util.*;
 
-import appeng.api.util.AEColor;
-import appeng.helpers.Splotch;
-import appeng.items.misc.ItemPaintBall;
-import appeng.tile.AEBaseTile;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,9 +32,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumSkyBlock;
 
-import java.io.IOException;
-import java.util.*;
-
+import appeng.api.util.AEColor;
+import appeng.helpers.Splotch;
+import appeng.items.misc.ItemPaintBall;
+import appeng.tile.AEBaseTile;
 
 public class TilePaint extends AEBaseTile {
 

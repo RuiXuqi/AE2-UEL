@@ -1,5 +1,15 @@
 package appeng.parts.misc;
 
+import java.util.*;
+
+import com.google.common.primitives.Ints;
+import com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository;
+
+import net.minecraft.item.ItemStack;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
@@ -18,18 +28,9 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.IGridProxyable;
 import appeng.me.storage.ITickingMonitor;
 import appeng.util.item.AEItemStack;
-import com.google.common.primitives.Ints;
-import com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.item.ItemStack;
-
-import java.util.*;
-
 
 /**
- * Wraps an Item Repository in such a way that it can be used as an IMEInventory for items.
- * Used by the Storage Bus
+ * Wraps an Item Repository in such a way that it can be used as an IMEInventory for items. Used by the Storage Bus
  */
 
 class ItemRepositoryAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<IAEItemStack>, ITickingMonitor {
@@ -101,7 +102,8 @@ class ItemRepositoryAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<
         if (extracted.getCount() > remainingSize) {
             // Something broke. It should never return more than we requested...
             // We're going to silently eat the remainder
-            AELog.warn("Mod that provided item handler %s is broken. Returned %s items while only requesting %d.", this.itemRepository.getClass().getName(), extracted.toString(), remainingSize);
+            AELog.warn("Mod that provided item handler %s is broken. Returned %s items while only requesting %d.",
+                    this.itemRepository.getClass().getName(), extracted.toString(), remainingSize);
             extracted.setCount(remainingSize);
         }
 
@@ -111,7 +113,8 @@ class ItemRepositoryAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<
                 IAEItemStack cachedStack = this.cache.currentlyCached.findPrecise(request);
                 if (cachedStack != null) {
                     cachedStack.decStackSize(extractedAEItemStack.getStackSize());
-                    this.postDifference(Collections.singletonList(extractedAEItemStack.copy().setStackSize(-extractedAEItemStack.getStackSize())));
+                    this.postDifference(Collections.singletonList(
+                            extractedAEItemStack.copy().setStackSize(-extractedAEItemStack.getStackSize())));
                 }
                 try {
                     this.proxyable.getProxy().getTick().alertDevice(this.proxyable.getProxy().getNode());
@@ -145,7 +148,8 @@ class ItemRepositoryAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<
     }
 
     private void postDifference(Iterable<IAEItemStack> a) {
-        final Iterator<Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet().iterator();
+        final Iterator<Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object>> i = this.listeners.entrySet()
+                .iterator();
         while (i.hasNext()) {
             final Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> l = i.next();
             final IMEMonitorHandlerReceiver<IAEItemStack> key = l.getKey();
@@ -174,7 +178,8 @@ class ItemRepositoryAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<
     }
 
     private static class InventoryCache {
-        private IItemList<IAEItemStack> currentlyCached = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+        private IItemList<IAEItemStack> currentlyCached = AEApi.instance().storage()
+                .getStorageChannel(IItemStorageChannel.class).createList();
         private final IItemRepository iItemRepository;
 
         public InventoryCache(IItemRepository iItemRepository) {
@@ -189,8 +194,11 @@ class ItemRepositoryAdapter implements IMEInventory<IAEItemStack>, IBaseMonitor<
         public List<IAEItemStack> update() {
             final List<IAEItemStack> changes = new ArrayList<>();
 
-            IItemList<IAEItemStack> currentlyOnStorage = AEApi.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
-            this.iItemRepository.getAllItems().stream().map(s -> AEItemStack.fromItemStack(s.itemPrototype).setStackSize(s.count)).forEach(currentlyOnStorage::add);
+            IItemList<IAEItemStack> currentlyOnStorage = AEApi.instance().storage()
+                    .getStorageChannel(IItemStorageChannel.class).createList();
+            this.iItemRepository.getAllItems().stream()
+                    .map(s -> AEItemStack.fromItemStack(s.itemPrototype).setStackSize(s.count))
+                    .forEach(currentlyOnStorage::add);
 
             for (final IAEItemStack is : currentlyCached) {
                 is.setStackSize(-is.getStackSize());

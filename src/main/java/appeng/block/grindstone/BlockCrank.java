@@ -18,12 +18,8 @@
 
 package appeng.block.grindstone;
 
+import javax.annotation.Nullable;
 
-import appeng.api.implementations.tiles.ICrankable;
-import appeng.block.AEBaseTileBlock;
-import appeng.core.stats.Stats;
-import appeng.tile.AEBaseTile;
-import appeng.tile.grindstone.TileCrank;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -40,8 +36,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-import javax.annotation.Nullable;
-
+import appeng.api.implementations.tiles.ICrankable;
+import appeng.block.AEBaseTileBlock;
+import appeng.core.stats.Stats;
+import appeng.tile.AEBaseTile;
+import appeng.tile.grindstone.TileCrank;
 
 public class BlockCrank extends AEBaseTileBlock {
 
@@ -54,7 +53,9 @@ public class BlockCrank extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand, final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+    public boolean onActivated(final World w, final BlockPos pos, final EntityPlayer player, final EnumHand hand,
+            final @Nullable ItemStack heldItem, final EnumFacing side, final float hitX, final float hitY,
+            final float hitZ) {
         if (player instanceof FakePlayer || player == null) {
             this.dropCrank(w, pos);
             return true;
@@ -76,7 +77,8 @@ public class BlockCrank extends AEBaseTileBlock {
     }
 
     @Override
-    public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state, final EntityLivingBase placer, final ItemStack stack) {
+    public void onBlockPlacedBy(final World world, final BlockPos pos, final IBlockState state,
+            final EntityLivingBase placer, final ItemStack stack) {
         final AEBaseTile tile = this.getTileEntity(world, pos);
         if (tile != null) {
             final EnumFacing mnt = this.findCrankable(world, pos);
@@ -91,7 +93,8 @@ public class BlockCrank extends AEBaseTileBlock {
     }
 
     @Override
-    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward, final EnumFacing up) {
+    public boolean isValidOrientation(final World w, final BlockPos pos, final EnumFacing forward,
+            final EnumFacing up) {
         final TileEntity te = w.getTileEntity(pos);
         return !(te instanceof TileCrank) || this.isCrankable(w, pos, up.getOpposite());
     }

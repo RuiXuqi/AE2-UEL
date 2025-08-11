@@ -18,9 +18,7 @@
 
 package appeng.helpers;
 
-
 import java.util.Iterator;
-
 
 public class NonNullArrayIterator<E> implements Iterator<E> {
 

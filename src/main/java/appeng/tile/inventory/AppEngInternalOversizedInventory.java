@@ -1,16 +1,19 @@
 package appeng.tile.inventory;
 
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.filter.IAEItemFilter;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.ItemHandlerHelper;
-
-import javax.annotation.Nonnull;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.ItemHandlerHelper;
+
+import appeng.util.inv.IAEAppEngInventory;
+import appeng.util.inv.filter.IAEItemFilter;
+
 public class AppEngInternalOversizedInventory extends AppEngInternalInventory {
-    public AppEngInternalOversizedInventory(IAEAppEngInventory inventory, int size, int maxStack, IAEItemFilter filter) {
+    public AppEngInternalOversizedInventory(IAEAppEngInventory inventory, int size, int maxStack,
+            IAEItemFilter filter) {
         super(inventory, size, maxStack, filter);
     }
 

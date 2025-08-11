@@ -18,9 +18,7 @@
 
 package appeng.bootstrap.definitions;
 
-
 import appeng.tile.AEBaseTile;
-
 
 /**
  * @author GuntherDW
