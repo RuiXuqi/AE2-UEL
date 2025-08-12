@@ -82,10 +82,10 @@ public class GuiMEMonitorable extends AEBaseMEGui implements ISortSource, IConfi
     private GuiTabButton craftingStatusBtn;
     private MEGuiTextField searchField;
     private GuiText myName;
-    private int perRow = 9;
+    private int rows = 0;
+    private final int perRow = 9;
     private int reservedSpace = 0;
     private boolean customSortOrder = true;
-    private int rows = 0;
     private GuiImgButton ViewBox;
     private GuiImgButton SortByBox;
     private GuiImgButton SortDirBox;
