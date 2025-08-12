@@ -97,7 +97,8 @@ public abstract class AEBaseGui extends GuiContainer implements IMTModGuiContain
     private Object bookmarkedIngredient;
     private boolean isDraggingJeiGhostItem;
     private boolean haltDragging = false;
-    protected int offset; // Y offset of the vertical button
+    // Y offset of the vertical button
+    protected int offset;
     // Vertical space between buttons
     protected static final int VERTICAL_SPACING = 6;
     // The margin between the right side of the buttons and the GUI
